@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <SecurityPermission description="View operations in the AngularJs Component." permissionId="ANGULARJS_VIEW"/>
+    <SecurityPermission description="Create operations in the AngularJs Component." permissionId="ANGULARJS_CREATE"/>
+    <SecurityPermission description="Update operations in the AngularJs Component." permissionId="ANGULARJS_UPDATE"/>
+    <SecurityPermission description="Delete operations in the AngularJs Component." permissionId="ANGULARJS_DELETE"/>
+    <SecurityPermission description="ALL operations in the AngularJs Component." permissionId="ANGULARJS_ADMIN"/>
+
+    <SecurityGroupPermission groupId="SUPER" permissionId="ANGULARJS_ADMIN"/>
+
+</entity-engine-xml>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <SecurityGroupPermission groupId="FULLADMIN" permissionId="ANGULARJS_ADMIN"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="ANGULARJS_CREATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="ANGULARJS_DELETE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="ANGULARJS_UPDATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="ANGULARJS_VIEW"/>
+    <SecurityGroupPermission groupId="VIEWADMIN" permissionId="ANGULARJS_VIEW"/>
+    <SecurityGroupPermission groupId="BIZADMIN" permissionId="ANGULARJS_ADMIN"/>
+</entity-engine-xml>
