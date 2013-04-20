@@ -37,4 +37,6 @@
         location="webapp/angularjs"
         base-permission="OFBTOOLS,ANGULARJS"
         mount-point="/angularjs"/>
+        
+    <container name="angularjs-container" class="org.ofbiz.angularjs.container.AngularJsContainer"/>
 </ofbiz-component>

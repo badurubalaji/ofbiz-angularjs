@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ng-controllers>
+    <ng-controller name="PhoneController"  location="component://angularjs/webapp/angularjs/images/js/controllers/PhoneController.js"/>
+</ng-controllers>
