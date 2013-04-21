@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ng-apps>
+    <ng-app name="phonecat" default-path="/phones">
+        <view path="/phones" location="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneList" controller="PhoneController"/>
+        <view path="/phones/:phoneId" location="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneDetail" controller="PhoneController"/>
+    </ng-app>
+</ng-apps>

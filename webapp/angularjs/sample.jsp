@@ -1,6 +1,7 @@
-<html ng-app>
+<html ng-app="phonecat">
     <head>
         <script type="text/javascript" src="/angularjs/images/js/angular.min.js"></script>
+        <script type="text/javascript" src="/angularjs/control/apps.js"></script>
         <script type="text/javascript" src="/angularjs/control/controllers.js"></script>
     </head>
     <body ng-controller="PhoneController">

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-controllers>
-    <ng-controller name="PhoneController"  location="component://angularjs/webapp/angularjs/images/js/controllers/PhoneController.js"/>
+    <ng-controller name="PhoneController"  xml-resource="component://angularjs/script/org/ofbiz/angularjs/sample/phone/PhoneFunctions.xml">
+        <function name="setImage" xml-resource="component://angularjs/script/org/ofbiz/angularjs/sample/phone/PhoneFunctions.xml">
+            <attribute name="imageUrl" type="String" mode="IN"/>
+        </function>
+    </ng-controller>
 </ng-controllers>

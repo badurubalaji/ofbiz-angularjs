@@ -23,6 +23,12 @@
     <!-- Request Mappings -->
     <request-map uri="main"><security https="true" auth="true"/><response name="success" type="view" value="main"/></request-map>
     
+    <request-map uri="apps.js">
+        <security https="true" auth="false"/>
+        <event type="java" path="org.ofbiz.angularjs.event.AngularJsEvents" invoke="buildAppsJs"/>
+        <response name="success" type="none"/>
+        <response name="error" type="none"/>
+    </request-map>
     <request-map uri="controllers.js">
         <security https="true" auth="false"/>
         <event type="java" path="org.ofbiz.angularjs.event.AngularJsEvents" invoke="buildControllersJs"/>
