@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-controllers>
-    <ng-controller name="PhoneController"  xml-resource="component://angularjs/script/org/ofbiz/angularjs/sample/phone/PhoneFunctions.xml">
+    <ng-controller name="PhoneListController"  xml-resource="component://angularjs/script/org/ofbiz/angularjs/sample/phone/PhoneFunctions.xml">
         <function name="setImage" xml-resource="component://angularjs/script/org/ofbiz/angularjs/sample/phone/PhoneFunctions.xml">
             <attribute name="imageUrl" type="String" mode="IN"/>
         </function>
+    </ng-controller>
+    <ng-controller name="PhoneDetailController"  xml-resource="component://angularjs/script/org/ofbiz/angularjs/sample/phone/PhoneFunctions.xml">
     </ng-controller>
 </ng-controllers>

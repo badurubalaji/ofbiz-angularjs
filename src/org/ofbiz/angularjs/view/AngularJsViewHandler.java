@@ -22,6 +22,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.ofbiz.angularjs.widget.ViewRenderer;
+import org.ofbiz.base.util.Debug;
 import org.ofbiz.webapp.view.ViewHandler;
 import org.ofbiz.webapp.view.ViewHandlerException;
 
@@ -53,6 +55,12 @@ public class AngularJsViewHandler implements ViewHandler {
             String contentType, String encoding, HttpServletRequest request,
             HttpServletResponse response) throws ViewHandlerException {
         
+        try {
+            ViewRenderer renderer = new ViewRenderer(response.getWriter(), null, null);
+            renderer.render(page);
+        } catch (Exception e) {
+            Debug.logError(e, module);
+        }
     }
 
 }

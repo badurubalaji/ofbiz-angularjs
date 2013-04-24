@@ -7,6 +7,8 @@
     <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
 
     <description>AngularJs Component Site Configuration File</description>
+    
+    <handler name="angularjs" type="view" class="org.ofbiz.angularjs.view.AngularJsViewHandler"/>
 
     <!-- Events to run on every request before security (chains exempt) -->
     <!--
@@ -37,8 +39,12 @@
     </request-map>
     
     <request-map uri="sample"><security https="true" auth="false"/><response name="success" type="view" value="sample"/></request-map>
+    <request-map uri="PhoneList"><security https="true" auth="false"/><response name="success" type="view" value="PhoneList"/></request-map>
+    <request-map uri="PhoneDetail"><security https="true" auth="false"/><response name="success" type="view" value="PhoneDetail"/></request-map>
     
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://angularjs/widget/AngularJsScreens.xml#main"/>
-    <view-map name="sample" type="jsp" page="/sample.jsp"/>
+    <view-map name="sample" type="angularjs" page="component://angularjs/widget/sample/phone/PhoneViews.xml#main"/>
+    <view-map name="PhoneList" type="angularjs" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneList"/>
+    <view-map name="PhoneDetail" type="angularjs" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneDetail"/>
 </site-conf>

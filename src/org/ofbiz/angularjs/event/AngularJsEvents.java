@@ -44,7 +44,7 @@ public class AngularJsEvents {
     public final static String NG_APPS_INIT_PATH = "/WEB-INF/ng-apps.xml";
     
     private static void buildControllerJsFunction(String name, String xmlResource, StringBuilder builder) {
-        builder.append("function " + name + "($scope) {\n");
+        builder.append("function " + name + "($scope, $routeParams) {\n");
         try {
             Document document = UtilXml.readXmlDocument(FileUtil.getFile(xmlResource).toURI().toURL());
             List<? extends Element> jsMethodElements = UtilXml.childElementList(document.getDocumentElement(), "js-method");
@@ -68,9 +68,9 @@ public class AngularJsEvents {
         builder.append("    $routeProvider.\n");
         for (Element viewElement : viewElements) {
             String path = UtilXml.elementAttribute(viewElement, "path", null);
-            String location = UtilXml.elementAttribute(viewElement, "location", null);
+            String uri = UtilXml.elementAttribute(viewElement, "uri", null);
             String controller = UtilXml.elementAttribute(viewElement, "controller", null);
-            builder.append("when('" + path + "', {templateUrl: '" + location + "', controller: '" + controller + "'}).\n");
+            builder.append("when('" + path + "', {templateUrl: '" + uri + "', controller: '" + controller + "'}).\n");
         }
         builder.append("otherwise({redirectTo: '" + defaultPath + "'});");
         builder.append("}]);\n");

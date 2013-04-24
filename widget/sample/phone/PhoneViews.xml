@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-views>
+    <ng-view name="main">
+        <html ng-app="phonecat">
+            <head>
+                <script type="text/javascript" src="/angularjs/images/js/angular.min.js"></script>
+                <script type="text/javascript" src="/angularjs/control/apps.js"></script>
+                <script type="text/javascript" src="/angularjs/control/controllers.js"></script>
+            </head>
+            <body>
+                <div ng-view=""></div>
+            </body>
+        </html>
+    </ng-view>
     <ng-view name="PhoneList">
-        <label>Phone List</label>
+        <h1>Phones</h1>
+        <ul>
+            <li ng-repeat="phone in phones">
+                <b>{{phone.name}}</b>
+                <a href="#/phones/{{phone.id}}">Details</a>
+            </li>
+        </ul>
     </ng-view>
     <ng-view name="PhoneDetail">
-        <label>Phone Detail</label>
+        <h1>Phone Detail</h1>
+        <label>Phone: {{phoneId}}</label>
     </ng-view>
 </ng-views>

@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <js-methods>
-    <js-method name="PhoneController">
+    <js-method name="PhoneListController">
         $scope.phones = [
-            {"name": "Nexus S",
+            {"id": "0",
+             "name": "Nexus S",
              "snippet": "Fast just got faster with Nexus S."},
-            {"name": "Motorola XOOMâ„¢ with Wi-Fi",
+            {"id": "1",
+             "name": "Motorola XOOMâ„¢ with Wi-Fi",
              "snippet": "The Next, Next Generation tablet."},
-            {"name": "MOTOROLA XOOMâ„¢",
+            {"id": "2",
+             "name": "MOTOROLA XOOMâ„¢",
              "snippet": "The Next, Next Generation tablet."}
         ];
+    </js-method>
+    <js-method name="PhoneDetailController">
+        $scope.phoneId = $routeParams.phoneId;
     </js-method>
     <js-method name="setImage">
         $scope.mainImageUrl = parameters.imageUrl;
