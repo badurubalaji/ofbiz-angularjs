@@ -3,5 +3,9 @@
     <ng-app name="phonecat" default-path="/phones">
         <view path="/phones" uri="PhoneList" controller="PhoneListController"/>
         <view path="/phones/:phoneId" uri="PhoneDetail" controller="PhoneDetailController"/>
+        <directive name="currentTime" xml-resource="component://angularjs/script/org/ofbiz/angularjs/directive/CommonDirectives.xml">
+            <attribute name="$timeout"/>
+            <attribute name="dateFilter"/>
+        </directive>
     </ng-app>
 </ng-apps>

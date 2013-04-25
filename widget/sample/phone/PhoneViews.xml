@@ -9,6 +9,7 @@
             </head>
             <body>
                 <div ng-view=""></div>
+                Current time is: <span current-time=""></span>
             </body>
         </html>
     </ng-view>

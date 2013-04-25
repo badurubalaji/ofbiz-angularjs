@@ -43,28 +43,46 @@ public class AngularJsEvents {
     public final static String NG_CONTROLLERS_INIT_PATH = "/WEB-INF/ng-controllers.xml";
     public final static String NG_APPS_INIT_PATH = "/WEB-INF/ng-apps.xml";
     
+    private static String getJsFunctionArguments(Element functionElement) throws Exception {
+        List<? extends Element> attrElements = UtilXml.childElementList(functionElement, "attribute");
+        String arguments = "";
+        for (Element attrElement : attrElements) {
+            String attrName = UtilXml.elementAttribute(attrElement, "name", null);
+            arguments = arguments + attrName + ",";
+        }
+        arguments = arguments.substring(0, arguments.length() - 1);
+        return arguments;
+    }
+    
+    private static String getJsFunctionContent(String name, String xmlResource) throws Exception {
+        Document document = UtilXml.readXmlDocument(FileUtil.getFile(xmlResource).toURI().toURL());
+        List<? extends Element> jsMethodElements = UtilXml.childElementList(document.getDocumentElement(), "js-method");
+        for (Element jsMethodElement : jsMethodElements) {
+            String jsMethodName = UtilXml.elementAttribute(jsMethodElement, "name", null);
+            if (UtilValidate.isNotEmpty(jsMethodName) && jsMethodName.equals(name)) {
+                String functionContent = UtilXml.elementValue(jsMethodElement);
+                return functionContent;
+            }
+        }
+        return "";
+    }
+    
     private static void buildControllerJsFunction(String name, String xmlResource, StringBuilder builder) {
         builder.append("function " + name + "($scope, $routeParams) {\n");
         try {
-            Document document = UtilXml.readXmlDocument(FileUtil.getFile(xmlResource).toURI().toURL());
-            List<? extends Element> jsMethodElements = UtilXml.childElementList(document.getDocumentElement(), "js-method");
-            for (Element jsMethodElement : jsMethodElements) {
-                String jsMethodName = UtilXml.elementAttribute(jsMethodElement, "name", null);
-                if (UtilValidate.isNotEmpty(jsMethodName) && jsMethodName.equals(name)) {
-                    String functionContent = UtilXml.elementValue(jsMethodElement);
-                    builder.append(functionContent);
-                    break;
-                }
-            }
+            String functionContent = getJsFunctionContent(name, xmlResource);
+            builder.append(functionContent);
         } catch (Exception e) {
             Debug.logWarning(e, module);
         }
         builder.append("}\n");
     }
     
-    private static void buildAppJsFunction(String name, String defaultPath, List<? extends Element> viewElements, StringBuilder builder) {
-        builder.append("angular.module('" + name + "', []).\n");
-        builder.append("    config(['$routeProvider', function($routeProvider) {\n");
+    private static void buildAppJsFunction(String name, String defaultPath, List<? extends Element> directiveElements, List<? extends Element> viewElements, StringBuilder builder) {
+        builder.append("var module_" + name + " = angular.module('" + name + "', []);\n");
+        
+        // views
+        builder.append("module_" + name + ".config(['$routeProvider', function($routeProvider) {\n");
         builder.append("    $routeProvider.\n");
         for (Element viewElement : viewElements) {
             String path = UtilXml.elementAttribute(viewElement, "path", null);
@@ -74,6 +92,21 @@ public class AngularJsEvents {
         }
         builder.append("otherwise({redirectTo: '" + defaultPath + "'});");
         builder.append("}]);\n");
+        
+        // directives
+        for (Element directiveElement : directiveElements) {
+            try {
+                String directiveName = UtilXml.elementAttribute(directiveElement, "name", null);
+                String arguments = getJsFunctionArguments(directiveElement);
+                builder.append("module_" + name + ".directive('" + directiveName + "', function(" + arguments + ") {\n");
+                String xmlResource = UtilXml.elementAttribute(directiveElement, "xml-resource", null);
+                String functionContent = getJsFunctionContent(directiveName, xmlResource);
+                builder.append(functionContent);
+            } catch (Exception e) {
+                Debug.logError(e, module);
+            }
+            builder.append("});");
+        }
     }
 
     public static String buildControllersJs(HttpServletRequest request, HttpServletResponse response) {
@@ -133,7 +166,8 @@ public class AngularJsEvents {
                         String name = UtilXml.elementAttribute(ngAppElement, "name", null);
                         String defaultPath = UtilXml.elementAttribute(ngAppElement, "default-path", null);
                         List<? extends Element> viewElements = UtilXml.childElementList(ngAppElement, "view");
-                        buildAppJsFunction(name, defaultPath, viewElements, builder);
+                        List<? extends Element> directiveElements = UtilXml.childElementList(ngAppElement, "directive");
+                        buildAppJsFunction(name, defaultPath, directiveElements, viewElements, builder);
                     }
                 } catch (Exception e) {
                     Debug.logWarning(e, module);
