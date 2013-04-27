@@ -54,15 +54,19 @@ public class AngularJsEvents {
         return arguments;
     }
     
-    private static String getJsFunctionContent(String name, String xmlResource) throws Exception {
-        Document document = UtilXml.readXmlDocument(FileUtil.getFile(xmlResource).toURI().toURL());
-        List<? extends Element> jsMethodElements = UtilXml.childElementList(document.getDocumentElement(), "js-method");
-        for (Element jsMethodElement : jsMethodElements) {
-            String jsMethodName = UtilXml.elementAttribute(jsMethodElement, "name", null);
-            if (UtilValidate.isNotEmpty(jsMethodName) && jsMethodName.equals(name)) {
-                String functionContent = UtilXml.elementValue(jsMethodElement);
-                return functionContent;
+    private static String getJsFunctionContent(String name, String xmlResource) {
+        try {
+            Document document = UtilXml.readXmlDocument(FileUtil.getFile(xmlResource).toURI().toURL());
+            List<? extends Element> jsMethodElements = UtilXml.childElementList(document.getDocumentElement(), "js-method");
+            for (Element jsMethodElement : jsMethodElements) {
+                String jsMethodName = UtilXml.elementAttribute(jsMethodElement, "name", null);
+                if (UtilValidate.isNotEmpty(jsMethodName) && jsMethodName.equals(name)) {
+                    String functionContent = UtilXml.elementValue(jsMethodElement);
+                    return functionContent;
+                }
             }
+        } catch (Exception e) {
+            Debug.logError(e, module);
         }
         return "";
     }
@@ -78,35 +82,72 @@ public class AngularJsEvents {
         builder.append("}\n");
     }
     
-    private static void buildAppJsFunction(String name, String defaultPath, List<? extends Element> directiveElements, List<? extends Element> viewElements, StringBuilder builder) {
-        builder.append("var module_" + name + " = angular.module('" + name + "', []);\n");
+    private static void buildAppJsFunction(String name, String defaultPath, List<? extends Element> directiveElements
+            , List<? extends Element> viewElements, List<? extends Element> filterElements, List<? extends Element> serviceElements, StringBuilder builder) {
+        builder.append("angular.module('" + name + "', [])\n");
         
         // views
-        builder.append("module_" + name + ".config(['$routeProvider', function($routeProvider) {\n");
-        builder.append("    $routeProvider.\n");
+        builder.append(".config(['$routeProvider', function($routeProvider) {\n");
+        builder.append("\t$routeProvider.\n");
         for (Element viewElement : viewElements) {
             String path = UtilXml.elementAttribute(viewElement, "path", null);
             String uri = UtilXml.elementAttribute(viewElement, "uri", null);
             String controller = UtilXml.elementAttribute(viewElement, "controller", null);
-            builder.append("when('" + path + "', {templateUrl: '" + uri + "', controller: '" + controller + "'}).\n");
+            builder.append("\t\twhen('" + path + "', {templateUrl: '" + uri + "', controller: '" + controller + "'}).\n");
         }
-        builder.append("otherwise({redirectTo: '" + defaultPath + "'});");
-        builder.append("}]);\n");
+        builder.append("\t\totherwise({redirectTo: '" + defaultPath + "'});");
+        builder.append("}])\n");
         
         // directives
-        for (Element directiveElement : directiveElements) {
-            try {
-                String directiveName = UtilXml.elementAttribute(directiveElement, "name", null);
-                String arguments = getJsFunctionArguments(directiveElement);
-                builder.append("module_" + name + ".directive('" + directiveName + "', function(" + arguments + ") {\n");
-                String xmlResource = UtilXml.elementAttribute(directiveElement, "xml-resource", null);
-                String functionContent = getJsFunctionContent(directiveName, xmlResource);
-                builder.append(functionContent);
-            } catch (Exception e) {
-                Debug.logError(e, module);
+        if (UtilValidate.isNotEmpty(directiveElements)) {
+            for (Element directiveElement : directiveElements) {
+                try {
+                    String directiveName = UtilXml.elementAttribute(directiveElement, "name", null);
+                    String arguments = getJsFunctionArguments(directiveElement);
+                    builder.append(".directive('" + directiveName + "', function(" + arguments + ") {\n");
+                    String xmlResource = UtilXml.elementAttribute(directiveElement, "xml-resource", null);
+                    String functionContent = getJsFunctionContent(directiveName, xmlResource);
+                    builder.append(functionContent);
+                    builder.append("})\n");
+                } catch (Exception e) {
+                    Debug.logError(e, module);
+                }
             }
-            builder.append("});");
         }
+        
+        // filters
+        if (UtilValidate.isNotEmpty(filterElements)) {
+            for (Element filterElement : filterElements) {
+                try {
+                    String filterName = UtilXml.elementAttribute(filterElement, "name", null);
+                    String xmlResource = UtilXml.elementAttribute(filterElement, "xml-resource", null);
+                    builder.append(".filter('" + filterName + "', function() {\n");
+                    String functionContent = getJsFunctionContent(filterName, xmlResource);
+                    builder.append(functionContent);
+                    builder.append("})\n");
+                } catch (Exception e) {
+                    Debug.logError(e, module);
+                }
+            }
+        }
+        
+        // services
+        if (UtilValidate.isNotEmpty(serviceElements)) {
+            for (Element serviceElement : serviceElements) {
+                try {
+                    String serviceName = UtilXml.elementAttribute(serviceElement, "name", null);
+                    String xmlResource = UtilXml.elementAttribute(serviceElement, "xml-resource", null);
+                    builder.append(".factory('" + serviceName + "', function() {\n");
+                    String functionContent = getJsFunctionContent(serviceName, xmlResource);
+                    builder.append(functionContent);
+                    builder.append("})\n");
+                } catch (Exception e) {
+                    Debug.logError(e, module);
+                }
+            }
+        }
+        
+        builder.append(";");
     }
 
     public static String buildControllersJs(HttpServletRequest request, HttpServletResponse response) {
@@ -167,7 +208,9 @@ public class AngularJsEvents {
                         String defaultPath = UtilXml.elementAttribute(ngAppElement, "default-path", null);
                         List<? extends Element> viewElements = UtilXml.childElementList(ngAppElement, "view");
                         List<? extends Element> directiveElements = UtilXml.childElementList(ngAppElement, "directive");
-                        buildAppJsFunction(name, defaultPath, directiveElements, viewElements, builder);
+                        List<? extends Element> filterElements = UtilXml.childElementList(ngAppElement, "filter");
+                        List<? extends Element> serviceElements = UtilXml.childElementList(ngAppElement, "service");
+                        buildAppJsFunction(name, defaultPath, directiveElements, viewElements, filterElements, serviceElements, builder);
                     }
                 } catch (Exception e) {
                     Debug.logWarning(e, module);

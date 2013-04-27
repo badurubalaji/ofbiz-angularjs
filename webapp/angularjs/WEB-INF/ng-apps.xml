@@ -7,5 +7,9 @@
             <attribute name="$timeout"/>
             <attribute name="dateFilter"/>
         </directive>
+        <filter name="testFilter" xml-resource="component://angularjs/script/org/ofbiz/angularjs/filter/CommonFilters.xml"/>
+        <service name="testService" xml-resource="component://angularjs/script/org/ofbiz/angularjs/service/CommonServices.xml"/>
+        <factory name="testFactory" xml-resource="component://angularjs/script/org/ofbiz/angularjs/factory/CommonFactories.xml"/>
+        <provider name="testFilter" xml-resource="component://angularjs/script/org/ofbiz/angularjs/filter/CommonFilters.xml"/>
     </ng-app>
 </ng-apps>

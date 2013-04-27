@@ -12,7 +12,7 @@
             }
  
             // watch the expression, and update the UI on change.
-            scope.$watch(attrs.myCurrentTime, function(value) {
+            scope.$watch(attrs.currentTime, function(value) {
                 format = value;
                 updateTime();
             });
@@ -22,7 +22,7 @@
                 // save the timeoutId for canceling
                 timeoutId = $timeout(function() {
                     updateTime(); // update DOM
-                 updateLater(); // schedule another update
+                    updateLater(); // schedule another update
                 }, 1000);
             }
  
