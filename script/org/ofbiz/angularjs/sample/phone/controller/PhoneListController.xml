@@ -13,9 +13,6 @@
              "snippet": "The Next, Next Generation tablet."}
         ];
     </js-method>
-    <js-method name="PhoneDetailController">
-        $scope.phoneId = $routeParams.phoneId;
-    </js-method>
     <js-method name="setImage">
         $scope.mainImageUrl = parameters.imageUrl;
     </js-method>
