@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ng-component>
+<ng-component enabled="true">
     <directive-resource location="ngdef/directive/directives.xml"/>
     <filter-resource location="ngdef/filter/filters.xml"/>
     <service-resource location="ngdef/service/services.xml"/>

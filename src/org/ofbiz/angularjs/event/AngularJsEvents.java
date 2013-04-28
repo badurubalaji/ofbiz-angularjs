@@ -28,6 +28,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.ofbiz.angularjs.component.NgComponentConfig;
+import org.ofbiz.angularjs.component.NgComponentConfig.DirectiveResourceInfo;
+import org.ofbiz.angularjs.component.NgComponentConfig.FactoryResourceInfo;
+import org.ofbiz.angularjs.component.NgComponentConfig.FilterResourceInfo;
+import org.ofbiz.angularjs.component.NgComponentConfig.ProviderResourceInfo;
+import org.ofbiz.angularjs.component.NgComponentConfig.ServiceResourceInfo;
 import org.ofbiz.base.component.ComponentConfig;
 import org.ofbiz.base.component.ComponentConfig.WebappInfo;
 import org.ofbiz.base.util.Debug;
@@ -237,6 +243,46 @@ public class AngularJsEvents {
             Debug.logError(e, module);
         }
         
+        return "success";
+    }
+
+    public static String buildDirectivesJs(HttpServletRequest request, HttpServletResponse response) {
+        List<DirectiveResourceInfo> directiveInfos = NgComponentConfig.getAllDirectiveResourceInfos();
+        for (DirectiveResourceInfo directiveInfo : directiveInfos) {
+            Debug.logInfo("============ Directive: " + directiveInfo.getLocation(), module);
+        }
+        return "success";
+    }
+
+    public static String buildFiltersJs(HttpServletRequest request, HttpServletResponse response) {
+        List<FilterResourceInfo> filterInfos = NgComponentConfig.getAllFilterResourceInfos();
+        for (FilterResourceInfo filterInfo : filterInfos) {
+            Debug.logInfo("============ Filter: " + filterInfo.getLocation(), module);
+        }
+        return "success";
+    }
+
+    public static String buildServicesJs(HttpServletRequest request, HttpServletResponse response) {
+        List<ServiceResourceInfo> serviceInfos = NgComponentConfig.getAllServiceResoruceInfos();
+        for (ServiceResourceInfo serviceInfo : serviceInfos) {
+            Debug.logInfo("============ Service: " + serviceInfo.getLocation(), module);
+        }
+        return "success";
+    }
+
+    public static String buildFactorysJs(HttpServletRequest request, HttpServletResponse response) {
+        List<FactoryResourceInfo> factoryInfos = NgComponentConfig.getAllFactoryResourceInfos();
+        for (FactoryResourceInfo factoryInfo : factoryInfos) {
+            Debug.logInfo("============ Factory: " + factoryInfo.getLocation(), module);
+        }
+        return "success";
+    }
+
+    public static String buildProvidersJs(HttpServletRequest request, HttpServletResponse response) {
+        List<ProviderResourceInfo> providerInfos = NgComponentConfig.getAllProviderResourceInfos();
+        for (ProviderResourceInfo providerInfo : providerInfos) {
+            Debug.logInfo("============ Provider: " + providerInfo.getLocation(), module);
+        }
         return "success";
     }
 }

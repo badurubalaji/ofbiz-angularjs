@@ -6,6 +6,11 @@
                 <script type="text/javascript" src="/angularjs/images/js/angular.min.js"></script>
                 <script type="text/javascript" src="/angularjs/control/apps.js"></script>
                 <script type="text/javascript" src="/angularjs/control/controllers.js"></script>
+                <script type="text/javascript" src="/angularjs/control/directives.js"></script>
+                <script type="text/javascript" src="/angularjs/control/filters.js"></script>
+                <script type="text/javascript" src="/angularjs/control/services.js"></script>
+                <script type="text/javascript" src="/angularjs/control/factorys.js"></script>
+                <script type="text/javascript" src="/angularjs/control/providers.js"></script>
             </head>
             <body>
                 <div ng-view=""></div>
