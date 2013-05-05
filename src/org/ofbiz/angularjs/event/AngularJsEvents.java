@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ofbiz.angularjs.component.NgComponentConfig;
+import org.ofbiz.angularjs.component.NgComponentConfig.ControllerResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.DirectiveResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.FactoryResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.FilterResourceInfo;
@@ -156,20 +157,24 @@ public class AngularJsEvents {
         builder.append(";");
     }
 
-    public static String buildControllersJs(HttpServletRequest request, HttpServletResponse response) {
+    public static String buildAppsJs(HttpServletRequest request, HttpServletResponse response) {
         StringBuilder builder = new StringBuilder();
         Collection<WebappInfo> webAppInfos = ComponentConfig.getAllWebappResourceInfos();
         for (WebappInfo webAppInfo : webAppInfos) {
-            String ngControllersPath = webAppInfo.getLocation() + NG_CONTROLLERS_INIT_PATH;
-            File ngControllersFile = new File(ngControllersPath);
-            if (ngControllersFile.exists()) {
+            String ngAppsPath = webAppInfo.getLocation() + NG_APPS_INIT_PATH;
+            File ngAppsFile = new File(ngAppsPath);
+            if (ngAppsFile.exists()) {
                 try {
-                    Document document = UtilXml.readXmlDocument(ngControllersFile.toURI().toURL());
-                    List<? extends Element> ngControllerElements = UtilXml.childElementList(document.getDocumentElement(), "ng-controller");
-                    for (Element ngControllerElement : ngControllerElements) {
-                        String name = UtilXml.elementAttribute(ngControllerElement, "name", null);
-                        String xmlResource = UtilXml.elementAttribute(ngControllerElement, "xml-resource", null);
-                        buildControllerJsFunction(name, xmlResource, builder);
+                    Document document = UtilXml.readXmlDocument(ngAppsFile.toURI().toURL());
+                    List<? extends Element> ngAppElements = UtilXml.childElementList(document.getDocumentElement(), "ng-app");
+                    for (Element ngAppElement : ngAppElements) {
+                        String name = UtilXml.elementAttribute(ngAppElement, "name", null);
+                        String defaultPath = UtilXml.elementAttribute(ngAppElement, "default-path", null);
+                        List<? extends Element> viewElements = UtilXml.childElementList(ngAppElement, "view");
+                        List<? extends Element> directiveElements = UtilXml.childElementList(ngAppElement, "directive");
+                        List<? extends Element> filterElements = UtilXml.childElementList(ngAppElement, "filter");
+                        List<? extends Element> serviceElements = UtilXml.childElementList(ngAppElement, "service");
+                        buildAppJsFunction(name, defaultPath, directiveElements, viewElements, filterElements, serviceElements, builder);
                     }
                 } catch (Exception e) {
                     Debug.logWarning(e, module);
@@ -199,28 +204,20 @@ public class AngularJsEvents {
         return "success";
     }
 
-    public static String buildAppsJs(HttpServletRequest request, HttpServletResponse response) {
+    public static String buildControllersJs(HttpServletRequest request, HttpServletResponse response) {
         StringBuilder builder = new StringBuilder();
-        Collection<WebappInfo> webAppInfos = ComponentConfig.getAllWebappResourceInfos();
-        for (WebappInfo webAppInfo : webAppInfos) {
-            String ngAppsPath = webAppInfo.getLocation() + NG_APPS_INIT_PATH;
-            File ngAppsFile = new File(ngAppsPath);
-            if (ngAppsFile.exists()) {
-                try {
-                    Document document = UtilXml.readXmlDocument(ngAppsFile.toURI().toURL());
-                    List<? extends Element> ngAppElements = UtilXml.childElementList(document.getDocumentElement(), "ng-app");
-                    for (Element ngAppElement : ngAppElements) {
-                        String name = UtilXml.elementAttribute(ngAppElement, "name", null);
-                        String defaultPath = UtilXml.elementAttribute(ngAppElement, "default-path", null);
-                        List<? extends Element> viewElements = UtilXml.childElementList(ngAppElement, "view");
-                        List<? extends Element> directiveElements = UtilXml.childElementList(ngAppElement, "directive");
-                        List<? extends Element> filterElements = UtilXml.childElementList(ngAppElement, "filter");
-                        List<? extends Element> serviceElements = UtilXml.childElementList(ngAppElement, "service");
-                        buildAppJsFunction(name, defaultPath, directiveElements, viewElements, filterElements, serviceElements, builder);
-                    }
-                } catch (Exception e) {
-                    Debug.logWarning(e, module);
+        List<ControllerResourceInfo> controllerInfos = NgComponentConfig.getAllControllerResourceInfos();
+        for (ControllerResourceInfo controllerInfo : controllerInfos) {
+            try {
+                Document document = controllerInfo.createResourceHandler().getDocument();
+                List<? extends Element> ngControllerElements = UtilXml.childElementList(document.getDocumentElement(), "ng-controller");
+                for (Element ngControllerElement : ngControllerElements) {
+                    String name = UtilXml.elementAttribute(ngControllerElement, "name", null);
+                    String xmlResource = UtilXml.elementAttribute(ngControllerElement, "xml-resource", null);
+                    buildControllerJsFunction(name, xmlResource, builder);
                 }
+            } catch (Exception e) {
+                Debug.logWarning(e, module);
             }
         }
 

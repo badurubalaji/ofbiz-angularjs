@@ -31,6 +31,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import javolution.util.FastList;
 
+import org.ofbiz.angularjs.component.NgComponentException;
+import org.ofbiz.base.component.ComponentResourceHandler;
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.UtilURL;
 import org.ofbiz.base.util.UtilValidate;
@@ -51,6 +53,7 @@ public class NgComponentConfig {
     protected List<ServiceResourceInfo> serviceResourceInfos = new LinkedList<NgComponentConfig.ServiceResourceInfo>();
     protected List<FactoryResourceInfo> factoryResourceInfos = new LinkedList<NgComponentConfig.FactoryResourceInfo>();
     protected List<ProviderResourceInfo> providerResourceInfos = new LinkedList<NgComponentConfig.ProviderResourceInfo>();
+    protected List<ControllerResourceInfo> controllerResourceInfos = new LinkedList<NgComponentConfig.ControllerResourceInfo>();
     
     protected String globalName = null;
     protected String rootLocation = null;
@@ -120,6 +123,12 @@ public class NgComponentConfig {
         for (Element curElement: UtilXml.childElementList(ngComponentElement, "provider-resource")) {
             ProviderResourceInfo providerResourceInfo = new ProviderResourceInfo(this, curElement);
             this.providerResourceInfos.add(providerResourceInfo);
+        }
+        
+        // controller-resource - controllerResourceInfos
+        for (Element curElement: UtilXml.childElementList(ngComponentElement, "controller-resource")) {
+            ControllerResourceInfo controllerResourceInfo = new ControllerResourceInfo(this, curElement);
+            this.controllerResourceInfos.add(controllerResourceInfo);
         }
     }
 
@@ -208,6 +217,14 @@ public class NgComponentConfig {
         return providerResourceInfos;
     }
     
+    public static List<ControllerResourceInfo> getAllControllerResourceInfos() {
+        List<ControllerResourceInfo> controllerResourceInfos = new LinkedList<NgComponentConfig.ControllerResourceInfo>();
+        for (NgComponentConfig ngcc : getAllNgComponents()) {
+            controllerResourceInfos.addAll(ngcc.getControllerResourceInfos());
+        }
+        return controllerResourceInfos;
+    }
+    
     public List<DirectiveResourceInfo> getDirectiveResourceInfos() {
         return this.directiveResourceInfos;
     }
@@ -228,13 +245,21 @@ public class NgComponentConfig {
         return this.providerResourceInfos;
     }
     
-    public static class DirectiveResourceInfo {
+    public List<ControllerResourceInfo> getControllerResourceInfos() {
+        return this.controllerResourceInfos;
+    }
+    
+    public static class ResourceInfo {
         public NgComponentConfig ngComponentConfig;
         public String location;
         
-        public DirectiveResourceInfo(NgComponentConfig ngComponentConfig, Element element) {
+        public ResourceInfo(NgComponentConfig ngComponentConfig, Element element) {
             this.ngComponentConfig = ngComponentConfig;
             this.location = element.getAttribute("location");
+        }
+        
+        public ComponentResourceHandler createResourceHandler() {
+            return new ComponentResourceHandler(ngComponentConfig.getGlobalName(), "main", location);
         }
         
         public String getLocation() {
@@ -242,59 +267,57 @@ public class NgComponentConfig {
         }
     }
     
-    public static class FilterResourceInfo {
-        public NgComponentConfig ngComponentConfig;
-        public String location;
-        
-        public FilterResourceInfo(NgComponentConfig ngComponentConfig, Element element) {
-            this.ngComponentConfig = ngComponentConfig;
-            this.location = element.getAttribute("location");
+    public static class DirectiveResourceInfo extends ResourceInfo {
+
+        public DirectiveResourceInfo(NgComponentConfig ngComponentConfig,
+                Element element) {
+            super(ngComponentConfig, element);
         }
         
-        public String getLocation() {
-            return location;
-        }
     }
     
-    public static class ServiceResourceInfo {
-        public NgComponentConfig ngComponentConfig;
-        public String location;
-        
-        public ServiceResourceInfo(NgComponentConfig ngComponentConfig, Element element) {
-            this.ngComponentConfig = ngComponentConfig;
-            this.location = element.getAttribute("location");
+    public static class FilterResourceInfo extends ResourceInfo {
+
+        public FilterResourceInfo(NgComponentConfig ngComponentConfig,
+                Element element) {
+            super(ngComponentConfig, element);
         }
         
-        public String getLocation() {
-            return location;
-        }
     }
     
-    public static class FactoryResourceInfo {
-        public NgComponentConfig ngComponentConfig;
-        public String location;
-        
-        public FactoryResourceInfo(NgComponentConfig ngComponentConfig, Element element) {
-            this.ngComponentConfig = ngComponentConfig;
-            this.location = element.getAttribute("location");
+    public static class ServiceResourceInfo extends ResourceInfo {
+
+        public ServiceResourceInfo(NgComponentConfig ngComponentConfig,
+                Element element) {
+            super(ngComponentConfig, element);
         }
         
-        public String getLocation() {
-            return location;
-        }
     }
     
-    public static class ProviderResourceInfo {
-        public NgComponentConfig ngComponentConfig;
-        public String location;
-        
-        public ProviderResourceInfo(NgComponentConfig ngComponentConfig, Element element) {
-            this.ngComponentConfig = ngComponentConfig;
-            this.location = element.getAttribute("location");
+    public static class FactoryResourceInfo extends ResourceInfo {
+
+        public FactoryResourceInfo(NgComponentConfig ngComponentConfig,
+                Element element) {
+            super(ngComponentConfig, element);
         }
         
-        public String getLocation() {
-            return location;
+    }
+    
+    public static class ProviderResourceInfo extends ResourceInfo {
+
+        public ProviderResourceInfo(NgComponentConfig ngComponentConfig,
+                Element element) {
+            super(ngComponentConfig, element);
         }
+        
+    }
+    
+    public static class ControllerResourceInfo extends ResourceInfo {
+
+        public ControllerResourceInfo(NgComponentConfig ngComponentConfig,
+                Element element) {
+            super(ngComponentConfig, element);
+        }
+        
     }
 }
