@@ -47,7 +47,8 @@ public class NgComponentConfig {
     public static final String NG_COMPONENT_XML_FILENAME = "ng-component.xml";
     
     protected static Map<String, NgComponentConfig> ngComponentConfigs = new LinkedHashMap<String, NgComponentConfig>();
-    
+
+    protected List<ClasspathInfo> classpathInfos = new LinkedList<NgComponentConfig.ClasspathInfo>();
     protected List<DirectiveResourceInfo> directiveResourceInfos = new LinkedList<NgComponentConfig.DirectiveResourceInfo>();
     protected List<FilterResourceInfo> filterResourceInfos = new LinkedList<NgComponentConfig.FilterResourceInfo>();
     protected List<ServiceResourceInfo> serviceResourceInfos = new LinkedList<NgComponentConfig.ServiceResourceInfo>();
@@ -94,6 +95,12 @@ public class NgComponentConfig {
 
         Element ngComponentElement = ngComponentDocument.getDocumentElement();
         this.enabled = "true".equalsIgnoreCase(ngComponentElement.getAttribute("enabled"));
+        
+        // classpath - classpathInfos
+        for (Element curElement: UtilXml.childElementList(ngComponentElement, "classpath")) {
+            ClasspathInfo classpathInfo = new ClasspathInfo(this, curElement);
+            this.classpathInfos.add(classpathInfo);
+        }
         
         // directive-resource - directiveResourceInfos
         for (Element curElement: UtilXml.childElementList(ngComponentElement, "directive-resource")) {
@@ -177,6 +184,14 @@ public class NgComponentConfig {
         return this.enabled;
     }
     
+    public static List<ClasspathInfo> getAllClasspathResourceInfos() {
+        List<ClasspathInfo> classpathInfos = new LinkedList<NgComponentConfig.ClasspathInfo>();
+        for (NgComponentConfig ngcc : getAllNgComponents()) {
+            classpathInfos.addAll(ngcc.getClasspathInfos());
+        }
+        return classpathInfos;
+    }
+    
     public static List<DirectiveResourceInfo> getAllDirectiveResourceInfos() {
         List<DirectiveResourceInfo> directiveResourceInfos = new LinkedList<NgComponentConfig.DirectiveResourceInfo>();
         for (NgComponentConfig ngcc : getAllNgComponents()) {
@@ -225,6 +240,10 @@ public class NgComponentConfig {
         return controllerResourceInfos;
     }
     
+    public List<ClasspathInfo> getClasspathInfos() {
+        return this.classpathInfos;
+    }
+    
     public List<DirectiveResourceInfo> getDirectiveResourceInfos() {
         return this.directiveResourceInfos;
     }
@@ -265,6 +284,15 @@ public class NgComponentConfig {
         public String getLocation() {
             return location;
         }
+    }
+    
+    public static class ClasspathInfo extends ResourceInfo {
+
+        public ClasspathInfo(NgComponentConfig ngComponentConfig,
+                Element element) {
+            super(ngComponentConfig, element);
+        }
+        
     }
     
     public static class DirectiveResourceInfo extends ResourceInfo {

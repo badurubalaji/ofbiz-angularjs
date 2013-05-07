@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-controllers>
-    <ng-controller name="PhoneListController"  xml-resource="component://angularjs/script/org/ofbiz/angularjs/sample/phone/controller/PhoneListController.xml">
-        <function name="setImage">
-            <attribute name="imageUrl" type="String" mode="IN"/>
-        </function>
+    <ng-controller name="PhoneListController"  path="org.ofbiz.angularjs.sample.phone.controller.PhoneListController">
     </ng-controller>
-    <ng-controller name="PhoneDetailController"  xml-resource="component://angularjs/script/org/ofbiz/angularjs/sample/phone/controller/PhoneDetailController.xml">
+    <ng-controller name="PhoneDetailController"  path="org.ofbiz.angularjs.sample.phone.controller.PhoneDetailController">
     </ng-controller>
 </ng-controllers>

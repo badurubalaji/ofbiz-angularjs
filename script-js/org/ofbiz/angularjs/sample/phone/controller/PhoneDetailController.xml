@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<js-methods>
+<js-class name="PhoneDetailController" package="org.ofbiz.angularjs.sample.phone.controller">
     <js-method name="PhoneDetailController">
         $scope.phoneId = $routeParams.phoneId;
     </js-method>
-</js-methods>
+</js-class>

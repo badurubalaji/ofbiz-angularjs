@@ -23,12 +23,14 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ofbiz.angularjs.component.NgComponentConfig;
+import org.ofbiz.angularjs.component.NgComponentConfig.ClasspathInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ControllerResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.DirectiveResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.FactoryResourceInfo;
@@ -47,46 +49,38 @@ import org.w3c.dom.Element;
 public class AngularJsEvents {
 
     public final static String module = AngularJsEvents.class.getName();
-    public final static String NG_CONTROLLERS_INIT_PATH = "/WEB-INF/ng-controllers.xml";
     public final static String NG_APPS_INIT_PATH = "/WEB-INF/ng-apps.xml";
     
-    private static String getJsFunctionArguments(Element functionElement) throws Exception {
-        List<? extends Element> attrElements = UtilXml.childElementList(functionElement, "attribute");
-        String arguments = "";
-        for (Element attrElement : attrElements) {
-            String attrName = UtilXml.elementAttribute(attrElement, "name", null);
-            arguments = arguments + attrName + ",";
-        }
-        arguments = arguments.substring(0, arguments.length() - 1);
-        return arguments;
-    }
-    
-    private static String getJsFunctionContent(String name, String xmlResource) {
-        try {
-            Document document = UtilXml.readXmlDocument(FileUtil.getFile(xmlResource).toURI().toURL());
-            List<? extends Element> jsMethodElements = UtilXml.childElementList(document.getDocumentElement(), "js-method");
-            for (Element jsMethodElement : jsMethodElements) {
-                String jsMethodName = UtilXml.elementAttribute(jsMethodElement, "name", null);
-                if (UtilValidate.isNotEmpty(jsMethodName) && jsMethodName.equals(name)) {
-                    String functionContent = UtilXml.elementValue(jsMethodElement);
-                    return functionContent;
+    private static void buildJsClasses(List<File> files, StringBuilder builder) {
+        for (File file : files) {
+            try {
+                Document document = UtilXml.readXmlDocument(file.toURI().toURL());
+                Element jsClassElement = document.getDocumentElement();
+                String packageName = UtilXml.elementAttribute(jsClassElement, "package", null);
+                String className = UtilXml.elementAttribute(jsClassElement, "name", null);
+                Debug.logInfo("=== JS Class ====", module);
+                Debug.logInfo(packageName + "."  + className, module);
+                
+                List<? extends Element> jsMethodElements = UtilXml.childElementList(jsClassElement, "js-method");
+                for (Element jsMethodElement : jsMethodElements) {
+                    String methodName = UtilXml.elementAttribute(jsMethodElement, "name", null);
+                    boolean isStatic = "true".equals(UtilXml.elementAttribute(jsMethodElement, "is-static", null));
+                    Debug.logInfo("-- Method: " + methodName + "[" + isStatic + "]", module);
+                    Element parametersElement = UtilXml.firstChildElement(jsMethodElement, "parameters");
+                    List<? extends Element> parameterElements = UtilXml.childElementList(parametersElement, "parameter");
+                    for (Element parameterElement : parameterElements) {
+                        String parameterName = UtilXml.elementAttribute(parameterElement, "name", null);
+                        Debug.logInfo("-*- Paramter: " + parameterName, module);
+                    }
+                    
+                    Element bodyElement = UtilXml.firstChildElement(jsMethodElement, "body");
+                    String script = UtilXml.elementValue(bodyElement);
+                    Debug.logInfo("// Script: " + script, module);
                 }
+            } catch (Exception e) {
+                Debug.logError(e, module);
             }
-        } catch (Exception e) {
-            Debug.logError(e, module);
         }
-        return "";
-    }
-    
-    private static void buildControllerJsFunction(String name, String xmlResource, StringBuilder builder) {
-        builder.append("function " + name + "($scope, $routeParams) {\n");
-        try {
-            String functionContent = getJsFunctionContent(name, xmlResource);
-            builder.append(functionContent);
-        } catch (Exception e) {
-            Debug.logWarning(e, module);
-        }
-        builder.append("}\n");
     }
     
     private static void buildAppJsFunction(String name, String defaultPath, List<? extends Element> directiveElements
@@ -110,12 +104,8 @@ public class AngularJsEvents {
             for (Element directiveElement : directiveElements) {
                 try {
                     String directiveName = UtilXml.elementAttribute(directiveElement, "name", null);
-                    String arguments = getJsFunctionArguments(directiveElement);
-                    builder.append(".directive('" + directiveName + "', function(" + arguments + ") {\n");
-                    String xmlResource = UtilXml.elementAttribute(directiveElement, "xml-resource", null);
-                    String functionContent = getJsFunctionContent(directiveName, xmlResource);
-                    builder.append(functionContent);
-                    builder.append("})\n");
+                    String path = UtilXml.elementAttribute(directiveElement, "path", null);
+                    builder.append(".directive('" + directiveName + "', " + path + "." + directiveName + ")\n");
                 } catch (Exception e) {
                     Debug.logError(e, module);
                 }
@@ -127,11 +117,8 @@ public class AngularJsEvents {
             for (Element filterElement : filterElements) {
                 try {
                     String filterName = UtilXml.elementAttribute(filterElement, "name", null);
-                    String xmlResource = UtilXml.elementAttribute(filterElement, "xml-resource", null);
-                    builder.append(".filter('" + filterName + "', function() {\n");
-                    String functionContent = getJsFunctionContent(filterName, xmlResource);
-                    builder.append(functionContent);
-                    builder.append("})\n");
+                    String path = UtilXml.elementAttribute(filterElement, "path", null);
+                    builder.append(".filter('" + filterName + "', " + path + "." + filterName + ")\n");
                 } catch (Exception e) {
                     Debug.logError(e, module);
                 }
@@ -143,11 +130,8 @@ public class AngularJsEvents {
             for (Element serviceElement : serviceElements) {
                 try {
                     String serviceName = UtilXml.elementAttribute(serviceElement, "name", null);
-                    String xmlResource = UtilXml.elementAttribute(serviceElement, "xml-resource", null);
-                    builder.append(".factory('" + serviceName + "', function() {\n");
-                    String functionContent = getJsFunctionContent(serviceName, xmlResource);
-                    builder.append(functionContent);
-                    builder.append("})\n");
+                    String path = UtilXml.elementAttribute(serviceElement, "path", null);
+                    builder.append(".factory('" + serviceName + "', " + path + "." + serviceName + ")\n");
                 } catch (Exception e) {
                     Debug.logError(e, module);
                 }
@@ -204,22 +188,20 @@ public class AngularJsEvents {
         return "success";
     }
 
-    public static String buildControllersJs(HttpServletRequest request, HttpServletResponse response) {
+    public static String buildClassesJs(HttpServletRequest request, HttpServletResponse response) {
         StringBuilder builder = new StringBuilder();
-        List<ControllerResourceInfo> controllerInfos = NgComponentConfig.getAllControllerResourceInfos();
-        for (ControllerResourceInfo controllerInfo : controllerInfos) {
+        List<File> classFiles = new LinkedList<File>();
+        List<ClasspathInfo> classpathResoruceInfos = NgComponentConfig.getAllClasspathResourceInfos();
+        for (ClasspathInfo classpathResourceInfo : classpathResoruceInfos) {
             try {
-                Document document = controllerInfo.createResourceHandler().getDocument();
-                List<? extends Element> ngControllerElements = UtilXml.childElementList(document.getDocumentElement(), "ng-controller");
-                for (Element ngControllerElement : ngControllerElements) {
-                    String name = UtilXml.elementAttribute(ngControllerElement, "name", null);
-                    String xmlResource = UtilXml.elementAttribute(ngControllerElement, "xml-resource", null);
-                    buildControllerJsFunction(name, xmlResource, builder);
-                }
+                List<File> files = FileUtil.findFiles("xml", classpathResourceInfo.createResourceHandler().getFullLocation(), null, null);
+                classFiles.addAll(files);
             } catch (Exception e) {
                 Debug.logWarning(e, module);
             }
         }
+        
+        buildJsClasses(classFiles, builder);
 
         String javaScriptString = builder.toString();
         response.setContentType("text/javascript");
@@ -243,11 +225,32 @@ public class AngularJsEvents {
         return "success";
     }
 
+    public static String buildControllersJs(HttpServletRequest request, HttpServletResponse response) {
+        StringBuilder builder = new StringBuilder();
+        List<ControllerResourceInfo> controllerInfos = NgComponentConfig.getAllControllerResourceInfos();
+        for (ControllerResourceInfo controllerInfo : controllerInfos) {
+            try {
+                Document document = controllerInfo.createResourceHandler().getDocument();
+                List<? extends Element> ngControllerElements = UtilXml.childElementList(document.getDocumentElement(), "ng-controller");
+                for (Element ngControllerElement : ngControllerElements) {
+                    String name = UtilXml.elementAttribute(ngControllerElement, "name", null);
+                    String path = UtilXml.elementAttribute(ngControllerElement, "path", null);
+                }
+            } catch (Exception e) {
+                Debug.logWarning(e, module);
+            }
+        }
+        response.setContentType("text/javascript");
+        
+        return "success";
+    }
+
     public static String buildDirectivesJs(HttpServletRequest request, HttpServletResponse response) {
         List<DirectiveResourceInfo> directiveInfos = NgComponentConfig.getAllDirectiveResourceInfos();
         for (DirectiveResourceInfo directiveInfo : directiveInfos) {
             Debug.logInfo("============ Directive: " + directiveInfo.getLocation(), module);
         }
+        response.setContentType("text/javascript");
         return "success";
     }
 
@@ -256,6 +259,7 @@ public class AngularJsEvents {
         for (FilterResourceInfo filterInfo : filterInfos) {
             Debug.logInfo("============ Filter: " + filterInfo.getLocation(), module);
         }
+        response.setContentType("text/javascript");
         return "success";
     }
 
@@ -264,6 +268,7 @@ public class AngularJsEvents {
         for (ServiceResourceInfo serviceInfo : serviceInfos) {
             Debug.logInfo("============ Service: " + serviceInfo.getLocation(), module);
         }
+        response.setContentType("text/javascript");
         return "success";
     }
 
@@ -272,6 +277,7 @@ public class AngularJsEvents {
         for (FactoryResourceInfo factoryInfo : factoryInfos) {
             Debug.logInfo("============ Factory: " + factoryInfo.getLocation(), module);
         }
+        response.setContentType("text/javascript");
         return "success";
     }
 
@@ -280,6 +286,7 @@ public class AngularJsEvents {
         for (ProviderResourceInfo providerInfo : providerInfos) {
             Debug.logInfo("============ Provider: " + providerInfo.getLocation(), module);
         }
+        response.setContentType("text/javascript");
         return "success";
     }
 }

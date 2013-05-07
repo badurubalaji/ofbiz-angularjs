@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-apps>
     <ng-app name="phonecat" default-path="/phones">
-        <view path="/phones" uri="PhoneList" controller="PhoneListController"/>
-        <view path="/phones/:phoneId" uri="PhoneDetail" controller="PhoneDetailController"/>
-        <directive name="currentTime" xml-resource="component://angularjs/script/org/ofbiz/angularjs/directive/CommonDirectives.xml">
-            <attribute name="$timeout"/>
-            <attribute name="dateFilter"/>
-        </directive>
-        <filter name="testFilter" xml-resource="component://angularjs/script/org/ofbiz/angularjs/filter/CommonFilters.xml"/>
-        <service name="testService" xml-resource="component://angularjs/script/org/ofbiz/angularjs/service/CommonServices.xml"/>
-        <factory name="testFactory" xml-resource="component://angularjs/script/org/ofbiz/angularjs/factory/CommonFactories.xml"/>
-        <provider name="testFilter" xml-resource="component://angularjs/script/org/ofbiz/angularjs/filter/CommonFilters.xml"/>
+        <view path="/phones" uri="PhoneList" controller="org.ofbiz.angularjs.sample.phone.controller.PhoneListController"/>
+        <view path="/phones/:phoneId" uri="PhoneDetail" controller="org.ofbiz.angularjs.sample.phone.controller.PhoneDetailController"/>
     </ng-app>
 </ng-apps>

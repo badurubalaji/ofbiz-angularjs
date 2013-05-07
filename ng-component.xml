@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-component enabled="true">
+    <classpath location="script-js"/>
+    
     <directive-resource location="ngdef/directive/directives.xml"/>
     <filter-resource location="ngdef/filter/filters.xml"/>
     <service-resource location="ngdef/service/services.xml"/>
