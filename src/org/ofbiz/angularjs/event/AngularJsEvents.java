@@ -37,6 +37,9 @@ import org.ofbiz.angularjs.component.NgComponentConfig.FactoryResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.FilterResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ProviderResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ServiceResourceInfo;
+import org.ofbiz.angularjs.javascript.JavaScriptClass;
+import org.ofbiz.angularjs.javascript.JavaScriptFactory;
+import org.ofbiz.angularjs.javascript.JavaScriptPackage;
 import org.ofbiz.base.component.ComponentConfig;
 import org.ofbiz.base.component.ComponentConfig.WebappInfo;
 import org.ofbiz.base.util.Debug;
@@ -55,31 +58,15 @@ public class AngularJsEvents {
         for (File file : files) {
             try {
                 Document document = UtilXml.readXmlDocument(file.toURI().toURL());
-                Element jsClassElement = document.getDocumentElement();
-                String packageName = UtilXml.elementAttribute(jsClassElement, "package", null);
-                String className = UtilXml.elementAttribute(jsClassElement, "name", null);
-                Debug.logInfo("=== JS Class ====", module);
-                Debug.logInfo(packageName + "."  + className, module);
-                
-                List<? extends Element> jsMethodElements = UtilXml.childElementList(jsClassElement, "js-method");
-                for (Element jsMethodElement : jsMethodElements) {
-                    String methodName = UtilXml.elementAttribute(jsMethodElement, "name", null);
-                    boolean isStatic = "true".equals(UtilXml.elementAttribute(jsMethodElement, "is-static", null));
-                    Debug.logInfo("-- Method: " + methodName + "[" + isStatic + "]", module);
-                    Element parametersElement = UtilXml.firstChildElement(jsMethodElement, "parameters");
-                    List<? extends Element> parameterElements = UtilXml.childElementList(parametersElement, "parameter");
-                    for (Element parameterElement : parameterElements) {
-                        String parameterName = UtilXml.elementAttribute(parameterElement, "name", null);
-                        Debug.logInfo("-*- Paramter: " + parameterName, module);
-                    }
-                    
-                    Element bodyElement = UtilXml.firstChildElement(jsMethodElement, "body");
-                    String script = UtilXml.elementValue(bodyElement);
-                    Debug.logInfo("// Script: " + script, module);
-                }
+                JavaScriptFactory.addJavaScriptClass(document.getDocumentElement());
             } catch (Exception e) {
                 Debug.logError(e, module);
             }
+        }
+        
+        List<JavaScriptPackage> rootJavaScriptPackages = JavaScriptFactory.getRootJavaScriptPackages();
+        for (JavaScriptPackage rootJavaScriptPackage : rootJavaScriptPackages) {
+            
         }
     }
     

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<js-class name="PhoneListController" package="org.ofbiz.angularjs.sample.phone.controller">
-    <js-method name="PhoneListController" is-static="false">
-        <parameters>
-        </parameters>
+<javascript-class name="PhoneListController" package="org.ofbiz.angularjs.sample.phone.controller">
+    <javascript-method name="PhoneListController" is-static="false">
+        <attributes>
+        </attributes>
         <body>
             $scope.phones = [
                 {"id": "0",
@@ -16,13 +16,13 @@
                  "snippet": "The Next, Next Generation tablet."}
             ];
         </body>
-    </js-method>
-    <js-method name="setImage" is-static="false">
-        <parameters>
-            <parameter name="imageUrl"/>
-        </parameters>
+    </javascript-method>
+    <javascript-method name="setImage" is-static="false">
+        <attributes>
+            <attribute name="imageUrl" mode="IN" type="String"/>
+        </attributes>
         <body>
             $scope.mainImageUrl = imageUrl;
         </body>
-    </js-method>
-</js-class>
+    </javascript-method>
+</javascript-class>
