@@ -18,9 +18,10 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.javascript;
 
+import java.util.LinkedList;
 import java.util.List;
 
-import org.ofbiz.base.util.Debug;
+import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
 import org.ofbiz.minilang.MiniLangElement;
 import org.w3c.dom.Element;
@@ -31,7 +32,9 @@ public class JavaScriptMethod extends MiniLangElement {
     
     protected JavaScriptClass javaScriptClass = null;
     protected String name = null;
+    protected String body = null;
     protected boolean isStatic = false;
+    protected List<MethodAttribute> attributes = new LinkedList<MethodAttribute>();
 
     public JavaScriptMethod(Element element) {
         super(element, null);
@@ -39,14 +42,27 @@ public class JavaScriptMethod extends MiniLangElement {
         isStatic = "true".equals(UtilXml.elementAttribute(element, "is-static", null));
         Element attributesElement = UtilXml.firstChildElement(element, "attributes");
         List<? extends Element> attributeElements = UtilXml.childElementList(attributesElement, "attributes");
-        for (Element attributeElement : attributeElements) {
-            String attributeName = UtilXml.elementAttribute(attributeElement, "name", null);
-            Debug.logInfo("-*- Attribute: " + attributeName, module);
+        if (UtilValidate.isNotEmpty(attributeElements)) {
+            for (Element attributeElement : attributeElements) {
+                MethodAttribute attribute = new MethodAttribute(attributeElement);
+                attributes.add(attribute);
+            }
         }
         
         Element bodyElement = UtilXml.firstChildElement(element, "body");
-        String script = UtilXml.elementValue(bodyElement);
-        Debug.logInfo("// Script: " + script, module);
+        body = UtilXml.elementValue(bodyElement);
+    }
+    
+    public class MethodAttribute {
+        public String name;
+        public String type;
+        public String mode;
+        
+        public MethodAttribute(Element element) {
+            this.name = UtilXml.elementAttribute(element, "name", null);
+            this.type = UtilXml.elementAttribute(element, "type", null);
+            this.mode = UtilXml.elementAttribute(element, "mode", null);
+        }
     }
 
 }

@@ -18,10 +18,12 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.javascript;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-import org.ofbiz.base.util.StringUtil;
+import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
 import org.w3c.dom.Element;
 
@@ -29,14 +31,19 @@ public class JavaScriptFactory {
 
     public final static String module = JavaScriptFactory.class.getName();
     
-    protected static List<JavaScriptPackage> javaScriptPackages = new LinkedList<JavaScriptPackage>();
+    protected static Map<String, JavaScriptPackage> javaScriptPackages = new LinkedHashMap<String, JavaScriptPackage>();
+    protected static List<JavaScriptPackage> rootJavaScriptPackages = new LinkedList<JavaScriptPackage>();
     
     private JavaScriptFactory() {}
     
-    private static JavaScriptPackage getJavaScriptPackage(String packagePath) {
-        List<String> packageTokens = StringUtil.split(packagePath, ".");
-        String packageName = packageTokens.get(packageTokens.size() - 1);
-        JavaScriptPackage javaScriptPackage = new JavaScriptPackage(packageName);
+    public static JavaScriptPackage getJavaScriptPackage(String packagePath) {
+        if (UtilValidate.isEmpty(packagePath)) return null;
+        
+        JavaScriptPackage javaScriptPackage = javaScriptPackages.get(packagePath);
+        if (UtilValidate.isEmpty(javaScriptPackage)) {
+            javaScriptPackage = new JavaScriptPackage(packagePath);
+            javaScriptPackages.put(packagePath, javaScriptPackage);
+        }
         return javaScriptPackage;
     }
     
@@ -44,11 +51,13 @@ public class JavaScriptFactory {
         String packagePath = UtilXml.elementAttribute(element, "package", null);
         JavaScriptPackage javaScriptPackage = JavaScriptFactory.getJavaScriptPackage(packagePath);
         javaScriptPackage.addJavaScriptClass(element);
-        javaScriptPackages.add(javaScriptPackage);
+    }
+    
+    public static void addRootJavaScriptPackage(JavaScriptPackage javaScriptPackage) {
+        rootJavaScriptPackages.add(javaScriptPackage);
     }
     
     public static List<JavaScriptPackage> getRootJavaScriptPackages() {
-        List<JavaScriptPackage> rootJavaScriptPackages = new LinkedList<JavaScriptPackage>();
         return rootJavaScriptPackages;
     }
 }

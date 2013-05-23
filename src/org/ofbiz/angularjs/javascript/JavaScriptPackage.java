@@ -21,6 +21,8 @@ package org.ofbiz.angularjs.javascript;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.ofbiz.base.util.StringUtil;
+import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
 import org.w3c.dom.Element;
 
@@ -33,8 +35,24 @@ public class JavaScriptPackage {
     protected String name = null;
     protected List<JavaScriptClass> javaScriptClasses = new LinkedList<JavaScriptClass>();
     
-    public JavaScriptPackage(String name) {
-        this.name = name;
+    public JavaScriptPackage(String packagePath) {
+        List<String> packageTokens = StringUtil.split(packagePath, ".");
+            if (UtilValidate.isNotEmpty(packageTokens)) {
+            this.name = packageTokens.remove(packageTokens.size() - 1);
+            String parentPackagePath = StringUtil.join(packageTokens, ".");
+            this.parent = JavaScriptFactory.getJavaScriptPackage(parentPackagePath);
+            
+            if (UtilValidate.isNotEmpty(this.parent)) {
+                this.parent.getChildren().add(this);
+            }
+            
+            if (packagePath.indexOf(".") < 0) {
+                JavaScriptFactory.addRootJavaScriptPackage(this);
+            }
+        } else {
+            this.name = packagePath;
+            JavaScriptFactory.addRootJavaScriptPackage(this);
+        }
     }
     
     public void addJavaScriptClass(Element element) {
@@ -44,5 +62,18 @@ public class JavaScriptPackage {
         for (Element javaScriptMethodElement : javaScriptMethodElements) {
             javaScriptClass.addJavaScriptMethod(javaScriptMethodElement);
         }
+    }
+    
+    public List<JavaScriptPackage> getChildren() {
+        return children;
+    }
+    
+    public String rawString() {
+        String rawString = name + " {\n";
+        for (JavaScriptPackage javaScriptPackage : getChildren()) {
+            rawString += javaScriptPackage.rawString();
+        }
+        rawString += "\n}\n";
+        return rawString;
     }
 }

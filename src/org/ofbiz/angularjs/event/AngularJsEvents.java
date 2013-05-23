@@ -37,7 +37,6 @@ import org.ofbiz.angularjs.component.NgComponentConfig.FactoryResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.FilterResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ProviderResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ServiceResourceInfo;
-import org.ofbiz.angularjs.javascript.JavaScriptClass;
 import org.ofbiz.angularjs.javascript.JavaScriptFactory;
 import org.ofbiz.angularjs.javascript.JavaScriptPackage;
 import org.ofbiz.base.component.ComponentConfig;
@@ -66,7 +65,7 @@ public class AngularJsEvents {
         
         List<JavaScriptPackage> rootJavaScriptPackages = JavaScriptFactory.getRootJavaScriptPackages();
         for (JavaScriptPackage rootJavaScriptPackage : rootJavaScriptPackages) {
-            
+            builder.append(rootJavaScriptPackage.rawString());
         }
     }
     
