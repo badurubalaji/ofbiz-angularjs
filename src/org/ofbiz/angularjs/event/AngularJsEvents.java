@@ -39,6 +39,7 @@ import org.ofbiz.angularjs.component.NgComponentConfig.ProviderResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ServiceResourceInfo;
 import org.ofbiz.angularjs.javascript.JavaScriptFactory;
 import org.ofbiz.angularjs.javascript.JavaScriptPackage;
+import org.ofbiz.angularjs.javascript.JavaScriptRenderer;
 import org.ofbiz.base.component.ComponentConfig;
 import org.ofbiz.base.component.ComponentConfig.WebappInfo;
 import org.ofbiz.base.util.Debug;
@@ -53,7 +54,9 @@ public class AngularJsEvents {
     public final static String module = AngularJsEvents.class.getName();
     public final static String NG_APPS_INIT_PATH = "/WEB-INF/ng-apps.xml";
     
-    private static void buildJsClasses(List<File> files, StringBuilder builder) {
+    private static void buildJsClasses(List<File> files, StringBuilder builder) throws IOException {
+        JavaScriptFactory.clear();
+        
         for (File file : files) {
             try {
                 Document document = UtilXml.readXmlDocument(file.toURI().toURL());
@@ -63,10 +66,8 @@ public class AngularJsEvents {
             }
         }
         
-        List<JavaScriptPackage> rootJavaScriptPackages = JavaScriptFactory.getRootJavaScriptPackages();
-        for (JavaScriptPackage rootJavaScriptPackage : rootJavaScriptPackages) {
-            builder.append(rootJavaScriptPackage.rawString());
-        }
+        JavaScriptRenderer renderer = new JavaScriptRenderer(builder);
+        renderer.render(JavaScriptFactory.getRootJavaScriptPackages());
     }
     
     private static void buildAppJsFunction(String name, String defaultPath, List<? extends Element> directiveElements
@@ -187,23 +188,17 @@ public class AngularJsEvents {
             }
         }
         
-        buildJsClasses(classFiles, builder);
-
-        String javaScriptString = builder.toString();
-        response.setContentType("text/javascript");
-        
         try {
+            buildJsClasses(classFiles, builder);
+            String javaScriptString = builder.toString();
+            response.setContentType("text/javascript");
             response.setContentLength(javaScriptString.getBytes("UTF8").length);
-        } catch (UnsupportedEncodingException e) {
-            Debug.logError("Problems with JavaScript encoding: " + e, module);
-        }
-        
-        // return the JavaScript String
-        Writer out;
-        try {
-            out = response.getWriter();
+            
+            Writer out = response.getWriter();
             out.write(javaScriptString);
             out.flush();
+        } catch (UnsupportedEncodingException e) {
+            Debug.logError("Problems with JavaScript encoding: " + e, module);
         } catch (IOException e) {
             Debug.logError(e, module);
         }

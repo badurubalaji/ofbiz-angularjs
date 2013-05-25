@@ -32,7 +32,7 @@ public class JavaScriptMethod extends MiniLangElement {
     
     protected JavaScriptClass javaScriptClass = null;
     protected String name = null;
-    protected String body = null;
+    protected String body = "";
     protected boolean isStatic = false;
     protected List<MethodAttribute> attributes = new LinkedList<MethodAttribute>();
 
@@ -51,6 +51,14 @@ public class JavaScriptMethod extends MiniLangElement {
         
         Element bodyElement = UtilXml.firstChildElement(element, "body");
         body = UtilXml.elementValue(bodyElement);
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getBody() {
+        return body;
     }
     
     public class MethodAttribute {

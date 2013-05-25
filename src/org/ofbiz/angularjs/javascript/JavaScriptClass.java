@@ -21,6 +21,7 @@ package org.ofbiz.angularjs.javascript;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.ofbiz.base.util.UtilValidate;
 import org.w3c.dom.Element;
 
 public class JavaScriptClass {
@@ -29,6 +30,7 @@ public class JavaScriptClass {
 
     protected JavaScriptPackage javaScriptPackage = null;
     protected String name = null;
+    protected JavaScriptMethod constructorMethod = null;
     protected List<JavaScriptMethod> javaScriptMethods = new LinkedList<JavaScriptMethod>();
     
     public JavaScriptClass(JavaScriptPackage javaScriptPackage, String name) {
@@ -38,6 +40,29 @@ public class JavaScriptClass {
     
     public void addJavaScriptMethod(Element javaScriptMethodElement) {
         JavaScriptMethod javaScriptMethod = new JavaScriptMethod(javaScriptMethodElement);
-        javaScriptMethods.add(javaScriptMethod);
+        if (name.equals(javaScriptMethod.getName())) {
+            constructorMethod = javaScriptMethod;
+        } else {
+            javaScriptMethods.add(javaScriptMethod);
+        }
+    }
+    
+    public String rawString() {
+        String rawString = "function " + name + "() {\n";
+        
+        // render methods
+        for (JavaScriptMethod javaScriptMethod : javaScriptMethods) {
+            rawString += "this." + javaScriptMethod.getName() + " = function() {\n";
+            rawString += javaScriptMethod.getBody();
+            rawString += "\n}\n";
+        }
+        
+        // render constructor method
+        if (UtilValidate.isNotEmpty(constructorMethod)) {
+            rawString += constructorMethod.getBody();
+        }
+        
+        rawString += "\n}\n";
+        return rawString;
     }
 }

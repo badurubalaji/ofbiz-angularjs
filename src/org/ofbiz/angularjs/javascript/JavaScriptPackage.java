@@ -62,6 +62,7 @@ public class JavaScriptPackage {
         for (Element javaScriptMethodElement : javaScriptMethodElements) {
             javaScriptClass.addJavaScriptMethod(javaScriptMethodElement);
         }
+        javaScriptClasses.add(javaScriptClass);
     }
     
     public List<JavaScriptPackage> getChildren() {
@@ -70,9 +71,17 @@ public class JavaScriptPackage {
     
     public String rawString() {
         String rawString = name + " {\n";
+        
+        // render sub packages
         for (JavaScriptPackage javaScriptPackage : getChildren()) {
             rawString += javaScriptPackage.rawString();
         }
+        
+        // render classes
+        for (JavaScriptClass javaScriptClass : javaScriptClasses) {
+            rawString += javaScriptClass.rawString();
+        }
+        
         rawString += "\n}\n";
         return rawString;
     }

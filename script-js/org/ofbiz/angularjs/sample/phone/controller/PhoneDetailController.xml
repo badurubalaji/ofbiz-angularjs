@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <javascript-class name="PhoneDetailController" package="org.ofbiz.angularjs.sample.phone.controller">
     <javascript-method name="PhoneDetailController">
-        $scope.phoneId = $routeParams.phoneId;
+        <attributes>
+        </attributes>
+        <body>
+            $scope.phoneId = $routeParams.phoneId;
+        </body>
     </javascript-method>
 </javascript-class>

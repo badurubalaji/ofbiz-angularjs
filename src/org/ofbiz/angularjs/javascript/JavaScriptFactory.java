@@ -60,4 +60,9 @@ public class JavaScriptFactory {
     public static List<JavaScriptPackage> getRootJavaScriptPackages() {
         return rootJavaScriptPackages;
     }
+    
+    public static void clear() {
+        javaScriptPackages.clear();
+        rootJavaScriptPackages.clear();
+    }
 }
