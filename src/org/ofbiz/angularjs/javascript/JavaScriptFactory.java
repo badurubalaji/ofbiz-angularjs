@@ -33,6 +33,7 @@ public class JavaScriptFactory {
     
     protected static Map<String, JavaScriptPackage> javaScriptPackages = new LinkedHashMap<String, JavaScriptPackage>();
     protected static List<JavaScriptPackage> rootJavaScriptPackages = new LinkedList<JavaScriptPackage>();
+    protected static List<JavaScriptMethod> staticJavaScriptMethods = new LinkedList<JavaScriptMethod>();
     
     private JavaScriptFactory() {}
     
@@ -53,6 +54,14 @@ public class JavaScriptFactory {
         javaScriptPackage.addJavaScriptClass(element);
     }
     
+    public static void addStaticJavaScriptMethod(JavaScriptMethod javaScriptMethod) {
+        staticJavaScriptMethods.add(javaScriptMethod);
+    }
+    
+    public static List<JavaScriptMethod> getStaticJavaScriptMethods() {
+        return staticJavaScriptMethods;
+    }
+    
     public static void addRootJavaScriptPackage(JavaScriptPackage javaScriptPackage) {
         rootJavaScriptPackages.add(javaScriptPackage);
     }
@@ -64,5 +73,6 @@ public class JavaScriptFactory {
     public static void clear() {
         javaScriptPackages.clear();
         rootJavaScriptPackages.clear();
+        staticJavaScriptMethods.clear();
     }
 }

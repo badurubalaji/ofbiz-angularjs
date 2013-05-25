@@ -30,12 +30,14 @@ public class JavaScriptPackage {
 
     public final static String module = JavaScriptPackage.class.getName();
 
+    protected String packagePath = null;
     protected JavaScriptPackage parent = null;
     protected List<JavaScriptPackage> children = new LinkedList<JavaScriptPackage>();
     protected String name = null;
     protected List<JavaScriptClass> javaScriptClasses = new LinkedList<JavaScriptClass>();
     
     public JavaScriptPackage(String packagePath) {
+        this.packagePath = packagePath;
         List<String> packageTokens = StringUtil.split(packagePath, ".");
             if (UtilValidate.isNotEmpty(packageTokens)) {
             this.name = packageTokens.remove(packageTokens.size() - 1);
@@ -67,6 +69,10 @@ public class JavaScriptPackage {
     
     public List<JavaScriptPackage> getChildren() {
         return children;
+    }
+    
+    public String getPackagePath() {
+        return packagePath;
     }
     
     public String rawString() {

@@ -32,8 +32,14 @@ public class JavaScriptRenderer {
     }
     
     public void render(List<JavaScriptPackage> javaScriptPackages) throws IOException {
-        for (JavaScriptPackage rootJavaScriptPackage : javaScriptPackages) {
-            writer.append(rootJavaScriptPackage.rawString());
+        // render packages
+        for (JavaScriptPackage javaScriptPackage : javaScriptPackages) {
+            writer.append(javaScriptPackage.rawString());
+        }
+        
+        // render static methods
+        for (JavaScriptMethod javaScriptMethod : JavaScriptFactory.getStaticJavaScriptMethods()) {
+            writer.append(javaScriptMethod.rawString());
         }
     }
 }

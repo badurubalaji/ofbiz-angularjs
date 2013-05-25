@@ -36,8 +36,9 @@ public class JavaScriptMethod extends MiniLangElement {
     protected boolean isStatic = false;
     protected List<MethodAttribute> attributes = new LinkedList<MethodAttribute>();
 
-    public JavaScriptMethod(Element element) {
+    public JavaScriptMethod(JavaScriptClass javaScriptClass, Element element) {
         super(element, null);
+        this.javaScriptClass = javaScriptClass;
         name = UtilXml.elementAttribute(element, "name", null);
         isStatic = "true".equals(UtilXml.elementAttribute(element, "is-static", null));
         Element attributesElement = UtilXml.firstChildElement(element, "attributes");
@@ -59,6 +60,26 @@ public class JavaScriptMethod extends MiniLangElement {
     
     public String getBody() {
         return body;
+    }
+    
+    public boolean isStatic() {
+        return isStatic;
+    }
+    
+    public String rawString() {
+        String rawString = "";
+        
+        if (isStatic) {
+            rawString += javaScriptClass.getFullName() + "." + name + " = function() {\n";
+            rawString += body;
+            rawString += "\n}\n";
+        } else {
+            rawString += "this." + name + " = function() {\n";
+            rawString += body;
+            rawString += "\n}\n";
+        }
+        
+        return rawString;
     }
     
     public class MethodAttribute {

@@ -7,4 +7,11 @@
             $scope.phoneId = $routeParams.phoneId;
         </body>
     </javascript-method>
+    <javascript-method name="updatePrice" is-static="true">
+        <attributes>
+        </attributes>
+        <body>
+            $scope.price = price;
+        </body>
+    </javascript-method>
 </javascript-class>

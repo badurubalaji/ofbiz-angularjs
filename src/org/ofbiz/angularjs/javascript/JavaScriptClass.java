@@ -39,12 +39,20 @@ public class JavaScriptClass {
     }
     
     public void addJavaScriptMethod(Element javaScriptMethodElement) {
-        JavaScriptMethod javaScriptMethod = new JavaScriptMethod(javaScriptMethodElement);
+        JavaScriptMethod javaScriptMethod = new JavaScriptMethod(this, javaScriptMethodElement);
         if (name.equals(javaScriptMethod.getName())) {
             constructorMethod = javaScriptMethod;
         } else {
             javaScriptMethods.add(javaScriptMethod);
+            
+            if (javaScriptMethod.isStatic()) {
+                JavaScriptFactory.addStaticJavaScriptMethod(javaScriptMethod);
+            }
         }
+    }
+    
+    public String getFullName() {
+        return javaScriptPackage.getPackagePath() + "." + name;
     }
     
     public String rawString() {
@@ -52,9 +60,9 @@ public class JavaScriptClass {
         
         // render methods
         for (JavaScriptMethod javaScriptMethod : javaScriptMethods) {
-            rawString += "this." + javaScriptMethod.getName() + " = function() {\n";
-            rawString += javaScriptMethod.getBody();
-            rawString += "\n}\n";
+            if (!javaScriptMethod.isStatic()) {
+                rawString += javaScriptMethod.rawString();
+            }
         }
         
         // render constructor method
