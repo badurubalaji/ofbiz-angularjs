@@ -21,6 +21,7 @@ package org.ofbiz.angularjs.javascript;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
 import org.ofbiz.minilang.MiniLangElement;
@@ -42,7 +43,7 @@ public class JavaScriptMethod extends MiniLangElement {
         name = UtilXml.elementAttribute(element, "name", null);
         isStatic = "true".equals(UtilXml.elementAttribute(element, "is-static", null));
         Element attributesElement = UtilXml.firstChildElement(element, "attributes");
-        List<? extends Element> attributeElements = UtilXml.childElementList(attributesElement, "attributes");
+        List<? extends Element> attributeElements = UtilXml.childElementList(attributesElement, "attribute");
         if (UtilValidate.isNotEmpty(attributeElements)) {
             for (Element attributeElement : attributeElements) {
                 MethodAttribute attribute = new MethodAttribute(attributeElement);
@@ -66,17 +67,29 @@ public class JavaScriptMethod extends MiniLangElement {
         return isStatic;
     }
     
+    public String getInAttributeDeclaration() {
+        List<String> attrNames = new LinkedList<String>();
+        for (MethodAttribute attribute : attributes) {
+            if ("IN".equals(attribute.mode)) {
+                attrNames.add(attribute.name);
+            }
+        }
+        
+        String declarationStr = StringUtil.join(attrNames, ",");
+        return UtilValidate.isNotEmpty(declarationStr) ? declarationStr : "";
+    }
+    
     public String rawString() {
         String rawString = "";
         
         if (isStatic) {
-            rawString += javaScriptClass.getFullName() + "." + name + " = function() {\n";
+            rawString += javaScriptClass.getFullName() + "." + name + " = function(" + getInAttributeDeclaration() + ") {\n";
             rawString += body;
-            rawString += "\n}\n";
+            rawString += "\n};\n";
         } else {
-            rawString += "this." + name + " = function() {\n";
+            rawString += "this." + name + " = function(" + getInAttributeDeclaration() + ") {\n";
             rawString += body;
-            rawString += "\n}\n";
+            rawString += "\n},\n";
         }
         
         return rawString;

@@ -2,6 +2,7 @@
 <javascript-class name="PhoneDetailController" package="org.ofbiz.angularjs.sample.phone.controller">
     <javascript-method name="PhoneDetailController">
         <attributes>
+            <attribute name="$scope" type="Object" mode="IN"/>
         </attributes>
         <body>
             $scope.phoneId = $routeParams.phoneId;
@@ -9,6 +10,7 @@
     </javascript-method>
     <javascript-method name="updatePrice" is-static="true">
         <attributes>
+            <attribute name="$scope" type="Object" mode="IN"/>
         </attributes>
         <body>
             $scope.price = price;

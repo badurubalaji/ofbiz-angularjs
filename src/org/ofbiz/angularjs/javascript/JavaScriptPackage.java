@@ -76,7 +76,12 @@ public class JavaScriptPackage {
     }
     
     public String rawString() {
-        String rawString = name + " {\n";
+        String rawString = "";
+        if (UtilValidate.isEmpty(parent)) {
+            rawString += "var " + name + " = {";
+        } else {
+            rawString = name + ": {\n";
+        }
         
         // render sub packages
         for (JavaScriptPackage javaScriptPackage : getChildren()) {

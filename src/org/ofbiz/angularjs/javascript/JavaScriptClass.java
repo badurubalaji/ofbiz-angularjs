@@ -56,7 +56,11 @@ public class JavaScriptClass {
     }
     
     public String rawString() {
-        String rawString = "function " + name + "() {\n";
+        String rawString = name + ": function(";
+        if (UtilValidate.isNotEmpty(constructorMethod)) {
+            rawString += constructorMethod.getInAttributeDeclaration();
+        }
+        rawString += ") {\n";
         
         // render methods
         for (JavaScriptMethod javaScriptMethod : javaScriptMethods) {
@@ -70,7 +74,7 @@ public class JavaScriptClass {
             rawString += constructorMethod.getBody();
         }
         
-        rawString += "\n}\n";
+        rawString += "\n},\n";
         return rawString;
     }
 }

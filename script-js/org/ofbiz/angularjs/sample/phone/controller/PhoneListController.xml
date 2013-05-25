@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <javascript-class name="PhoneListController" package="org.ofbiz.angularjs.sample.phone.controller">
-    <javascript-method name="PhoneListController" is-static="false">
+    <javascript-method name="PhoneListController">
         <attributes>
+            <attribute name="$scope" type="Object" mode="IN"/>
         </attributes>
         <body>
             $scope.phones = [
@@ -17,9 +18,10 @@
             ];
         </body>
     </javascript-method>
-    <javascript-method name="setImage" is-static="false">
+    <javascript-method name="setImage" is-static="true">
         <attributes>
-            <attribute name="imageUrl" mode="IN" type="String"/>
+            <attribute name="$scope" type="Object" mode="IN"/>
+            <attribute name="imageUrl" type="String" mode="IN"/>
         </attributes>
         <body>
             $scope.mainImageUrl = imageUrl;
