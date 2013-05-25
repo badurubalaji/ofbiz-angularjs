@@ -33,9 +33,13 @@ public class JavaScriptRenderer {
     
     public void render(List<JavaScriptPackage> javaScriptPackages) throws IOException {
         // render packages
+        StringBuilder packageBuilder = new StringBuilder();
         for (JavaScriptPackage javaScriptPackage : javaScriptPackages) {
-            writer.append(javaScriptPackage.rawString());
+            packageBuilder.append(javaScriptPackage.rawString());
         }
+        // remove the last comma ','
+        writer.append(packageBuilder.toString().subSequence(0, packageBuilder.toString().length() - 2));
+        writer.append("\n");
         
         // render static methods
         for (JavaScriptMethod javaScriptMethod : JavaScriptFactory.getStaticJavaScriptMethods()) {

@@ -93,7 +93,7 @@ public class JavaScriptPackage {
             rawString += javaScriptClass.rawString();
         }
         
-        rawString += "\n}\n";
+        rawString += "\n},\n";
         return rawString;
     }
 }

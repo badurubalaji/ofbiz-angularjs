@@ -89,7 +89,7 @@ public class JavaScriptMethod extends MiniLangElement {
         } else {
             rawString += "this." + name + " = function(" + getInAttributeDeclaration() + ") {\n";
             rawString += body;
-            rawString += "\n},\n";
+            rawString += "\n}\n";
         }
         
         return rawString;

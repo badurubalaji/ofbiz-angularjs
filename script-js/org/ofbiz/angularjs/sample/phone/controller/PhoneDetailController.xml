@@ -3,6 +3,7 @@
     <javascript-method name="PhoneDetailController">
         <attributes>
             <attribute name="$scope" type="Object" mode="IN"/>
+            <attribute name="$routeParams" type="Object" mode="IN"/>
         </attributes>
         <body>
             $scope.phoneId = $routeParams.phoneId;
