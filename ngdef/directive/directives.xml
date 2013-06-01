@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ng-directives>
-    <ng-directive name="" location="" invoke=""/>
+    <ng-directive name="currentTime" location="org.ofbiz.angularjs.directive.CommonDirectives" invoke="currentTime"/>
 </ng-directives>

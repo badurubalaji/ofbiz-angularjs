@@ -31,20 +31,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.ClasspathInfo;
-import org.ofbiz.angularjs.component.NgComponentConfig.ControllerResourceInfo;
-import org.ofbiz.angularjs.component.NgComponentConfig.DirectiveResourceInfo;
-import org.ofbiz.angularjs.component.NgComponentConfig.FactoryResourceInfo;
-import org.ofbiz.angularjs.component.NgComponentConfig.FilterResourceInfo;
-import org.ofbiz.angularjs.component.NgComponentConfig.ProviderResourceInfo;
-import org.ofbiz.angularjs.component.NgComponentConfig.ServiceResourceInfo;
+import org.ofbiz.angularjs.directive.ModelNgDirective;
+import org.ofbiz.angularjs.directive.ModelNgDirectiveReader;
 import org.ofbiz.angularjs.javascript.JavaScriptFactory;
-import org.ofbiz.angularjs.javascript.JavaScriptPackage;
 import org.ofbiz.angularjs.javascript.JavaScriptRenderer;
+import org.ofbiz.angularjs.service.ModelNgService;
+import org.ofbiz.angularjs.service.ModelNgServiceReader;
 import org.ofbiz.base.component.ComponentConfig;
 import org.ofbiz.base.component.ComponentConfig.WebappInfo;
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.FileUtil;
-import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -60,7 +56,13 @@ public class AngularJsEvents {
         for (File file : files) {
             try {
                 Document document = UtilXml.readXmlDocument(file.toURI().toURL());
-                JavaScriptFactory.addJavaScriptClass(document.getDocumentElement());
+                Element element = document.getDocumentElement();
+                String nodeName = element.getNodeName();
+                if ("javascript-class".equals(nodeName)) {
+                    JavaScriptFactory.addJavaScriptClass(element);
+                } else {
+                    Debug.logWarning(nodeName + " is not javascript class.", module);
+                }
             } catch (Exception e) {
                 Debug.logError(e, module);
             }
@@ -70,8 +72,8 @@ public class AngularJsEvents {
         renderer.render(JavaScriptFactory.getRootJavaScriptPackages());
     }
     
-    private static void buildAppJsFunction(String name, String defaultPath, List<? extends Element> directiveElements
-            , List<? extends Element> viewElements, List<? extends Element> filterElements, List<? extends Element> serviceElements, StringBuilder builder) {
+    private static void buildAppJsFunction(String name, String defaultPath
+            , List<? extends Element> viewElements, StringBuilder builder) {
         builder.append("angular.module('" + name + "', [])\n");
         
         // views
@@ -87,42 +89,20 @@ public class AngularJsEvents {
         builder.append("}])\n");
         
         // directives
-        if (UtilValidate.isNotEmpty(directiveElements)) {
-            for (Element directiveElement : directiveElements) {
-                try {
-                    String directiveName = UtilXml.elementAttribute(directiveElement, "name", null);
-                    String path = UtilXml.elementAttribute(directiveElement, "path", null);
-                    builder.append(".directive('" + directiveName + "', " + path + "." + directiveName + ")\n");
-                } catch (Exception e) {
-                    Debug.logError(e, module);
-                }
-            }
+        for (ModelNgDirective modelNgDirective : ModelNgDirectiveReader.getModelNgDirectiveMap().values()) {
+            builder.append(".directive('" + modelNgDirective.name + ", " + modelNgDirective.location + "." + modelNgDirective.invoke + ")\n");
         }
         
         // filters
-        if (UtilValidate.isNotEmpty(filterElements)) {
-            for (Element filterElement : filterElements) {
-                try {
-                    String filterName = UtilXml.elementAttribute(filterElement, "name", null);
-                    String path = UtilXml.elementAttribute(filterElement, "path", null);
-                    builder.append(".filter('" + filterName + "', " + path + "." + filterName + ")\n");
-                } catch (Exception e) {
-                    Debug.logError(e, module);
-                }
-            }
+        /*
+        for (ModelNgFilter modelNgFilter : ModelNgFilterReader.getModelNgFilterMap().values()) {
+            builder.append(".filter('" + modelNgFilter.name + ", " + modelNgFilter.location + "." + modelNgFilter.invoke + ")\n");
         }
+        */
         
         // services
-        if (UtilValidate.isNotEmpty(serviceElements)) {
-            for (Element serviceElement : serviceElements) {
-                try {
-                    String serviceName = UtilXml.elementAttribute(serviceElement, "name", null);
-                    String path = UtilXml.elementAttribute(serviceElement, "path", null);
-                    builder.append(".factory('" + serviceName + "', " + path + "." + serviceName + ")\n");
-                } catch (Exception e) {
-                    Debug.logError(e, module);
-                }
-            }
+        for (ModelNgService modelNgService : ModelNgServiceReader.getModelNgServiceMap().values()) {
+            builder.append(".factory('" + modelNgService.name + ", " + modelNgService.location + "." + modelNgService.invoke + ")\n");
         }
         
         builder.append(";");
@@ -142,10 +122,7 @@ public class AngularJsEvents {
                         String name = UtilXml.elementAttribute(ngAppElement, "name", null);
                         String defaultPath = UtilXml.elementAttribute(ngAppElement, "default-path", null);
                         List<? extends Element> viewElements = UtilXml.childElementList(ngAppElement, "view");
-                        List<? extends Element> directiveElements = UtilXml.childElementList(ngAppElement, "directive");
-                        List<? extends Element> filterElements = UtilXml.childElementList(ngAppElement, "filter");
-                        List<? extends Element> serviceElements = UtilXml.childElementList(ngAppElement, "service");
-                        buildAppJsFunction(name, defaultPath, directiveElements, viewElements, filterElements, serviceElements, builder);
+                        buildAppJsFunction(name, defaultPath, viewElements, builder);
                     }
                 } catch (Exception e) {
                     Debug.logWarning(e, module);
@@ -203,71 +180,6 @@ public class AngularJsEvents {
             Debug.logError(e, module);
         }
         
-        return "success";
-    }
-
-    public static String buildControllersJs(HttpServletRequest request, HttpServletResponse response) {
-        StringBuilder builder = new StringBuilder();
-        List<ControllerResourceInfo> controllerInfos = NgComponentConfig.getAllControllerResourceInfos();
-        for (ControllerResourceInfo controllerInfo : controllerInfos) {
-            try {
-                Document document = controllerInfo.createResourceHandler().getDocument();
-                List<? extends Element> ngControllerElements = UtilXml.childElementList(document.getDocumentElement(), "ng-controller");
-                for (Element ngControllerElement : ngControllerElements) {
-                    String name = UtilXml.elementAttribute(ngControllerElement, "name", null);
-                    String path = UtilXml.elementAttribute(ngControllerElement, "path", null);
-                }
-            } catch (Exception e) {
-                Debug.logWarning(e, module);
-            }
-        }
-        response.setContentType("text/javascript");
-        
-        return "success";
-    }
-
-    public static String buildDirectivesJs(HttpServletRequest request, HttpServletResponse response) {
-        List<DirectiveResourceInfo> directiveInfos = NgComponentConfig.getAllDirectiveResourceInfos();
-        for (DirectiveResourceInfo directiveInfo : directiveInfos) {
-            Debug.logInfo("============ Directive: " + directiveInfo.getLocation(), module);
-        }
-        response.setContentType("text/javascript");
-        return "success";
-    }
-
-    public static String buildFiltersJs(HttpServletRequest request, HttpServletResponse response) {
-        List<FilterResourceInfo> filterInfos = NgComponentConfig.getAllFilterResourceInfos();
-        for (FilterResourceInfo filterInfo : filterInfos) {
-            Debug.logInfo("============ Filter: " + filterInfo.getLocation(), module);
-        }
-        response.setContentType("text/javascript");
-        return "success";
-    }
-
-    public static String buildServicesJs(HttpServletRequest request, HttpServletResponse response) {
-        List<ServiceResourceInfo> serviceInfos = NgComponentConfig.getAllServiceResoruceInfos();
-        for (ServiceResourceInfo serviceInfo : serviceInfos) {
-            Debug.logInfo("============ Service: " + serviceInfo.getLocation(), module);
-        }
-        response.setContentType("text/javascript");
-        return "success";
-    }
-
-    public static String buildFactorysJs(HttpServletRequest request, HttpServletResponse response) {
-        List<FactoryResourceInfo> factoryInfos = NgComponentConfig.getAllFactoryResourceInfos();
-        for (FactoryResourceInfo factoryInfo : factoryInfos) {
-            Debug.logInfo("============ Factory: " + factoryInfo.getLocation(), module);
-        }
-        response.setContentType("text/javascript");
-        return "success";
-    }
-
-    public static String buildProvidersJs(HttpServletRequest request, HttpServletResponse response) {
-        List<ProviderResourceInfo> providerInfos = NgComponentConfig.getAllProviderResourceInfos();
-        for (ProviderResourceInfo providerInfo : providerInfos) {
-            Debug.logInfo("============ Provider: " + providerInfo.getLocation(), module);
-        }
-        response.setContentType("text/javascript");
         return "success";
     }
 }

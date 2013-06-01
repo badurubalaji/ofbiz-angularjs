@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<js-methods>
-    <js-method name="currentTime">
+<javascript-class name="CommonDirectives" package="org.ofbiz.angularjs.directive">
+    <javascript-method name="currentTime" is-static="true">
         // return the directive link function. (compile function not needed)
         return function(scope, element, attrs) {
             var format,  // date format
@@ -34,5 +34,5 @@
  
             updateLater(); // kick off the UI update process.
         }
-    </js-method>
-</js-methods>
+    </javascript-method>
+</javascript-class>
