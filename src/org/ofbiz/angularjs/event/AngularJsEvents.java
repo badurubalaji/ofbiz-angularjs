@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.ClasspathInfo;
 import org.ofbiz.angularjs.directive.ModelNgDirective;
-import org.ofbiz.angularjs.directive.ModelNgDirectiveReader;
+import org.ofbiz.angularjs.directive.NgD‏irectiveDispatchContext;
 import org.ofbiz.angularjs.javascript.JavaScriptFactory;
 import org.ofbiz.angularjs.javascript.JavaScriptRenderer;
 import org.ofbiz.angularjs.service.ModelNgService;
@@ -89,7 +89,7 @@ public class AngularJsEvents {
         builder.append("}])\n");
         
         // directives
-        for (ModelNgDirective modelNgDirective : ModelNgDirectiveReader.getModelNgDirectiveMap().values()) {
+        for (ModelNgDirective modelNgDirective : NgD‏irectiveDispatchContext.getAllModelNgDirectives()) {
             builder.append(".directive('" + modelNgDirective.name + ", " + modelNgDirective.location + "." + modelNgDirective.invoke + ")\n");
         }
         

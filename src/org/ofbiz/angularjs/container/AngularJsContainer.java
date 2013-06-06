@@ -26,6 +26,7 @@ import org.ofbiz.base.component.AlreadyLoadedException;
 import org.ofbiz.base.component.ComponentConfig;
 import org.ofbiz.base.container.Container;
 import org.ofbiz.base.container.ContainerException;
+import org.ofbiz.base.util.Debug;
 
 public class AngularJsContainer implements Container {
     
@@ -76,6 +77,6 @@ public class AngularJsContainer implements Container {
     }
     
     private void loadComponent(NgComponentConfig ngComponentConfig) {
-        // nothing to do yet
+        Debug.logInfo("Loading Ng component : [" + ngComponentConfig.getGlobalName() + "]", module);
     }
 }
