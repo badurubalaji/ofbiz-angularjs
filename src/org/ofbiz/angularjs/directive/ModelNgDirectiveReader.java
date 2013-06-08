@@ -32,12 +32,12 @@ public class ModelNgDirectiveReader extends AbstractModelNgReader {
 
     public final static String module = ModelNgDirectiveReader.class.getName();
     
-    public ModelNgDirectiveReader(String tagName, ResourceHandler handler) {
-        super(tagName, handler);
+    public ModelNgDirectiveReader(ResourceHandler handler) {
+        super("ng-directive", handler);
     }
 
-    public static Map<String, ModelNgDirective> getModelNgDirectiveMap(String tagName, ResourceHandler handler) {
-        ModelNgDirectiveReader reader = new ModelNgDirectiveReader(tagName, handler);
+    public static Map<String, ModelNgDirective> getModelNgDirectiveMap(ResourceHandler handler) {
+        ModelNgDirectiveReader reader = new ModelNgDirectiveReader(handler);
         return UtilGenerics.cast(reader.getModelNgs());
     }
 
