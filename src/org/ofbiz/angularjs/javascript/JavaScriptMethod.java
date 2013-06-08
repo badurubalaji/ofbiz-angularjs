@@ -43,16 +43,20 @@ public class JavaScriptMethod extends MiniLangElement {
         name = UtilXml.elementAttribute(element, "name", null);
         isStatic = "true".equals(UtilXml.elementAttribute(element, "is-static", null));
         Element attributesElement = UtilXml.firstChildElement(element, "attributes");
-        List<? extends Element> attributeElements = UtilXml.childElementList(attributesElement, "attribute");
-        if (UtilValidate.isNotEmpty(attributeElements)) {
-            for (Element attributeElement : attributeElements) {
-                MethodAttribute attribute = new MethodAttribute(attributeElement);
-                attributes.add(attribute);
+        if (UtilValidate.isNotEmpty(attributesElement)) {
+            List<? extends Element> attributeElements = UtilXml.childElementList(attributesElement, "attribute");
+            if (UtilValidate.isNotEmpty(attributeElements)) {
+                for (Element attributeElement : attributeElements) {
+                    MethodAttribute attribute = new MethodAttribute(attributeElement);
+                    attributes.add(attribute);
+                }
             }
         }
         
         Element bodyElement = UtilXml.firstChildElement(element, "body");
-        body = UtilXml.elementValue(bodyElement);
+        if (UtilValidate.isNotEmpty(bodyElement)) {
+            body = UtilXml.elementValue(bodyElement);
+        }
     }
     
     public String getName() {

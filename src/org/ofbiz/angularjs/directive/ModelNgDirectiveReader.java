@@ -18,10 +18,13 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.directive;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.ofbiz.base.config.GenericConfigException;
 import org.ofbiz.base.config.ResourceHandler;
@@ -31,6 +34,7 @@ import org.ofbiz.base.util.UtilXml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import freemarker.template.utility.StringUtil;
 
@@ -57,13 +61,32 @@ public class ModelNgDirectiveReader implements Serializable {
     private Map<String, ModelNgDirective> getModelNgDirectives() {
         UtilTimer utilTimer = new UtilTimer();
         Document document = null;
+        if (this.isFromURL) {
+            // utilTimer.timerString("Before getDocument in file " + readerURL);
+            document = getDocument(readerURL);
+
+            if (document == null) {
+                return null;
+            }
+        } else {
+            // utilTimer.timerString("Before getDocument in " + handler);
+            try {
+                document = handler.getDocument();
+            } catch (GenericConfigException e) {
+                Debug.logError(e, "Error getting XML document from resource", module);
+                return null;
+            }
+        }
+        
+        Map<String, ModelNgDirective> modelNgDirectives = new LinkedHashMap<String, ModelNgDirective>();
+        if (this.isFromURL) {// utilTimer.timerString("Before getDocumentElement in file " + readerURL);
+        } else {// utilTimer.timerString("Before getDocumentElement in " + handler);
+        }
+
         Element docElement = document.getDocumentElement();
         if (docElement == null) {
             return null;
         }
-        
-        
-        Map<String, ModelNgDirective> modelNgDirectives = new LinkedHashMap<String, ModelNgDirective>();
         
         docElement.normalize();
         
@@ -98,6 +121,7 @@ public class ModelNgDirectiveReader implements Serializable {
                     ModelNgDirective ngDirective = createModelNgDirective(curNgDirectiveElement, resourceLocation);
 
                     if (ngDirective != null) {
+                        modelNgDirectives.put(ngDirectiveName, ngDirective);
                     } else {
                         Debug.logWarning(
                             "-- -- NgDirective ERROR:getModelNgDirective: Could not create ngDirective for : ngDirectiveName" +
@@ -125,7 +149,33 @@ public class ModelNgDirectiveReader implements Serializable {
     
     private ModelNgDirective createModelNgDirective(Element ngDirectiveElement, String resourceLocation) {
         ModelNgDirective ngDirective = new ModelNgDirective();
-        
+        ngDirective.name = UtilXml.checkEmpty(ngDirectiveElement.getAttribute("name")).intern();
+        ngDirective.location = UtilXml.checkEmpty(ngDirectiveElement.getAttribute("location")).intern();
+        ngDirective.invoke = UtilXml.checkEmpty(ngDirectiveElement.getAttribute("invoke")).intern();
         return ngDirective;
+    }
+
+    private Document getDocument(URL url) {
+        if (url == null)
+            return null;
+        Document document = null;
+
+        try {
+            document = UtilXml.readXmlDocument(url, true, true);
+        } catch (SAXException sxe) {
+            // Error generated during parsing)
+            Exception x = sxe;
+
+            if (sxe.getException() != null)
+                x = sxe.getException();
+            x.printStackTrace();
+        } catch (ParserConfigurationException pce) {
+            // Parser with specified options can't be built
+            pce.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        return document;
     }
 }

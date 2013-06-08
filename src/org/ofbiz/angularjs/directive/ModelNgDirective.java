@@ -19,22 +19,14 @@
 package org.ofbiz.angularjs.directive;
 
 import java.io.Serializable;
-import java.util.AbstractMap;
-import java.util.Set;
 
 @SuppressWarnings("serial")
-public class ModelNgDirective extends AbstractMap<String, Object> implements Serializable {
+public class ModelNgDirective implements Serializable {
     
     public final static String module = ModelNgDirective.class.getName();
     
     public String name;
     public String location;
     public String invoke;
-
-    @Override
-    public Set<java.util.Map.Entry<String, Object>> entrySet() {
-        // Do nothing
-        return null;
-    }
 
 }

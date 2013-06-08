@@ -90,7 +90,7 @@ public class AngularJsEvents {
         
         // directives
         for (ModelNgDirective modelNgDirective : NgD‏irectiveDispatchContext.getAllModelNgDirectives()) {
-            builder.append(".directive('" + modelNgDirective.name + ", " + modelNgDirective.location + "." + modelNgDirective.invoke + ")\n");
+            builder.append(".directive('" + modelNgDirective.name + "', " + modelNgDirective.location + "." + modelNgDirective.invoke + ")\n");
         }
         
         // filters
