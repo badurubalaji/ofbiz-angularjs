@@ -18,21 +18,9 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.service;
 
-import java.io.Serializable;
-import java.util.AbstractMap;
-import java.util.Set;
+import org.ofbiz.angularjs.model.AbstractModelNg;
 
 @SuppressWarnings("serial")
-public class ModelNgService extends AbstractMap<String, Object> implements Serializable {
-    
-    public String name;
-    public String location;
-    public String invoke;
-
-    @Override
-    public Set<java.util.Map.Entry<String, Object>> entrySet() {
-        // Do nothing
-        return null;
-    }
+public class ModelNgService extends AbstractModelNg {
 
 }

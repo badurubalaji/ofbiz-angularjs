@@ -16,13 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  *******************************************************************************/
-package org.ofbiz.angularjs.directive;
+package org.ofbiz.angularjs.model;
 
-import org.ofbiz.angularjs.model.AbstractModelNg;
+import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class ModelNgDirective extends AbstractModelNg {
-    
-    public final static String module = ModelNgDirective.class.getName();
+public abstract class AbstractModelNg implements Serializable {
 
+    public final static String module = AbstractModelNg.class.getName();
+    
+    public String name;
+    public String location;
+    public String invoke;
 }

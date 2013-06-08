@@ -34,7 +34,7 @@ public class NgD‏irectiveDispatchContext implements Serializable {
     public static List<ModelNgDirective> getAllModelNgDirectives() {
         List<ModelNgDirective> modelNgDirectives = new LinkedList<ModelNgDirective>();
         for (DirectiveResourceInfo directiveResourceInfo : NgComponentConfig.getAllDirectiveResourceInfos()) {
-            Map<String, ModelNgDirective> modelNgDirectiveMap = ModelNgDirectiveReader.getModelNgDirectiveMap(directiveResourceInfo.createResourceHandler());
+            Map<String, ModelNgDirective> modelNgDirectiveMap = ModelNgDirectiveReader.getModelNgDirectiveMap("ng-directive", directiveResourceInfo.createResourceHandler());
             modelNgDirectives.addAll(modelNgDirectiveMap.values());
         }
         return modelNgDirectives;

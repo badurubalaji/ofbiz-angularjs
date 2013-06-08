@@ -18,110 +18,35 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.directive;
 
-import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.ofbiz.base.config.GenericConfigException;
+import org.ofbiz.angularjs.model.AbstractModelNg;
+import org.ofbiz.angularjs.model.AbstractModelNgReader;
 import org.ofbiz.base.config.ResourceHandler;
-import org.ofbiz.base.util.Debug;
-import org.ofbiz.base.util.UtilTimer;
+import org.ofbiz.base.util.UtilGenerics;
 import org.ofbiz.base.util.UtilXml;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
-import freemarker.template.utility.StringUtil;
 
 @SuppressWarnings("serial")
-public class ModelNgDirectiveReader implements Serializable {
+public class ModelNgDirectiveReader extends AbstractModelNgReader {
 
     public final static String module = ModelNgDirectiveReader.class.getName();
     
-    protected ResourceHandler handler = null;
-    
-    public static Map<String, ModelNgDirective> getModelNgDirectiveMap(ResourceHandler handler) {
-        ModelNgDirectiveReader reader = new ModelNgDirectiveReader(handler);
-        return reader.getModelNgDirectives();
+    public ModelNgDirectiveReader(String tagName, ResourceHandler handler) {
+        super(tagName, handler);
     }
-    
-    private ModelNgDirectiveReader(ResourceHandler handler) {
-        this.handler = handler;
+
+    public static Map<String, ModelNgDirective> getModelNgDirectiveMap(String tagName, ResourceHandler handler) {
+        ModelNgDirectiveReader reader = new ModelNgDirectiveReader(tagName, handler);
+        return UtilGenerics.cast(reader.getModelNgs());
     }
-    
-    private Map<String, ModelNgDirective> getModelNgDirectives() {
-        UtilTimer utilTimer = new UtilTimer();
-        Document document = null;
-        // utilTimer.timerString("Before getDocument in " + handler);
-        try {
-            document = handler.getDocument();
-        } catch (GenericConfigException e) {
-            Debug.logError(e, "Error getting XML document from resource", module);
-            return null;
-        }
-        
-        Map<String, ModelNgDirective> modelNgDirectives = new LinkedHashMap<String, ModelNgDirective>();
 
-        Element docElement = document.getDocumentElement();
-        if (docElement == null) {
-            return null;
-        }
-        
-        docElement.normalize();
-        
-        String resourceLocation = handler.getLocation();
-        try {
-            resourceLocation = handler.getURL().toExternalForm();
-        } catch (GenericConfigException e) {
-            Debug.logError(e, "Could not get resource URL", module);
-        }
-        
-        int i = 0;
-        Node curChild = docElement.getFirstChild();
-        if (curChild != null) {
-            utilTimer.timerString("Before start of ngDirectives loop in " + handler);
-
-            do {
-                if (curChild.getNodeType() == Node.ELEMENT_NODE && "ng-directive".equals(curChild.getNodeName())) {
-                    i++;
-                    Element curNgDirectiveElement = (Element) curChild;
-                    String ngDirectiveName = UtilXml.checkEmpty(curNgDirectiveElement.getAttribute("name"));
-
-                    // check to see if NgDirevtive with same name has already been read
-                    if (modelNgDirectives.containsKey(ngDirectiveName)) {
-                        Debug.logWarning("WARNING: NgDirective " + ngDirectiveName + " is defined more than once, " +
-                            "most recent will over-write previous definition(s)", module);
-                    }
-
-                    ModelNgDirective ngDirective = createModelNgDirective(curNgDirectiveElement, resourceLocation);
-
-                    if (ngDirective != null) {
-                        modelNgDirectives.put(ngDirectiveName, ngDirective);
-                    } else {
-                        Debug.logWarning(
-                            "-- -- NgDirective ERROR:getModelNgDirective: Could not create ngDirective for : ngDirectiveName" +
-                            ngDirectiveName, module);
-                    }
-
-                }
-            } while ((curChild = curChild.getNextSibling()) != null);
-        } else {
-            Debug.logWarning("No child nodes found.", module);
-        }
-        
-        utilTimer.timerString("Finished document in " + handler + " - Total NgDirectives: " + i + " FINISHED");
-        if (Debug.importantOn()) {
-            Debug.logImportant("Loaded [" + StringUtil.leftPad(Integer.toString(i), 3) + "] NgDirectives from " + resourceLocation, module);
-        }
-        
-        return modelNgDirectives;
-    }
-    
-    private ModelNgDirective createModelNgDirective(Element ngDirectiveElement, String resourceLocation) {
-        ModelNgDirective ngDirective = new ModelNgDirective();
-        ngDirective.name = UtilXml.checkEmpty(ngDirectiveElement.getAttribute("name")).intern();
-        ngDirective.location = UtilXml.checkEmpty(ngDirectiveElement.getAttribute("location")).intern();
-        ngDirective.invoke = UtilXml.checkEmpty(ngDirectiveElement.getAttribute("invoke")).intern();
-        return ngDirective;
+    @Override
+    protected AbstractModelNg createModelNg(Element element, String resourceLocation) {
+            ModelNgDirective ngDirective = new ModelNgDirective();
+            ngDirective.name = UtilXml.checkEmpty(element.getAttribute("name")).intern();
+            ngDirective.location = UtilXml.checkEmpty(element.getAttribute("location")).intern();
+            ngDirective.invoke = UtilXml.checkEmpty(element.getAttribute("invoke")).intern();
+            return ngDirective;
     }
 }
