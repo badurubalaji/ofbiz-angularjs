@@ -18,13 +18,9 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.directive;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.ofbiz.base.config.GenericConfigException;
 import org.ofbiz.base.config.ResourceHandler;
@@ -34,7 +30,6 @@ import org.ofbiz.base.util.UtilXml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 import freemarker.template.utility.StringUtil;
 
@@ -43,45 +38,29 @@ public class ModelNgDirectiveReader implements Serializable {
 
     public final static String module = ModelNgDirectiveReader.class.getName();
     
-    protected boolean isFromURL;
-    protected URL readerURL = null;
     protected ResourceHandler handler = null;
     
     public static Map<String, ModelNgDirective> getModelNgDirectiveMap(ResourceHandler handler) {
-        ModelNgDirectiveReader reader = new ModelNgDirectiveReader(false, null, handler);
+        ModelNgDirectiveReader reader = new ModelNgDirectiveReader(handler);
         return reader.getModelNgDirectives();
     }
     
-    private ModelNgDirectiveReader(boolean isFromURL, URL readerURL, ResourceHandler handler) {
-        this.isFromURL = isFromURL;
-        this.readerURL = readerURL;
+    private ModelNgDirectiveReader(ResourceHandler handler) {
         this.handler = handler;
     }
     
     private Map<String, ModelNgDirective> getModelNgDirectives() {
         UtilTimer utilTimer = new UtilTimer();
         Document document = null;
-        if (this.isFromURL) {
-            // utilTimer.timerString("Before getDocument in file " + readerURL);
-            document = getDocument(readerURL);
-
-            if (document == null) {
-                return null;
-            }
-        } else {
-            // utilTimer.timerString("Before getDocument in " + handler);
-            try {
-                document = handler.getDocument();
-            } catch (GenericConfigException e) {
-                Debug.logError(e, "Error getting XML document from resource", module);
-                return null;
-            }
+        // utilTimer.timerString("Before getDocument in " + handler);
+        try {
+            document = handler.getDocument();
+        } catch (GenericConfigException e) {
+            Debug.logError(e, "Error getting XML document from resource", module);
+            return null;
         }
         
         Map<String, ModelNgDirective> modelNgDirectives = new LinkedHashMap<String, ModelNgDirective>();
-        if (this.isFromURL) {// utilTimer.timerString("Before getDocumentElement in file " + readerURL);
-        } else {// utilTimer.timerString("Before getDocumentElement in " + handler);
-        }
 
         Element docElement = document.getDocumentElement();
         if (docElement == null) {
@@ -100,11 +79,7 @@ public class ModelNgDirectiveReader implements Serializable {
         int i = 0;
         Node curChild = docElement.getFirstChild();
         if (curChild != null) {
-            if (this.isFromURL) {
-                utilTimer.timerString("Before start of ngDirectives loop in file " + readerURL);
-            } else {
-                utilTimer.timerString("Before start of ngDirectives loop in " + handler);
-            }
+            utilTimer.timerString("Before start of ngDirectives loop in " + handler);
 
             do {
                 if (curChild.getNodeType() == Node.ELEMENT_NODE && "ng-directive".equals(curChild.getNodeName())) {
@@ -134,14 +109,9 @@ public class ModelNgDirectiveReader implements Serializable {
             Debug.logWarning("No child nodes found.", module);
         }
         
-        if (this.isFromURL) {
-            utilTimer.timerString("Finished file " + readerURL + " - Total NgDirectives: " + i + " FINISHED");
-            Debug.logImportant("Loaded [" + StringUtil.leftPad(Integer.toString(i), 3) + "] NgDirectives from " + readerURL, module);
-        } else {
-            utilTimer.timerString("Finished document in " + handler + " - Total NgDirectives: " + i + " FINISHED");
-            if (Debug.importantOn()) {
-                Debug.logImportant("Loaded [" + StringUtil.leftPad(Integer.toString(i), 3) + "] NgDirectives from " + resourceLocation, module);
-            }
+        utilTimer.timerString("Finished document in " + handler + " - Total NgDirectives: " + i + " FINISHED");
+        if (Debug.importantOn()) {
+            Debug.logImportant("Loaded [" + StringUtil.leftPad(Integer.toString(i), 3) + "] NgDirectives from " + resourceLocation, module);
         }
         
         return modelNgDirectives;
@@ -153,29 +123,5 @@ public class ModelNgDirectiveReader implements Serializable {
         ngDirective.location = UtilXml.checkEmpty(ngDirectiveElement.getAttribute("location")).intern();
         ngDirective.invoke = UtilXml.checkEmpty(ngDirectiveElement.getAttribute("invoke")).intern();
         return ngDirective;
-    }
-
-    private Document getDocument(URL url) {
-        if (url == null)
-            return null;
-        Document document = null;
-
-        try {
-            document = UtilXml.readXmlDocument(url, true, true);
-        } catch (SAXException sxe) {
-            // Error generated during parsing)
-            Exception x = sxe;
-
-            if (sxe.getException() != null)
-                x = sxe.getException();
-            x.printStackTrace();
-        } catch (ParserConfigurationException pce) {
-            // Parser with specified options can't be built
-            pce.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-
-        return document;
     }
 }
