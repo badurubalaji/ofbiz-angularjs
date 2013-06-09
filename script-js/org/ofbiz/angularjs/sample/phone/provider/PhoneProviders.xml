@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript-class name="PhoneProviders" package="org.ofbiz.angularjs.provider">
+    <javascript-method name="phoneStore" is-static="true">
+        <attritutes>
+            <attribute name="phoneStore" type="Object" mode="OUT"/>
+        </attritutes>
+        <body>
+            var name = "Example Phone";
+            return {
+                $get: function() {
+                    return {
+                        name: name + " Store"
+                    }
+                }
+            }
+        </body>
+    </javascript-method>
+</javascript-class>

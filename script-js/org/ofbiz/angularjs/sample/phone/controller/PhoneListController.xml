@@ -3,9 +3,11 @@
     <javascript-method name="PhoneListController">
         <attributes>
             <attribute name="$scope" type="Object" mode="IN"/>
+            <attribute name="phoneStore" type="Object" mode="IN"/>
             <attribute name="PhoneService" type="Object" mode="IN"/>
         </attributes>
         <body>
+            $scope.phoneStore = phoneStore;
             $scope.phones = [
                 {"id": "0",
                  "name": "Nexus S",

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-providers>
-    <ng-provider name="" location="" invoke=""/>
+    <ng-provider name="phoneStore" location="org.ofbiz.angularjs.provider.PhoneProviders" invoke="phoneStore"/>
 </ng-providers>

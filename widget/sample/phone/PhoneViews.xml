@@ -14,7 +14,7 @@
         </html>
     </ng-view>
     <ng-view name="PhoneList">
-        <h1>Phones</h1>
+        <h1>{{phoneStore.name}}</h1>
         <ul>
             <li ng-repeat="phone in phones">
                 <b>{{phone.name}}</b>

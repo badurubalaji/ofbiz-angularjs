@@ -25,11 +25,14 @@ import java.util.Map;
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.DirectiveResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.FilterResourceInfo;
+import org.ofbiz.angularjs.component.NgComponentConfig.ProviderResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ServiceResourceInfo;
 import org.ofbiz.angularjs.directive.ModelNgDirective;
 import org.ofbiz.angularjs.directive.ModelNgDirectiveReader;
 import org.ofbiz.angularjs.filter.ModelNgFilter;
 import org.ofbiz.angularjs.filter.ModelNgFilterReader;
+import org.ofbiz.angularjs.provider.ModelNgProvider;
+import org.ofbiz.angularjs.provider.ModelNgProviderReader;
 import org.ofbiz.angularjs.service.ModelNgService;
 import org.ofbiz.angularjs.service.ModelNgServiceReader;
 
@@ -62,5 +65,14 @@ public class NgModelDispatcherContext {
             modelNgFilters.addAll(modelNgFilterMap.values());
         }
         return modelNgFilters;
+    }
+
+    public static List<ModelNgProvider> getAllModelNgProviders() {
+        List<ModelNgProvider> modelNgProviders = new LinkedList<ModelNgProvider>();
+        for (ProviderResourceInfo providerResourceInfo : NgComponentConfig.getAllProviderResourceInfos()) {
+            Map<String, ModelNgProvider> modelNgProviderMap = ModelNgProviderReader.getModelNgProviderMap(providerResourceInfo.createResourceHandler());
+            modelNgProviders.addAll(modelNgProviderMap.values());
+        }
+        return modelNgProviders;
     }
 }
