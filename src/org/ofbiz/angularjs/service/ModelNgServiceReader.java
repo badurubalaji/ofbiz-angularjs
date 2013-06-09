@@ -18,28 +18,36 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.service;
 
-import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.ofbiz.angularjs.model.AbstractModelNg;
+import org.ofbiz.angularjs.model.AbstractModelNgReader;
 import org.ofbiz.base.config.ResourceHandler;
+import org.ofbiz.base.util.UtilGenerics;
+import org.ofbiz.base.util.UtilXml;
+import org.w3c.dom.Element;
 
 @SuppressWarnings("serial")
-public class ModelNgServiceReader implements Serializable {
+public class ModelNgServiceReader extends AbstractModelNgReader {
 
     public static final String module = ModelNgServiceReader.class.getName();
-    
-    public static Map<String, ModelNgService> getModelNgServiceMap() {
-        ModelNgServiceReader reader = new ModelNgServiceReader(null);
-        return reader.getModelNgServices();
+
+    protected ModelNgServiceReader(ResourceHandler handler) {
+        super("ng-service", handler);
     }
     
-    private ModelNgServiceReader(ResourceHandler handler) {
-        
+    public static Map<String, ModelNgService> getModelNgServiceMap(ResourceHandler handler) {
+        ModelNgServiceReader reader = new ModelNgServiceReader(handler);
+        return UtilGenerics.cast(reader.getModelNgs());
     }
-    
-    private Map<String, ModelNgService> getModelNgServices() {
-        Map<String, ModelNgService> modelNgServices = new LinkedHashMap<String, ModelNgService>();
-        return modelNgServices;
+
+    @Override
+    protected AbstractModelNg createModelNg(Element element,
+            String resourceLocation) {
+        ModelNgService ngService = new ModelNgService();
+        ngService.name = UtilXml.checkEmpty(element.getAttribute("name")).intern();
+        ngService.location = UtilXml.checkEmpty(element.getAttribute("location")).intern();
+        ngService.invoke = UtilXml.checkEmpty(element.getAttribute("invoke")).intern();
+        return ngService;
     }
 }

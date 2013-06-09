@@ -23,4 +23,5 @@ import org.ofbiz.angularjs.model.AbstractModelNg;
 @SuppressWarnings("serial")
 public class ModelNgService extends AbstractModelNg {
 
+    public final static String module = ModelNgService.class.getName();
 }

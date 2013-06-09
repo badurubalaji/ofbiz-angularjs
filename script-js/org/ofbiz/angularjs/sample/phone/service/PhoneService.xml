@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript-class name="PhoneService" package="org.ofbiz.angularjs.sample.phone.service">
+    <javascript-method name="reverseName">
+        <attributes>
+            <attribute name="name" type="String" mode="IN"/>
+        </attributes>
+        <body>
+            return name.split("").reverse().join("");
+        </body>
+    </javascript-method>
+</javascript-class>

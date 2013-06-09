@@ -16,21 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  *******************************************************************************/
-package org.ofbiz.angularjs.directive;
+package org.ofbiz.angularjs.model;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.DirectiveResourceInfo;
+import org.ofbiz.angularjs.component.NgComponentConfig.ServiceResourceInfo;
+import org.ofbiz.angularjs.directive.ModelNgDirective;
+import org.ofbiz.angularjs.directive.ModelNgDirectiveReader;
+import org.ofbiz.angularjs.service.ModelNgService;
+import org.ofbiz.angularjs.service.ModelNgServiceReader;
 
-@SuppressWarnings("serial")
-public class NgD‏irectiveDispatchContext implements Serializable {
+public class NgModelDispatcherContext {
 
-    public final static String module = NgD‏irectiveDispatchContext.class.getName();
-    
+    public final static String module = NgModelDispatcherContext.class.getName();
+
     public static List<ModelNgDirective> getAllModelNgDirectives() {
         List<ModelNgDirective> modelNgDirectives = new LinkedList<ModelNgDirective>();
         for (DirectiveResourceInfo directiveResourceInfo : NgComponentConfig.getAllDirectiveResourceInfos()) {
@@ -38,5 +41,14 @@ public class NgD‏irectiveDispatchContext implements Serializable {
             modelNgDirectives.addAll(modelNgDirectiveMap.values());
         }
         return modelNgDirectives;
+    }
+
+    public static List<ModelNgService> getAllModelNgServices() {
+        List<ModelNgService> modelNgServices = new LinkedList<ModelNgService>();
+        for (ServiceResourceInfo serviceResourceInfo : NgComponentConfig.getAllServiceResoruceInfos()) {
+            Map<String, ModelNgService> modelNgServiceMap = ModelNgServiceReader.getModelNgServiceMap(serviceResourceInfo.createResourceHandler());
+            modelNgServices.addAll(modelNgServiceMap.values());
+        }
+        return modelNgServices;
     }
 }

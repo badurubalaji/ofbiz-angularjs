@@ -3,7 +3,8 @@
     <javascript-method name="currentTime" is-static="true">
         <attributes>
             <attribute name="$timeout" type="Object" mode="IN"/>
-            <attribute name="dateFilter" type="Object" mode="IN"/>
+            <attribute name="dateFilter" type="Function" mode="IN"/>
+            <attribute name="directive" type="Object" mode="OUT"/>
         </attributes>
         <body>
             // return the directive link function. (compile function not needed)

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-services>
-    <ng-service name="" location="" invoke=""/>
+    <ng-service name="PhoneService" location="org.ofbiz.angularjs.sample.phone.service.PhoneService" invoke="PhoneService"/>
 </ng-services>

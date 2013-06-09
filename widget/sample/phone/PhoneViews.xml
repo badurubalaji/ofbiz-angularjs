@@ -20,7 +20,8 @@
                 <b>{{phone.name}}</b>
                 <a href="#/phones/{{phone.id}}">Details</a>
             </li>
-        </ul>
+        </ul><br/>         
+        <button ng-click="reverseNameService()">Reverse Name via Service</button><label>{{name}}</label>
     </ng-view>
     <ng-view name="PhoneDetail">
         <h1>Phone Detail</h1>

@@ -32,11 +32,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.ClasspathInfo;
 import org.ofbiz.angularjs.directive.ModelNgDirective;
-import org.ofbiz.angularjs.directive.NgD‏irectiveDispatchContext;
 import org.ofbiz.angularjs.javascript.JavaScriptFactory;
 import org.ofbiz.angularjs.javascript.JavaScriptRenderer;
+import org.ofbiz.angularjs.model.NgModelDispatcherContext;
 import org.ofbiz.angularjs.service.ModelNgService;
-import org.ofbiz.angularjs.service.ModelNgServiceReader;
 import org.ofbiz.base.component.ComponentConfig;
 import org.ofbiz.base.component.ComponentConfig.WebappInfo;
 import org.ofbiz.base.util.Debug;
@@ -89,7 +88,7 @@ public class AngularJsEvents {
         builder.append("}])\n");
         
         // directives
-        for (ModelNgDirective modelNgDirective : NgD‏irectiveDispatchContext.getAllModelNgDirectives()) {
+        for (ModelNgDirective modelNgDirective : NgModelDispatcherContext.getAllModelNgDirectives()) {
             builder.append(".directive('" + modelNgDirective.name + "', " + modelNgDirective.location + "." + modelNgDirective.invoke + ")\n");
         }
         
@@ -101,8 +100,8 @@ public class AngularJsEvents {
         */
         
         // services
-        for (ModelNgService modelNgService : ModelNgServiceReader.getModelNgServiceMap().values()) {
-            builder.append(".factory('" + modelNgService.name + ", " + modelNgService.location + "." + modelNgService.invoke + ")\n");
+        for (ModelNgService modelNgService : NgModelDispatcherContext.getAllModelNgServices()) {
+            builder.append(".service('" + modelNgService.name + "', " + modelNgService.location + ")\n");
         }
         
         builder.append(";");

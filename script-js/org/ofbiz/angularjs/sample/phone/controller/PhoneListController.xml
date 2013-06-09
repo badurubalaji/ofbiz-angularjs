@@ -3,6 +3,7 @@
     <javascript-method name="PhoneListController">
         <attributes>
             <attribute name="$scope" type="Object" mode="IN"/>
+            <attribute name="PhoneService" type="Object" mode="IN"/>
         </attributes>
         <body>
             $scope.phones = [
@@ -16,6 +17,9 @@
                  "name": "MOTOROLA XOOMâ„¢",
                  "snippet": "The Next, Next Generation tablet."}
             ];
+            
+            $scope.name = "Guest";
+            $scope.reverseNameService = this.reverseNameService;
         </body>
     </javascript-method>
     <javascript-method name="setImage" is-static="true">
@@ -25,6 +29,11 @@
         </attributes>
         <body>
             $scope.mainImageUrl = imageUrl;
+        </body>
+    </javascript-method>
+    <javascript-method name="reverseNameService">
+        <body>
+            $scope.name = PhoneService.reverseName($scope.name);
         </body>
     </javascript-method>
 </javascript-class>
