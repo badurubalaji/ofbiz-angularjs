@@ -32,6 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.ClasspathInfo;
 import org.ofbiz.angularjs.directive.ModelNgDirective;
+import org.ofbiz.angularjs.filter.ModelNgFilter;
+import org.ofbiz.angularjs.filter.ModelNgFilterReader;
 import org.ofbiz.angularjs.javascript.JavaScriptFactory;
 import org.ofbiz.angularjs.javascript.JavaScriptRenderer;
 import org.ofbiz.angularjs.model.NgModelDispatcherContext;
@@ -93,11 +95,9 @@ public class AngularJsEvents {
         }
         
         // filters
-        /*
-        for (ModelNgFilter modelNgFilter : ModelNgFilterReader.getModelNgFilterMap().values()) {
-            builder.append(".filter('" + modelNgFilter.name + ", " + modelNgFilter.location + "." + modelNgFilter.invoke + ")\n");
+        for (ModelNgFilter modelNgFilter : NgModelDispatcherContext.getAllModelNgFilters()) {
+            builder.append(".filter('" + modelNgFilter.name + "', " + modelNgFilter.location + "." + modelNgFilter.invoke + ")\n");
         }
-        */
         
         // services
         for (ModelNgService modelNgService : NgModelDispatcherContext.getAllModelNgServices()) {

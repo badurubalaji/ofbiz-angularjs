@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript-class name="CommonFilters" package="org.ofbiz.angularjs.filter">
+    <javascript-method name="capitalize" is-static="true">
+        <attritutes>
+            <attribute name="filter" type="Function" mode="OUT"/>
+        </attritutes>
+        <body>
+            return function(input, scope) {
+                return input.substring(0,1).toUpperCase()+input.substring(1);
+            }
+        </body>
+    </javascript-method>
+</javascript-class>

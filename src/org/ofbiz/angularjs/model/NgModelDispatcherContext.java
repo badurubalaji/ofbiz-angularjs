@@ -24,9 +24,12 @@ import java.util.Map;
 
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.DirectiveResourceInfo;
+import org.ofbiz.angularjs.component.NgComponentConfig.FilterResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ServiceResourceInfo;
 import org.ofbiz.angularjs.directive.ModelNgDirective;
 import org.ofbiz.angularjs.directive.ModelNgDirectiveReader;
+import org.ofbiz.angularjs.filter.ModelNgFilter;
+import org.ofbiz.angularjs.filter.ModelNgFilterReader;
 import org.ofbiz.angularjs.service.ModelNgService;
 import org.ofbiz.angularjs.service.ModelNgServiceReader;
 
@@ -50,5 +53,14 @@ public class NgModelDispatcherContext {
             modelNgServices.addAll(modelNgServiceMap.values());
         }
         return modelNgServices;
+    }
+
+    public static List<ModelNgFilter> getAllModelNgFilters() {
+        List<ModelNgFilter> modelNgFilters = new LinkedList<ModelNgFilter>();
+        for (FilterResourceInfo filterResourceInfo : NgComponentConfig.getAllFilterResourceInfos()) {
+            Map<String, ModelNgFilter> modelNgFilterMap = ModelNgFilterReader.getModelNgFilterMap(filterResourceInfo.createResourceHandler());
+            modelNgFilters.addAll(modelNgFilterMap.values());
+        }
+        return modelNgFilters;
     }
 }
