@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.ClasspathInfo;
 import org.ofbiz.angularjs.directive.ModelNgDirective;
+import org.ofbiz.angularjs.factory.ModelNgFactory;
 import org.ofbiz.angularjs.filter.ModelNgFilter;
 import org.ofbiz.angularjs.javascript.JavaScriptFactory;
 import org.ofbiz.angularjs.javascript.JavaScriptRenderer;
@@ -104,9 +105,14 @@ public class AngularJsEvents {
             builder.append(".service('" + modelNgService.name + "', " + modelNgService.location + ")\n");
         }
         
-        // provider
+        // providers
         for (ModelNgProvider modelNgProvider : NgModelDispatcherContext.getAllModelNgProviders()) {
             builder.append(".provider('" + modelNgProvider.name + "', " + modelNgProvider.location + "." + modelNgProvider.invoke + ")\n");
+        }
+        
+        // factories
+        for (ModelNgFactory modelNgFactory : NgModelDispatcherContext.getAllModelNgFactories()) {
+            builder.append(".factory('" + modelNgFactory.name + "', " + modelNgFactory.location + ")\n");
         }
         
         builder.append(";");

@@ -24,11 +24,14 @@ import java.util.Map;
 
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.DirectiveResourceInfo;
+import org.ofbiz.angularjs.component.NgComponentConfig.FactoryResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.FilterResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ProviderResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ServiceResourceInfo;
 import org.ofbiz.angularjs.directive.ModelNgDirective;
 import org.ofbiz.angularjs.directive.ModelNgDirectiveReader;
+import org.ofbiz.angularjs.factory.ModelNgFactory;
+import org.ofbiz.angularjs.factory.ModelNgFactoryReader;
 import org.ofbiz.angularjs.filter.ModelNgFilter;
 import org.ofbiz.angularjs.filter.ModelNgFilterReader;
 import org.ofbiz.angularjs.provider.ModelNgProvider;
@@ -74,5 +77,14 @@ public class NgModelDispatcherContext {
             modelNgProviders.addAll(modelNgProviderMap.values());
         }
         return modelNgProviders;
+    }
+
+    public static List<ModelNgFactory> getAllModelNgFactories() {
+        List<ModelNgFactory> modelNgFactories = new LinkedList<ModelNgFactory>();
+        for (FactoryResourceInfo factoryResourceInfo : NgComponentConfig.getAllFactoryResourceInfos()) {
+            Map<String, ModelNgFactory> modelNgFactoryMap = ModelNgFactoryReader.getModelNgFactoryMap(factoryResourceInfo.createResourceHandler());
+            modelNgFactories.addAll(modelNgFactoryMap.values());
+        }
+        return modelNgFactories;
     }
 }

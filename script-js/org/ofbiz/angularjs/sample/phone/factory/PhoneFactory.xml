@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript-class name="PhoneFactory" package="org.ofbiz.angularjs.sample.phone.factory">
+    <javascript-method name="PhoneFactory">
+        <body>
+            return {
+                getPhones: this.getPhones
+            }
+        </body>
+    </javascript-method>
+    <javascript-method name="getPhones">
+        <body>
+            return [
+                {"id": "0",
+                 "name": "Nexus S",
+                 "snippet": "Fast just got faster with Nexus S."},
+                {"id": "1",
+                 "name": "Motorola XOOMâ„¢ with Wi-Fi",
+                 "snippet": "The Next, Next Generation tablet."},
+                {"id": "2",
+                 "name": "MOTOROLA XOOMâ„¢",
+                 "snippet": "The Next, Next Generation tablet."}
+            ];
+        </body>
+    </javascript-method>
+</javascript-class>

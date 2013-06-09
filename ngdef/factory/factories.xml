@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-factories>
-    <ng-factory name="" location="" invoke=""/>
+    <ng-factory name="PhoneFactory" location="org.ofbiz.angularjs.sample.phone.factory.PhoneFactory"/>
 </ng-factories>

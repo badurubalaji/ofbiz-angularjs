@@ -5,20 +5,11 @@
             <attribute name="$scope" type="Object" mode="IN"/>
             <attribute name="phoneStore" type="Object" mode="IN"/>
             <attribute name="PhoneService" type="Object" mode="IN"/>
+            <attribute name="PhoneFactory" type="Object" mode="IN"/>
         </attributes>
         <body>
             $scope.phoneStore = phoneStore;
-            $scope.phones = [
-                {"id": "0",
-                 "name": "Nexus S",
-                 "snippet": "Fast just got faster with Nexus S."},
-                {"id": "1",
-                 "name": "Motorola XOOMâ„¢ with Wi-Fi",
-                 "snippet": "The Next, Next Generation tablet."},
-                {"id": "2",
-                 "name": "MOTOROLA XOOMâ„¢",
-                 "snippet": "The Next, Next Generation tablet."}
-            ];
+            $scope.phones = PhoneFactory.getPhones();
             
             $scope.name = "Guest";
             $scope.reverseNameService = this.reverseNameService;
