@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  *******************************************************************************/
-package org.ofbiz.angularjs.widget;
+package org.ofbiz.angularjs.widget.screen;
 
 import java.io.IOException;
 
@@ -27,26 +27,29 @@ import org.ofbiz.base.util.collections.MapStack;
 import org.ofbiz.widget.screen.ScreenFactory;
 import org.xml.sax.SAXException;
 
-public class ViewRenderer {
+public class NgScreenRenderer {
     
     protected Appendable writer;
     protected MapStack<String> context;
+    protected NgScreenStringRenderer ngScreenStringRenderer;
     
-    public ViewRenderer(Appendable writer, MapStack<String> context, Object viewStringRenderer) {
+    public NgScreenRenderer(Appendable writer, MapStack<String> context, NgScreenStringRenderer ngScreenStringRenderer) {
         this.writer = writer;
         this.context = context;
+        if (this.context == null) this.context = MapStack.create();
+        this.ngScreenStringRenderer = ngScreenStringRenderer;
     }
 
     public String render(String combinedName) throws GeneralException, IOException, SAXException, ParserConfigurationException {
         String resourceName = ScreenFactory.getResourceNameFromCombined(combinedName);
-        String viewName = ScreenFactory.getScreenNameFromCombined(combinedName);
-        this.render(resourceName, viewName);
+        String ngScreenName = ScreenFactory.getScreenNameFromCombined(combinedName);
+        this.render(resourceName, ngScreenName);
         return "";
     }
 
-    public String render(String resourceName, String viewName) throws GeneralException, IOException, SAXException, ParserConfigurationException {
-        ModelView modelView = ViewFactory.getViewFromLocation(resourceName, viewName);
-        modelView.renderViewString(writer, context, null);
+    public String render(String resourceName, String ngScreenName) throws GeneralException, IOException, SAXException, ParserConfigurationException {
+        ModelNgScreen modelNgScreen = NgScreenFactory.getNgScreenFromLocation(resourceName, ngScreenName);
+        modelNgScreen.renderNgScreenString(writer, context, ngScreenStringRenderer);
         return "";
     }
 }

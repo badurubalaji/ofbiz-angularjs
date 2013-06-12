@@ -8,7 +8,7 @@
 
     <description>AngularJs Component Site Configuration File</description>
     
-    <handler name="angularjs" type="view" class="org.ofbiz.angularjs.view.AngularJsViewHandler"/>
+    <handler name="angularjs" type="view" class="org.ofbiz.angularjs.widget.view.AngularJsViewHandler"/>
 
     <!-- Events to run on every request before security (chains exempt) -->
     <!--

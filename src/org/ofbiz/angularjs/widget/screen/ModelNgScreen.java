@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  *******************************************************************************/
-package org.ofbiz.angularjs.widget;
+package org.ofbiz.angularjs.widget.screen;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -30,24 +30,35 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.UtilXml;
+import org.ofbiz.widget.screen.ModelScreen;
 import org.w3c.dom.Element;
 
-public class ModelView {
+@SuppressWarnings("serial")
+public class ModelNgScreen extends ModelScreen {
     
-    public final static String module = ModelView.class.getName();
+    public final static String module = ModelNgScreen.class.getName();
     
     protected String name = null;
-    protected Map<String, ModelView> modelViewMap = null;
+    protected Map<String, ModelNgScreen> modelNgScreenMap = null;
     protected String sourceLocation = null;
-    protected Element viewElement = null;
+    protected Element ngScreenElement = null;
+    protected boolean useTransaction;
+    protected boolean useCache;
     
     private Transformer transformer = null;
     
-    public ModelView(Element viewElement, Map<String, ModelView> modelViewMap, String sourceLocation) {
-        this.viewElement = viewElement;
-        this.modelViewMap = modelViewMap;
+    public ModelNgScreen(Element ngScreenElement, Map<String, ModelNgScreen> modelNgScreenMap, String sourceLocation) {
+        this.ngScreenElement = ngScreenElement;
+        this.modelNgScreenMap = modelNgScreenMap;
         this.sourceLocation = sourceLocation;
-        this.name = viewElement.getAttribute("name");
+        this.name = ngScreenElement.getAttribute("name");
+        
+     // read in the section, which will read all sub-widgets too
+        Element sectionElement = UtilXml.firstChildElement(ngScreenElement, "section");
+        if (sectionElement == null) {
+            throw new IllegalArgumentException("No section found for the ng-screen definition with name: " + this.name);
+        }
+        // this.section = ?
         
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -63,9 +74,9 @@ public class ModelView {
         return name;
     }
     
-    public void renderViewString(Appendable writer, Map<String, Object> context, Object viewStringRenderer) {
+    public void renderNgScreenString(Appendable writer, Map<String, Object> context, NgScreenStringRenderer ngScreenStringRenderer) {
         try {
-            List<? extends Element> childElements = UtilXml.childElementList(viewElement);
+            List<? extends Element> childElements = UtilXml.childElementList(ngScreenElement);
             for (Element childElement : childElements) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                 StreamResult result = new StreamResult(buffer);

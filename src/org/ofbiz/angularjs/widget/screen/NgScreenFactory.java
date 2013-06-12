@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  *******************************************************************************/
-package org.ofbiz.angularjs.widget;
+package org.ofbiz.angularjs.widget.screen;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,30 +34,30 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-public class ViewFactory {
+public class NgScreenFactory {
     
-    public final static String module = ViewFactory.class.getName();
+    public final static String module = NgScreenFactory.class.getName();
     
-    public static ModelView getViewFromLocation(String resourceName, String viewName)
+    public static ModelNgScreen getNgScreenFromLocation(String resourceName, String ngScreenName)
             throws IOException, SAXException, ParserConfigurationException {
-        Map<String, ModelView> modelViewMap = getViewsFromLocation(resourceName);
-        ModelView modelView = modelViewMap.get(viewName);
-        if (UtilValidate.isEmpty(modelView)) {
-            throw new IllegalArgumentException("Could not find vew with name [" + viewName + "] in class resource [" + resourceName + "]");
+        Map<String, ModelNgScreen> modelNgScreenMap = getNgScreensFromLocation(resourceName);
+        ModelNgScreen modelNgScreen = modelNgScreenMap.get(ngScreenName);
+        if (UtilValidate.isEmpty(modelNgScreen)) {
+            throw new IllegalArgumentException("Could not find ng-screen with name [" + ngScreenName + "] in class resource [" + resourceName + "]");
         }
-        return modelView;
+        return modelNgScreen;
     }
     
-    public static Map<String, ModelView> getViewsFromLocation(String resourceName)
+    public static Map<String, ModelNgScreen> getNgScreensFromLocation(String resourceName)
             throws IOException, SAXException, ParserConfigurationException {
 
-        Map<String, ModelView> modelViewMap = new HashMap<String, ModelView>();
-        synchronized (ViewFactory.class) {
-            if (UtilValidate.isEmpty(modelViewMap)) {
+        Map<String, ModelNgScreen> modelNgScreenMap = new HashMap<String, ModelNgScreen>();
+        synchronized (NgScreenFactory.class) {
+            if (UtilValidate.isEmpty(modelNgScreenMap)) {
                 long startTime = System.currentTimeMillis();
                 ClassLoader loader = Thread.currentThread().getContextClassLoader();
                 if (loader == null) {
-                    loader = ViewFactory.class.getClassLoader();
+                    loader = NgScreenFactory.class.getClassLoader();
                 }
     
                 URL screenFileUrl = null;
@@ -66,28 +66,28 @@ public class ViewFactory {
                     throw new IllegalArgumentException("Could not resolve location to URL: " + resourceName);
                 }
                 Document screenFileDoc = UtilXml.readXmlDocument(screenFileUrl, true, true);
-                modelViewMap = readViewDocument(screenFileDoc, resourceName);
+                modelNgScreenMap = readNgScreenDocument(screenFileDoc, resourceName);
                 double totalSeconds = (System.currentTimeMillis() - startTime)/1000.0;
-                Debug.logInfo("Got view in " + totalSeconds + "s from: " + screenFileUrl.toExternalForm(), module);
+                Debug.logInfo("Got ng-screen in " + totalSeconds + "s from: " + screenFileUrl.toExternalForm(), module);
             }
         }
         
-        if (UtilValidate.isEmpty(modelViewMap)) {
-            throw new IllegalArgumentException("Could not find vew file with name [" + resourceName + "]");
+        if (UtilValidate.isEmpty(modelNgScreenMap)) {
+            throw new IllegalArgumentException("Could not find ng-screen file with name [" + resourceName + "]");
         }
-        return modelViewMap;
+        return modelNgScreenMap;
     }
     
-    public static Map<String, ModelView> readViewDocument(Document viewFileDocument, String sourceLocation) {
-        Map<String, ModelView> modelViewMap = new HashMap<String, ModelView>();
-        if (UtilValidate.isNotEmpty(viewFileDocument)) {
-            Element rootElement = viewFileDocument.getDocumentElement();
-            List<? extends Element> viewElements = UtilXml.childElementList(rootElement, "ng-view");
-            for (Element viewElement : viewElements) {
-                ModelView modelView = new ModelView(viewElement, modelViewMap, sourceLocation);
-                modelViewMap.put(modelView.getName(), modelView);
+    public static Map<String, ModelNgScreen> readNgScreenDocument(Document ngScreenFileDocument, String sourceLocation) {
+        Map<String, ModelNgScreen> modelNgScreenMap = new HashMap<String, ModelNgScreen>();
+        if (UtilValidate.isNotEmpty(ngScreenFileDocument)) {
+            Element rootElement = ngScreenFileDocument.getDocumentElement();
+            List<? extends Element> ngScreenElements = UtilXml.childElementList(rootElement, "ng-screen");
+            for (Element ngScreenElement : ngScreenElements) {
+                ModelNgScreen modelNgScreen = new ModelNgScreen(ngScreenElement, modelNgScreenMap, sourceLocation);
+                modelNgScreenMap.put(modelNgScreen.getName(), modelNgScreen);
             }
         }
-        return modelViewMap;
+        return modelNgScreenMap;
     }
 }
