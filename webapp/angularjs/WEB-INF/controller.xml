@@ -8,7 +8,7 @@
 
     <description>AngularJs Component Site Configuration File</description>
     
-    <handler name="angularjs" type="view" class="org.ofbiz.angularjs.widget.view.AngularJsViewHandler"/>
+    <handler name="screenng" type="view" class="org.ofbiz.widget.screen.MacroScreenViewHandler"/>
 
     <!-- Events to run on every request before security (chains exempt) -->
     <!--
@@ -44,7 +44,7 @@
     
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://angularjs/widget/AngularJsScreens.xml#main"/>
-    <view-map name="sample" type="angularjs" page="component://angularjs/widget/sample/phone/PhoneViews.xml#main"/>
-    <view-map name="PhoneList" type="angularjs" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneList"/>
-    <view-map name="PhoneDetail" type="angularjs" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneDetail"/>
+    <view-map name="sample" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#main"/>
+    <view-map name="PhoneList" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneList"/>
+    <view-map name="PhoneDetail" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneDetail"/>
 </site-conf>
