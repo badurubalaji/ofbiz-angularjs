@@ -19,9 +19,12 @@
 package org.ofbiz.angularjs.widget.screen;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.ofbiz.base.util.GeneralException;
+import org.ofbiz.base.util.UtilXml;
+import org.ofbiz.base.util.string.FlexibleStringExpander;
 import org.ofbiz.widget.screen.ModelScreen;
 import org.ofbiz.widget.screen.ModelScreenWidget;
 import org.ofbiz.widget.screen.ScreenStringRenderer;
@@ -30,6 +33,38 @@ import org.w3c.dom.Element;
 public class AngularJsScreenWidget {
 
     public final static String module = AngularJsScreenWidget.class.getName();
+    
+    @SuppressWarnings("serial")
+    public static class Application extends ModelScreenWidget {
+        public static final String TAG_NAME = "application";
+        
+        protected FlexibleStringExpander nameExdr;
+        protected List<ModelScreenWidget> subWidgets;
+
+        public Application(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.nameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name"));
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div ng-app=\"" + this.nameExdr.getOriginal() + "\">";
+        }
+        
+    }
     
     @SuppressWarnings("serial")
     public static class CurrentTime extends ModelScreenWidget {
@@ -44,12 +79,12 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            
+            writer.append(this.rawString());
         }
 
         @Override
         public String rawString() {
-            return null;
+            return "<span current-time=\"\"></span>";
         }
         
     }

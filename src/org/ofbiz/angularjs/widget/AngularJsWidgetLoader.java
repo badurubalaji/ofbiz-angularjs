@@ -37,7 +37,7 @@ public class AngularJsWidgetLoader implements WidgetLoader {
         for (Class<?> clz : AngularJsScreenWidget.class.getClasses()) {
             try {
                 // Subclass of AngularJsScreenWidget and non-abstract
-                if (AngularJsScreenWidget.class.isAssignableFrom(clz) && (clz.getModifiers() & Modifier.ABSTRACT) == 0) {
+                if (ModelScreenWidget.class.isAssignableFrom(clz) && (clz.getModifiers() & Modifier.ABSTRACT) == 0) {
                     try {
                         Field field = clz.getField("TAG_NAME");
                         Object fieldObject = field.get(null);

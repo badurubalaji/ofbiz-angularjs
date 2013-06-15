@@ -10,10 +10,12 @@
             <widgets>
                 <decorator-screen name="AngularJsCommonDecorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
+                        <application name="angularjs">
+                            <current-time/>
+                        </application>
                     </decorator-section>
                 </decorator-screen>
             </widgets>
         </section>
     </screen>
-
 </screens>
