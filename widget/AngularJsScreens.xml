@@ -11,7 +11,12 @@
                 <decorator-screen name="AngularJsCommonDecorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
                         <application name="angularjs">
-                            <current-time/>
+                            <controller name="org.ofbiz.angularjs.sample.phone.controller.PhoneListController">
+                                <list repeat="phone in phones">
+                                    <label text="{{phone.name}}"/>
+                                </list>
+                            </controller>
+                            <label text="Current Time: "/><current-time/>
                         </application>
                     </decorator-section>
                 </decorator-screen>

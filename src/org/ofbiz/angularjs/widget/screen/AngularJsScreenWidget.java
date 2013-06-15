@@ -65,6 +65,38 @@ public class AngularJsScreenWidget {
         }
         
     }
+
+    @SuppressWarnings("serial")
+    public static class Controller extends ModelScreenWidget {
+        public static final String TAG_NAME = "controller";
+
+        protected FlexibleStringExpander nameExdr;
+        protected List<ModelScreenWidget> subWidgets;
+
+        public Controller(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.nameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name"));
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div ng-controller=\"" + this.nameExdr.getOriginal() + "\">";
+        }
+        
+    }
     
     @SuppressWarnings("serial")
     public static class CurrentTime extends ModelScreenWidget {
@@ -87,5 +119,36 @@ public class AngularJsScreenWidget {
             return "<span current-time=\"\"></span>";
         }
         
+    }
+
+    @SuppressWarnings("serial")
+    public static class NgList extends ModelScreenWidget {
+        public static final String TAG_NAME = "list";
+
+        protected FlexibleStringExpander repeatExdr;
+        protected List<ModelScreenWidget> subWidgets;
+
+        public NgList(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.repeatExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("repeat"));
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</li></ul>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<ul><li ng-repeat=\"" + repeatExdr.getOriginal() + "\">";
+        }
     }
 }
