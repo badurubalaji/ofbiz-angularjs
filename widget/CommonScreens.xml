@@ -13,6 +13,8 @@
                 
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/control/apps.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/control/classes.js" global="true"/>
+                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/ui-bootstrap-tpls-0.3.0.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/ui-bootstrap-0.3.0.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/angular.min.js" global="true"/>
 
                 <set field="activeApp" value="angularjs" global="true"/>
@@ -21,7 +23,10 @@
                 <set field="applicationTitle" value="${uiLabelMap.AngularJsApplication}" global="true"/>
             </actions>
             <widgets>
-                <include-screen name="ApplicationDecorator" location="component://commonext/widget/CommonScreens.xml"/>
+                <!--include-screen name="ApplicationDecorator" location="component://commonext/widget/CommonScreens.xml"/-->
+                <platform-specific><html><html-template location="component://angularjs/templates/header.ftl"/></html></platform-specific>
+                <decorator-section-include name="body"/>
+                <platform-specific><html><html-template location="component://angularjs/templates/footer.ftl"/></html></platform-specific>
             </widgets>
         </section>
     </screen>

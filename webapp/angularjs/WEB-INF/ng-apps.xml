@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-apps>
     <ng-app name="angularjs">
+        <module name="ui.bootstrap"/>
     </ng-app>
     <ng-app name="phonecat" default-path="/phones">
+        <module name="ui.bootstrap"/>
         <view path="/phones" uri="PhoneList" controller="org.ofbiz.angularjs.sample.phone.controller.PhoneListController"/>
         <view path="/phones/:phoneId" uri="PhoneDetail" controller="org.ofbiz.angularjs.sample.phone.controller.PhoneDetailController"/>
     </ng-app>
