@@ -65,6 +65,34 @@ public class AngularJsScreenWidget {
         }
         
     }
+    
+    @SuppressWarnings("serial")
+    public static class Button extends ModelScreenWidget {
+        public static final String TAG_NAME = "button";
+
+        protected FlexibleStringExpander textExdr;
+        protected FlexibleStringExpander clickExdr;
+
+        public Button(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.textExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text"));
+            this.clickExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("click"));
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<button ng-click=\"" + this.clickExdr.getOriginal() + "\">" + this.textExdr.getOriginal() + "</button>";
+        }
+        
+    }
 
     @SuppressWarnings("serial")
     public static class Controller extends ModelScreenWidget {

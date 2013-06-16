@@ -14,8 +14,12 @@
                             <controller name="org.ofbiz.angularjs.sample.phone.controller.PhoneListController">
                                 <list repeat="phone in phones">
                                     <label text="{{phone.name}}"/>
+                                    <link text="Details" target="#/phones/{{phone.id}}" url-mode="plain"/>
                                 </list>
+                                <button text="Reverse Name via Service" click="reverseNameService()"/>
+                                <label text="{{name}}"/>
                             </controller>
+                            <label text="{{'bonjour' | capitalize}}!"/>
                             <label text="Current Time: "/><current-time/>
                         </application>
                     </decorator-section>
