@@ -25,7 +25,9 @@
             <widgets>
                 <!--include-screen name="ApplicationDecorator" location="component://commonext/widget/CommonScreens.xml"/-->
                 <platform-specific><html><html-template location="component://angularjs/templates/header.ftl"/></html></platform-specific>
-                <decorator-section-include name="body"/>
+                <application name="angularjs">
+                    <decorator-section-include name="body"/>
+                </application>
                 <platform-specific><html><html-template location="component://angularjs/templates/footer.ftl"/></html></platform-specific>
             </widgets>
         </section>

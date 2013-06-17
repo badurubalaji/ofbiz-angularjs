@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="collapse">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.CollapseDemoController">
+                    <button style="btn" click="isCollapsed = !isCollapsed" text="Toggle collapse"/>
+                    <collapse collapse="isCollapsed">
+                        <container style="well well-large">
+                            <label text="Some content"/>
+                        </container>
+                    </collapse>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="accordion">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.AccordionDemoController">
+                    <checkbox model="oneAtATime" text="Open only one at a time"/>
+                    <accordion close-others="oneAtATime">
+                        <accordion-group heading="Static Header">
+                            <label text="This content is straight in the template."/>
+                        </accordion-group>
+                        <accordion-group heading="{{group.title}}" repeat="group in groups">
+                            <label text="{{group.content}}"/>
+                        </accordion-group>
+                        <accordion-group heading="Dynamic Body Content">
+                            <button text="Add Item" click="addItem()" style="btn btn-small"/>
+                            <list repeat="item in items">
+                                <container><label text="{{item}}"/></container>
+                            </list>
+                        </accordion-group>
+                    </accordion>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
+</screens>

@@ -38,12 +38,15 @@
         <response name="error" type="none"/>
     </request-map>
     
+    <request-map uri="widgets"><security https="true" auth="true"/><response name="success" type="view" value="widgets"/></request-map>
+    
     <request-map uri="sample"><security https="true" auth="false"/><response name="success" type="view" value="sample"/></request-map>
     <request-map uri="PhoneList"><security https="true" auth="false"/><response name="success" type="view" value="PhoneList"/></request-map>
     <request-map uri="PhoneDetail"><security https="true" auth="false"/><response name="success" type="view" value="PhoneDetail"/></request-map>
     
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://angularjs/widget/AngularJsScreens.xml#main"/>
+    <view-map name="widgets" type="screen" page="component://angularjs/widget/AngularJsScreens.xml#widgets"/>
     <view-map name="sample" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#main"/>
     <view-map name="PhoneList" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneList"/>
     <view-map name="PhoneDetail" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneDetail"/>

@@ -10,18 +10,35 @@
             <widgets>
                 <decorator-screen name="AngularJsCommonDecorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
-                        <application name="angularjs">
-                            <controller name="org.ofbiz.angularjs.sample.phone.controller.PhoneListController">
-                                <list repeat="phone in phones">
-                                    <label text="{{phone.name}}"/>
-                                    <link text="Details" target="#/phones/{{phone.id}}" url-mode="plain"/>
-                                </list>
-                                <button text="Reverse Name via Service" click="reverseNameService()"/>
-                                <label text="{{name}}"/>
-                            </controller>
-                            <label text="{{'bonjour' | capitalize}}!"/>
-                            <label text="Current Time: "/><current-time/>
-                        </application>
+                        <controller name="org.ofbiz.angularjs.sample.phone.controller.PhoneListController">
+                            <list repeat="phone in phones">
+                                <label text="{{phone.name}}"/>
+                                <link text="Details" target="#/phones/{{phone.id}}" url-mode="plain"/>
+                            </list>
+                            <button text="Reverse Name via Service" click="reverseNameService()"/>
+                            <label text="{{name}}"/>
+                        </controller>
+                        <label text="{{'bonjour' | capitalize}}!"/>
+                        <label text="Current Time: "/><current-time/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="widgets">
+        <section>
+            <widgets>
+                <decorator-screen name="AngularJsCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <!-- Collapse -->
+                        <label text="Collapse"/>
+                        <include-screen name="collapse" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
+                        <!-- Accordion -->
+                        <label text="Accordion"/>
+                        <include-screen name="accordion" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
                     </decorator-section>
                 </decorator-screen>
             </widgets>
