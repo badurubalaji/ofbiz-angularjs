@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
-    <screen name="collapse">
+    <screen name="Collapse">
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.CollapseDemoController">
@@ -15,7 +15,7 @@
             </widgets>
         </section>
     </screen>
-    <screen name="accordion">
+    <screen name="Accordion">
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.AccordionDemoController">
@@ -34,6 +34,15 @@
                             </list>
                         </accordion-group>
                     </accordion>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Grid">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.GridDemoController">
+                    <grid option="gridOption" style="gridStyle"/>
                 </controller>
             </widgets>
         </section>

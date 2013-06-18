@@ -291,6 +291,33 @@ public class AngularJsScreenWidget {
     }
 
     @SuppressWarnings("serial")
+    public static class Grid extends ModelScreenWidget {
+        public static final String TAG_NAME = "grid";
+
+        protected FlexibleStringExpander optionExdr;
+        protected FlexibleStringExpander styleExdr;
+        
+        public Grid(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.optionExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("option"));
+            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<div class=\"" + styleExdr.getOriginal() + "\" ng-grid=\"" + optionExdr.getOriginal() + "\"></div>";
+        }
+    }
+
+    @SuppressWarnings("serial")
     public static class HorizontalRule extends ModelScreenWidget {
         public static final String TAG_NAME = "horizontal-rule";
         

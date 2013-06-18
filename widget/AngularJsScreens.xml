@@ -32,12 +32,17 @@
                     <decorator-section name="body">
                         <!-- Collapse -->
                         <label text="Collapse"/>
-                        <include-screen name="collapse" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <include-screen name="Collapse" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
                         <!-- Accordion -->
                         <label text="Accordion"/>
-                        <include-screen name="accordion" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <include-screen name="Accordion" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
+                        <!-- Grid -->
+                        <label text="Grid"/>
+                        <include-screen name="Grid" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                     </decorator-section>
                 </decorator-screen>
