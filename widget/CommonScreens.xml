@@ -25,9 +25,19 @@
             <widgets>
                 <!--include-screen name="ApplicationDecorator" location="component://commonext/widget/CommonScreens.xml"/-->
                 <platform-specific><html><html-template location="component://angularjs/templates/header.ftl"/></html></platform-specific>
-                <application name="angularjs">
+                
+                <!-- header -->
+                <container style="navbar navbar-inverse navbar-fixed-top">
+                    <container style="navbar-inner">
+                        <container style="container">
+                            <link text="Home" style="brand" target="javascript:void(0)" url-mode="plain"/>
+                        </container>
+                    </container>
+                </container>
+                
+                <container style="container">
                     <decorator-section-include name="body"/>
-                </application>
+                </container>
                 <platform-specific><html><html-template location="component://angularjs/templates/footer.ftl"/></html></platform-specific>
             </widgets>
         </section>
@@ -45,7 +55,9 @@
                                 <if-has-permission permission="ANGULARJS" action="_VIEW"/>
                             </condition>
                             <widgets>
-                                <decorator-section-include name="body"/>
+                                <application name="angularjs">
+                                    <decorator-section-include name="body"/>
+                                </application>
                             </widgets>
                             <fail-widgets>
                                 <label style="h3">${uiLabelMap.AngularJsViewPermissionError}</label>

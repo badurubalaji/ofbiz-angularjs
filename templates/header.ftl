@@ -11,5 +11,6 @@
         <link href="/angularjs/images/css/bootstrap.min.css" rel="stylesheet">
         <link href="/angularjs/images/css/bootstrap-responsive.min.css" rel="stylesheet">
         <link href="/angularjs/images/css/ng-grid.min.css" rel="stylesheet">
+        <link href="/angularjs/images/css/style.css" rel="stylesheet">
     </head>
     <body>
