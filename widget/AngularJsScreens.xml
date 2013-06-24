@@ -11,9 +11,11 @@
                 <decorator-screen name="AngularJsCommonDecorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
                         <controller name="org.ofbiz.angularjs.sample.phone.controller.PhoneListController">
-                            <list repeat="phone in phones">
-                                <label text="{{phone.name}}"/>
-                                <link text="Details" target="#/phones/{{phone.id}}" url-mode="plain"/>
+                            <list>
+                                <list-item repeat="phone in phones">
+                                    <label text="{{phone.name}}"/>
+                                    <link text="Details" target="#/phones/{{phone.id}}" url-mode="plain"/>
+                                </list-item>
                             </list>
                             <button text="Reverse Name via Service" click="reverseNameService()"/>
                             <label text="{{name}}"/>

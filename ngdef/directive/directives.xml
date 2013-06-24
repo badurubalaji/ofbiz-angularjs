@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-directives>
     <ng-directive name="currentTime" location="org.ofbiz.angularjs.directive.CommonDirectives" invoke="currentTime"/>
+    <ng-directive name="gridOption" location="org.ofbiz.angularjs.directive.GridOptionDirective.xml" invoke="gridOption"
+        controller-name="controller" pre-compile-name="preLink" post-compile-name="postLink" link-name="link"/>
 </ng-directives>

@@ -78,7 +78,7 @@ public class AngularJsEvents {
     
     private static void buildAppJsFunction(String name, String defaultPath
             , List<? extends Element> moduleElements, List<? extends Element> viewElements, StringBuilder builder) {
-        builder.append("angular.module('" + name + "', [");
+        builder.append("\nangular.module('" + name + "', [");
         
         // modules
         List<String> moduleNames = new LinkedList<String>();
@@ -106,7 +106,7 @@ public class AngularJsEvents {
         
         // directives
         for (ModelNgDirective modelNgDirective : NgModelDispatcherContext.getAllModelNgDirectives()) {
-            builder.append(".directive('" + modelNgDirective.name + "', " + modelNgDirective.location + "." + modelNgDirective.invoke + ")\n");
+            builder.append(".directive('" + modelNgDirective.name + "', " + createDirectiveJsFunction(modelNgDirective) + ")\n");
         }
         
         // filters
@@ -130,6 +130,13 @@ public class AngularJsEvents {
         }
         
         builder.append(";");
+    }
+    
+    private static String createDirectiveJsFunction(ModelNgDirective modelNgDirective) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("function() {");
+        builder.append("}");
+        return builder.toString();
     }
 
     public static String buildAppsJs(HttpServletRequest request, HttpServletResponse response) {

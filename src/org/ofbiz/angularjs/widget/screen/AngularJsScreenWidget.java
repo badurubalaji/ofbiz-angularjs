@@ -40,14 +40,12 @@ public class AngularJsScreenWidget {
         public static final String TAG_NAME = "accordion";
         
         protected FlexibleStringExpander closeOthersExdr;
-        protected List<ModelScreenWidget> subWidgets;
+        protected List<? extends Element> accordionGroupElementList;
 
         public Accordion(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.closeOthersExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("close-others"));
-            // read sub-widgets
-            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
-            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+            accordionGroupElementList = UtilXml.childElementList(widgetElement, "accordion-group");
         }
 
         @Override
@@ -56,53 +54,26 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append(this.rawString());
-            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            for (Element accordionGroupElement : accordionGroupElementList) {
+                FlexibleStringExpander headingExdr = FlexibleStringExpander.getInstance(accordionGroupElement.getAttribute("heading"));
+                FlexibleStringExpander repeatExdr = FlexibleStringExpander.getInstance(accordionGroupElement.getAttribute("repeat"));
+                writer.append("<accordion-group heading=\"" + headingExdr.getOriginal() + "\"");
+                if (UtilValidate.isNotEmpty(repeatExdr.getOriginal())) {
+                    writer.append(" ng-repeat=\"" + repeatExdr.getOriginal() + "\"");
+                }
+                writer.append(">");
+                // read sub-widgets
+                List<? extends Element> subElementList = UtilXml.childElementList(accordionGroupElement);
+                List<ModelScreenWidget> subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+                renderSubWidgetsString(subWidgets, writer, context, screenStringRenderer);
+                writer.append("</accordion-group>");
+            }
             writer.append("</accordion>");
         }
 
         @Override
         public String rawString() {
             return "<accordion close-others=\"" + this.closeOthersExdr.getOriginal() + "\">";
-        }
-        
-    }
-    
-    @SuppressWarnings("serial")
-    public static class AccordionGroup extends ModelScreenWidget {
-        public static final String TAG_NAME = "accordion-group";
-        
-        protected FlexibleStringExpander headingExdr;
-        protected FlexibleStringExpander repeatExdr;
-        protected List<ModelScreenWidget> subWidgets;
-
-        public AccordionGroup(ModelScreen modelScreen, Element widgetElement) {
-            super(modelScreen, widgetElement);
-            this.headingExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("heading"));
-            this.repeatExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("repeat"));
-            // read sub-widgets
-            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
-            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
-        }
-
-        @Override
-        public void renderWidgetString(Appendable writer,
-                Map<String, Object> context,
-                ScreenStringRenderer screenStringRenderer)
-                throws GeneralException, IOException {
-            writer.append(this.rawString());
-            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
-            writer.append("</accordion-group>");
-        }
-
-        @Override
-        public String rawString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("<accordion-group heading=\"" + this.headingExdr.getOriginal() + "\"");
-            if (UtilValidate.isNotEmpty(this.repeatExdr.getOriginal())) {
-                builder.append(" ng-repeat=\"" + this.repeatExdr.getOriginal() + "\"");
-            }
-            builder.append(">");
-            return builder.toString();
         }
         
     }
@@ -313,7 +284,10 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            return "<div class=\"" + styleExdr.getOriginal() + "\" ng-grid=\"" + optionExdr.getOriginal() + "\"></div>";
+            StringBuilder option = new StringBuilder();
+            option.append("{");
+            option.append("}");
+            return "<div class=\"" + styleExdr.getOriginal() + "\" ng-grid=\"" + optionExdr.getOriginal() + "\" grid-option=\"" + option.toString() + "\"></div>";
         }
     }
 
@@ -342,16 +316,12 @@ public class AngularJsScreenWidget {
     @SuppressWarnings("serial")
     public static class NgList extends ModelScreenWidget {
         public static final String TAG_NAME = "list";
-
-        protected FlexibleStringExpander repeatExdr;
-        protected List<ModelScreenWidget> subWidgets;
+        
+        protected List<? extends Element> listItemElementList;
 
         public NgList(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.repeatExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("repeat"));
-            // read sub-widgets
-            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
-            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+            listItemElementList = UtilXml.childElementList(widgetElement, "list-item");
         }
 
         @Override
@@ -360,13 +330,49 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append(this.rawString());
-            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
-            writer.append("</li></ul>");
+            for (Element listItemElement : listItemElementList) {
+                writer.append("<li");
+                FlexibleStringExpander styleExdr = FlexibleStringExpander.getInstance(listItemElement.getAttribute("style"));
+                FlexibleStringExpander repeatExdr = FlexibleStringExpander.getInstance(listItemElement.getAttribute("repeat"));
+                writer.append(" class=\"" + styleExdr.getOriginal() + "\"");
+                if (UtilValidate.isNotEmpty(repeatExdr.getOriginal())) {
+                    writer.append(" ng-repeat=\"" + repeatExdr.getOriginal() + "\"");
+                }
+                writer.append(">");
+                // read sub-widgets
+                List<? extends Element> subElementList = UtilXml.childElementList(listItemElement);
+                List<ModelScreenWidget> subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+                renderSubWidgetsString(subWidgets, writer, context, screenStringRenderer);
+                writer.append("</li>");
+            }
+            writer.append("</ul>");
         }
 
         @Override
         public String rawString() {
-            return "<ul><li ng-repeat=\"" + repeatExdr.getOriginal() + "\">";
+            return "<ul>";
+        }
+    }
+
+    @SuppressWarnings("serial")
+    public static class View extends ModelScreenWidget {
+        public static final String TAG_NAME = "view";
+
+        public View(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<div ng-view=\"\"></div>";
         }
     }
 }

@@ -24,5 +24,10 @@ import org.ofbiz.angularjs.model.AbstractModelNg;
 public class ModelNgDirective extends AbstractModelNg {
     
     public final static String module = ModelNgDirective.class.getName();
+    
+    public String controllerName;
+    public String preCompileName;
+    public String postCompileName;
+    public String linkName;
 
 }
