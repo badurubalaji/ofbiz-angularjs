@@ -260,6 +260,49 @@ public class AngularJsScreenWidget {
         }
         
     }
+    
+    @SuppressWarnings("serial")
+    public static class Dropdown extends ModelScreenWidget {
+        public static final String TAG_NAME = "dropdown";
+        
+        protected FlexibleStringExpander textExdr;
+        protected List<? extends Element> optionElementList;
+
+        public Dropdown(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.textExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text"));
+            optionElementList = UtilXml.childElementList(widgetElement, "option");
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append("<a class=\"dropdown-toggle\">" + textExdr.getOriginal() + "</a>");
+            writer.append("<ul class=\"dropdown-menu\">");
+            for (Element optionElement : optionElementList) {
+                FlexibleStringExpander textExdr = FlexibleStringExpander.getInstance(optionElement.getAttribute("text"));
+                FlexibleStringExpander repeatExdr = FlexibleStringExpander.getInstance(optionElement.getAttribute("repeat"));
+                writer.append("<li");
+                if (UtilValidate.isNotEmpty(repeatExdr.getOriginal())) {
+                    writer.append(" ng-repeat=\"" + repeatExdr.getOriginal() + "\"");
+                }
+                writer.append(">");
+                writer.append("<a>" + textExdr.getOriginal() + "</a>");
+                writer.append("</li>");
+            }
+            writer.append("</ul>");
+            writer.append("</li>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<li class=\"dropdown\">";
+        }
+        
+    }
 
     @SuppressWarnings("serial")
     public static class Grid extends ModelScreenWidget {
@@ -351,6 +394,58 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             return "<ul>";
+        }
+    }
+    
+    @SuppressWarnings("serial")
+    public static class Text extends ModelScreenWidget {
+        public static final String TAG_NAME = "text";
+
+        protected FlexibleStringExpander modelExdr;
+        protected FlexibleStringExpander styleExdr;
+
+        public Text(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
+            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("<input type=\"text\" class=\"" + this.styleExdr.getOriginal() + "\" ng-model=\"" + this.modelExdr.getOriginal() + "\"/>");
+            return builder.toString();
+        }
+        
+    }
+
+    @SuppressWarnings("serial")
+    public static class Upload extends ModelScreenWidget {
+        public static final String TAG_NAME = "upload";
+
+        public Upload(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<div ng-upload=\"\"></div>";
         }
     }
 
