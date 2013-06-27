@@ -264,11 +264,44 @@ public class AngularJsScreenWidget {
     @SuppressWarnings("serial")
     public static class Dropdown extends ModelScreenWidget {
         public static final String TAG_NAME = "dropdown";
+
+        protected FlexibleStringExpander modelExdr;
+        protected FlexibleStringExpander optionsExdr;
+        protected FlexibleStringExpander defaultTextExdr;
+        
+        public Dropdown(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
+            this.optionsExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("options"));
+            this.defaultTextExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("default-text"));
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            if (UtilValidate.isNotEmpty(defaultTextExdr.getOriginal())) {
+                writer.append("<option value=\"\">" + defaultTextExdr.getOriginal() + "</option>");
+            }
+            writer.append("</select>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<select ng-model=\"" + modelExdr.getOriginal() + "\" ng-options=\"" + optionsExdr.getOriginal() + "\">";
+        }
+    }
+    
+    @SuppressWarnings("serial")
+    public static class DropdownToggle extends ModelScreenWidget {
+        public static final String TAG_NAME = "dropdown-toggle";
         
         protected FlexibleStringExpander textExdr;
         protected List<? extends Element> optionElementList;
 
-        public Dropdown(ModelScreen modelScreen, Element widgetElement) {
+        public DropdownToggle(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.textExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text"));
             optionElementList = UtilXml.childElementList(widgetElement, "option");

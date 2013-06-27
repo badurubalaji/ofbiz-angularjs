@@ -42,9 +42,20 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.DropdownDemoController">
-                    <dropdown text="Click me for a dropdown, yo!">
+                    <label text="Color:"/>
+                    <dropdown model="color" options="c.name for c in colors" default-text="-- chose color --"/>
+                    <label text="Currently selected: {{ {selected_color:color}  }}"/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="DropdownToggle">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.DropdownToggleDemoController">
+                    <dropdown-toggle text="Click me for a dropdown, yo!">
                         <option text="{{choice}}" repeat="choice in items"/>
-                    </dropdown>
+                    </dropdown-toggle>
                 </controller>
             </widgets>
         </section>

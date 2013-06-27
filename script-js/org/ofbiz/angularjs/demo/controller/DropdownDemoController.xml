@@ -5,11 +5,14 @@
             <attribute name="$scope" type="Object" mode="IN"/>
         </attributes>
         <body><![CDATA[
-            $scope.items = [
-                "The first choice!",
-                "And another choice for you.",
-                "but wait! A third!"
+            $scope.colors = [
+                {name:'black', shade:'dark'},
+                {name:'white', shade:'light'},
+                {name:'red', shade:'dark'},
+                {name:'blue', shade:'dark'},
+                {name:'yellow', shade:'light'}
               ];
+              $scope.color = $scope.colors[2]; // red
         ]]></body>
     </javascript-method>
 </javascript-class>

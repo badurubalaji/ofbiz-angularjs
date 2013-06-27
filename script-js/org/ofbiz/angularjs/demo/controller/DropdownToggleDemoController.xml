@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript-class name="DropdownToggleDemoController" package="org.ofbiz.angularjs.demo.controller">
+    <javascript-method name="DropdownToggleDemoController">
+        <attributes>
+            <attribute name="$scope" type="Object" mode="IN"/>
+        </attributes>
+        <body><![CDATA[
+            $scope.items = [
+                "The first choice!",
+                "And another choice for you.",
+                "but wait! A third!"
+              ];
+        ]]></body>
+    </javascript-method>
+</javascript-class>
