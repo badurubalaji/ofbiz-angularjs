@@ -115,13 +115,13 @@ public class AngularJsScreenWidget {
         public static final String TAG_NAME = "button";
 
         protected FlexibleStringExpander textExdr;
-        protected FlexibleStringExpander clickExdr;
+        protected FlexibleStringExpander onClickExdr;
         protected FlexibleStringExpander styleExdr;
 
         public Button(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.textExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text"));
-            this.clickExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("click"));
+            this.onClickExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-click"));
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
         }
 
@@ -135,7 +135,7 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            return "<button class=\"" + this.styleExdr.getOriginal() + "\" ng-click=\"" + this.clickExdr.getOriginal() + "\">" + this.textExdr.getOriginal() + "</button>";
+            return "<button class=\"" + this.styleExdr.getOriginal() + "\" ng-click=\"" + this.onClickExdr.getOriginal() + "\">" + this.textExdr.getOriginal() + "</button>";
         }
         
     }
@@ -335,6 +335,48 @@ public class AngularJsScreenWidget {
             return "<li class=\"dropdown\">";
         }
         
+    }
+
+    @SuppressWarnings("serial")
+    public static class Form extends ModelScreenWidget {
+        public static final String TAG_NAME = "form";
+
+        protected FlexibleStringExpander nameExdr;
+        protected FlexibleStringExpander validatedExdr;
+        protected FlexibleStringExpander styleExdr;
+        protected List<ModelScreenWidget> subWidgets;
+        
+        public Form(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.nameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name"));
+            this.validatedExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("validated"));
+            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</form>");
+        }
+
+        @Override
+        public String rawString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("<form name=\"" + nameExdr.getOriginal() + "\" class=\"" + styleExdr.getOriginal() + "\" ");
+            boolean validated = Boolean.valueOf(validatedExdr.getOriginal());
+            if (!validated) {
+                builder.append("novalidate ");
+            }
+            builder.append(">");
+            return builder.toString();
+        }
     }
 
     @SuppressWarnings("serial")

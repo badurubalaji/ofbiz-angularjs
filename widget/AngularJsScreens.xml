@@ -52,6 +52,11 @@
                         <include-screen name="DropdownToggle" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
+                        <!-- Form -->
+                        <label text="Form" style="h1"/>
+                        <include-screen name="Form" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
                         <!-- Grid -->
                         <label text="Grid" style="h1"/>
                         <include-screen name="Grid" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
