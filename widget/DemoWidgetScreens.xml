@@ -5,7 +5,7 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.CollapseDemoController">
-                    <button style="btn" click="isCollapsed = !isCollapsed" text="Toggle collapse"/>
+                    <button style="btn" on-click="isCollapsed = !isCollapsed" text="Toggle collapse"/>
                     <collapse collapse="isCollapsed">
                         <container style="well well-large">
                             <label text="Some content"/>
@@ -98,6 +98,23 @@
                 <controller name="org.ofbiz.angularjs.demo.controller.TextDemoController">
                     <label text="{{name}}"/>
                     <text model="name"/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Upload">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.UploadDemoController">
+                    <form target="/upload-full-form" upload="true">
+                        <label text="Fullname: "/>
+                        <text name="fullname" model="fullname"/>
+                        <line-break/>
+                        <label text="Your picture: "/>
+                        <file name="file"/>
+                        <line-break/>
+                        <submit text="Submit" on-upload="uploadComplete(content, completed)"/>
+                    </form>
                 </controller>
             </widgets>
         </section>

@@ -337,20 +337,54 @@ public class AngularJsScreenWidget {
         
     }
 
+    /**
+     * Service http://twilson63.github.io/ngUpload/
+     * @author chatree
+     *
+     */
+    @SuppressWarnings("serial")
+    public static class File extends ModelScreenWidget {
+        public static final String TAG_NAME = "file";
+        
+        protected FlexibleStringExpander nameExdr;
+        
+        public File(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.nameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name"));
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<input type=\"file\" name=\"" + nameExdr.getOriginal() + "\"/>";
+        }
+    }
+
     @SuppressWarnings("serial")
     public static class Form extends ModelScreenWidget {
         public static final String TAG_NAME = "form";
 
         protected FlexibleStringExpander nameExdr;
+        protected FlexibleStringExpander targetExdr;
         protected FlexibleStringExpander validatedExdr;
         protected FlexibleStringExpander styleExdr;
+        protected FlexibleStringExpander uploadExdr;
         protected List<ModelScreenWidget> subWidgets;
         
         public Form(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name"));
+            this.targetExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target"));
             this.validatedExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("validated"));
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
+            this.uploadExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("upload"));
             // read sub-widgets
             List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
@@ -368,11 +402,16 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("<form name=\"" + nameExdr.getOriginal() + "\" class=\"" + styleExdr.getOriginal() + "\" ");
+            boolean upload = Boolean.valueOf(uploadExdr.getOriginal());
             boolean validated = Boolean.valueOf(validatedExdr.getOriginal());
+            
+            StringBuilder builder = new StringBuilder();
+            builder.append("<form name=\"" + nameExdr.getOriginal() + "\" action=\"" + targetExdr.getOriginal() + "\" class=\"" + styleExdr.getOriginal() + "\" ");
             if (!validated) {
                 builder.append("novalidate ");
+            }
+            if (upload) {
+                builder.append("ng-upload ");
             }
             builder.append(">");
             return builder.toString();
@@ -545,6 +584,35 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             return "<input type=\"radio\" ng-model=\"" + modelExdr.getOriginal() + "\" value=\"" + valueExdr.getOriginal() + "\"/>";
+        }
+    }
+
+    @SuppressWarnings("serial")
+    public static class Submit extends ModelScreenWidget {
+        public static final String TAG_NAME = "submit";
+
+        protected FlexibleStringExpander textExdr;
+        protected FlexibleStringExpander styleExdr;
+        protected FlexibleStringExpander onUploadExdr;
+        
+        public Submit(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.textExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text"));
+            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
+            this.onUploadExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-upload"));
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<input type=\"submit\" class=\"" + styleExdr.getOriginal() + "\" value=\"" + textExdr.getOriginal() + "\" upload-submit=\"" + onUploadExdr.getOriginal() + "\"/>";
         }
     }
     

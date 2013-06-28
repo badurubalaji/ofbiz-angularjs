@@ -66,6 +66,11 @@
                         <label text="Text" style="h1"/>
                         <include-screen name="Text" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
+                        
+                        <!-- Upload -->
+                        <label text="Upload" style="h1"/>
+                        <include-screen name="Upload" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
                     </decorator-section>
                 </decorator-screen>
             </widgets>
