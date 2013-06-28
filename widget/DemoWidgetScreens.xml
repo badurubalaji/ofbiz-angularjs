@@ -65,7 +65,20 @@
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.FormDemoController">
                     <form name="form">
+                        <label text="Name: "/><text model="user.name"/>
+                        <line-break/>
+                        <label text="Email: "/><text type="email" model="user.email"/>
+                        <line-break/>
+                        <label text="Gender: "/>
+                        <radio model="user.gender" value="mail"/><label text="mail"/>
+                        <radio model="user.gender" value="femail"/><label text="femail"/>
+                        <line-break/>
+                        <button text="RESET" on-click="reset()"/>
+                        <button text="SAVE" on-click="update(user)"/>
                     </form>
+                    <line-break/>
+                    <preformatted-text>form = {{user | json}}"</preformatted-text>
+                    <preformatted-text>master = {{master | json}}"</preformatted-text>
                 </controller>
             </widgets>
         </section>

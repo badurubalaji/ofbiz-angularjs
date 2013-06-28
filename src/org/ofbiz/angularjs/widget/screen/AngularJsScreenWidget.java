@@ -430,6 +430,55 @@ public class AngularJsScreenWidget {
             return "<hr/>";
         }
     }
+    
+    @SuppressWarnings("serial")
+    public static class LineBreak extends ModelScreenWidget {
+        public static final String TAG_NAME = "line-break";
+        
+        public LineBreak(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<br/>";
+        }
+    }
+    
+    @SuppressWarnings("serial")
+    public static class PreformattedText extends ModelScreenWidget {
+        public static final String TAG_NAME = "preformatted-text";
+        
+        protected String textContent = null;
+        
+        public PreformattedText(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            textContent = widgetElement.getTextContent();
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append(textContent);
+            writer.append("</pre>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<pre>";
+        }
+    }
 
     @SuppressWarnings("serial")
     public static class NgList extends ModelScreenWidget {
@@ -469,6 +518,33 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             return "<ul>";
+        }
+    }
+
+    @SuppressWarnings("serial")
+    public static class Radio extends ModelScreenWidget {
+        public static final String TAG_NAME = "radio";
+
+        protected FlexibleStringExpander modelExdr;
+        protected FlexibleStringExpander valueExdr;
+        
+        public Radio(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
+            this.valueExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("value"));
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<input type=\"radio\" ng-model=\"" + modelExdr.getOriginal() + "\" value=\"" + valueExdr.getOriginal() + "\"/>";
         }
     }
     

@@ -5,6 +5,17 @@
             <attribute name="$scope" type="Object" mode="IN"/>
         </attributes>
         <body>
+            $scope.master= {};
+            
+            $scope.update = function(user) {
+                $scope.master= angular.copy(user);
+            };
+            
+            $scope.reset = function() {
+                $scope.user = angular.copy($scope.master);
+            };
+            
+            $scope.reset();
         </body>
     </javascript-method>
 </javascript-class>
