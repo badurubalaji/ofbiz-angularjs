@@ -496,14 +496,24 @@ public class AngularJsScreenWidget {
     }
     
     @SuppressWarnings("serial")
-    public static class PreformattedText extends ModelScreenWidget {
-        public static final String TAG_NAME = "preformatted-text";
+    public static class Modal extends ModelScreenWidget {
+        public static final String TAG_NAME = "modal";
+
+        protected FlexibleStringExpander shouldBeOpenExdr;
+        protected FlexibleStringExpander closeExdr;
+        protected FlexibleStringExpander optionsExdr;
+        protected Element modalHeaderElement;
+        protected Element modalBodyElement;
+        protected Element modalFooterElement;
         
-        protected String textContent = null;
-        
-        public PreformattedText(ModelScreen modelScreen, Element widgetElement) {
+        public Modal(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            textContent = widgetElement.getTextContent();
+            this.shouldBeOpenExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("should-be-open"));
+            this.closeExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("close"));
+            this.optionsExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("options"));
+            this.modalHeaderElement = UtilXml.firstChildElement(widgetElement, "modal-header");
+            this.modalBodyElement = UtilXml.firstChildElement(widgetElement, "modal-body");
+            this.modalFooterElement = UtilXml.firstChildElement(widgetElement, "modal-footer");
         }
 
         @Override
@@ -512,13 +522,36 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append(this.rawString());
-            writer.append(textContent);
-            writer.append("</pre>");
+            if (UtilValidate.isNotEmpty(modalHeaderElement)) {
+                writer.append("<div class=\"modal-header\">");
+                // read header sub-widgets
+                List<? extends Element> subElementList = UtilXml.childElementList(modalHeaderElement);
+                List<ModelScreenWidget> subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+                renderSubWidgetsString(subWidgets, writer, context, screenStringRenderer);
+                writer.append("</div>");
+            }
+            if (UtilValidate.isNotEmpty(modalBodyElement)) {
+                writer.append("<div class=\"modal-body\">");
+                // read body sub-widgets
+                List<? extends Element> subElementList = UtilXml.childElementList(modalBodyElement);
+                List<ModelScreenWidget> subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+                renderSubWidgetsString(subWidgets, writer, context, screenStringRenderer);
+                writer.append("</div>");
+            }
+            if (UtilValidate.isNotEmpty(modalFooterElement)) {
+                writer.append("<div class=\"modal-footer\">");
+                // read footer sub-widgets
+                List<? extends Element> subElementList = UtilXml.childElementList(modalFooterElement);
+                List<ModelScreenWidget> subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+                renderSubWidgetsString(subWidgets, writer, context, screenStringRenderer);
+                writer.append("</div>");
+            }
+            writer.append("</div>");
         }
 
         @Override
         public String rawString() {
-            return "<pre>";
+            return "<div modal=\"" + shouldBeOpenExdr.getOriginal() + "\" close=\"" + closeExdr.getOriginal() + "\" options=\"" + optionsExdr.getOriginal() + "\">";
         }
     }
 
@@ -562,18 +595,49 @@ public class AngularJsScreenWidget {
             return "<ul>";
         }
     }
+    
+    @SuppressWarnings("serial")
+    public static class PreformattedText extends ModelScreenWidget {
+        public static final String TAG_NAME = "preformatted-text";
+        
+        protected String textContent = null;
+        
+        public PreformattedText(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            textContent = widgetElement.getTextContent();
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append(textContent);
+            writer.append("</pre>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<pre>";
+        }
+    }
 
     @SuppressWarnings("serial")
     public static class Radio extends ModelScreenWidget {
         public static final String TAG_NAME = "radio";
 
         protected FlexibleStringExpander modelExdr;
+        protected FlexibleStringExpander textExdr;
         protected FlexibleStringExpander valueExdr;
+        protected FlexibleStringExpander styleExdr;
         
         public Radio(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
+            this.textExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text"));
             this.valueExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("value"));
+            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
         }
 
         @Override
@@ -586,7 +650,12 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            return "<input type=\"radio\" ng-model=\"" + modelExdr.getOriginal() + "\" value=\"" + valueExdr.getOriginal() + "\"/>";
+            StringBuilder builder = new StringBuilder();
+            builder.append("<label class=\"radio\">");
+            builder.append("<input type=\"radio\" class=\"" + this.styleExdr.getOriginal() + "\" ng-model=\"" + this.modelExdr.getOriginal() + "\" value=\"" + valueExdr.getOriginal() + "\"/>");
+            builder.append(this.textExdr.getOriginal());
+            builder.append("</label>");
+            return builder.toString();
         }
     }
 

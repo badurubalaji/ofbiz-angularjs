@@ -70,8 +70,8 @@
                         <label text="Email: "/><text type="email" model="user.email"/>
                         <line-break/>
                         <label text="Gender: "/>
-                        <radio model="user.gender" value="mail"/><label text="mail"/>
-                        <radio model="user.gender" value="femail"/><label text="femail"/>
+                        <radio model="user.gender" value="mail" text="mail"/>
+                        <radio model="user.gender" value="femail" text="femail"/>
                         <line-break/>
                         <button text="RESET" on-click="reset()"/>
                         <button text="SAVE" on-click="update(user)"/>
@@ -88,6 +88,30 @@
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.GridDemoController">
                     <grid style="gridStyle" row-height="40"/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Modal">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.ModalDemoController">
+                    <button style="btn" on-click="open()" text="Open me!"/>
+                    <modal should-be-open="shouldBeOpen" options="opts">
+                        <modal-header>
+                            <label style="h1" text="I'm a modal!"/>
+                        </modal-header>
+                        <modal-body>
+                            <list>
+                                <list-item repeat="item in items">
+                                    <label text="{{item}}"/>
+                                </list-item>
+                            </list>
+                        </modal-body>
+                        <modal-footer>
+                            <button style="btn btn-warning cancel" on-click="close()" text="Cancel"/>
+                        </modal-footer>
+                    </modal>
                 </controller>
             </widgets>
         </section>

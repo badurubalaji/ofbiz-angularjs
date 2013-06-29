@@ -62,6 +62,11 @@
                         <include-screen name="Grid" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
+                        <!-- Modal -->
+                        <label text="Modal" style="h1"/>
+                        <include-screen name="Modal" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
                         <!-- Text -->
                         <label text="Text" style="h1"/>
                         <include-screen name="Text" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
