@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<javascript-class name="GridOptionDirective" package="org.ofbiz.angularjs.directive">
-    <javascript-method name="gridOption" is-static="true">
+<javascript-class name="GridOptionsDirective" package="org.ofbiz.angularjs.directive">
+    <javascript-method name="gridOptions" is-static="true">
         <attributes>
         </attributes>
         <body><![CDATA[

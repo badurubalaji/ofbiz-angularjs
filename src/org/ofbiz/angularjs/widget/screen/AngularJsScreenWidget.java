@@ -447,7 +447,7 @@ public class AngularJsScreenWidget {
                 rowHeight = Integer.parseInt(rowHeightExdr.getOriginal());
             }
             
-            return "<div class=\"" + styleExdr.getOriginal() + "\" ng-grid=\"grid\" grid-option=\"\" row-height=\"" + rowHeight + "\"></div>";
+            return "<div class=\"" + styleExdr.getOriginal() + "\" ng-grid=\"grid\" grid-options=\"\" row-height=\"" + rowHeight + "\"></div>";
         }
     }
 

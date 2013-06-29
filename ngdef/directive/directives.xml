@@ -2,7 +2,8 @@
 <ng-directives>
     <ng-directive name="currentTime" location="org.ofbiz.angularjs.directive.CommonDirectives" invoke="currentTime"
         priority="0" restrict="E"/>
-    <ng-directive name="gridOption" location="org.ofbiz.angularjs.directive.GridOptionDirective" invoke="gridOption"
+        
+    <ng-directive name="gridOptions" location="org.ofbiz.angularjs.directive.GridOptionsDirective" invoke="gridOption"
         priority="0" replace="false" transclude="false" restrict="A" scope="false"
         controller-name="controller" pre-compile-name="preLink" post-compile-name="postLink" link-name="link"/>
 </ng-directives>
