@@ -422,13 +422,13 @@ public class AngularJsScreenWidget {
     public static class Grid extends ModelScreenWidget {
         public static final String TAG_NAME = "grid";
 
-        protected FlexibleStringExpander optionExdr;
         protected FlexibleStringExpander styleExdr;
+        protected FlexibleStringExpander rowHeightExdr;
         
         public Grid(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.optionExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("option"));
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
+            this.rowHeightExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("row-height"));
         }
 
         @Override
@@ -441,10 +441,13 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            StringBuilder option = new StringBuilder();
-            option.append("{");
-            option.append("}");
-            return "<div class=\"" + styleExdr.getOriginal() + "\" ng-grid=\"" + optionExdr.getOriginal() + "\" grid-option=\"" + option.toString() + "\"></div>";
+            int rowHeight = 40;
+            
+            if (UtilValidate.isNotEmpty(rowHeightExdr.getOriginal())) {
+                rowHeight = Integer.parseInt(rowHeightExdr.getOriginal());
+            }
+            
+            return "<div class=\"" + styleExdr.getOriginal() + "\" ng-grid=\"grid\" grid-option=\"\" row-height=\"" + rowHeight + "\"></div>";
         }
     }
 

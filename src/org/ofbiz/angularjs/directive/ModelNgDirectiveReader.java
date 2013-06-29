@@ -47,6 +47,11 @@ public class ModelNgDirectiveReader extends AbstractModelNgReader {
             ngDirective.name = UtilXml.checkEmpty(element.getAttribute("name")).intern();
             ngDirective.location = UtilXml.checkEmpty(element.getAttribute("location")).intern();
             ngDirective.invoke = UtilXml.checkEmpty(element.getAttribute("invoke")).intern();
+            ngDirective.priority = Integer.valueOf(UtilXml.checkEmpty(element.getAttribute("priority")).intern());
+            ngDirective.replace = Boolean.valueOf(UtilXml.checkEmpty(element.getAttribute("replace")).intern());
+            ngDirective.transclude = Boolean.valueOf(UtilXml.checkEmpty(element.getAttribute("transclude")).intern());
+            ngDirective.restrict = UtilXml.checkEmpty(element.getAttribute("restrict")).intern();
+            ngDirective.scope = UtilXml.checkEmpty(element.getAttribute("scope")).intern();
             ngDirective.controllerName = UtilXml.checkEmpty(element.getAttribute("controller-name")).intern();
             ngDirective.preCompileName = UtilXml.checkEmpty(element.getAttribute("pre-compile-name")).intern();
             ngDirective.postCompileName = UtilXml.checkEmpty(element.getAttribute("post-compile-name")).intern();

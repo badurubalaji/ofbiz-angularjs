@@ -28,7 +28,7 @@
                             <label text="{{group.content}}"/>
                         </accordion-group>
                         <accordion-group heading="Dynamic Body Content">
-                            <button text="Add Item" click="addItem()" style="btn btn-small"/>
+                            <button text="Add Item" on-click="addItem()" style="btn btn-small"/>
                             <list>
                                 <list-item repeat="item in items"><label text="{{item}}"/></list-item>
                             </list>
@@ -87,7 +87,7 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.GridDemoController">
-                    <grid option="gridOption" style="gridStyle"/>
+                    <grid style="gridStyle" row-height="40"/>
                 </controller>
             </widgets>
         </section>

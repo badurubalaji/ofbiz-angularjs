@@ -135,6 +135,39 @@ public class AngularJsEvents {
     private static String createDirectiveJsFunction(ModelNgDirective modelNgDirective) {
         StringBuilder builder = new StringBuilder();
         builder.append("function() {");
+        builder.append(" return {");
+        if (UtilValidate.isNotEmpty(modelNgDirective.replace)) {
+            builder.append("  replace:" + modelNgDirective.replace);
+        }
+        if (UtilValidate.isNotEmpty(modelNgDirective.transclude)) {
+            builder.append("  ,transclude:" + modelNgDirective.transclude);
+        }
+        if (UtilValidate.isNotEmpty(modelNgDirective.scope)) {
+            builder.append("  ,scope:" + modelNgDirective.scope);
+        }
+        if (UtilValidate.isNotEmpty(modelNgDirective.priority)) {
+            builder.append("  ,priority:" + modelNgDirective.priority);
+        }
+        if (UtilValidate.isNotEmpty(modelNgDirective.restrict)) {
+            builder.append("  ,restrict: \"" + modelNgDirective.restrict + "\"");
+        }
+        if (UtilValidate.isNotEmpty(modelNgDirective.controllerName)) {
+            builder.append("  ,controller:" + modelNgDirective.location + "." + modelNgDirective.controllerName);
+        }
+        builder.append("  ,compile: function(tElement, tAttrs, transclude) {");
+        builder.append("   return {");
+        if (UtilValidate.isNotEmpty(modelNgDirective.preCompileName)) {
+            builder.append("    pre: " + modelNgDirective.location + "." + modelNgDirective.preCompileName);
+        }
+        if (UtilValidate.isNotEmpty(modelNgDirective.postCompileName)) {
+            builder.append("    ,post: " + modelNgDirective.location + "." + modelNgDirective.postCompileName);
+        }
+        builder.append("   }");
+        builder.append("  }");
+        if (UtilValidate.isNotEmpty(modelNgDirective.linkName)) {
+            builder.append("  ,link: " + modelNgDirective.location + "." + modelNgDirective.linkName);
+        }
+        builder.append(" }");
         builder.append("}");
         return builder.toString();
     }

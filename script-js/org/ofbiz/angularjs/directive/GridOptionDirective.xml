@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<javascript-class name="GridOptionDirectives" package="org.ofbiz.angularjs.directive">
+<javascript-class name="GridOptionDirective" package="org.ofbiz.angularjs.directive">
     <javascript-method name="gridOption" is-static="true">
         <attributes>
         </attributes>
-        <body>
-            
-        </body>
+        <body><![CDATA[
+        
+        ]]></body>
     </javascript-method>
     <javascript-method name="controller" is-static="true">
         <attributes>
@@ -15,7 +15,19 @@
             <attribute name="$transclude" type="Object" mode="IN"/>
         </attributes>
         <body>
+            $scope.data = [{name: "Moroni", age: 50},
+                     {name: "Teancum", age: 43},
+                     {name: "Jacob", age: 27},
+                     {name: "Nephi", age: 29},
+                     {name: "Aof", age: 29},
+                     {name: "Enos", age: 34}];
+                     
+            $scope.grid = { data: 'data' };
             
+            var rowHeight = $attrs.rowHeight;
+            var rowSize = $scope.data.length;
+            
+            angular.element($element).css("height", (rowSize * rowHeight) + "px");
         </body>
     </javascript-method>
     <javascript-method name="preLink" is-static="true">
