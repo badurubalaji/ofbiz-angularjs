@@ -299,6 +299,44 @@ public class AngularJsScreenWidget {
     }
     
     @SuppressWarnings("serial")
+    public static class Datepicker extends ModelScreenWidget {
+        public static final String TAG_NAME = "datepicker";
+
+        protected FlexibleStringExpander modelExdr;
+        protected FlexibleStringExpander showWeeksExdr;
+        protected FlexibleStringExpander startingDayExdr;
+        protected FlexibleStringExpander dateDisabledExdr;
+        protected FlexibleStringExpander minExdr;
+        protected FlexibleStringExpander maxExdr;
+        
+        public Datepicker(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
+            this.showWeeksExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("show-weeks"));
+            this.startingDayExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("starting-day"));
+            this.dateDisabledExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("date-disabled"));
+            this.minExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("min"));
+            this.maxExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("max"));
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append("</datepicker>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<datepicker ng-model=\"" + modelExdr.getOriginal() + "\" show-weeks=\"" + showWeeksExdr.getOriginal() + "\""
+                    + " starting-day=\"" + startingDayExdr.getOriginal() + "\" date-disabled=\"" + dateDisabledExdr.getOriginal() + "\""
+                    + " min=\"" + minExdr.getOriginal() + "\" max=\"" + maxExdr.getOriginal() + "\">";
+        }
+    }
+    
+    @SuppressWarnings("serial")
     public static class Dropdown extends ModelScreenWidget {
         public static final String TAG_NAME = "dropdown";
 
@@ -372,6 +410,38 @@ public class AngularJsScreenWidget {
             return "<li class=\"dropdown\">";
         }
         
+    }
+    
+    @SuppressWarnings("serial")
+    public static class EmphasizedText extends ModelScreenWidget {
+        public static final String TAG_NAME = "emphasized-text";
+        
+        protected String textContent = null;
+        protected List<? extends Element> subElementList = null;
+        
+        public EmphasizedText(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            textContent = widgetElement.getTextContent();
+            subElementList = UtilXml.childElementList(widgetElement);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append(textContent);
+            // read sub-widgets
+            List<ModelScreenWidget> subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+            renderSubWidgetsString(subWidgets, writer, context, screenStringRenderer);
+            writer.append("</em>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<em>";
+        }
     }
 
     /**
@@ -638,10 +708,12 @@ public class AngularJsScreenWidget {
         public static final String TAG_NAME = "preformatted-text";
         
         protected String textContent = null;
+        protected List<? extends Element> subElementList = null;
         
         public PreformattedText(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             textContent = widgetElement.getTextContent();
+            subElementList = UtilXml.childElementList(widgetElement);
         }
 
         @Override
@@ -651,6 +723,9 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             writer.append(this.rawString());
             writer.append(textContent);
+            // read sub-widgets
+            List<ModelScreenWidget> subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+            renderSubWidgetsString(subWidgets, writer, context, screenStringRenderer);
             writer.append("</pre>");
         }
 

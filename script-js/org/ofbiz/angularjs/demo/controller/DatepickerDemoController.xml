@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript-class name="DatepickerDemoController" package="org.ofbiz.angularjs.demo.controller">
+    <javascript-method name="DatepickerDemoController">
+        <attributes>
+            <attribute name="$scope" type="Object" mode="IN"/>
+        </attributes>
+        <body><![CDATA[
+            $scope.today = function() {
+                $scope.dt = new Date();
+            };
+            $scope.today();
+            console.log("dt:" + $scope.dt);
+            
+            $scope.showWeeks = true;
+            $scope.toggleWeeks = function () {
+                $scope.showWeeks = ! $scope.showWeeks;
+            };
+            
+            $scope.clear = function () {
+                $scope.dt = null;
+            };
+            
+            // Disable weekend selection
+            $scope.disabled = function(date, mode) {
+                return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+            };
+            
+            $scope.toggleMin = function() {
+                $scope.minDate = ( $scope.minDate ) ? null : new Date();
+            };
+            $scope.toggleMin();
+        ]]></body>
+    </javascript-method>
+</javascript-class>

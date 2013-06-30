@@ -47,6 +47,11 @@
                         <include-screen name="Alert" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
+                        <!-- Datepicker -->
+                        <label text="Datepicker" style="h1"/>
+                        <include-screen name="Datepicker" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
                         <!-- Dropdown -->
                         <label text="Dropdown" style="h1"/>
                         <include-screen name="Dropdown" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
