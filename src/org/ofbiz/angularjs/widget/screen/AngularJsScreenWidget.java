@@ -79,6 +79,39 @@ public class AngularJsScreenWidget {
     }
     
     @SuppressWarnings("serial")
+    public static class Alert extends ModelScreenWidget {
+        public static final String TAG_NAME = "alert";
+        
+        protected FlexibleStringExpander repeatExdr;
+        protected FlexibleStringExpander typeExdr;
+        protected FlexibleStringExpander closeExdr;
+        protected FlexibleStringExpander textExdr;
+
+        public Alert(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.repeatExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("repeat"));
+            this.typeExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type"));
+            this.closeExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("close"));
+            this.textExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text"));
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append(textExdr.getOriginal());
+            writer.append("</alert>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<alert ng-repeat=\"" + this.repeatExdr.getOriginal() + "\" type=\"" + typeExdr.getOriginal() + "\" close=\"" + closeExdr.getOriginal() + "\">";
+        }
+    }
+    
+    @SuppressWarnings("serial")
     public static class Application extends ModelScreenWidget {
         public static final String TAG_NAME = "application";
         
@@ -135,7 +168,11 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            return "<button class=\"" + this.styleExdr.getOriginal() + "\" ng-click=\"" + this.onClickExdr.getOriginal() + "\">" + this.textExdr.getOriginal() + "</button>";
+            String style = this.styleExdr.getOriginal();
+            if (UtilValidate.isEmpty(style)) {
+                style= "btn";
+            }
+            return "<button class=\"" + style + "\" ng-click=\"" + this.onClickExdr.getOriginal() + "\">" + this.textExdr.getOriginal() + "</button>";
         }
         
     }

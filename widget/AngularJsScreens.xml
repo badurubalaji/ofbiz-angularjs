@@ -42,6 +42,11 @@
                         <include-screen name="Accordion" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
+                        <!-- Alert -->
+                        <label text="Alert" style="h1"/>
+                        <include-screen name="Alert" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
                         <!-- Dropdown -->
                         <label text="Dropdown" style="h1"/>
                         <include-screen name="Dropdown" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
