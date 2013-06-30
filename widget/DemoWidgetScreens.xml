@@ -140,6 +140,46 @@
             </widgets>
         </section>
     </screen>
+    <screen name="Tabs">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.TabsDemoController">
+                    <label text="Select a tab by setting active binding to true:"/>
+                    <line-break/>
+                    <button style="btn btn-small" on-click="tabs[0].active = true" text="Select second tab"/>
+                    <button style="btn btn-small" on-click="tabs[1].active = true" text="Select third tab"/>
+                    <button style="btn btn-small" on-click="tabs[1].disabled = ! tabs[1].disabled" text="Enable / Disable third tab"/>
+                    <horizontal-rule/>
+                    <tabs>
+                        <tab heading="Static title">
+                            <label text="Static content"/>
+                        </tab>
+                        <tab repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+                            <label text="{{tab.content}}"/>
+                        </tab>
+                        <tab on-select="alertMe()">
+                            <tab-heading>
+                                <list>
+                                    <list-item style="icon-bell"/>
+                                </list>
+                                <label text=" Select me for alert!"/>
+                            </tab-heading>
+                            <label text="I've got an HTML heading, and a select callback. Pretty cool!"/>
+                        </tab>
+                    </tabs>
+                    <horizontal-rule/>
+                    <tabs vertical="true" type="navType">
+                        <tab heading="Vertical 1">
+                            <label text="Vertical content 1"/>
+                        </tab>
+                        <tab heading="Vertical 2">
+                            <label text="Vertical content 2"/>
+                        </tab>
+                    </tabs>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
     <screen name="Text">
         <section>
             <widgets>

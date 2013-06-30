@@ -19,6 +19,7 @@
 package org.ofbiz.angularjs.widget.screen;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -798,6 +799,97 @@ public class AngularJsScreenWidget {
         public String rawString() {
             return "<input type=\"submit\" class=\"" + styleExdr.getOriginal() + "\" value=\"" + textExdr.getOriginal() + "\" upload-submit=\"" + onUploadExdr.getOriginal() + "\"/>";
         }
+    }
+    
+    @SuppressWarnings("serial")
+    public static class Tabs extends ModelScreenWidget {
+        public static final String TAG_NAME = "tabs";
+
+        protected List<? extends Element> tabElements;
+        protected FlexibleStringExpander verticalExdr;
+        protected FlexibleStringExpander typeExdr;
+
+        public Tabs(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.tabElements = UtilXml.childElementList(widgetElement, "tab");
+            this.verticalExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("vertical"));
+            this.typeExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type"));
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            if (UtilValidate.isNotEmpty(tabElements)) {
+                // tabs
+                for (Element tabElement : tabElements) {
+                    StringWriter tabWriter = new StringWriter();
+                    FlexibleStringExpander repeatExdr = FlexibleStringExpander.getInstance(tabElement.getAttribute("repeat"));
+                    FlexibleStringExpander headingExdr = FlexibleStringExpander.getInstance(tabElement.getAttribute("heading"));
+                    FlexibleStringExpander activeExdr = FlexibleStringExpander.getInstance(tabElement.getAttribute("active"));
+                    FlexibleStringExpander disabledExdr = FlexibleStringExpander.getInstance(tabElement.getAttribute("disabled"));
+                    FlexibleStringExpander onSelectExdr = FlexibleStringExpander.getInstance(tabElement.getAttribute("on-select"));
+                    tabWriter.append("<tab ");
+                    if (UtilValidate.isNotEmpty(repeatExdr.getOriginal())) {
+                        tabWriter.append("ng-repeat=\"" + repeatExdr.getOriginal() + "\" ");
+                    }
+                    if (UtilValidate.isNotEmpty(headingExdr.getOriginal())) {
+                        tabWriter.append("heading=\"" + headingExdr.getOriginal() + "\" ");
+                    }
+                    if (UtilValidate.isNotEmpty(activeExdr.getOriginal())) {
+                        tabWriter.append("active=\"" + activeExdr.getOriginal() + "\" ");
+                    }
+                    if (UtilValidate.isNotEmpty(disabledExdr.getOriginal())) {
+                        tabWriter.append("disabled=\"" + disabledExdr.getOriginal() + "\" ");
+                    }
+                    if (UtilValidate.isNotEmpty(onSelectExdr.getOriginal())) {
+                        tabWriter.append("select=\"" + onSelectExdr.getOriginal() + "\" ");
+                    }
+                    tabWriter.append(">");
+                    
+                    // tab heading
+                    Element tabHeadingElement = UtilXml.firstChildElement(tabElement, "tab-heading");
+                    if (UtilValidate.isNotEmpty(tabHeadingElement)) {
+                        tabWriter.append("<tab-heading>");
+                        // read tab heading sub widgets
+                        List<? extends Element> tabHeadingSubWidgetElements = UtilXml.childElementList(tabHeadingElement);
+                        List<ModelScreenWidget> tabHeadingSubWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, tabHeadingSubWidgetElements);
+                        renderSubWidgetsString(tabHeadingSubWidgets, tabWriter, context, screenStringRenderer);
+                        tabWriter.append("</tab-heading>");
+                    }
+
+                    // read tab sub widgets
+                    List<? extends Element> tabSubWidgetElements = UtilXml.childElementList(tabElement);
+                    if (UtilValidate.isNotEmpty(tabHeadingElement)) {
+                        // remove tab heading element
+                        tabSubWidgetElements.remove(0);
+                    }
+                    List<ModelScreenWidget> tabSubWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, tabSubWidgetElements);
+                    renderSubWidgetsString(tabSubWidgets, tabWriter, context, screenStringRenderer);
+
+                    tabWriter.append("</tab>");
+                    writer.append(tabWriter.toString());
+                }
+            }
+            writer.append("</tabset>");
+        }
+
+        @Override
+        public String rawString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("<tabset ");
+            if (UtilValidate.isNotEmpty(verticalExdr.getOriginal())) {
+                builder.append("vertical=\"" + verticalExdr.getOriginal() + "\"");
+            }
+            if (UtilValidate.isNotEmpty(typeExdr.getOriginal())) {
+                builder.append("type=\"" + typeExdr.getOriginal() + "\"");
+            }
+            builder.append(">");
+            return builder.toString();
+        }
+        
     }
     
     @SuppressWarnings("serial")

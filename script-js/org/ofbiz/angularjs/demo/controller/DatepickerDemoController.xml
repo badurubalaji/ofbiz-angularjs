@@ -9,7 +9,6 @@
                 $scope.dt = new Date();
             };
             $scope.today();
-            console.log("dt:" + $scope.dt);
             
             $scope.showWeeks = true;
             $scope.toggleWeeks = function () {

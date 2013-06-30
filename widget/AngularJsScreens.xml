@@ -77,6 +77,11 @@
                         <include-screen name="Modal" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
+                        <!-- Tabs -->
+                        <label text="Tabs" style="h1"/>
+                        <include-screen name="Tabs" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
                         <!-- Text -->
                         <label text="Text" style="h1"/>
                         <include-screen name="Text" location="component://angularjs/widget/DemoWidgetScreens.xml"/>

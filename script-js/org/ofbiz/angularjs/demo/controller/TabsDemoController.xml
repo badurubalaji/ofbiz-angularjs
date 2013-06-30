@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript-class name="TabsDemoController" package="org.ofbiz.angularjs.demo.controller">
+    <javascript-method name="TabsDemoController">
+        <attributes>
+            <attribute name="$scope" type="Object" mode="IN"/>
+        </attributes>
+        <body>
+            $scope.tabs = [
+                { title:"Dynamic Title 1", content:"Dynamic content 1" },
+                { title:"Dynamic Title 2", content:"Dynamic content 2", disabled: true }
+            ];
+            
+            $scope.alertMe = function() {
+                setTimeout(function() {
+                  alert("You've selected the alert tab!");
+                });
+            };
+            
+            $scope.navType = 'pills';
+        </body>
+    </javascript-method>
+</javascript-class>
