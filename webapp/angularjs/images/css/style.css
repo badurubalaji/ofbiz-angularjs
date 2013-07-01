@@ -35,3 +35,17 @@ h3, .h3 {
 font-size: 1.1em;
 font-weight: bold;
 }
+
+[class^="icon-"],
+[class*=" icon-"] {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  *margin-right: .3em;
+  line-height: 14px;
+  vertical-align: text-top;
+  background-image: url("/angularjs/images/glyphicons-halflings.png") !important;
+  background-position: 14px 14px;
+  background-repeat: no-repeat;
+}

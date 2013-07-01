@@ -159,9 +159,7 @@
                         </tab>
                         <tab on-select="alertMe()">
                             <tab-heading>
-                                <list>
-                                    <list-item style="icon-bell"/>
-                                </list>
+                                <label style="icon-bell"/>
                                 <label text=" Select me for alert!"/>
                             </tab-heading>
                             <label text="I've got an HTML heading, and a select callback. Pretty cool!"/>
