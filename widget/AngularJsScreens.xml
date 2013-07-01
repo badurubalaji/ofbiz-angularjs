@@ -32,11 +32,6 @@
             <widgets>
                 <decorator-screen name="AngularJsCommonDecorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
-                        <!-- Collapse -->
-                        <label text="Collapse" style="h1"/>
-                        <include-screen name="Collapse" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
-                        <horizontal-rule/>
-                        
                         <!-- Accordion -->
                         <label text="Accordion" style="h1"/>
                         <include-screen name="Accordion" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
@@ -45,6 +40,11 @@
                         <!-- Alert -->
                         <label text="Alert" style="h1"/>
                         <include-screen name="Alert" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
+                        <!-- Collapse -->
+                        <label text="Collapse" style="h1"/>
+                        <include-screen name="Collapse" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
                         <!-- Datepicker -->
@@ -65,6 +65,11 @@
                         <!-- Form -->
                         <label text="Form" style="h1"/>
                         <include-screen name="Form" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
+                        <!-- Google Map -->
+                        <label text="GoogleMap" style="h1"/>
+                        <include-screen name="GoogleMap" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
                         <!-- Grid -->

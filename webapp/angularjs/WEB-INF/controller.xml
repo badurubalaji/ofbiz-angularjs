@@ -38,7 +38,7 @@
         <response name="error" type="none"/>
     </request-map>
     
-    <request-map uri="widgets"><security https="true" auth="true"/><response name="success" type="view" value="widgets"/></request-map>
+    <request-map uri="widgets"><security https="false" auth="true"/><response name="success" type="view" value="widgets"/></request-map>
     
     <request-map uri="sample"><security https="true" auth="false"/><response name="success" type="view" value="sample"/></request-map>
     <request-map uri="PhoneList"><security https="true" auth="false"/><response name="success" type="view" value="PhoneList"/></request-map>
