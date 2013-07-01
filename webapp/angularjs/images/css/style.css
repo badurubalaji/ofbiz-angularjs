@@ -49,3 +49,11 @@ font-weight: bold;
   background-position: 14px 14px;
   background-repeat: no-repeat;
 }
+
+.icon-chevron-left {
+  background-position: -432px -72px !important;
+}
+
+.icon-chevron-right {
+  background-position: -456px -72px !important;
+}
