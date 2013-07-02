@@ -62,6 +62,16 @@
             </widgets>
         </section>
     </screen>
+    <screen name="DateTime">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.DateTimeDemoController">
+                    <date-time model="date"/>
+                    <label text="Selected date: {{date}}"/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
     <screen name="Dropdown">
         <section>
             <widgets>
@@ -120,6 +130,7 @@
                         draggable="true"
                         fit="false"
                         events="eventsProperty"
+                        refresh="true"
                         style="height: 1000px; width: 100%">
                     </google-map>
                 </controller>

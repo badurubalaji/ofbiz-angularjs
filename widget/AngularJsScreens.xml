@@ -52,6 +52,11 @@
                         <include-screen name="Datepicker" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
+                        <!-- DateTime -->
+                        <label text="Date Time" style="h1"/>
+                        <include-screen name="DateTime" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
                         <!-- Dropdown -->
                         <label text="Dropdown" style="h1"/>
                         <include-screen name="Dropdown" location="component://angularjs/widget/DemoWidgetScreens.xml"/>

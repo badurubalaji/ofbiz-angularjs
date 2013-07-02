@@ -338,6 +338,42 @@ public class AngularJsScreenWidget {
     }
     
     @SuppressWarnings("serial")
+    public static class DateTime extends ModelScreenWidget {
+        public static final String TAG_NAME = "date-time";
+
+        protected String format = null;
+        protected String model = null;
+        protected String style = null;
+        
+        public DateTime(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.format = FlexibleStringExpander.getInstance(widgetElement.getAttribute("format")).getOriginal();
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
+            
+            if (UtilValidate.isEmpty(this.format)) {
+                this.format = "\"format\":\"MMM d, yyyy h:mm:ss a\"";
+            }
+            if (UtilValidate.isEmpty(this.style)) {
+                this.style = "input-large";
+            }
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<input ade-calpop='{" + format + "}' ng-model=\"" + model + "\" type=\"text\" class=\"" + style + "\" />";
+        }
+    }
+    
+    @SuppressWarnings("serial")
     public static class Dropdown extends ModelScreenWidget {
         public static final String TAG_NAME = "dropdown";
 
