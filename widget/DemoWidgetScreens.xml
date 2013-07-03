@@ -48,11 +48,11 @@
             </widgets>
         </section>
     </screen>
-    <screen name="Datepicker">
+    <screen name="DatePicker">
         <section>
             <widgets>
-                <controller name="org.ofbiz.angularjs.demo.controller.DatepickerDemoController">
-                    <datepicker model="dt" show-weeks="showWeeks" starting-day="1" date-disabled="disabled(date, mode)" min="minDate" max="'2015-06-22'"/>
+                <controller name="org.ofbiz.angularjs.demo.controller.DatePickerDemoController">
+                    <date-picker model="dt" show-weeks="showWeeks" starting-day="1" date-disabled="disabled(date, mode)" min="minDate" max="'2015-06-22'"/>
                     <preformatted-text>Selected date is: <emphasized-text>{{dt | date:'fullDate' }}</emphasized-text></preformatted-text>
                     <button style="btn btn-small btn-inverse" on-click="today()" text="Today"/>
                     <button style="btn btn-small btn-success" on-click="toggleWeeks()" text="Toggle Weeks"/>

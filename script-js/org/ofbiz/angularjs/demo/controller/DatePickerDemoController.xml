@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<javascript-class name="DatepickerDemoController" package="org.ofbiz.angularjs.demo.controller">
-    <javascript-method name="DatepickerDemoController">
+<javascript-class name="DatePickerDemoController" package="org.ofbiz.angularjs.demo.controller">
+    <javascript-method name="DatePickerDemoController">
         <attributes>
             <attribute name="$scope" type="Object" mode="IN"/>
         </attributes>

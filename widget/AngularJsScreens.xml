@@ -47,12 +47,12 @@
                         <include-screen name="Collapse" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
-                        <!-- Datepicker -->
-                        <label text="Datepicker" style="h1"/>
-                        <include-screen name="Datepicker" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <!-- Date Picker -->
+                        <label text="Date Picker" style="h1"/>
+                        <include-screen name="DatePicker" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
-                        <!-- DateTime -->
+                        <!-- Date Time -->
                         <label text="Date Time" style="h1"/>
                         <include-screen name="DateTime" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
