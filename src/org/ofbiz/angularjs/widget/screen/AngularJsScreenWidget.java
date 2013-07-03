@@ -20,7 +20,6 @@ package org.ofbiz.angularjs.widget.screen;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +31,6 @@ import org.ofbiz.widget.screen.ModelScreen;
 import org.ofbiz.widget.screen.ModelScreenWidget;
 import org.ofbiz.widget.screen.ScreenStringRenderer;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 public class AngularJsScreenWidget {
 
@@ -800,9 +798,11 @@ public class AngularJsScreenWidget {
         public static final String TAG_NAME = "preformatted-text";
         
         protected List<? extends Element> subElementList = null;
+        protected String textContent = null;
         
         public PreformattedText(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
+            textContent = widgetElement.getTextContent();
             subElementList = UtilXml.childElementList(widgetElement);
         }
 
@@ -812,6 +812,10 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append(this.rawString());
+            writer.append(this.textContent);
+            
+            //TODO reader text and element by order
+            /*
             for (Element subElement : subElementList) {
                 short nodeType = subElement.getNodeType();
                 if (nodeType == Node.TEXT_NODE) {
@@ -823,6 +827,8 @@ public class AngularJsScreenWidget {
                     renderSubWidgetsString(subWidgets, writer, context, screenStringRenderer);
                 }
             }
+            */
+            
             writer.append("</pre>");
         }
 
