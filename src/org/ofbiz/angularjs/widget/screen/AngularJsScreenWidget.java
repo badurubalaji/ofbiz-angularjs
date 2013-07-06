@@ -20,6 +20,7 @@ package org.ofbiz.angularjs.widget.screen;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -182,15 +183,15 @@ public class AngularJsScreenWidget {
     public static class Checkbox extends ModelScreenWidget {
         public static final String TAG_NAME = "checkbox";
 
-        protected FlexibleStringExpander textExdr;
-        protected FlexibleStringExpander modelExdr;
-        protected FlexibleStringExpander styleExdr;
+        protected String text;
+        protected String model;
+        protected String style;
 
         public Checkbox(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.textExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text"));
-            this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
-            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
+            this.text = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text")).getOriginal();
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
         }
 
         @Override
@@ -205,8 +206,12 @@ public class AngularJsScreenWidget {
         public String rawString() {
             StringBuilder builder = new StringBuilder();
             builder.append("<label class=\"checkbox\">");
-            builder.append("<input type=\"checkbox\" class=\"" + this.styleExdr.getOriginal() + "\" ng-model=\"" + this.modelExdr.getOriginal() + "\"/>");
-            builder.append(this.textExdr.getOriginal());
+            builder.append("<input type=\"checkbox\" class=\"" + this.style + "\"");
+            if (UtilValidate.isNotEmpty(model)) {
+                builder.append(" ng-model=\"" + this.model + "\"");
+            }
+            builder.append("/>");
+            builder.append(this.text);
             builder.append("</label>");
             return builder.toString();
         }
@@ -241,6 +246,83 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             return "<div collapse=\"" + this.collapseExdr.getOriginal() + "\">";
+        }
+    }
+
+    @SuppressWarnings("serial")
+    public static class ContainerFluid extends ModelScreenWidget {
+        public static final String TAG_NAME = "container-fluid";
+        
+        protected List<ModelScreenWidget> subWidgets;
+        
+        public ContainerFluid(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+        }
+
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div class=\"container-fluid\">";
+        }
+    }
+
+    @SuppressWarnings("serial")
+    public static class ControlGroup extends ModelScreenWidget {
+        public static final String TAG_NAME = "control-group";
+        
+        protected boolean row = false;
+        protected Element widgetElement = null;
+        
+        public ControlGroup(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.widgetElement = widgetElement;
+            this.row = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("row")).getOriginal());
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            List<? extends Element> subElements = UtilXml.childElementList(this.widgetElement);
+            for (Element subElement : subElements) {
+                if ("control-label".equals(subElement.getNodeName())) {
+                    String text = UtilXml.elementAttribute(subElement, "text", null);
+                    String forAttr = UtilXml.elementAttribute(subElement, "for", null);
+                    writer.append("<label class=\"control-label\" for=\"" + forAttr + "\">");
+                    writer.append(text);
+                    writer.append("</label>");
+                } else if ("controls".equals(subElement.getNodeName())) {
+                    List<? extends Element> controlElements = UtilXml.childElementList(subElement);
+                    for (Element controlElement : controlElements) {
+                        // read sub-widget
+                        List<Element> cElementList = new LinkedList<Element>();
+                        cElementList.add(controlElement);
+                        List<ModelScreenWidget> controlWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, cElementList);
+                        renderSubWidgetsString(controlWidgets, writer, context, screenStringRenderer);
+                    }
+                }
+            }
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div class=\"control-group\">";
         }
     }
 
@@ -875,6 +957,66 @@ public class AngularJsScreenWidget {
     }
 
     @SuppressWarnings("serial")
+    public static class Row extends ModelScreenWidget {
+        public static final String TAG_NAME = "row";
+        
+        protected List<ModelScreenWidget> subWidgets;
+        
+        public Row(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+        }
+
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div class=\"row\">";
+        }
+    }
+
+    @SuppressWarnings("serial")
+    public static class RowFluid extends ModelScreenWidget {
+        public static final String TAG_NAME = "row-fluid";
+        
+        protected List<ModelScreenWidget> subWidgets;
+        
+        public RowFluid(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+        }
+
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div class=\"row-fluid\">";
+        }
+    }
+
+    @SuppressWarnings("serial")
     public static class Submit extends ModelScreenWidget {
         public static final String TAG_NAME = "submit";
 
@@ -998,13 +1140,15 @@ public class AngularJsScreenWidget {
     public static class Text extends ModelScreenWidget {
         public static final String TAG_NAME = "text";
 
-        protected FlexibleStringExpander modelExdr;
-        protected FlexibleStringExpander styleExdr;
+        protected String model;
+        protected String style;
+        protected String placeholder;
 
         public Text(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
-            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("placeholder")).getOriginal();
         }
 
         @Override
@@ -1018,7 +1162,7 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("<input type=\"text\" class=\"" + this.styleExdr.getOriginal() + "\" ng-model=\"" + this.modelExdr.getOriginal() + "\"/>");
+            builder.append("<input type=\"text\" class=\"" + this.style + "\" ng-model=\"" + this.model + "\" placeholder=\"" + this.placeholder + "\"/>");
             return builder.toString();
         }
         

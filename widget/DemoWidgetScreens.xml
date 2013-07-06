@@ -146,6 +146,35 @@
             </widgets>
         </section>
     </screen>
+    <screen name="Layout">
+        <section>
+            <widgets>
+                <container-fluid>
+                    <row-fluid>
+                        <container style="span2">
+                            <button text="Button 1"/>
+                            <line-break/>
+                            <button text="Button 2"/>
+                            <line-break/>
+                            <button text="Button 3"/>
+                            <line-break/>
+                            <button text="Button 4"/>
+                            <line-break/>
+                            <label text="Label 1"/>
+                            <line-break/>
+                            <label text="Label 2"/>
+                            <line-break/>
+                            <checkbox text="Check Box 1"/>
+                            <checkbox text="Check Box 2"/>
+                        </container>
+                        <container style="span10">
+                            <grid/>
+                        </container>
+                    </row-fluid>
+                </container-fluid>
+            </widgets>
+        </section>
+    </screen>
     <screen name="Modal">
         <section>
             <widgets>
