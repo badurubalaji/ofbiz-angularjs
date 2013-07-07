@@ -241,8 +241,32 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.TextDemoController">
-                    <label text="{{name}}"/>
-                    <text model="name"/>
+                    <label text="Name: "/>
+                    <text model="name" placeholder="Enter you name."/>
+                    <line-break/>
+                    <label text="Name is {{name}}."/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="TimePicker">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.TimePickerDemoController">
+                    <time-picker model="mytime" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"/>
+                    <line-break/>
+                    <preformatted-text>Time is: {{mytime | date:'shortTime' }}</preformatted-text>
+                    <container>
+                        <label text="Hours step is: "/>
+                        <dropdown model="hstep" options="opt for opt in options.hstep"/>
+                    </container>
+                    <container>
+                        <label text="Minutes step is: "/>
+                        <dropdown model="mstep" options="opt for opt in options.mstep"/>
+                    </container>
+                    <button text="12H / 24H" on-click="toggleMode()"/>
+                    <button text="Set to 14:00" on-click="update()"/>
+                    <button text="Clear" on-click="clear()" style="btn-danger"/>
                 </controller>
             </widgets>
         </section>

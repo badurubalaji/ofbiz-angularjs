@@ -5,7 +5,6 @@
             <attribute name="$scope" type="Object" mode="IN"/>
         </attributes>
         <body>
-            $scope.name = "My Name";
         </body>
     </javascript-method>
 </javascript-class>

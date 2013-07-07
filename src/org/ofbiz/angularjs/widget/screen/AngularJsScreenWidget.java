@@ -171,10 +171,7 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             String style = this.styleExdr.getOriginal();
-            if (UtilValidate.isEmpty(style)) {
-                style= "btn";
-            }
-            return "<button class=\"" + style + "\" ng-click=\"" + this.onClickExdr.getOriginal() + "\">" + this.textExdr.getOriginal() + "</button>";
+            return "<button class=\"btn " + style + "\" ng-click=\"" + this.onClickExdr.getOriginal() + "\">" + this.textExdr.getOriginal() + "</button>";
         }
         
     }
@@ -1148,7 +1145,7 @@ public class AngularJsScreenWidget {
             super(modelScreen, widgetElement);
             this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
             this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
-            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("placeholder")).getOriginal();
+            this.placeholder = FlexibleStringExpander.getInstance(widgetElement.getAttribute("placeholder")).getOriginal();
         }
 
         @Override
@@ -1162,7 +1159,63 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("<input type=\"text\" class=\"" + this.style + "\" ng-model=\"" + this.model + "\" placeholder=\"" + this.placeholder + "\"/>");
+            builder.append("<input type=\"text\" class=\"" + this.style + "\"");
+            if (UtilValidate.isNotEmpty(placeholder)) {
+                builder.append(" placeholder=\"" + this.placeholder + "\"");
+            }
+            if (UtilValidate.isNotEmpty(model)) {
+                builder.append(" ng-model=\"" + this.model + "\"");
+            }
+            builder.append("/>");
+            
+            return builder.toString();
+        }
+        
+    }
+    
+    @SuppressWarnings("serial")
+    public static class TimePicker extends ModelScreenWidget {
+        public static final String TAG_NAME = "time-picker";
+
+        protected String model;
+        protected String hourStep;
+        protected String minuteStep;
+        protected String showMeridian;
+
+        public TimePicker(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+            this.hourStep = FlexibleStringExpander.getInstance(widgetElement.getAttribute("hour-step")).getOriginal();
+            this.minuteStep = FlexibleStringExpander.getInstance(widgetElement.getAttribute("minute-step")).getOriginal();
+            this.showMeridian = FlexibleStringExpander.getInstance(widgetElement.getAttribute("show-meridian")).getOriginal();
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("<timepicker");
+            if (UtilValidate.isNotEmpty(model)) {
+                builder.append(" ng-model=\"" + this.model + "\"");
+            }
+            if (UtilValidate.isNotEmpty(hourStep)) {
+                builder.append(" hour-step=\"" + this.hourStep + "\"");
+            }
+            if (UtilValidate.isNotEmpty(minuteStep)) {
+                builder.append(" minute-step=\"" + this.minuteStep + "\"");
+            }
+            if (UtilValidate.isNotEmpty(showMeridian)) {
+                builder.append(" show-meridian=\"" + this.showMeridian + "\"");
+            }
+            builder.append("></timepicker>");
+            
             return builder.toString();
         }
         

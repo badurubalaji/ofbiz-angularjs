@@ -57,3 +57,11 @@ font-weight: bold;
 .icon-chevron-right {
   background-position: -456px -72px !important;
 }
+
+.icon-chevron-up {
+  background-position: -288px -120px;
+}
+
+.icon-chevron-down {
+  background-position: -313px -119px;
+}
