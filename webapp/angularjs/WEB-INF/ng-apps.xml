@@ -7,6 +7,7 @@
         <module name="google-maps"/>
         <module name="ADE"/>
         <module name="ngSanitize"/>
+        <module name="ui.tinymce"/>
     </ng-app>
     <ng-app name="phonecat" default-path="/phones">
         <module name="ui.bootstrap"/>

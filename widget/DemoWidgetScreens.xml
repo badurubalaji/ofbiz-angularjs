@@ -249,6 +249,24 @@
             </widgets>
         </section>
     </screen>
+    <screen name="TextArea">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.TextAreaDemoController">
+                    <label text="Descripton: "/>
+                    <line-break/>
+                    <textarea model="plainDescription" placeholder="Enter description."/>
+                    <line-break/>
+                    <label text="Plain Description is {{plainDescription}}."/>
+                    <line-break/>
+                    <line-break/>
+                    <textarea model="richDescription" placeholder="Enter description." visual-editor-enable="true"/>
+                    <line-break/>
+                    <label text="Rich Description is {{richDescription}}."/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
     <screen name="TimePicker">
         <section>
             <widgets>

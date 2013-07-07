@@ -1174,6 +1174,51 @@ public class AngularJsScreenWidget {
     }
     
     @SuppressWarnings("serial")
+    public static class TextArea extends ModelScreenWidget {
+        public static final String TAG_NAME = "textarea";
+
+        protected String model;
+        protected String style;
+        protected String placeholder;
+        protected boolean visualEditorEnable = false;
+
+        public TextArea(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
+            this.placeholder = FlexibleStringExpander.getInstance(widgetElement.getAttribute("placeholder")).getOriginal();
+            this.visualEditorEnable = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("visual-editor-enable")).getOriginal());
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("<textarea class=\"" + this.style + "\"");
+            if (UtilValidate.isNotEmpty(placeholder)) {
+                builder.append(" placeholder=\"" + this.placeholder + "\"");
+            }
+            if (UtilValidate.isNotEmpty(model)) {
+                builder.append(" ng-model=\"" + this.model + "\"");
+            }
+            if (visualEditorEnable) {
+                builder.append(" ui-tinymce");
+            }
+            builder.append("></textarea>");
+            
+            return builder.toString();
+        }
+        
+    }
+    
+    @SuppressWarnings("serial")
     public static class TimePicker extends ModelScreenWidget {
         public static final String TAG_NAME = "time-picker";
 

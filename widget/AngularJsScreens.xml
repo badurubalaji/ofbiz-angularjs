@@ -102,6 +102,11 @@
                         <include-screen name="Text" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
+                        <!-- TextArea -->
+                        <label text="TextArea" style="h1"/>
+                        <include-screen name="TextArea" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
                         <!-- Time Picker -->
                         <label text="Time Picker" style="h1"/>
                         <include-screen name="TimePicker" location="component://angularjs/widget/DemoWidgetScreens.xml"/>

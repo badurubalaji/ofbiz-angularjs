@@ -9,6 +9,10 @@
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en"></script>
         <script type="text/javascript" src="/angularjs/images/js/angular-google-maps.js"></script>
         
+        <#-- TinyMCE -->
+        <script type="text/javascript" src="/angularjs/images/js/tinymce/tinymce.min.js"></script>
+        <script type="text/javascript" src="/angularjs/images/js/tinymce.js"></script>
+        
         <#-- Angular Datatype Editor (ADE) JavaScript -->
         <script type="text/javascript" src="/angularjs/images/js/ade/vendor/jquery.json-2.3.min.js"></script>
         <script type="text/javascript" src="/angularjs/images/js/ade/vendor/angular-sanitize.js"></script>
