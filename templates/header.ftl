@@ -9,6 +9,11 @@
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en"></script>
         <script type="text/javascript" src="/angularjs/images/js/ui-map.js"></script>
         
+        <#-- Calendar JavaScript -->
+        <script type="text/javascript" src="/angularjs/images/js/calendar/fullcalendar.min.js"></script>
+        <script type="text/javascript" src="/angularjs/images/js/calendar/gcal.js"></script>
+        <script type="text/javascript" src="/angularjs/images/js/calendar/calendar.js"></script>
+        
         <#--UI Utils -->
         <script type="text/javascript" src="/angularjs/images/js/ui-utils/modules/event/event.js"></script>
         
@@ -35,6 +40,10 @@
         
         <#-- Angular Datatype Editor (ADE) CSS -->
         <link href="/angularjs/images/css/ade/vendor/datepicker.css" rel="stylesheet">
+        
+        <#-- Calendar CSS -->
+        <link href="/angularjs/images/css/calendar/fullcalendar.css" rel="stylesheet">
+        <link href="/angularjs/images/css/calendar/fullcalendar.print.css" rel="stylesheet">
         
         <link href="/angularjs/images/css/style.css" rel="stylesheet">
     </head>

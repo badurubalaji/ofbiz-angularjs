@@ -177,6 +177,46 @@ public class AngularJsScreenWidget {
     }
     
     @SuppressWarnings("serial")
+    public static class Calendar extends ModelScreenWidget {
+        public static final String TAG_NAME = "calendar";
+
+        protected String name;
+        protected String options;
+        protected String model;
+
+        public Calendar(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name")).getOriginal();
+            this.options = FlexibleStringExpander.getInstance(widgetElement.getAttribute("options")).getOriginal();
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("<div ui-calendar=\"" + options + "\"");
+            if (UtilValidate.isNotEmpty(name)) {
+                builder.append(" calendar=\"" + this.name + "\"");
+            }
+            if (UtilValidate.isNotEmpty(model)) {
+                builder.append(" ng-model=\"" + this.model + "\"");
+            }
+            builder.append(">");
+            return builder.toString();
+        }
+        
+    }
+    
+    @SuppressWarnings("serial")
     public static class Checkbox extends ModelScreenWidget {
         public static final String TAG_NAME = "checkbox";
 

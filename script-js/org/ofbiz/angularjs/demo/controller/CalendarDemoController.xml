@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript-class name="CalendarDemoController" package="org.ofbiz.angularjs.demo.controller">
+    <javascript-method name="CalendarDemoController">
+        <attributes>
+            <attribute name="$scope" type="Object" mode="IN"/>
+        </attributes>
+        <body>
+            /* config object */
+            $scope.uiConfig = {
+              calendar:{
+                height: 450,
+                editable: true,
+                header:{
+                  left: 'month basicWeek basicDay agendaWeek agendaDay',
+                  center: 'title',
+                  right: 'today prev,next'
+                },
+                dayClick: $scope.alertEventOnClick,
+                eventDrop: $scope.alertOnDrop,
+                eventResize: $scope.alertOnResize
+              }
+            };
+        </body>
+    </javascript-method>
+</javascript-class>
