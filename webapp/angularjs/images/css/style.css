@@ -65,3 +65,7 @@ font-weight: bold;
 .icon-chevron-down {
   background-position: -313px -119px;
 }
+
+.map {
+  height: 200px;
+}

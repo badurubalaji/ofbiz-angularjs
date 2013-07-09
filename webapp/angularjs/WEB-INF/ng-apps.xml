@@ -2,9 +2,9 @@
 <ng-apps>
     <ng-app name="angularjs">
         <module name="ui.bootstrap"/>
+        <module name="ui.map"/>
         <module name="ngGrid"/>
         <module name="ngUpload"/>
-        <module name="google-maps"/>
         <module name="ADE"/>
         <module name="ngSanitize"/>
         <module name="ui.tinymce"/>

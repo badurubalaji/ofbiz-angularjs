@@ -7,7 +7,10 @@
         <script type="text/javascript" src="/angularjs/images/js/ng-grid-2.0.6.min.js"></script>
         <script type="text/javascript" src="/angularjs/images/js/ng-upload.js"></script>
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en"></script>
-        <script type="text/javascript" src="/angularjs/images/js/angular-google-maps.js"></script>
+        <script type="text/javascript" src="/angularjs/images/js/ui-map.js"></script>
+        
+        <#--UI Utils -->
+        <script type="text/javascript" src="/angularjs/images/js/ui-utils/modules/event/event.js"></script>
         
         <#-- TinyMCE -->
         <script type="text/javascript" src="/angularjs/images/js/tinymce/tinymce.min.js"></script>

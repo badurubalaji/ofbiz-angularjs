@@ -72,11 +72,6 @@
                         <include-screen name="Form" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
-                        <!-- Google Map -->
-                        <label text="GoogleMap" style="h1"/>
-                        <include-screen name="GoogleMap" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
-                        <horizontal-rule/>
-                        
                         <!-- Grid -->
                         <label text="Grid" style="h1"/>
                         <include-screen name="Grid" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
@@ -85,6 +80,11 @@
                         <!-- Layout -->
                         <label text="Layout" style="h1"/>
                         <include-screen name="Layout" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
+                        <!-- Map -->
+                        <label text="Map" style="h1"/>
+                        <include-screen name="Map" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
                         <!-- Modal -->

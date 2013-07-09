@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript-class name="UiMapOptionsDirective" package="org.ofbiz.angularjs.directive">
+    <javascript-method name="uiMapOptions" is-static="true">
+        <attributes>
+        </attributes>
+        <body><![CDATA[
+        
+        ]]></body>
+    </javascript-method>
+    <javascript-method name="controller" is-static="true">
+        <attributes>
+            <attribute name="$scope" type="Object" mode="IN"/>
+            <attribute name="$element" type="Object" mode="IN"/>
+            <attribute name="$attrs" type="Object" mode="IN"/>
+            <attribute name="$transclude" type="Object" mode="IN"/>
+        </attributes>
+        <body>
+            var height = $attrs.height;
+            if (height == "") {
+                height = 400;
+            }
+            
+            angular.element($element).css("height", height + "px");
+        </body>
+    </javascript-method>
+    <javascript-method name="preLink" is-static="true">
+        <attributes>
+            <attribute name="scope" type="Object" mode="IN"/>
+            <attribute name="iElement" type="Object" mode="IN"/>
+            <attribute name="iAttrs" type="Object" mode="IN"/>
+            <attribute name="controller" type="Object" mode="IN"/>
+        </attributes>
+        <body>
+            
+        </body>
+    </javascript-method>
+    <javascript-method name="link" is-static="true">
+        <attributes>
+            <attribute name="scope" type="Object" mode="IN"/>
+            <attribute name="iElement" type="Object" mode="IN"/>
+            <attribute name="iAttrs" type="Object" mode="IN"/>
+        </attributes>
+        <body>
+            
+        </body>
+    </javascript-method>
+    <javascript-method name="postLink" is-static="true">
+        <attributes>
+            <attribute name="scope" type="Object" mode="IN"/>
+            <attribute name="iElement" type="Object" mode="IN"/>
+            <attribute name="iAttrs" type="Object" mode="IN"/>
+            <attribute name="controller" type="Object" mode="IN"/>
+        </attributes>
+        <body>
+            
+        </body>
+    </javascript-method>
+</javascript-class>

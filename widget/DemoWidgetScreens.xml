@@ -117,26 +117,6 @@
             </widgets>
         </section>
     </screen>
-    <screen name="GoogleMap">
-        <section>
-            <widgets>
-                <controller name="org.ofbiz.angularjs.demo.controller.GoogleMapDemoController">
-                    <google-map center="position.coords"
-                        zoom="zoomProperty" 
-                        markers="markersProperty"
-                        latitude="clickedLatitudeProperty"
-                        longitude="clickedLongitudeProperty"
-                        mark-click="true"
-                        draggable="true"
-                        fit="false"
-                        events="eventsProperty"
-                        refresh="true"
-                        style="height: 1000px; width: 100%">
-                    </google-map>
-                </controller>
-            </widgets>
-        </section>
-    </screen>
     <screen name="Grid">
         <section>
             <widgets>
@@ -172,6 +152,29 @@
                         </container>
                     </row-fluid>
                 </container-fluid>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Map">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.MapDemoController">
+                    <label style="h1" text="Click to add a marker!"/>
+                    <container><label text="{{zoomMessage}}"/></container>
+                    <list>
+                        <list-item repeat="marker in myMarkers">
+                            <button text="Pan to Marker {{$index}}" on-click="panTo(marker)"/>
+                        </list-item>
+                    </list>
+                    <map-marker repeat="marker in myMarkers" value="myMarkers[$index]" event="{'map-click': 'openMarkerInfo(marker)'}" height="300"/>
+                    <map-info-window name="myInfoWindow">
+                        <label style="h1" text="Marker"/>
+                        <line-break/>
+                        <label text="Lat: "/><text model="currentMarkerLat"/><label text=", Lng: "/><text model="currentMarkerLng"/>
+                        <button text="Set Position" on-click="setMarkerPosition(currentMarker, currentMarkerLat, currentMarkerLng)"/>
+                    </map-info-window>
+                    <map name="myMap" style="map" event="{'map-click': 'addMarker($event)', 'map-zoom_changed': 'setZoomMessage(myMap.getZoom())' }" options="mapOptions"/>
+                </controller>
             </widgets>
         </section>
     </screen>

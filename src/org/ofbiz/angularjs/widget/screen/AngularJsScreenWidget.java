@@ -640,59 +640,6 @@ public class AngularJsScreenWidget {
             return builder.toString();
         }
     }
-    
-    /**
-     * http://nlaplante.github.io/angular-google-maps/
-     * @author chatree
-     *
-     */
-    @SuppressWarnings("serial")
-    public static class GoogleMap extends ModelScreenWidget {
-        public static final String TAG_NAME = "google-map";
-
-        protected String center;
-        protected boolean draggable;
-        protected String zoom;
-        protected String markers;
-        protected boolean markClick;
-        protected boolean fit;
-        protected String style;
-        protected String events;
-        protected boolean refresh;
-        protected String latitude;
-        protected String longitude;
-        
-        public GoogleMap(ModelScreen modelScreen, Element widgetElement) {
-            super(modelScreen, widgetElement);
-            this.center = FlexibleStringExpander.getInstance(widgetElement.getAttribute("center")).getOriginal();
-            this.draggable = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("draggable")).getOriginal());
-            this.zoom = FlexibleStringExpander.getInstance(widgetElement.getAttribute("zoom")).getOriginal();
-            this.markers = FlexibleStringExpander.getInstance(widgetElement.getAttribute("markers")).getOriginal();
-            this.markClick = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("mark-click")).getOriginal());
-            this.fit = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("fit")).getOriginal());
-            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
-            this.events = FlexibleStringExpander.getInstance(widgetElement.getAttribute("events")).getOriginal();
-            this.refresh = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("refresh")).getOriginal());
-            this.latitude = FlexibleStringExpander.getInstance(widgetElement.getAttribute("latitude")).getOriginal();
-            this.longitude = FlexibleStringExpander.getInstance(widgetElement.getAttribute("longitude")).getOriginal();
-        }
-
-        @Override
-        public void renderWidgetString(Appendable writer,
-                Map<String, Object> context,
-                ScreenStringRenderer screenStringRenderer)
-                throws GeneralException, IOException {
-            writer.append(this.rawString());
-            writer.append("</google-map>");
-        }
-
-        @Override
-        public String rawString() {
-            return "<google-map center=\"" + center + "\" draggable=\"" + draggable + "\" zoom=\"" + zoom
-                    + "\" markers=\"" + markers + "\" mark-click=\"" + markClick + "\" fit=\"" + fit + "\" style=\"" + style
-                    + "\" events=\"" + events + "\" refresh=\"" + refresh + "\" latitude=\"" + latitude + "\" longitude=\"" + longitude + "\">";
-        }
-    }
 
     @SuppressWarnings("serial")
     public static class Grid extends ModelScreenWidget {
@@ -1216,6 +1163,105 @@ public class AngularJsScreenWidget {
             return builder.toString();
         }
         
+    }
+    
+    /**
+     * 
+     * @author chatree
+     *
+     */
+    @SuppressWarnings("serial")
+    public static class UiMap extends ModelScreenWidget {
+        public static final String TAG_NAME = "map";
+
+        protected String name;
+        protected String style;
+        protected String height;
+        protected String event;
+        protected String options;
+        
+        public UiMap(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name")).getOriginal();
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
+            this.height = FlexibleStringExpander.getInstance(widgetElement.getAttribute("height")).getOriginal();
+            this.event = FlexibleStringExpander.getInstance(widgetElement.getAttribute("event")).getOriginal();
+            this.options = FlexibleStringExpander.getInstance(widgetElement.getAttribute("options")).getOriginal();
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div ui-map-options=\"\" ui-map=\"" + name + "\" height=\"" + height + "\" class=\"" + style + "\" ui-event=\"" + event + "\" ui-options=\"" + options + "\">" ;
+        }
+    }
+    
+    @SuppressWarnings("serial")
+    public static class UiMapInfoWindow extends ModelScreenWidget {
+        public static final String TAG_NAME = "map-info-window";
+
+        protected String name;
+        protected List<ModelScreenWidget> subWidgets;
+        
+        public UiMapInfoWindow(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name")).getOriginal();
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div ui-map-info-window=\"" + name + "\">" ;
+        }
+    }
+    @SuppressWarnings("serial")
+    public static class UiMapMarker extends ModelScreenWidget {
+        public static final String TAG_NAME = "map-marker";
+
+        protected String repeat;
+        protected String value;
+        protected String event;
+        
+        public UiMapMarker(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("repeat")).getOriginal();
+            this.value = FlexibleStringExpander.getInstance(widgetElement.getAttribute("value")).getOriginal();
+            this.event = FlexibleStringExpander.getInstance(widgetElement.getAttribute("event")).getOriginal();
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div ng-repeat=\"" + repeat + "\" value=\"" + value + "\" ui-event=\"" + event + "\">" ;
+        }
     }
     
     @SuppressWarnings("serial")
