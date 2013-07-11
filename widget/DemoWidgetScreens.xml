@@ -182,7 +182,7 @@
                         <label text="Lat: "/><text model="currentMarkerLat"/><label text=", Lng: "/><text model="currentMarkerLng"/>
                         <button text="Set Position" on-click="setMarkerPosition(currentMarker, currentMarkerLat, currentMarkerLng)"/>
                     </map-info-window>
-                    <map name="myMap" style="map" event="{'map-click': 'addMarker($event)', 'map-zoom_changed': 'setZoomMessage(myMap.getZoom())' }" options="mapOptions"/>
+                    <map name="myMap" style="map" event="{'map-click': 'addMarker($event,$params)', 'map-zoom_changed': 'setZoomMessage(myMap.getZoom())' }" options="mapOptions"/>
                 </controller>
             </widgets>
         </section>

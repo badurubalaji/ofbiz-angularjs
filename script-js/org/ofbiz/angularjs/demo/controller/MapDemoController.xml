@@ -13,10 +13,11 @@
               mapTypeId: google.maps.MapTypeId.ROADMAP
             };
              
-            $scope.addMarker = function($event) {
+            $scope.addMarker = function($event, $params) {
+              var latLng = $params[0].latLng;
               $scope.myMarkers.push(new google.maps.Marker({
                 map: $scope.myMap,
-                position: $event.latLng
+                position: latLng
               }));
             };
              

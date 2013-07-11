@@ -3,6 +3,7 @@
     <ng-app name="angularjs">
         <module name="ui.bootstrap"/>
         <module name="ui.map"/>
+        <module name="ui.event"/>
         <module name="ngGrid"/>
         <module name="ngUpload"/>
         <module name="ADE"/>
