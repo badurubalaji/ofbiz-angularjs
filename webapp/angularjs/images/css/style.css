@@ -66,6 +66,11 @@ font-weight: bold;
   background-position: -313px -119px;
 }
 
-.map {
-  height: 200px;
+img {
+  width: auto\9;
+  height: auto;
+  max-width: none !important;
+  vertical-align: middle;
+  border: 0;
+  -ms-interpolation-mode: bicubic;
 }

@@ -1284,7 +1284,7 @@ public class AngularJsScreenWidget {
         
         public UiMapMarker(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("repeat")).getOriginal();
+            this.repeat = FlexibleStringExpander.getInstance(widgetElement.getAttribute("repeat")).getOriginal();
             this.value = FlexibleStringExpander.getInstance(widgetElement.getAttribute("value")).getOriginal();
             this.event = FlexibleStringExpander.getInstance(widgetElement.getAttribute("event")).getOriginal();
         }
@@ -1300,7 +1300,7 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            return "<div ng-repeat=\"" + repeat + "\" value=\"" + value + "\" ui-event=\"" + event + "\">" ;
+            return "<div ng-repeat=\"" + repeat + "\" ui-map-marker=\"" + value + "\" ui-event=\"" + event + "\">" ;
         }
     }
     
