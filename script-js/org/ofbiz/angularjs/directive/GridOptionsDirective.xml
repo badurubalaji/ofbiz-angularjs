@@ -13,22 +13,96 @@
             <attribute name="$element" type="Object" mode="IN"/>
             <attribute name="$attrs" type="Object" mode="IN"/>
             <attribute name="$transclude" type="Object" mode="IN"/>
+            <attribute name="$http" type="Object" mode="IN"/>
         </attributes>
-        <body>
-            $scope.data = [{name: "Moroni", age: 50},
-                     {name: "Teancum", age: 43},
-                     {name: "Jacob", age: 27},
-                     {name: "Nephi", age: 29},
-                     {name: "Aof", age: 29},
-                     {name: "Enos", age: 34}];
-                     
-            $scope.grid = { data: 'data' };
+        <body><![CDATA[
+            var uri = "examples.json";
+            var listName = "examples";
+            $scope.data = [];
+            
+            var enablePaging = false;
+            var showFooter = false;
+            
+            $scope.setPagingData = function(data, page, pageSize){  
+                var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
+                $scope.$parent.data = pagedData;
+                $scope.totalServerItems = data.length;
+                if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
+            };
+            $scope.getPagedDataAsync = function (uri, listName, pageSize, page, searchText) {
+                setTimeout(function () {
+                    var data;
+                    if (searchText) {
+                        var ft = searchText.toLowerCase();
+                        $http.get(uri).success(function (largeLoad) {        
+                            data = largeLoad[listName].filter(function(item) {
+                                return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
+                            });
+                            $scope.setPagingData(data,page,pageSize);
+                        });            
+                    } else {
+                        $http.get(uri).success(function (largeLoad) {
+                            $scope.setPagingData(largeLoad[listName],page,pageSize);
+                        });
+                    }
+                }, 100);
+            };
             
             var rowHeight = $attrs.rowHeight;
-            var rowSize = $scope.data.length;
+            
+            $scope.totalServerItems = 0;
+            $scope.pagingOptions = {
+                pageSizes: [250, 500, 1000],
+                pageSize: 250,
+                currentPage: 1
+            };
+            $scope.filterOptions = {
+                filterText: "",
+                useExternalFilter: true
+            };
+            
+            $scope.getPagedDataAsync(uri, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, null, $scope);
+            
+            $scope.$watch('pagingOptions', function (newVal, oldVal) {
+                if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+                    $scope.getPagedDataAsync(uri, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+                }
+            }, true);
+            $scope.$watch('filterOptions', function (newVal, oldVal) {
+                if (newVal !== oldVal) {
+                  $scope.getPagedDataAsync(uri, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+                }
+            }, true);
+            
+                     
+            var rowSize = 10;//$scope.data.length;
+            
+            if (rowSize > 20) {
+                enablePaging = true;
+                showFooter = true;
+            }
+            
+            var columnDefs = [{field: 'exampleId', displayName: 'Example Id', enableCellEdit: false}, 
+                     {field:'exampleName', displayName:'Example Name', enableCellEdit: true}];
+            
+            $scope.grid = {
+                data: "data"
+                , multiSelect: false
+                , enablePaging: enablePaging
+                , showFooter: showFooter
+                , totalServerItems: "totalServerItems"
+                , filterOptions: $scope.filterOptions
+                , enableCellSelection: false
+                , enableRowSelection: true
+                , enableCellEditOnFocus: true
+                , enablePinning: true
+                , columnDefs: columnDefs
+            };
             
             angular.element($element).css("height", (rowSize * rowHeight) + "px");
-        </body>
+        ]]></body>
     </javascript-method>
     <javascript-method name="preLink" is-static="true">
         <attributes>
