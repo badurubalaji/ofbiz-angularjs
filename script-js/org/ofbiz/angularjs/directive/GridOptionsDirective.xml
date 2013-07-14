@@ -14,8 +14,10 @@
             <attribute name="$attrs" type="Object" mode="IN"/>
             <attribute name="$transclude" type="Object" mode="IN"/>
             <attribute name="$http" type="Object" mode="IN"/>
+            <attribute name="appBusy" type="Object" mode="IN"/>
         </attributes>
         <body><![CDATA[
+            appBusy.set();
             var rowHeight = $attrs.rowHeight;
             var targetUri = $attrs.targetUri;
             var listName = $attrs.listName;
@@ -45,11 +47,13 @@
                                 return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
                             });
                             $scope.setPagingData(data,page,pageSize);
-                        });            
+                            appBusy.set(false);
+                        });
                     } else {
                         $http.get(targetUri).success(function (largeLoad) {
                             $scope.$parent.data = largeLoad[listName];
                             $scope.setPagingData(largeLoad[listName],page,pageSize);
+                            appBusy.set(false);
                         });
                     }
                 }, 100);

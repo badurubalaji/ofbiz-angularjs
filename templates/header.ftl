@@ -8,6 +8,7 @@
         <script type="text/javascript" src="/angularjs/images/js/ng-upload.js"></script>
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en"></script>
         <script type="text/javascript" src="/angularjs/images/js/ui-map.js"></script>
+        <script type="text/javascript" src="/angularjs/images/js/appBusy.js"></script>
         
         <#-- Calendar JavaScript -->
         <script type="text/javascript" src="/angularjs/images/js/calendar/fullcalendar.min.js"></script>
