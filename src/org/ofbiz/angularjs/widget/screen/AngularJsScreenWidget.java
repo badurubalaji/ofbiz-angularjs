@@ -685,13 +685,23 @@ public class AngularJsScreenWidget {
     public static class Grid extends ModelScreenWidget {
         public static final String TAG_NAME = "grid";
 
-        protected FlexibleStringExpander styleExdr;
-        protected FlexibleStringExpander rowHeightExdr;
+        protected String targetUri;
+        protected String listName;
+        protected String style;
+        protected int rowHeight;
+        protected List<? extends Element> fieldElements;
         
         public Grid(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
-            this.rowHeightExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("row-height"));
+            this.targetUri = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target-uri")).getOriginal();
+            this.listName = FlexibleStringExpander.getInstance(widgetElement.getAttribute("list-name")).getOriginal();
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
+            try {
+                this.rowHeight = Integer.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("row-height")).getOriginal());
+            } catch (Exception e) {
+                this.rowHeight = 20;
+            }
+            this.fieldElements = UtilXml.childElementList(widgetElement, "field");
         }
 
         @Override
@@ -704,13 +714,44 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            int rowHeight = 40;
+            int defaultRowHeight = 40;
             
-            if (UtilValidate.isNotEmpty(rowHeightExdr.getOriginal())) {
-                rowHeight = Integer.parseInt(rowHeightExdr.getOriginal());
+            if (UtilValidate.isEmpty(rowHeight)) {
+                rowHeight = defaultRowHeight;
             }
             
-            return "<div class=\"" + styleExdr.getOriginal() + "\" ng-grid=\"grid\" grid-options=\"\" row-height=\"" + rowHeight + "\"></div>";
+            StringBuilder columnDefsBuilder = new StringBuilder();
+            columnDefsBuilder.append("[");
+            if (UtilValidate.isNotEmpty(fieldElements)) {
+                StringBuilder fieldsBuilder = new StringBuilder();
+                for (Element fieldElement : fieldElements) {
+                    fieldsBuilder.append("{");
+                    String name = UtilXml.elementAttribute(fieldElement, "name", null);
+                    String title = UtilXml.elementAttribute(fieldElement, "title", null);
+                    String editable = UtilXml.elementAttribute(fieldElement, "editable", null);
+                    
+                    fieldsBuilder.append("field:'" + name + "'");
+                    if (UtilValidate.isNotEmpty(title)) {
+                        fieldsBuilder.append(",displayName:'" + title + "'");
+                    }
+                    if (UtilValidate.isNotEmpty(editable)) {
+                        fieldsBuilder.append(",enableCellEdit:" + editable);
+                    }
+                    
+                    fieldsBuilder.append("},");
+                }
+                
+                String fieldString = fieldsBuilder.toString();
+                if (fieldString.endsWith(",")) {
+                    fieldString = fieldString.substring(0, fieldsBuilder.length() - 1);
+                }
+                
+                columnDefsBuilder.append(fieldString);
+            }
+            columnDefsBuilder.append("]");
+            
+            return "<div class=\"" + style + "\" ng-grid=\"grid\" grid-options=\"\" row-height=\"" + rowHeight
+                    + "\" target-uri=\"" + targetUri + "\" list-name=\"" + listName + "\" column-defs=\"" + columnDefsBuilder.toString() + "\"></div>";
         }
     }
 

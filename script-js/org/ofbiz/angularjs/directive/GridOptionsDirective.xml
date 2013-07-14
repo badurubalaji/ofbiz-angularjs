@@ -16,76 +16,77 @@
             <attribute name="$http" type="Object" mode="IN"/>
         </attributes>
         <body><![CDATA[
-            var uri = "examples.json";
-            var listName = "examples";
-            $scope.data = [];
+            var rowHeight = $attrs.rowHeight;
+            var targetUri = $attrs.targetUri;
+            var listName = $attrs.listName;
+            var columnDefs = $scope.$eval($attrs.columnDefs);
             
-            var enablePaging = false;
-            var showFooter = false;
+            var enablePaging = true;
+            var showFooter = true;
+            
+            $scope.data = [];
             
             $scope.setPagingData = function(data, page, pageSize){  
                 var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
-                $scope.$parent.data = pagedData;
+                $scope.data = pagedData;
                 $scope.totalServerItems = data.length;
                 if (!$scope.$$phase) {
                     $scope.$apply();
                 }
             };
-            $scope.getPagedDataAsync = function (uri, listName, pageSize, page, searchText) {
+            
+            $scope.getPagedDataAsync = function (targetUri, listName, pageSize, page, searchText) {
                 setTimeout(function () {
                     var data;
                     if (searchText) {
                         var ft = searchText.toLowerCase();
-                        $http.get(uri).success(function (largeLoad) {        
+                        $http.get(targetUri).success(function (largeLoad) {        
                             data = largeLoad[listName].filter(function(item) {
                                 return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
                             });
                             $scope.setPagingData(data,page,pageSize);
                         });            
                     } else {
-                        $http.get(uri).success(function (largeLoad) {
+                        $http.get(targetUri).success(function (largeLoad) {
+                            $scope.$parent.data = largeLoad[listName];
                             $scope.setPagingData(largeLoad[listName],page,pageSize);
                         });
                     }
                 }, 100);
             };
             
-            var rowHeight = $attrs.rowHeight;
-            
             $scope.totalServerItems = 0;
+            
             $scope.pagingOptions = {
                 pageSizes: [250, 500, 1000],
                 pageSize: 250,
                 currentPage: 1
             };
+            
             $scope.filterOptions = {
                 filterText: "",
                 useExternalFilter: true
             };
             
-            $scope.getPagedDataAsync(uri, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, null, $scope);
+            $scope.getPagedDataAsync(targetUri, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, null, $scope);
             
             $scope.$watch('pagingOptions', function (newVal, oldVal) {
                 if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
-                    $scope.getPagedDataAsync(uri, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+                    $scope.getPagedDataAsync(targetUri, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
                 }
             }, true);
             $scope.$watch('filterOptions', function (newVal, oldVal) {
                 if (newVal !== oldVal) {
-                  $scope.getPagedDataAsync(uri, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+                  $scope.getPagedDataAsync(targetUri, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
                 }
             }, true);
             
-                     
-            var rowSize = 10;//$scope.data.length;
+            var rowSize = 10
             
             if (rowSize > 20) {
                 enablePaging = true;
                 showFooter = true;
             }
-            
-            var columnDefs = [{field: 'exampleId', displayName: 'Example Id', enableCellEdit: false}, 
-                     {field:'exampleName', displayName:'Example Name', enableCellEdit: true}];
             
             $scope.grid = {
                 data: "data"

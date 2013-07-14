@@ -26,4 +26,10 @@ under the License.
             request.setAttribute("examples", examples);
         </script>
     </simple-method>
+    <simple-method method-name="getExampleFeatures" short-description="Get example features" login-required="true">
+        <entity-condition list="exampleFeatures" entity-name="ExampleFeature"/>
+        <script>groovy:
+            request.setAttribute("exampleFeatures", exampleFeatures);
+        </script>
+    </simple-method>
 </simple-methods>

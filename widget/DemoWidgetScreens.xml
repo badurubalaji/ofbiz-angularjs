@@ -130,7 +130,10 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.GridDemoController">
-                    <grid style="gridStyle" row-height="40"/>
+                    <grid style="gridStyle" row-height="40" target-uri="examples.json" list-name="examples">
+                        <field name="exampleId" title="Example Id" editable="false"/>
+                        <field name="exampleName" title="Example Name" editable="true"/>
+                    </grid>
                 </controller>
             </widgets>
         </section>
@@ -157,7 +160,10 @@
                             <checkbox text="Check Box 2"/>
                         </container>
                         <container style="span10">
-                            <grid/>
+                            <grid style="gridStyle" row-height="40" target-uri="ExampleFeatures.json" list-name="exampleFeatures">
+                                <field name="exampleFeatureId" title="Example Feature Id" editable="false"/>
+                                <field name="description" title="Description" editable="true"/>
+                            </grid>
                         </container>
                     </row-fluid>
                 </container-fluid>
