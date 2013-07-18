@@ -899,6 +899,39 @@ public class AngularJsScreenWidget {
             return "<ul>";
         }
     }
+
+    @SuppressWarnings("serial")
+    public static class Number extends ModelScreenWidget {
+        public static final String TAG_NAME = "number";
+
+        protected String name = null;
+        protected String type = null;
+        protected String model = null;
+        protected String min = null;
+        protected String max = null;
+
+        public Number(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name")).getOriginal();
+            this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+            this.min = FlexibleStringExpander.getInstance(widgetElement.getAttribute("min")).getOriginal();
+            this.max = FlexibleStringExpander.getInstance(widgetElement.getAttribute("max")).getOriginal();
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<input type=\"number\" ng-model=\"" + model + "\" name=\"" + name + "\" min=\"" + min + "\" max=\"" + max + "\" " + type + "/>";
+        }
+    }
     
     @SuppressWarnings("serial")
     public static class PreformattedText extends ModelScreenWidget {

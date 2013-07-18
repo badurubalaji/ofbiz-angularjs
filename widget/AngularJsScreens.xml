@@ -87,6 +87,11 @@
                         <include-screen name="Layout" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
+                        <!-- Number -->
+                        <label text="Number" style="h1"/>
+                        <include-screen name="Number" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
                         <!-- Map -->
                         <label text="Map" style="h1"/>
                         <include-screen name="Map" location="component://angularjs/widget/DemoWidgetScreens.xml"/>

@@ -217,6 +217,18 @@
             </widgets>
         </section>
     </screen>
+    <screen name="Number">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.NumberDemoController">
+                    <label text="Price: "/>
+                    <number name="price" model="price" type="integer" min="0" max="100" />
+                    <line-break/>
+                    <label text="Price is {{price}}."/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
     <screen name="Tabs">
         <section>
             <widgets>
