@@ -682,6 +682,58 @@ public class AngularJsScreenWidget {
     }
 
     @SuppressWarnings("serial")
+    public static class GoogleChart extends ModelScreenWidget {
+        public static final String TAG_NAME = "google-chart";
+        
+        protected String style = null;
+        protected String type = null;
+        protected boolean displayed = true;
+        protected String title =  null;
+        protected boolean isStacked = true;
+        protected int fill = 20;
+        protected boolean displayExactValues = true;
+        protected String vTitle = null;
+        protected String hTitle = null;
+        protected int vGridLinesCount = 18;
+        protected String target = null;
+        protected String model = null;
+        
+        public GoogleChart(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
+            this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
+            this.displayed = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("displayed")).getOriginal());
+            this.title = FlexibleStringExpander.getInstance(widgetElement.getAttribute("title")).getOriginal();
+            this.isStacked = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("is-stacked")).getOriginal());
+            this.fill = Integer.parseInt(FlexibleStringExpander.getInstance(widgetElement.getAttribute("fill")).getOriginal());
+            this.displayExactValues = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal());
+            this.vTitle = FlexibleStringExpander.getInstance(widgetElement.getAttribute("v-title")).getOriginal();
+            this.hTitle = FlexibleStringExpander.getInstance(widgetElement.getAttribute("h-title")).getOriginal();
+            this.vGridLinesCount = Integer.parseInt(FlexibleStringExpander.getInstance(widgetElement.getAttribute("v-grid-lines-count")).getOriginal());
+            this.target = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target")).getOriginal();
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+        }
+
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<div google-chart chart=\"" + model + "\" style=\"" + style + "\" type=\"" + type + "\""
+                    + " displayed=\"" + displayed + "\" title=\"" + title + "\" is-stacked=\"" + isStacked + "\""
+                    + " fill=\"" + fill + "\" diplay-exact-valules=\"" + displayExactValues + "\""
+                    + " v-title=\"" + vTitle + "\" h-title=\"" + hTitle + "\" v-grid-lines-count=\"" + vGridLinesCount + "\""
+                    + " target=\"" + target + "\" google-chart-options=\"\"/>";
+        }
+    }
+
+    @SuppressWarnings("serial")
     public static class Grid extends ModelScreenWidget {
         public static final String TAG_NAME = "grid";
 

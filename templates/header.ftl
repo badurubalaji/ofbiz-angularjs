@@ -32,6 +32,13 @@
         <script type="text/javascript" src="/angularjs/images/js/ade/date/date_filters.js"></script>
         <script type="text/javascript" src="/angularjs/images/js/ade/date/date_directives.js"></script>
         
+        <#-- Google Chart -->
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="/angularjs/images/js/ng-google-chart.js"></script>
+        <script type="text/javascript">
+            google.load('visualization', '1', {packages: ['corechart']})
+        </script>
+        
         <script type="text/javascript" src="/angularjs/control/classes.js"></script>
         <script type="text/javascript" src="/angularjs/control/apps.js"></script>
         

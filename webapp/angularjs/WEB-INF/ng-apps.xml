@@ -11,6 +11,7 @@
         <module name="ui.tinymce"/>
         <module name="ui.calendar"/>
         <module name="kalitte.services"/>
+        <module name="googlechart.directives"/>
     </ng-app>
     <ng-app name="phonecat" default-path="/phones">
         <module name="ui.bootstrap"/>

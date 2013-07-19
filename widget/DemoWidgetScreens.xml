@@ -126,6 +126,17 @@
             </widgets>
         </section>
     </screen>
+    <screen name="GoogleChart">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.GoogleChartDemoController">
+                    <google-chart model="chart" style="height:600px; width:100%;" type="AreaChart" displayed="true" title="Sales per month"
+                        is-stacked="true" fill="20" diplay-exact-values="true" v-title="Sales unit" h-title="Date"
+                        v-grid-lines-count="18" target="getSalesPerMonthChartData.json"/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
     <screen name="Grid">
         <section>
             <widgets>
