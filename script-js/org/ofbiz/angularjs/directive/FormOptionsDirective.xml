@@ -10,11 +10,7 @@
             <attribute name="appBusy" type="Object" mode="IN"/>
         </attributes>
         <body><![CDATA[
-            var target = $attrs.target;
             
-            $element.bind("submit", function(event) {
-                console.log("submit : " + target);
-            });
         ]]></body>
     </javascript-method>
     <javascript-method name="preLink" is-static="true">
@@ -28,25 +24,19 @@
             
         </body>
     </javascript-method>
-    <javascript-method name="link" is-static="true">
-        <attributes>
-            <attribute name="scope" type="Object" mode="IN"/>
-            <attribute name="iElement" type="Object" mode="IN"/>
-            <attribute name="iAttrs" type="Object" mode="IN"/>
-        </attributes>
-        <body>
-            
-        </body>
-    </javascript-method>
     <javascript-method name="postLink" is-static="true">
         <attributes>
-            <attribute name="scope" type="Object" mode="IN"/>
-            <attribute name="iElement" type="Object" mode="IN"/>
-            <attribute name="iAttrs" type="Object" mode="IN"/>
+            <attribute name="$scope" type="Object" mode="IN"/>
+            <attribute name="$element" type="Object" mode="IN"/>
+            <attribute name="$attrs" type="Object" mode="IN"/>
             <attribute name="controller" type="Object" mode="IN"/>
         </attributes>
         <body>
+            var target = $attrs.target;
             
+            $element.find("input[type=submit]").bind("click", function() {
+                console.log("submit: " + target);
+            });
         </body>
     </javascript-method>
 </javascript-class>

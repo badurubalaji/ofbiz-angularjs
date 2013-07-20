@@ -17,5 +17,5 @@
         
     <ng-directive name="formOptions" location="org.ofbiz.angularjs.directive.FormOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="false"
-        controller-name="controller" pre-compile-name="preLink" post-compile-name="postLink" link-name="link"/>
+        controller-name="controller" pre-compile-name="preLink" post-compile-name="postLink"/>
 </ng-directives>
