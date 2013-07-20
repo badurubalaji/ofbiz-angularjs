@@ -669,14 +669,19 @@ public class AngularJsScreenWidget {
             boolean validated = Boolean.valueOf(validatedExdr.getOriginal());
             
             StringBuilder builder = new StringBuilder();
-            builder.append("<form name=\"" + nameExdr.getOriginal() + "\" action=\"" + targetExdr.getOriginal() + "\" class=\"" + styleExdr.getOriginal() + "\" ");
+            builder.append("<form name=\"" + nameExdr.getOriginal() + "\" class=\"" + styleExdr.getOriginal() + "\" ");
             if (!validated) {
                 builder.append("novalidate ");
             }
             if (upload) {
                 builder.append("ng-upload ");
+                builder.append("action=\"" + targetExdr.getOriginal() + "\"");
+            } else {
+                //builder.append("ng-submit=\"submit()\" ");
+                builder.append("target=\"" + targetExdr.getOriginal() + "\"");
             }
-            builder.append(">");
+            
+            builder.append(" form-options=\"\">");
             return builder.toString();
         }
     }
@@ -1130,15 +1135,15 @@ public class AngularJsScreenWidget {
     public static class Submit extends ModelScreenWidget {
         public static final String TAG_NAME = "submit";
 
-        protected FlexibleStringExpander textExdr;
-        protected FlexibleStringExpander styleExdr;
-        protected FlexibleStringExpander onUploadExdr;
+        protected String text;
+        protected String style;
+        protected String onUpload;
         
         public Submit(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.textExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text"));
-            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
-            this.onUploadExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-upload"));
+            this.text = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text")).getOriginal();
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
+            this.onUpload = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-upload")).getOriginal();
         }
 
         @Override
@@ -1151,7 +1156,13 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            return "<input type=\"submit\" class=\"" + styleExdr.getOriginal() + "\" value=\"" + textExdr.getOriginal() + "\" upload-submit=\"" + onUploadExdr.getOriginal() + "\"/>";
+            StringBuilder builder = new StringBuilder();
+            builder.append("<input type=\"submit\" class=\"btn " + style + "\" value=\"" + text + "\"");
+            if (UtilValidate.isNotEmpty(onUpload)) {
+                builder.append(" upload-submit=\"" + onUpload + "\"");
+            }
+            builder.append("/>");
+            return  builder.toString();
         }
     }
     

@@ -107,7 +107,7 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.FormDemoController">
-                    <form name="form">
+                    <form name="form" target="createExample">
                         <label text="Name: "/><text model="user.name"/>
                         <line-break/>
                         <label text="Email: "/><text type="email" model="user.email"/>
@@ -118,6 +118,7 @@
                         <line-break/>
                         <button text="RESET" on-click="reset()"/>
                         <button text="SAVE" on-click="update(user)"/>
+                        <submit text="Submit"/>
                     </form>
                     <line-break/>
                     <preformatted-text>form = {{user | json}}"</preformatted-text>

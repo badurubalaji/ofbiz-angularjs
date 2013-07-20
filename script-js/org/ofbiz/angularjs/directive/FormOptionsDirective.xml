@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript-class name="FormOptionsDirective" package="org.ofbiz.angularjs.directive">
+    <javascript-method name="controller" is-static="true">
+        <attributes>
+            <attribute name="$scope" type="Object" mode="IN"/>
+            <attribute name="$element" type="Object" mode="IN"/>
+            <attribute name="$attrs" type="Object" mode="IN"/>
+            <attribute name="$transclude" type="Object" mode="IN"/>
+            <attribute name="$http" type="Object" mode="IN"/>
+            <attribute name="appBusy" type="Object" mode="IN"/>
+        </attributes>
+        <body><![CDATA[
+            var target = $attrs.target;
+            
+            $element.bind("submit", function(event) {
+                console.log("submit : " + target);
+            });
+        ]]></body>
+    </javascript-method>
+    <javascript-method name="preLink" is-static="true">
+        <attributes>
+            <attribute name="scope" type="Object" mode="IN"/>
+            <attribute name="iElement" type="Object" mode="IN"/>
+            <attribute name="iAttrs" type="Object" mode="IN"/>
+            <attribute name="controller" type="Object" mode="IN"/>
+        </attributes>
+        <body>
+            
+        </body>
+    </javascript-method>
+    <javascript-method name="link" is-static="true">
+        <attributes>
+            <attribute name="scope" type="Object" mode="IN"/>
+            <attribute name="iElement" type="Object" mode="IN"/>
+            <attribute name="iAttrs" type="Object" mode="IN"/>
+        </attributes>
+        <body>
+            
+        </body>
+    </javascript-method>
+    <javascript-method name="postLink" is-static="true">
+        <attributes>
+            <attribute name="scope" type="Object" mode="IN"/>
+            <attribute name="iElement" type="Object" mode="IN"/>
+            <attribute name="iAttrs" type="Object" mode="IN"/>
+            <attribute name="controller" type="Object" mode="IN"/>
+        </attributes>
+        <body>
+            
+        </body>
+    </javascript-method>
+</javascript-class>

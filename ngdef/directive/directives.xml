@@ -14,4 +14,8 @@
     <ng-directive name="googleChartOptions" location="org.ofbiz.angularjs.directive.GoogleChartOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="false"
         controller-name="controller" pre-compile-name="preLink" post-compile-name="postLink" link-name="link"/>
+        
+    <ng-directive name="formOptions" location="org.ofbiz.angularjs.directive.FormOptionsDirective"
+        priority="0" replace="false" transclude="false" restrict="A" scope="false"
+        controller-name="controller" pre-compile-name="preLink" post-compile-name="postLink" link-name="link"/>
 </ng-directives>
