@@ -32,4 +32,10 @@ under the License.
             request.setAttribute("exampleFeatures", exampleFeatures);
         </script>
     </simple-method>
+    <simple-method method-name="createExample" short-description="Create example" login-required="true">
+        <set field="createExampleInMap.exampleName" from-field="parameters.name"/>
+        <set field="createExampleInMap.exampleTypeId" value="CONTRIVED"/>
+        <set field="createExampleInMap.statusId" value="EXST_IN_DESIGN"/>
+        <call-service service-name="createExample" in-map-name="createExampleInMap"/>
+    </simple-method>
 </simple-methods>

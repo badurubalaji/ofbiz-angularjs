@@ -634,20 +634,25 @@ public class AngularJsScreenWidget {
     public static class Form extends ModelScreenWidget {
         public static final String TAG_NAME = "form";
 
-        protected FlexibleStringExpander nameExdr;
-        protected FlexibleStringExpander targetExdr;
-        protected FlexibleStringExpander validatedExdr;
-        protected FlexibleStringExpander styleExdr;
-        protected FlexibleStringExpander uploadExdr;
+        protected String name;
+        protected String target;
+        protected boolean validated;
+        protected String style;
+        protected boolean upload;
+        protected String onSubmitSuccess = null;
+        protected String onSubmitError = null;
         protected List<ModelScreenWidget> subWidgets;
         
         public Form(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.nameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name"));
-            this.targetExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target"));
-            this.validatedExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("validated"));
-            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
-            this.uploadExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("upload"));
+            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name")).getOriginal();
+            this.target = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target")).getOriginal();
+            this.validated = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("validated")).getOriginal());
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
+            this.upload = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("upload")).getOriginal());
+            this.onSubmitSuccess = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-submit-success")).getOriginal();
+            this.onSubmitError = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-submit-error")).getOriginal();
+            
             // read sub-widgets
             List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
@@ -665,20 +670,18 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            boolean upload = Boolean.valueOf(uploadExdr.getOriginal());
-            boolean validated = Boolean.valueOf(validatedExdr.getOriginal());
-            
             StringBuilder builder = new StringBuilder();
-            builder.append("<form name=\"" + nameExdr.getOriginal() + "\" class=\"" + styleExdr.getOriginal() + "\" ");
+            builder.append("<form name=\"" + name + "\" class=\"" + style + "\" ");
             if (!validated) {
                 builder.append("novalidate ");
             }
             if (upload) {
                 builder.append("ng-upload ");
-                builder.append("action=\"" + targetExdr.getOriginal() + "\"");
+                builder.append("action=\"" + target + "\"");
             } else {
-                //builder.append("ng-submit=\"submit()\" ");
-                builder.append("target=\"" + targetExdr.getOriginal() + "\"");
+                builder.append("target=\"" + target + "\" ");
+                builder.append("on-submit-success=\"" + onSubmitSuccess + "\" ");
+                builder.append("on-submit-error=\"" + onSubmitError + "\" ");
             }
             
             builder.append(" form-options=\"\">");
@@ -1261,12 +1264,16 @@ public class AngularJsScreenWidget {
     public static class Text extends ModelScreenWidget {
         public static final String TAG_NAME = "text";
 
+        protected String name;
+        protected String type;
         protected String model;
         protected String style;
         protected String placeholder;
 
         public Text(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
+            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name")).getOriginal();
+            this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
             this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
             this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
             this.placeholder = FlexibleStringExpander.getInstance(widgetElement.getAttribute("placeholder")).getOriginal();
@@ -1283,7 +1290,11 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("<input type=\"text\" class=\"" + this.style + "\"");
+            if (UtilValidate.isEmpty(type)) {
+                type = "text";
+            }
+            
+            builder.append("<input type=\"" + type + "\" name=\"" + this.name + "\" class=\"" + this.style + "\"");
             if (UtilValidate.isNotEmpty(placeholder)) {
                 builder.append(" placeholder=\"" + this.placeholder + "\"");
             }

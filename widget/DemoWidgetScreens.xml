@@ -107,17 +107,17 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.FormDemoController">
-                    <form name="form" target="createExample">
-                        <label text="Name: "/><text model="user.name"/>
+                    <form name="form" target="createExample.json" on-submit-success="onSubmitSuccess" on-submit-error="onSubmitError">
+                        <label text="Name: "/><text name="name" model="user.name"/>
                         <line-break/>
-                        <label text="Email: "/><text type="email" model="user.email"/>
+                        <label text="Email: "/><text type="email" name="email" model="user.email"/>
                         <line-break/>
                         <label text="Gender: "/>
                         <radio model="user.gender" value="mail" text="mail"/>
                         <radio model="user.gender" value="femail" text="femail"/>
                         <line-break/>
-                        <button text="RESET" on-click="reset()"/>
-                        <button text="SAVE" on-click="update(user)"/>
+                        <button text="Reset" on-click="reset()"/>
+                        <button text="Save" on-click="update(user)"/>
                         <submit text="Submit"/>
                     </form>
                     <line-break/>
