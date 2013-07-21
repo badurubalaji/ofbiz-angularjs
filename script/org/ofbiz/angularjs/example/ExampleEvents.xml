@@ -21,15 +21,41 @@ under the License.
 <simple-methods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/simple-methods-v2.xsd">
 
     <simple-method method-name="getExamples" short-description="Get examples" login-required="true">
-        <entity-condition list="examples" entity-name="Example"/>
+        <set field="performFindInMap.inputFields" from-field="parameters"/>
+        <set field="performFindInMap.entityName" value="Example"/>
+        <set field="performFindInMap.noConditionFind" value="Y"/>
+        <set field="performFindInMap.viewIndex" from-field="parameters.viewIndex"/>
+        <set field="performFindInMap.viewSize" from-field="parameters.viewSize"/>
+        <call-service service-name="performFind" in-map-name="performFindInMap">
+            <result-to-field result-name="listIt" field="listIt"/>
+            <result-to-field result-name="listSize" field="listSize"/>
+        </call-service>
+        <set field="parameters.viewIndex" from-field="parameters.viewIndex" default="0" type="Integer"/>
+        <set field="parameters.viewSize" from-field="parameters.viewSize" default="20" type="Integer"/>
         <script>groovy:
-            request.setAttribute("examples", examples);
+            request.setAttribute("examples", listIt.getCompleteList());
+            request.setAttribute("listSize", listSize);
+            request.setAttribute("viewIndex", parameters.viewIndex);
+            request.setAttribute("viewSize", parameters.viewSize);
         </script>
     </simple-method>
     <simple-method method-name="getExampleFeatures" short-description="Get example features" login-required="true">
-        <entity-condition list="exampleFeatures" entity-name="ExampleFeature"/>
+        <set field="performFindInMap.inputFields" from-field="parameters"/>
+        <set field="performFindInMap.entityName" value="ExampleFeature"/>
+        <set field="performFindInMap.noConditionFind" value="Y"/>
+        <set field="performFindInMap.viewIndex" from-field="parameters.viewIndex"/>
+        <set field="performFindInMap.viewSize" from-field="parameters.viewSize"/>
+        <call-service service-name="performFind" in-map-name="performFindInMap">
+            <result-to-field result-name="listIt" field="listIt"/>
+            <result-to-field result-name="listSize" field="listSize"/>
+        </call-service>
+        <set field="parameters.viewIndex" from-field="parameters.viewIndex" default="0" type="Integer"/>
+        <set field="parameters.viewSize" from-field="parameters.viewSize" default="20" type="Integer"/>
         <script>groovy:
-            request.setAttribute("exampleFeatures", exampleFeatures);
+            request.setAttribute("exampleFeatures", listIt.getCompleteList());
+            request.setAttribute("listSize", listSize);
+            request.setAttribute("viewIndex", parameters.viewIndex);
+            request.setAttribute("viewSize", parameters.viewSize);
         </script>
     </simple-method>
     <simple-method method-name="createExample" short-description="Create example" login-required="true">

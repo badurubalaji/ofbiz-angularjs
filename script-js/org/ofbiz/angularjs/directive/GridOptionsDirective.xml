@@ -42,17 +42,23 @@
                     var data;
                     if (searchText) {
                         var ft = searchText.toLowerCase();
-                        $http.get(targetUri).success(function (largeLoad) {        
-                            data = largeLoad[listName].filter(function(item) {
-                                return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
-                            });
-                            $scope.setPagingData(data,page,pageSize);
+                        $http.get(targetUri).success(function (response) {
+                            var listSize = response.listSize;
+                            if (listSize > 0) {
+                                data = response[listName].filter(function(item) {
+                                    return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
+                                });
+                                $scope.setPagingData(data,page,pageSize);
+                            }
                             appBusy.set(false);
                         });
                     } else {
-                        $http.get(targetUri).success(function (largeLoad) {
-                            $scope.$parent.data = largeLoad[listName];
-                            $scope.setPagingData(largeLoad[listName],page,pageSize);
+                        $http.get(targetUri).success(function (response) {
+                            var listSize = response.listSize;
+                            if (listSize > 0) {
+                                $scope.$parent.data = response[listName];
+                                $scope.setPagingData(response[listName],page,pageSize);
+                            }
                             appBusy.set(false);
                         });
                     }
