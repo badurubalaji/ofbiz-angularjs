@@ -496,15 +496,15 @@ public class AngularJsScreenWidget {
     public static class Dropdown extends ModelScreenWidget {
         public static final String TAG_NAME = "dropdown";
 
-        protected FlexibleStringExpander modelExdr;
-        protected FlexibleStringExpander optionsExdr;
-        protected FlexibleStringExpander defaultTextExdr;
+        protected String model;
+        protected String options;
+        protected String defaultText;
         
         public Dropdown(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
-            this.optionsExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("options"));
-            this.defaultTextExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("default-text"));
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+            this.options = FlexibleStringExpander.getInstance(widgetElement.getAttribute("options")).getOriginal();
+            this.defaultText = FlexibleStringExpander.getInstance(widgetElement.getAttribute("default-text")).getOriginal();
         }
 
         @Override
@@ -513,15 +513,24 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append(this.rawString());
-            if (UtilValidate.isNotEmpty(defaultTextExdr.getOriginal())) {
-                writer.append("<option value=\"\">" + defaultTextExdr.getOriginal() + "</option>");
+            if (UtilValidate.isNotEmpty(defaultText)) {
+                writer.append("<option value=\"\">" + defaultText + "</option>");
             }
             writer.append("</select>");
         }
 
         @Override
         public String rawString() {
-            return "<select ng-model=\"" + modelExdr.getOriginal() + "\" ng-options=\"" + optionsExdr.getOriginal() + "\">";
+            StringBuilder builder = new StringBuilder();
+            builder.append("<select ");
+            if (UtilValidate.isNotEmpty(model)) {
+                builder.append(" ng-model=\"" + model + "\"");
+            }
+            if (UtilValidate.isNotEmpty(options)) {
+                builder.append(" ng-options=\"" + options + "\"");
+            }
+            builder.append(">");
+            return builder.toString();
         }
     }
     
