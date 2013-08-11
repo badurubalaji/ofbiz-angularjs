@@ -52,7 +52,8 @@
                     <decorator-section name="body">
                         <section>
                             <condition>
-                                <if-has-permission permission="ANGULARJS" action="_VIEW"/>
+
+                                <!--<if-has-permission permission="ANGULARJS" action="_VIEW"/>-->
                             </condition>
                             <widgets>
                                 <application name="angularjs">

@@ -37,6 +37,7 @@ import org.ofbiz.angularjs.filter.ModelNgFilter;
 import org.ofbiz.angularjs.javascript.JavaScriptFactory;
 import org.ofbiz.angularjs.javascript.JavaScriptRenderer;
 import org.ofbiz.angularjs.model.NgModelDispatcherContext;
+import org.ofbiz.angularjs.module.ModelNgModule;
 import org.ofbiz.angularjs.provider.ModelNgProvider;
 import org.ofbiz.angularjs.service.ModelNgService;
 import org.ofbiz.base.component.ComponentConfig;
@@ -76,15 +77,13 @@ public class AngularJsEvents {
         renderer.render(JavaScriptFactory.getRootJavaScriptPackages());
     }
     
-    private static void buildAppJsFunction(String name, String defaultPath
-            , List<? extends Element> moduleElements, List<? extends Element> viewElements, StringBuilder builder) {
+    private static void buildAppJsFunction(String name, String defaultPath, List<? extends Element> viewElements, StringBuilder builder) {
         builder.append("\nangular.module('" + name + "', [");
         
         // modules
         List<String> moduleNames = new LinkedList<String>();
-        for (Element moduleElemnent : moduleElements) {
-            String moduleName = UtilXml.elementAttribute(moduleElemnent, "name", null);
-            moduleNames.add("'" + moduleName + "'");
+        for (ModelNgModule modelModule : NgModelDispatcherContext.getAllModelNgModules()) {
+            moduleNames.add("'" + modelModule.name + "'");
         }
         
         if (UtilValidate.isNotEmpty(moduleNames)) {
@@ -185,9 +184,8 @@ public class AngularJsEvents {
                     for (Element ngAppElement : ngAppElements) {
                         String name = UtilXml.elementAttribute(ngAppElement, "name", null);
                         String defaultPath = UtilXml.elementAttribute(ngAppElement, "default-path", null);
-                        List<? extends Element> moduleElements = UtilXml.childElementList(ngAppElement, "module");
                         List<? extends Element> viewElements = UtilXml.childElementList(ngAppElement, "view");
-                        buildAppJsFunction(name, defaultPath, moduleElements, viewElements, builder);
+                        buildAppJsFunction(name, defaultPath, viewElements, builder);
                     }
                 } catch (Exception e) {
                     Debug.logWarning(e, module);

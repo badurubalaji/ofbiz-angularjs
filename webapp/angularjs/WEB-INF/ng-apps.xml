@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-apps>
     <ng-app name="angularjs">
-        <module name="ui.bootstrap"/>
-        <module name="ui.map"/>
-        <module name="ui.event"/>
-        <module name="ngGrid"/>
-        <module name="ngUpload"/>
-        <module name="ADE"/>
-        <module name="ngSanitize"/>
-        <module name="ui.tinymce"/>
-        <module name="ui.calendar"/>
-        <module name="kalitte.services"/>
-        <module name="googlechart.directives"/>
     </ng-app>
     <ng-app name="phonecat" default-path="/phones">
-        <module name="ui.bootstrap"/>
         <view path="/phones" uri="PhoneList" controller="org.ofbiz.angularjs.sample.phone.controller.PhoneListController"/>
         <view path="/phones/:phoneId" uri="PhoneDetail" controller="org.ofbiz.angularjs.sample.phone.controller.PhoneDetailController"/>
     </ng-app>

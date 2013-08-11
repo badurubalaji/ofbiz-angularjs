@@ -35,7 +35,7 @@
         title="AngularJs"
         server="default-server"
         location="webapp/angularjs"
-        base-permission="OFBTOOLS,ANGULARJS"
+        base-permission="OFBTOOLS"
         mount-point="/angularjs"/>
         
     <container name="angularjs-container" class="org.ofbiz.angularjs.container.AngularJsContainer"/>

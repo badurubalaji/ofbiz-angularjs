@@ -26,6 +26,7 @@ import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.DirectiveResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.FactoryResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.FilterResourceInfo;
+import org.ofbiz.angularjs.component.NgComponentConfig.ModuleResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ProviderResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.ServiceResourceInfo;
 import org.ofbiz.angularjs.directive.ModelNgDirective;
@@ -34,6 +35,8 @@ import org.ofbiz.angularjs.factory.ModelNgFactory;
 import org.ofbiz.angularjs.factory.ModelNgFactoryReader;
 import org.ofbiz.angularjs.filter.ModelNgFilter;
 import org.ofbiz.angularjs.filter.ModelNgFilterReader;
+import org.ofbiz.angularjs.module.ModelNgModule;
+import org.ofbiz.angularjs.module.ModelNgModuleReader;
 import org.ofbiz.angularjs.provider.ModelNgProvider;
 import org.ofbiz.angularjs.provider.ModelNgProviderReader;
 import org.ofbiz.angularjs.service.ModelNgService;
@@ -86,5 +89,14 @@ public class NgModelDispatcherContext {
             modelNgFactories.addAll(modelNgFactoryMap.values());
         }
         return modelNgFactories;
+    }
+
+    public static List<ModelNgModule> getAllModelNgModules() {
+        List<ModelNgModule> modelNgModules = new LinkedList<ModelNgModule>();
+        for (ModuleResourceInfo moduleResourceInfo : NgComponentConfig.getAllModuleResourceInfos()) {
+            Map<String, ModelNgModule> modelNgModuleMap = ModelNgModuleReader.getModelNgModuleMap(moduleResourceInfo.createResourceHandler());
+            modelNgModules.addAll(modelNgModuleMap.values());
+        }
+        return modelNgModules;
     }
 }

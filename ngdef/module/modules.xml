@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ng-modules>
+    <ng-module name="ui.bootstrap">
+        <javascript path=""/>
+        <stylesheet path=""/>
+    </ng-module>
+    <ng-module name="ui.map">
+    </ng-module>
+    <ng-module name="ui.event">
+    </ng-module>
+    <ng-module name="ngGrid">
+    </ng-module>
+    <ng-module name="ngUpload">
+    </ng-module>
+    <ng-module name="ADE">
+    </ng-module>
+    <ng-module name="ngSanitize">
+    </ng-module>
+    <ng-module name="ui.tinymce">
+    </ng-module>
+    <ng-module name="ui.calendar">
+    </ng-module>
+    <ng-module name="kalitte.services">
+    </ng-module>
+    <ng-module name="googlechart.directives">
+    </ng-module>
+</ng-modules>

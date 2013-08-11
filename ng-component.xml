@@ -8,4 +8,5 @@
     <factory-resource location="ngdef/factory/factories.xml"/>
     <provider-resource location="ngdef/provider/providers.xml"/>
     <controller-resource location="ngdef/controller/controllers.xml"/>
+    <module-resource location="ngdef/module/modules.xml"/>
 </ng-component>
