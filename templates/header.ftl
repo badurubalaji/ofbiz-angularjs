@@ -1,58 +1,45 @@
 <html>
     <head>
-        <script type="text/javascript" src="/images/jquery/jquery-1.8.2.min.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/angular.min.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/ui-bootstrap-0.4.0.min.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/ui-bootstrap-tpls-0.4.0.min.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/ng-grid-2.0.6.min.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/ng-upload.js"></script>
-        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en"></script>
-        <script type="text/javascript" src="/angularjs/images/js/ui-map.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/appBusy.js"></script>
+        <#if layoutSettings.javaScripts?has_content>
+            <#--layoutSettings.javaScripts is a list of java scripts. -->
+            <#-- use a Set to make sure each javascript is declared only once, but iterate the list to maintain the correct order -->
+            <#assign javaScriptsSet = Static["org.ofbiz.base.util.UtilMisc"].toSet(layoutSettings.javaScripts)/>
+            <#list layoutSettings.javaScripts as javaScript>
+                <#if javaScriptsSet.contains(javaScript)>
+                    <#assign nothing = javaScriptsSet.remove(javaScript)/>
+                    <script src="<@ofbizContentUrl>${StringUtil.wrapString(javaScript)}</@ofbizContentUrl>" type="text/javascript"></script>
+                </#if>
+            </#list>
+        </#if>
         
-        <#-- Calendar JavaScript -->
-        <script type="text/javascript" src="/angularjs/images/js/calendar/fullcalendar.min.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/calendar/gcal.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/calendar/calendar.js"></script>
+        <#list layoutSettings.moduleJavaScripts as moduleJavaScript>
+            <#if moduleJavaScript.fullPath == true>
+                <#assign protocol = "http"/>
+                <#if request.isSecure() == true>
+                    <#assign protocol = "https"/>
+                </#if>
+                <script src="${protocol}://${StringUtil.wrapString(moduleJavaScript.path)}" type="text/javascript"></script>
+            <#else>
+                <script src="<@ofbizContentUrl>${StringUtil.wrapString(moduleJavaScript.path)}</@ofbizContentUrl>" type="text/javascript"></script>
+            </#if>
+        </#list>
         
-        <#--UI Utils -->
-        <script type="text/javascript" src="/angularjs/images/js/ui-utils/modules/event/event.js"></script>
-        
-        <#-- TinyMCE -->
-        <script type="text/javascript" src="/angularjs/images/js/tinymce/tinymce.min.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/tinymce.js"></script>
-        
-        <#-- Angular Datatype Editor (ADE) JavaScript -->
-        <script type="text/javascript" src="/angularjs/images/js/ade/vendor/jquery.json-2.3.min.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/ade/vendor/angular-sanitize.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/ade/common/ade.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/ade/common/date.js"></script>
-        
-        <script type="text/javascript" src="/angularjs/images/js/ade/date/bootstrap-datepicker.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/ade/date/date_filters.js"></script>
-        <script type="text/javascript" src="/angularjs/images/js/ade/date/date_directives.js"></script>
-        
-        <#-- Google Chart -->
-        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-        <script type="text/javascript" src="/angularjs/images/js/ng-google-chart.js"></script>
-        <script type="text/javascript">
-            google.load('visualization', '1', {packages: ['corechart']})
-        </script>
-        
-        <script type="text/javascript" src="/angularjs/control/classes.js"></script>
-        <script type="text/javascript" src="/angularjs/control/apps.js"></script>
-        
-        <link href="/angularjs/images/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/angularjs/images/css/bootstrap-responsive.min.css" rel="stylesheet">
-        <link href="/angularjs/images/css/ng-grid.min.css" rel="stylesheet">
-        
-        <#-- Angular Datatype Editor (ADE) CSS -->
-        <link href="/angularjs/images/css/ade/vendor/datepicker.css" rel="stylesheet">
-        
-        <#-- Calendar CSS -->
-        <link href="/angularjs/images/css/calendar/fullcalendar.css" rel="stylesheet">
-        <link href="/angularjs/images/css/calendar/fullcalendar.print.css" rel="stylesheet">
-        
-        <link href="/angularjs/images/css/style.css" rel="stylesheet">
+        <#if layoutSettings.styleSheets?has_content>
+            <#--layoutSettings.styleSheets is a list of style sheets. So, you can have a user-specified "main" style sheet, AND a component style sheet.-->
+            <#list layoutSettings.styleSheets as styleSheet>
+                <link rel="stylesheet" href="<@ofbizContentUrl>${StringUtil.wrapString(styleSheet)}</@ofbizContentUrl>" type="text/css"/>
+            </#list>
+        </#if>
+        <#list layoutSettings.moduleStyleSheets as moduleStyleSheet>
+            <#if moduleStyleSheet.fullPath == true>
+                <#assign protocol = "http"/>
+                <#if request.isSecure() == true>
+                    <#assign protocol = "https"/>
+                </#if>
+                <link rel="stylesheet" href="${protocol}://${StringUtil.wrapString(moduleStyleSheet.path)}" type="text/css">
+            <#else>
+                <link rel="stylesheet" href="<@ofbizContentUrl>${StringUtil.wrapString(moduleStyleSheet.path)}</@ofbizContentUrl>" type="text/css">
+            </#if>
+        </#list>
     </head>
     <body>

@@ -18,18 +18,26 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.module;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.ofbiz.angularjs.model.AbstractModelNg;
 
 @SuppressWarnings("serial")
 public class ModelNgModule extends AbstractModelNg {
     
     public final static String module = ModelNgModule.class.getName();
+    
+    public List<ModelJavaScript> modelJavaScripts = new LinkedList<ModelNgModule.ModelJavaScript>();
+    public List<ModelStyleSheet> modelStyleSheets = new LinkedList<ModelNgModule.ModelStyleSheet>();
 
-    class ModelJavaScript {
+    public static class ModelJavaScript {
         public String path;
+        public boolean fullPath;
     }
     
-    class ModelStyleSheet {
+    public static class ModelStyleSheet {
         public String path;
+        public boolean fullPath;
     }
 }

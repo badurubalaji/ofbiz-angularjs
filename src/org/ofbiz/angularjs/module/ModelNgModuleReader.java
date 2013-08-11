@@ -18,12 +18,14 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.module;
 
+import java.util.List;
 import java.util.Map;
 
 import org.ofbiz.angularjs.model.AbstractModelNg;
 import org.ofbiz.angularjs.model.AbstractModelNgReader;
 import org.ofbiz.base.config.ResourceHandler;
 import org.ofbiz.base.util.UtilGenerics;
+import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
 import org.w3c.dom.Element;
 
@@ -48,6 +50,33 @@ public class ModelNgModuleReader extends AbstractModelNgReader {
         ngModule.name = UtilXml.checkEmpty(element.getAttribute("name")).intern();
         ngModule.location = UtilXml.checkEmpty(element.getAttribute("location")).intern();
         ngModule.invoke = UtilXml.checkEmpty(element.getAttribute("invoke")).intern();
+        
+        // read javaScript elements
+        List<? extends Element> javaScriptElements = UtilXml.childElementList(element, "javaScript");
+        for (Element javaScriptElement : javaScriptElements) {
+            String path = UtilXml.elementAttribute(javaScriptElement, "path", null);
+            boolean fullPath = Boolean.valueOf(UtilXml.elementAttribute(javaScriptElement, "full-path", "false"));
+            if (UtilValidate.isNotEmpty(path)) {
+                ModelNgModule.ModelJavaScript modelJavaScript = new ModelNgModule.ModelJavaScript();
+                modelJavaScript.path = path;
+                modelJavaScript.fullPath = fullPath;
+                ngModule.modelJavaScripts.add(modelJavaScript);
+            }
+        }
+        
+        // read styleSheet elements
+        List<? extends Element> styleSheetElements = UtilXml.childElementList(element, "styleSheet");
+        for (Element styleSheetElement : styleSheetElements) {
+            String path = UtilXml.elementAttribute(styleSheetElement, "path", null);
+            boolean fullPath = Boolean.valueOf(UtilXml.elementAttribute(styleSheetElement, "full-path", "false"));
+            if (UtilValidate.isNotEmpty(path)) {
+                ModelNgModule.ModelStyleSheet modelStyleSheet = new ModelNgModule.ModelStyleSheet();
+                modelStyleSheet.path = path;
+                modelStyleSheet.fullPath = fullPath;
+                ngModule.modelStyleSheets.add(modelStyleSheet);
+            }
+        }
+        
         return ngModule;
     }
 

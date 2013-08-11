@@ -13,14 +13,17 @@
                 
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/control/apps.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/control/classes.js" global="true"/>
-                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/ui-bootstrap-tpls-0.3.0.min.js" global="true"/>
-                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/ui-bootstrap-0.3.0.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/angular.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.8.2.min.js" global="true"/>
+                
+                <set field="layoutSettings.styleSheets[+0]" value="/angularjs/images/css/style.css" global="true"/>
 
                 <set field="activeApp" value="angularjs" global="true"/>
                 <set field="applicationMenuName" value="MainAppBar" global="true"/>
                 <set field="applicationMenuLocation" value="component://angularjs/widget/AngularJsMenus.xml" global="true"/>
                 <set field="applicationTitle" value="${uiLabelMap.AngularJsApplication}" global="true"/>
+                
+                <script location="component://angularjs/webapp/angularjs/WEB-INF/actions/SetupModuleResources.groovy"/>
             </actions>
             <widgets>
                 <!--include-screen name="ApplicationDecorator" location="component://commonext/widget/CommonScreens.xml"/-->
