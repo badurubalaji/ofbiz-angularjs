@@ -51,4 +51,12 @@
         <javaScript path="/angularjs/images/js/ng-google-chart.js"/>
         <javaScript path="/angularjs/images/js/initialGoogleChart.js"/>
     </ng-module>
+    <ng-module name="$strap.directives">
+        <javaScript path="/angularjs/images/js/angular-strap.min.js"/>
+        <javaScript path="cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js" full-path="true"/>
+        <javaScript path="cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js" full-path="true"/>
+        <javaScript path="cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.0/fastclick.min.js" full-path="true"/>
+        <javaScript path="cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js" full-path="true"/>
+        <javaScript path="/angularjs/images/js/initialStrap.js"/>
+    </ng-module>
 </ng-modules>

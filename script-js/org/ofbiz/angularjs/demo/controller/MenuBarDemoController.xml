@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javascript-class name="MenuBarDemoController" package="org.ofbiz.angularjs.demo.controller">
+    <javascript-method name="MenuBarDemoController">
+        <attributes>
+            <attribute name="$scope" type="Object" mode="IN"/>
+            <attribute name="$window" type="Object" mode="IN"/>
+            <attribute name="$location" type="Object" mode="IN"/>
+        </attributes>
+        <body>
+            $scope.$location = $location;
+        </body>
+    </javascript-method>
+</javascript-class>

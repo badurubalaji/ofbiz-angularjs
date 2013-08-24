@@ -102,6 +102,11 @@
                         <include-screen name="Map" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                         <horizontal-rule/>
                         
+                        <!-- Menu Bar -->
+                        <label text="Menu Bar" style="h1"/>
+                        <include-screen name="MenuBar" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                        <horizontal-rule/>
+                        
                         <!-- Modal -->
                         <label text="Modal" style="h1"/>
                         <include-screen name="Modal" location="component://angularjs/widget/DemoWidgetScreens.xml"/>

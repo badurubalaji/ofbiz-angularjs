@@ -867,6 +867,55 @@ public class AngularJsScreenWidget {
             return "<br/>";
         }
     }
+
+    /**
+     * http://mgcrea.github.io/angular-strap/
+     * @author chatree
+     *
+     */
+    @SuppressWarnings("serial")
+    public static class MenunBar extends ModelScreenWidget {
+        public static final String TAG_NAME = "menu-bar";
+        
+        protected String title = null;
+        protected String target = null;
+        protected List<? extends Element> itemElementList = null;
+        
+        public MenunBar(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            title = FlexibleStringExpander.getInstance(widgetElement.getAttribute("title")).getOriginal();
+            target = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target")).getOriginal();
+            itemElementList = UtilXml.childElementList(widgetElement, "menu-item");
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            for (Element itemElement : itemElementList) {
+                String route = UtilXml.elementAttribute(itemElement, "route", null);
+                String target = UtilXml.elementAttribute(itemElement, "target", null);
+                String text = UtilXml.elementAttribute(itemElement, "text", null);
+                
+                writer.append("<li data-match-route=\"" + route + "\"><a href=\"" + target + "\">" + text + "</a></li>");
+            }
+            writer.append("</ul>");
+            writer.append("</div>");
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("<div class=\"navbar\" bs-navbar>");
+            builder.append("<div class=\"navbar-inner\">");
+            builder.append("<a class=\"brand\" href=\"" + target + "\">" + title + "</a>");
+            builder.append("<ul class=\"nav\">");
+            return builder.toString();
+        }
+    }
     
     @SuppressWarnings("serial")
     public static class Modal extends ModelScreenWidget {
