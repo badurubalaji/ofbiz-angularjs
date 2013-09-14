@@ -1414,11 +1414,13 @@ public class AngularJsScreenWidget {
     @SuppressWarnings("serial")
     public static class Tree extends ModelScreenWidget {
         public static final String TAG_NAME = "tree";
-        
+
+        protected String id = null;
         protected String type = null;
 
         public Tree(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
+            this.id = FlexibleStringExpander.getInstance(widgetElement.getAttribute("id")).getOriginal();
             this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
         }
         @Override
@@ -1427,6 +1429,7 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append(this.rawString());
+            writer.append("<div id=\"" + id + "\"></div>");
             writer.append("</tree>");
         }
         @Override
