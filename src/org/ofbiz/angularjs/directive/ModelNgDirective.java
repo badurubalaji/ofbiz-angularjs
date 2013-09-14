@@ -24,6 +24,8 @@ import org.ofbiz.angularjs.model.AbstractModelNg;
 public class ModelNgDirective extends AbstractModelNg {
     
     public final static String module = ModelNgDirective.class.getName();
+    public final static String SIMPLE_TYPE = "simple";
+    public final static String JAVASCRIPT_TYPE = "javascript";
     
     public int priority;
     public boolean replace;
@@ -34,5 +36,17 @@ public class ModelNgDirective extends AbstractModelNg {
     public String preCompileName;
     public String postCompileName;
     public String linkName;
+    
+    public String getType() {
+        if (location.endsWith(".js")) {
+            return JAVASCRIPT_TYPE;
+        } else {
+            return SIMPLE_TYPE;
+        }
+    }
 
+    @Override
+    public String toString() {
+        return "Directive[" + name + "]";
+    }
 }

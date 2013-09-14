@@ -1411,6 +1411,31 @@ public class AngularJsScreenWidget {
         
     }
     
+    @SuppressWarnings("serial")
+    public static class Tree extends ModelScreenWidget {
+        public static final String TAG_NAME = "tree";
+        
+        protected String type = null;
+
+        public Tree(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
+        }
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append("</tree>");
+        }
+        @Override
+        public String rawString() {
+            return "<tree type=\"" + type + "\">";
+        }
+        
+    }
+    
     /**
      * 
      * @author chatree

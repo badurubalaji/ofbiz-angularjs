@@ -18,4 +18,8 @@
     <ng-directive name="formOptions" location="org.ofbiz.angularjs.directive.FormOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="false"
         controller-name="controller" pre-compile-name="preLink" post-compile-name="postLink"/>
+    
+    <ng-directive name="tree" location="component://angularjs/script-js/org/ofbiz/angularjs/directive/TreeDirective.js"
+        priority="0" replace="false" transclude="false" restrict="E" scope="false"
+        controller-name="controller" pre-compile-name="preCompile" post-compile-name="postCompile"/>
 </ng-directives>

@@ -29,6 +29,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Script;
+import org.mozilla.javascript.Scriptable;
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.ClasspathInfo;
 import org.ofbiz.angularjs.directive.ModelNgDirective;
@@ -93,14 +96,14 @@ public class AngularJsEvents {
         
         // views
         builder.append(".config(['$routeProvider', function($routeProvider) {\n");
-        builder.append("\t$routeProvider.\n");
+        builder.append("    $routeProvider.\n");
         for (Element viewElement : viewElements) {
             String path = UtilXml.elementAttribute(viewElement, "path", null);
             String uri = UtilXml.elementAttribute(viewElement, "uri", null);
             String controller = UtilXml.elementAttribute(viewElement, "controller", null);
-            builder.append("\t\twhen('" + path + "', {templateUrl: '" + uri + "', controller: '" + controller + "'}).\n");
+            builder.append("        when('" + path + "', {templateUrl: '" + uri + "', controller: '" + controller + "'}).\n");
         }
-        builder.append("\t\totherwise({redirectTo: '" + defaultPath + "'});");
+        builder.append("        otherwise({redirectTo: '" + defaultPath + "'});");
         builder.append("}])\n");
         
         // directives
@@ -132,41 +135,103 @@ public class AngularJsEvents {
     }
     
     private static String createDirectiveJsFunction(ModelNgDirective modelNgDirective) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("function() {");
-        builder.append(" return {");
+        
+    	String controllerFunction = null;
+    	String preCompileFunction = null;
+    	String postCompileFunction = null;
+    	String linkFunction = null;
+        
+        if (ModelNgDirective.SIMPLE_TYPE.equals(modelNgDirective.getType())) {
+            if (UtilValidate.isNotEmpty(modelNgDirective.controllerName)) {
+                controllerFunction = modelNgDirective.location + "." + modelNgDirective.controllerName;
+            }
+            if (UtilValidate.isNotEmpty(modelNgDirective.preCompileName)) {
+                preCompileFunction = modelNgDirective.location + "." + modelNgDirective.preCompileName;
+            }
+            if (UtilValidate.isNotEmpty(modelNgDirective.postCompileName)) {
+                postCompileFunction = modelNgDirective.location + "." + modelNgDirective.postCompileName;
+            }
+            if (UtilValidate.isNotEmpty(modelNgDirective.linkName)) {
+                linkFunction = modelNgDirective.location + "." + modelNgDirective.linkName;
+            }
+        } else if (ModelNgDirective.JAVASCRIPT_TYPE.equals(modelNgDirective.getType())) {
+        	try {
+            	File javaScriptFile = FileUtil.getFile(modelNgDirective.location);
+        		String javaScriptContent = FileUtil.readTextFile(javaScriptFile, true).toString();
+            	Context context = Context.enter();
+            	Scriptable scope = context.initStandardObjects();
+            	context.evaluateString(scope, javaScriptContent.trim(), null, 1, null);
+        		
+                if (UtilValidate.isNotEmpty(modelNgDirective.controllerName)) {
+                    Object functionObj = scope.get(modelNgDirective.controllerName, scope);
+                    if (functionObj instanceof Script) {
+                    	controllerFunction = context.decompileScript((Script) functionObj, 4);
+                    }
+                }
+                if (UtilValidate.isNotEmpty(modelNgDirective.preCompileName)) {
+                    Object functionObj = scope.get(modelNgDirective.preCompileName, scope);
+                    if (functionObj instanceof Script) {
+                        preCompileFunction = context.decompileScript((Script) functionObj, 4);
+                    }
+                }
+                if (UtilValidate.isNotEmpty(modelNgDirective.postCompileName)) {
+                    Object functionObj = scope.get(modelNgDirective.postCompileName, scope);
+                    if (functionObj instanceof Script) {
+                        postCompileFunction = context.decompileScript((Script) functionObj, 4);
+                    }
+                }
+                if (UtilValidate.isNotEmpty(modelNgDirective.linkName)) {
+                    Object functionObj = scope.get(modelNgDirective.linkName, scope);
+                    if (functionObj instanceof Script) {
+                        linkFunction = context.decompileScript((Script) functionObj, 4);
+                    }
+                }
+                
+            	Context.exit();
+        	} catch (IOException e) {
+        		Debug.logError(e, module);
+        	}
+        }
+        
+        // object builder
+        StringBuilder objectBuilder = new StringBuilder();
+        objectBuilder.append("{");
         if (UtilValidate.isNotEmpty(modelNgDirective.replace)) {
-            builder.append("  replace:" + modelNgDirective.replace);
+            objectBuilder.append("  replace:" + modelNgDirective.replace);
         }
         if (UtilValidate.isNotEmpty(modelNgDirective.transclude)) {
-            builder.append("  ,transclude:" + modelNgDirective.transclude);
+            objectBuilder.append("  ,transclude:" + modelNgDirective.transclude);
         }
         if (UtilValidate.isNotEmpty(modelNgDirective.scope)) {
-            builder.append("  ,scope:" + modelNgDirective.scope);
+            objectBuilder.append("  ,scope:" + modelNgDirective.scope);
         }
         if (UtilValidate.isNotEmpty(modelNgDirective.priority)) {
-            builder.append("  ,priority:" + modelNgDirective.priority);
+            objectBuilder.append("  ,priority:" + modelNgDirective.priority);
         }
         if (UtilValidate.isNotEmpty(modelNgDirective.restrict)) {
-            builder.append("  ,restrict: \"" + modelNgDirective.restrict + "\"");
+            objectBuilder.append("  ,restrict: \"" + modelNgDirective.restrict + "\"");
         }
-        if (UtilValidate.isNotEmpty(modelNgDirective.controllerName)) {
-            builder.append("  ,controller:" + modelNgDirective.location + "." + modelNgDirective.controllerName);
+        if (UtilValidate.isNotEmpty(controllerFunction)) {
+            objectBuilder.append("  ,controller:" + controllerFunction);
         }
-        builder.append("  ,compile: function(tElement, tAttrs, transclude) {");
-        builder.append("   return {");
-        if (UtilValidate.isNotEmpty(modelNgDirective.preCompileName)) {
-            builder.append("    pre: " + modelNgDirective.location + "." + modelNgDirective.preCompileName);
+        objectBuilder.append("  ,compile: function(tElement, tAttrs, transclude) {");
+        objectBuilder.append("   return {");
+        if (UtilValidate.isNotEmpty(preCompileFunction)) {
+            objectBuilder.append("    pre: " + preCompileFunction);
         }
-        if (UtilValidate.isNotEmpty(modelNgDirective.postCompileName)) {
-            builder.append("    ,post: " + modelNgDirective.location + "." + modelNgDirective.postCompileName);
+        if (UtilValidate.isNotEmpty(postCompileFunction)) {
+            objectBuilder.append("    ,post: " + postCompileFunction);
         }
-        builder.append("   }");
-        builder.append("  }");
-        if (UtilValidate.isNotEmpty(modelNgDirective.linkName)) {
-            builder.append("  ,link: " + modelNgDirective.location + "." + modelNgDirective.linkName);
+        objectBuilder.append("   }");
+        objectBuilder.append("  }");
+        if (UtilValidate.isNotEmpty(linkFunction)) {
+            objectBuilder.append("  ,link: " + linkFunction);
         }
-        builder.append(" }");
+        objectBuilder.append("}");
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("function() {");
+        builder.append(" return " + objectBuilder.toString());
         builder.append("}");
         return builder.toString();
     }

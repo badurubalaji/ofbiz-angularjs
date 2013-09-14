@@ -344,6 +344,15 @@
             </widgets>
         </section>
     </screen>
+    <screen name="Tree">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.TreeDemoController">
+                    <tree type="space"/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
     <screen name="Upload">
         <section>
             <widgets>
