@@ -18,28 +18,31 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.javascript;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
+import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilValidate;
-import org.ofbiz.base.util.UtilXml;
-import org.w3c.dom.Element;
 
 public class JavaScriptPackage {
 
     public final static String module = JavaScriptPackage.class.getName();
 
-    protected String packagePath = null;
+    protected String packageName = null;
     protected JavaScriptPackage parent = null;
     protected List<JavaScriptPackage> children = new LinkedList<JavaScriptPackage>();
     protected String name = null;
-    protected List<JavaScriptClass> javaScriptClasses = new LinkedList<JavaScriptClass>();
+    protected Map<String, JavaScriptClass> javaScriptClasses = new HashMap<String, JavaScriptClass>();
     
-    public JavaScriptPackage(String packagePath) {
-        this.packagePath = packagePath;
-        List<String> packageTokens = StringUtil.split(packagePath, ".");
-            if (UtilValidate.isNotEmpty(packageTokens)) {
+    public JavaScriptPackage(String packageName) {
+        this.packageName = packageName;
+        List<String> packageTokens = StringUtil.split(packageName, ".");
+        if (UtilValidate.isNotEmpty(packageTokens)) {
             this.name = packageTokens.remove(packageTokens.size() - 1);
             String parentPackagePath = StringUtil.join(packageTokens, ".");
             this.parent = JavaScriptFactory.getJavaScriptPackage(parentPackagePath);
@@ -48,23 +51,27 @@ public class JavaScriptPackage {
                 this.parent.getChildren().add(this);
             }
             
-            if (packagePath.indexOf(".") < 0) {
+            if (packageName.indexOf(".") < 0) {
                 JavaScriptFactory.addRootJavaScriptPackage(this);
             }
         } else {
-            this.name = packagePath;
+            this.name = packageName;
             JavaScriptFactory.addRootJavaScriptPackage(this);
         }
     }
     
-    public void addJavaScriptClass(Element element) {
-        String className = UtilXml.elementAttribute(element, "name", null);
-        JavaScriptClass javaScriptClass = new JavaScriptClass(this, className);
-        List<? extends Element> javaScriptMethodElements = UtilXml.childElementList(element, "javascript-method");
-        for (Element javaScriptMethodElement : javaScriptMethodElements) {
-            javaScriptClass.addJavaScriptMethod(javaScriptMethodElement);
-        }
-        javaScriptClasses.add(javaScriptClass);
+    public void addJavaScriptClass(String className, Function classFunction, Context context) {
+        JavaScriptClass javaScriptClass = new JavaScriptClass(this, className, classFunction, context);
+        Debug.logInfo("111111111111 put[" + packageName + "]: " + className, module);
+        javaScriptClasses.put(className, javaScriptClass);
+    	Debug.logInfo("7777777777777777777777777777 [" + this.toString() + "]: " + javaScriptClasses, module);
+    }
+    
+    public JavaScriptClass getJavaScriptClass(String className) {
+    	JavaScriptClass javaScriptClass = javaScriptClasses.get(className);
+    	Debug.logInfo("6666666666666666666666666 [" + this.toString() + "]: " + javaScriptClasses, module);
+    	Debug.logInfo("55555555555555 getJavaScriptClass[" + packageName + "." + className + "]" + javaScriptClass, module);
+        return javaScriptClass;
     }
     
     public List<JavaScriptPackage> getChildren() {
@@ -72,7 +79,7 @@ public class JavaScriptPackage {
     }
     
     public String getPackagePath() {
-        return packagePath;
+        return packageName;
     }
     
     public String rawString() {
@@ -89,7 +96,7 @@ public class JavaScriptPackage {
         }
         
         // render classes
-        for (JavaScriptClass javaScriptClass : javaScriptClasses) {
+        for (JavaScriptClass javaScriptClass : javaScriptClasses.values()) {
             rawString += javaScriptClass.rawString();
         }
         

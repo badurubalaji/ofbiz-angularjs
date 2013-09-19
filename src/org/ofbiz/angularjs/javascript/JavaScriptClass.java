@@ -18,11 +18,11 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.javascript;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.ofbiz.base.util.UtilValidate;
-import org.w3c.dom.Element;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
 
 public class JavaScriptClass {
 
@@ -30,24 +30,24 @@ public class JavaScriptClass {
 
     protected JavaScriptPackage javaScriptPackage = null;
     protected String name = null;
-    protected JavaScriptMethod constructorMethod = null;
-    protected List<JavaScriptMethod> javaScriptMethods = new LinkedList<JavaScriptMethod>();
+    protected Function function = null;
+    protected Context context = null;
+    protected String rawString = null;
+    protected String constructorArgument = "";
     
-    public JavaScriptClass(JavaScriptPackage javaScriptPackage, String name) {
+    public JavaScriptClass(JavaScriptPackage javaScriptPackage, String name, Function function, Context context) {
         this.javaScriptPackage = javaScriptPackage;
         this.name = name;
-    }
-    
-    public void addJavaScriptMethod(Element javaScriptMethodElement) {
-        JavaScriptMethod javaScriptMethod = new JavaScriptMethod(this, javaScriptMethodElement);
-        if (name.equals(javaScriptMethod.getName())) {
-            constructorMethod = javaScriptMethod;
-        } else {
-            javaScriptMethods.add(javaScriptMethod);
-            
-            if (javaScriptMethod.isStatic()) {
-                JavaScriptFactory.addStaticJavaScriptMethod(javaScriptMethod);
-            }
+        this.function = function;
+        this.context = context;
+        this.rawString = context.decompileFunction(function, 4);
+        
+        // get constructor argument
+        Pattern pattern = Pattern.compile(".*?function.*?f.*?(\\()(.*?)(\\))");
+        Matcher matcher = pattern.matcher(rawString);
+        while (matcher.find()) {
+            constructorArgument = matcher.group(2);
+            break;
         }
     }
     
@@ -55,26 +55,11 @@ public class JavaScriptClass {
         return javaScriptPackage.getPackagePath() + "." + name;
     }
     
+    public String getConstructorArgument() {
+        return constructorArgument;
+    }
+    
     public String rawString() {
-        String rawString = name + ": function(";
-        if (UtilValidate.isNotEmpty(constructorMethod)) {
-            rawString += constructorMethod.getInAttributeDeclaration();
-        }
-        rawString += ") {\n";
-        
-        // render methods
-        for (JavaScriptMethod javaScriptMethod : javaScriptMethods) {
-            if (!javaScriptMethod.isStatic()) {
-                rawString += javaScriptMethod.rawString();
-            }
-        }
-        
-        // render constructor method
-        if (UtilValidate.isNotEmpty(constructorMethod)) {
-            rawString += constructorMethod.getBody();
-        }
-        
-        rawString += "\n},\n";
         return rawString;
     }
 }

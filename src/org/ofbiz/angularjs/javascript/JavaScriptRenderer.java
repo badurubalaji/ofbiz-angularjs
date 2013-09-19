@@ -40,10 +40,5 @@ public class JavaScriptRenderer {
         // remove the last comma ','
         writer.append(packageBuilder.toString().subSequence(0, packageBuilder.toString().length() - 2));
         writer.append("\n");
-        
-        // render static methods
-        for (JavaScriptMethod javaScriptMethod : JavaScriptFactory.getStaticJavaScriptMethods()) {
-            writer.append(javaScriptMethod.rawString());
-        }
     }
 }

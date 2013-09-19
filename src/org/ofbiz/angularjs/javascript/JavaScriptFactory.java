@@ -23,9 +23,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
+import org.ofbiz.base.util.Debug;
+import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilValidate;
-import org.ofbiz.base.util.UtilXml;
-import org.w3c.dom.Element;
 
 public class JavaScriptFactory {
 
@@ -33,33 +35,33 @@ public class JavaScriptFactory {
     
     protected static Map<String, JavaScriptPackage> javaScriptPackages = new LinkedHashMap<String, JavaScriptPackage>();
     protected static List<JavaScriptPackage> rootJavaScriptPackages = new LinkedList<JavaScriptPackage>();
-    protected static List<JavaScriptMethod> staticJavaScriptMethods = new LinkedList<JavaScriptMethod>();
-    
+
     private JavaScriptFactory() {}
     
-    public static JavaScriptPackage getJavaScriptPackage(String packagePath) {
-        if (UtilValidate.isEmpty(packagePath)) return null;
+    public static JavaScriptPackage getJavaScriptPackage(String packageName) {
+        if (UtilValidate.isEmpty(packageName)) return null;
         
-        JavaScriptPackage javaScriptPackage = javaScriptPackages.get(packagePath);
+        JavaScriptPackage javaScriptPackage = javaScriptPackages.get(packageName);
+        Debug.logInfo("44444444444444444 javaScriptPackage[" + packageName + "]: " + javaScriptPackage, module);
         if (UtilValidate.isEmpty(javaScriptPackage)) {
-            javaScriptPackage = new JavaScriptPackage(packagePath);
-            javaScriptPackages.put(packagePath, javaScriptPackage);
+            javaScriptPackage = new JavaScriptPackage(packageName);
+            javaScriptPackages.put(packageName, javaScriptPackage);
         }
         return javaScriptPackage;
     }
     
-    public static void addJavaScriptClass(Element element) {
-        String packagePath = UtilXml.elementAttribute(element, "package", null);
-        JavaScriptPackage javaScriptPackage = JavaScriptFactory.getJavaScriptPackage(packagePath);
-        javaScriptPackage.addJavaScriptClass(element);
+    public static JavaScriptClass getJavaScriptClass(String fullClassName) {
+    	List<String> tokens = StringUtil.split(fullClassName, ".");
+        String className = tokens.remove(tokens.size() - 1);
+        String packageName = StringUtil.join(tokens, ".");
+        JavaScriptPackage javaScriptPackage = getJavaScriptPackage(packageName);
+        JavaScriptClass javaScriptClass = javaScriptPackage.getJavaScriptClass(className);
+        return javaScriptClass;
     }
     
-    public static void addStaticJavaScriptMethod(JavaScriptMethod javaScriptMethod) {
-        staticJavaScriptMethods.add(javaScriptMethod);
-    }
-    
-    public static List<JavaScriptMethod> getStaticJavaScriptMethods() {
-        return staticJavaScriptMethods;
+    public static void addJavaScriptClass(String packageName, String className, Function classFunction, Context context) {
+        JavaScriptPackage javaScriptPackage = JavaScriptFactory.getJavaScriptPackage(packageName);
+        javaScriptPackage.addJavaScriptClass(className, classFunction, context);
     }
     
     public static void addRootJavaScriptPackage(JavaScriptPackage javaScriptPackage) {
@@ -73,6 +75,5 @@ public class JavaScriptFactory {
     public static void clear() {
         javaScriptPackages.clear();
         rootJavaScriptPackages.clear();
-        staticJavaScriptMethods.clear();
     }
 }

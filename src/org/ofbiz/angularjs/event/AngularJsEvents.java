@@ -18,25 +18,30 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.event;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Script;
+import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.ClasspathInfo;
 import org.ofbiz.angularjs.directive.ModelNgDirective;
 import org.ofbiz.angularjs.factory.ModelNgFactory;
 import org.ofbiz.angularjs.filter.ModelNgFilter;
+import org.ofbiz.angularjs.javascript.JavaScriptClass;
 import org.ofbiz.angularjs.javascript.JavaScriptFactory;
 import org.ofbiz.angularjs.javascript.JavaScriptRenderer;
 import org.ofbiz.angularjs.model.NgModelDispatcherContext;
@@ -60,21 +65,34 @@ public class AngularJsEvents {
     
     private static void buildJsClasses(List<File> files, StringBuilder builder) throws IOException {
         JavaScriptFactory.clear();
-        
+
+        Context context = Context.enter();
         for (File file : files) {
+            String packageName = null;
+            String className = null;
             try {
-                Document document = UtilXml.readXmlDocument(file.toURI().toURL());
-                Element element = document.getDocumentElement();
-                String nodeName = element.getNodeName();
-                if ("javascript-class".equals(nodeName)) {
-                    JavaScriptFactory.addJavaScriptClass(element);
-                } else {
-                    Debug.logWarning(nodeName + " is not javascript class.", module);
+                if (file.getAbsolutePath().endsWith(".js")) {
+                    Scriptable scope = context.initStandardObjects();
+                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    String packageLine = reader.readLine();
+
+                    // find package name
+                    Pattern packagePattern = Pattern.compile(".*?package.*?(.*?);");
+                    Matcher packageMatcher = packagePattern.matcher(packageLine);
+                    while (packageMatcher.find()) {
+                        packageName = packageMatcher.group(1).trim();
+                    }
+                    
+                    context.evaluateReader(scope, reader, null, 2, null);
+                    className = file.getName().replace(".js", "").trim();
+                    Function classFunction = (Function) scope.get(className, scope);
+                    JavaScriptFactory.addJavaScriptClass(packageName, className, classFunction, context);
                 }
             } catch (Exception e) {
-                Debug.logError(e, module);
+                Debug.logError(e, "Could not compile " + packageName + "." + className + " class", module);
             }
         }
+        Context.exit();
         
         JavaScriptRenderer renderer = new JavaScriptRenderer(builder);
         renderer.render(JavaScriptFactory.getRootJavaScriptPackages());
@@ -135,105 +153,39 @@ public class AngularJsEvents {
     }
     
     private static String createDirectiveJsFunction(ModelNgDirective modelNgDirective) {
-        
-    	String controllerFunction = null;
-    	String preCompileFunction = null;
-    	String postCompileFunction = null;
-    	String linkFunction = null;
-        
-        if (ModelNgDirective.SIMPLE_TYPE.equals(modelNgDirective.getType())) {
-            if (UtilValidate.isNotEmpty(modelNgDirective.controllerName)) {
-                controllerFunction = modelNgDirective.location + "." + modelNgDirective.controllerName;
+        Debug.logInfo("22222222222222222222 createDirectiveJsFunction: " + modelNgDirective.name, module);
+        JavaScriptClass javaScriptClass = JavaScriptFactory.getJavaScriptClass(modelNgDirective.location);
+        Debug.logInfo("3333333333333333333 javaScriptClass: " + javaScriptClass, module);
+        if (UtilValidate.isNotEmpty(javaScriptClass)) {
+            // object builder
+            StringBuilder objectBuilder = new StringBuilder();
+            objectBuilder.append("var " + modelNgDirective.name + " = new " + modelNgDirective.location
+                    + "(" + javaScriptClass.getConstructorArgument() + ");");
+            if (UtilValidate.isNotEmpty(modelNgDirective.replace)) {
+                objectBuilder.append(modelNgDirective.name + ".replace = " + modelNgDirective.replace + ";");
             }
-            if (UtilValidate.isNotEmpty(modelNgDirective.preCompileName)) {
-                preCompileFunction = modelNgDirective.location + "." + modelNgDirective.preCompileName;
+            if (UtilValidate.isNotEmpty(modelNgDirective.transclude)) {
+                objectBuilder.append(modelNgDirective.name + ".transclude = " + modelNgDirective.transclude + ";");
             }
-            if (UtilValidate.isNotEmpty(modelNgDirective.postCompileName)) {
-                postCompileFunction = modelNgDirective.location + "." + modelNgDirective.postCompileName;
+            if (UtilValidate.isNotEmpty(modelNgDirective.scope)) {
+                objectBuilder.append(modelNgDirective.name + ".scope = " + modelNgDirective.scope + ";");
             }
-            if (UtilValidate.isNotEmpty(modelNgDirective.linkName)) {
-                linkFunction = modelNgDirective.location + "." + modelNgDirective.linkName;
+            if (UtilValidate.isNotEmpty(modelNgDirective.priority)) {
+                objectBuilder.append(modelNgDirective.name + ".priority = " + modelNgDirective.priority + ";");
             }
-        } else if (ModelNgDirective.JAVASCRIPT_TYPE.equals(modelNgDirective.getType())) {
-        	try {
-            	File javaScriptFile = FileUtil.getFile(modelNgDirective.location);
-        		String javaScriptContent = FileUtil.readTextFile(javaScriptFile, true).toString();
-            	Context context = Context.enter();
-            	Scriptable scope = context.initStandardObjects();
-            	context.evaluateString(scope, javaScriptContent.trim(), null, 1, null);
-        		
-                if (UtilValidate.isNotEmpty(modelNgDirective.controllerName)) {
-                    Object functionObj = scope.get(modelNgDirective.controllerName, scope);
-                    if (functionObj instanceof Script) {
-                    	controllerFunction = context.decompileScript((Script) functionObj, 4);
-                    }
-                }
-                if (UtilValidate.isNotEmpty(modelNgDirective.preCompileName)) {
-                    Object functionObj = scope.get(modelNgDirective.preCompileName, scope);
-                    if (functionObj instanceof Script) {
-                        preCompileFunction = context.decompileScript((Script) functionObj, 4);
-                    }
-                }
-                if (UtilValidate.isNotEmpty(modelNgDirective.postCompileName)) {
-                    Object functionObj = scope.get(modelNgDirective.postCompileName, scope);
-                    if (functionObj instanceof Script) {
-                        postCompileFunction = context.decompileScript((Script) functionObj, 4);
-                    }
-                }
-                if (UtilValidate.isNotEmpty(modelNgDirective.linkName)) {
-                    Object functionObj = scope.get(modelNgDirective.linkName, scope);
-                    if (functionObj instanceof Script) {
-                        linkFunction = context.decompileScript((Script) functionObj, 4);
-                    }
-                }
-                
-            	Context.exit();
-        	} catch (IOException e) {
-        		Debug.logError(e, module);
-        	}
+            if (UtilValidate.isNotEmpty(modelNgDirective.restrict)) {
+                objectBuilder.append(modelNgDirective.name + ".restrict = \"" + modelNgDirective.restrict + "\";");
+            }
+    
+            StringBuilder builder = new StringBuilder();
+            builder.append("function(" + javaScriptClass.getConstructorArgument() + ") {");
+            builder.append(objectBuilder.toString());
+            builder.append(" return " + modelNgDirective.name + ";");
+            builder.append("}");
+            return builder.toString();
+        } else {
+            return "";
         }
-        
-        // object builder
-        StringBuilder objectBuilder = new StringBuilder();
-        objectBuilder.append("{");
-        if (UtilValidate.isNotEmpty(modelNgDirective.replace)) {
-            objectBuilder.append("  replace:" + modelNgDirective.replace);
-        }
-        if (UtilValidate.isNotEmpty(modelNgDirective.transclude)) {
-            objectBuilder.append("  ,transclude:" + modelNgDirective.transclude);
-        }
-        if (UtilValidate.isNotEmpty(modelNgDirective.scope)) {
-            objectBuilder.append("  ,scope:" + modelNgDirective.scope);
-        }
-        if (UtilValidate.isNotEmpty(modelNgDirective.priority)) {
-            objectBuilder.append("  ,priority:" + modelNgDirective.priority);
-        }
-        if (UtilValidate.isNotEmpty(modelNgDirective.restrict)) {
-            objectBuilder.append("  ,restrict: \"" + modelNgDirective.restrict + "\"");
-        }
-        if (UtilValidate.isNotEmpty(controllerFunction)) {
-            objectBuilder.append("  ,controller:" + controllerFunction);
-        }
-        objectBuilder.append("  ,compile: function(tElement, tAttrs, transclude) {");
-        objectBuilder.append("   return {");
-        if (UtilValidate.isNotEmpty(preCompileFunction)) {
-            objectBuilder.append("    pre: " + preCompileFunction);
-        }
-        if (UtilValidate.isNotEmpty(postCompileFunction)) {
-            objectBuilder.append("    ,post: " + postCompileFunction);
-        }
-        objectBuilder.append("   }");
-        objectBuilder.append("  }");
-        if (UtilValidate.isNotEmpty(linkFunction)) {
-            objectBuilder.append("  ,link: " + linkFunction);
-        }
-        objectBuilder.append("}");
-
-        StringBuilder builder = new StringBuilder();
-        builder.append("function() {");
-        builder.append(" return " + objectBuilder.toString());
-        builder.append("}");
-        return builder.toString();
     }
 
     public static String buildAppsJs(HttpServletRequest request, HttpServletResponse response) {
@@ -286,8 +238,8 @@ public class AngularJsEvents {
         List<ClasspathInfo> classpathResoruceInfos = NgComponentConfig.getAllClasspathResourceInfos();
         for (ClasspathInfo classpathResourceInfo : classpathResoruceInfos) {
             try {
-                List<File> files = FileUtil.findFiles("xml", classpathResourceInfo.createResourceHandler().getFullLocation(), null, null);
-                classFiles.addAll(files);
+                List<File> jsFiles = FileUtil.findFiles("js", classpathResourceInfo.createResourceHandler().getFullLocation(), null, null);
+                classFiles.addAll(jsFiles);
             } catch (Exception e) {
                 Debug.logWarning(e, module);
             }
