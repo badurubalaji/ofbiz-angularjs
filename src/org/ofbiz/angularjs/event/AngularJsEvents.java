@@ -131,7 +131,7 @@ public class AngularJsEvents {
         
         // filters
         for (ModelNgFilter modelNgFilter : NgModelDispatcherContext.getAllModelNgFilters()) {
-            builder.append(".filter('" + modelNgFilter.name + "', " + modelNgFilter.location + "." + modelNgFilter.invoke + ")\n");
+            builder.append(".filter('" + modelNgFilter.name + "', " + modelNgFilter.location + ")\n");
         }
         
         // services
@@ -153,9 +153,7 @@ public class AngularJsEvents {
     }
     
     private static String createDirectiveJsFunction(ModelNgDirective modelNgDirective) {
-        Debug.logInfo("22222222222222222222 createDirectiveJsFunction: " + modelNgDirective.name, module);
         JavaScriptClass javaScriptClass = JavaScriptFactory.getJavaScriptClass(modelNgDirective.location);
-        Debug.logInfo("3333333333333333333 javaScriptClass: " + javaScriptClass, module);
         if (UtilValidate.isNotEmpty(javaScriptClass)) {
             // object builder
             StringBuilder objectBuilder = new StringBuilder();

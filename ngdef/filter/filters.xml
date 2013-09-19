@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-filters>
-    <ng-filter name="capitalize" location="org.ofbiz.angularjs.filter.CommonFilters" invoke="capitalize"/>
+    <ng-filter name="capitalize" location="org.ofbiz.angularjs.filter.CapitalizeFilter"/>
 </ng-filters>

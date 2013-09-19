@@ -32,7 +32,8 @@ public class JavaScriptClass {
     protected String name = null;
     protected Function function = null;
     protected Context context = null;
-    protected String rawString = null;
+    protected String rawFunction = null;
+    protected String rawBody = null;
     protected String constructorArgument = "";
     
     public JavaScriptClass(JavaScriptPackage javaScriptPackage, String name, Function function, Context context) {
@@ -40,11 +41,12 @@ public class JavaScriptClass {
         this.name = name;
         this.function = function;
         this.context = context;
-        this.rawString = context.decompileFunction(function, 4);
+        this.rawFunction = context.decompileFunction(function, 4);
+        this.rawBody = context.decompileFunctionBody(function, 4);
         
         // get constructor argument
         Pattern pattern = Pattern.compile(".*?function.*?f.*?(\\()(.*?)(\\))");
-        Matcher matcher = pattern.matcher(rawString);
+        Matcher matcher = pattern.matcher(rawFunction);
         while (matcher.find()) {
             constructorArgument = matcher.group(2);
             break;
@@ -60,6 +62,7 @@ public class JavaScriptClass {
     }
     
     public String rawString() {
+        String rawString = this.name + ": function(" + constructorArgument + ") {" + rawBody + "},\n";
         return rawString;
     }
 }
