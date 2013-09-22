@@ -6,10 +6,12 @@
         <styleSheet path="/angularjs/images/css/bootstrap.min.css"/>
         <styleSheet path="/angularjs/images/css/bootstrap-responsive.min.css"/>
     </ng-module>
+    <!--
     <ng-module name="ui.map">
         <javaScript path="maps.googleapis.com/maps/api/js?sensor=false&amp;language=en" full-path="true"/>
         <javaScript path="/angularjs/images/js/ui-map.js"/>
     </ng-module>
+    -->
     <ng-module name="ui.event">
         <javaScript path="/angularjs/images/js/ui-utils/modules/event/event.js"/>
     </ng-module>
@@ -36,6 +38,7 @@
         <javaScript path="/angularjs/images/js/tinymce/tinymce.min.js"/>
         <javaScript path="/angularjs/images/js/tinymce.js"/>
     </ng-module>
+    <!--
     <ng-module name="ui.calendar">
         <javaScript path="/angularjs/images/js/calendar/fullcalendar.min.js"/>
         <javaScript path="/angularjs/images/js/calendar/gcal.js"/>
@@ -43,9 +46,11 @@
         <styleSheet path="/angularjs/images/css/calendar/fullcalendar.css"/>
         <styleSheet path="/angularjs/images/css/calendar/fullcalendar.print.css"/>
     </ng-module>
+    -->
     <ng-module name="kalitte.services">
         <javaScript path="/angularjs/images/js/appBusy.js"/>
     </ng-module>
+    <!--
     <ng-module name="googlechart.directives">
         <javaScript path="www.google.com/jsapi" full-path="true"/>
         <javaScript path="/angularjs/images/js/ng-google-chart.js"/>
@@ -59,4 +64,5 @@
         <javaScript path="cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js" full-path="true"/>
         <javaScript path="/angularjs/images/js/initialStrap.js"/>
     </ng-module>
+    -->
 </ng-modules>

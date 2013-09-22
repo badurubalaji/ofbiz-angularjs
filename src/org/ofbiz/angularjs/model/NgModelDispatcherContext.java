@@ -44,6 +44,7 @@ import org.ofbiz.angularjs.provider.ModelNgProvider;
 import org.ofbiz.angularjs.provider.ModelNgProviderReader;
 import org.ofbiz.angularjs.service.ModelNgService;
 import org.ofbiz.angularjs.service.ModelNgServiceReader;
+import org.ofbiz.base.util.UtilValidate;
 
 public class NgModelDispatcherContext {
 
@@ -98,7 +99,9 @@ public class NgModelDispatcherContext {
         List<ModelNgModule> modelNgModules = new LinkedList<ModelNgModule>();
         for (ModuleResourceInfo moduleResourceInfo : NgComponentConfig.getAllModuleResourceInfos()) {
             Map<String, ModelNgModule> modelNgModuleMap = ModelNgModuleReader.getModelNgModuleMap(moduleResourceInfo.createResourceHandler());
-            modelNgModules.addAll(modelNgModuleMap.values());
+            if (UtilValidate.isNotEmpty(modelNgModuleMap)) {
+                modelNgModules.addAll(modelNgModuleMap.values());
+            }
         }
         return modelNgModules;
     }

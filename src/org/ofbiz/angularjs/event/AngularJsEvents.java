@@ -117,16 +117,21 @@ public class AngularJsEvents {
         
         // views
         builder.append(".config(['$routeProvider', function($routeProvider) {\n");
-        builder.append("    $routeProvider.\n");
+        builder.append("    $routeProvider.");
         for (ModelNgView modelNgView : modelNgViews) {
-            builder.append("        when('" + modelNgView.path + "', {templateUrl: '" + modelNgView.uri + "', controller: '" + modelNgView.controller + "'}).\n");
+            builder.append("when('" + modelNgView.path + "', {templateUrl: '" + modelNgView.uri + "', controller: '" + modelNgView.controller + "'}).\n");
         }
-        builder.append("        otherwise({redirectTo: '" + defaultPath + "'});");
+        builder.append("otherwise({redirectTo: '" + defaultPath + "'});");
         builder.append("}])\n");
         
         // directives
+        String emptyJsFunction = "function() {}";
         for (ModelNgDirective modelNgDirective : NgModelDispatcherContext.getAllModelNgDirectives()) {
-            builder.append(".directive('" + modelNgDirective.name + "', " + createDirectiveJsFunction(modelNgDirective) + ")\n");
+            String directiveJsFunction = createDirectiveJsFunction(modelNgDirective);
+            if (UtilValidate.isEmpty(directiveJsFunction)) {
+                directiveJsFunction = emptyJsFunction;
+            }
+            builder.append(".directive('" + modelNgDirective.name + "', " + directiveJsFunction + ")\n");
         }
         
         // filters
@@ -188,112 +193,31 @@ public class AngularJsEvents {
 
     public static String buildMainJs(HttpServletRequest request, HttpServletResponse response) {
         StringBuilder builder = new StringBuilder();
-        builder.append("require.config({");
-        builder.append("\nbaseUrl: \"/angularjs/control\",");
-        builder.append("\nwaitSeconds: 15,");
-        builder.append("\n});");
-        builder.append("\nrequire([\"modules\", \"apps\"], function() {");
-        
-        // bootstrap
-        for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
-            builder.append("\nvar appElement_" + modelNgApplication.name + " = $('#" + modelNgApplication.name + "-app');");
-            builder.append("\nangular.bootstrap(appElement_" + modelNgApplication.name + ", ['" + modelNgApplication.name + "']);");
-        }
-        
-        builder.append("\n});");
-
-        String javaScriptString = builder.toString();
-        response.setContentType("text/javascript");
         
         try {
-            response.setContentLength(javaScriptString.getBytes("UTF8").length);
-        } catch (UnsupportedEncodingException e) {
-            Debug.logError("Problems with JavaScript encoding: " + e, module);
-        }
-        
-        // return the JavaScript String
-        Writer out;
-        try {
-            out = response.getWriter();
-            out.write(javaScriptString);
-            out.flush();
-        } catch (IOException e) {
-            Debug.logError(e, module);
-        }
-        
-        return "success";
-    }
-
-    public static String buildAppsJs(HttpServletRequest request, HttpServletResponse response) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("define(\"apps\", function() {");
-        
-        for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
-            buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultPath, modelNgApplication.getModelNgViews(), builder);
-        }
-        
-        builder.append("});");
-
-        String javaScriptString = builder.toString();
-        response.setContentType("text/javascript");
-        
-        try {
-            response.setContentLength(javaScriptString.getBytes("UTF8").length);
-        } catch (UnsupportedEncodingException e) {
-            Debug.logError("Problems with JavaScript encoding: " + e, module);
-        }
-        
-        // return the JavaScript String
-        Writer out;
-        try {
-            out = response.getWriter();
-            out.write(javaScriptString);
-            out.flush();
-        } catch (IOException e) {
-            Debug.logError(e, module);
-        }
-        
-        return "success";
-    }
-
-    public static String buildClassesJs(HttpServletRequest request, HttpServletResponse response) {
-        StringBuilder builder = new StringBuilder();
-        List<File> classFiles = new LinkedList<File>();
-        List<ClasspathInfo> classpathResoruceInfos = NgComponentConfig.getAllClasspathResourceInfos();
-        for (ClasspathInfo classpathResourceInfo : classpathResoruceInfos) {
-            try {
-                List<File> jsFiles = FileUtil.findFiles("js", classpathResourceInfo.createResourceHandler().getFullLocation(), null, null);
-                classFiles.addAll(jsFiles);
-            } catch (Exception e) {
-                Debug.logWarning(e, module);
+            // classes
+            List<File> classFiles = new LinkedList<File>();
+            List<ClasspathInfo> classpathResoruceInfos = NgComponentConfig.getAllClasspathResourceInfos();
+            for (ClasspathInfo classpathResourceInfo : classpathResoruceInfos) {
+                try {
+                    List<File> jsFiles = FileUtil.findFiles("js", classpathResourceInfo.createResourceHandler().getFullLocation(), null, null);
+                    classFiles.addAll(jsFiles);
+                } catch (Exception e) {
+                    Debug.logWarning(e, module);
+                }
             }
-        }
-        
-        try {
             buildJsClasses(classFiles, builder);
-            String javaScriptString = builder.toString();
-            response.setContentType("text/javascript");
-            response.setContentLength(javaScriptString.getBytes("UTF8").length);
             
-            Writer out = response.getWriter();
-            out.write(javaScriptString);
-            out.flush();
-        } catch (UnsupportedEncodingException e) {
-            Debug.logError("Problems with JavaScript encoding: " + e, module);
-        } catch (IOException e) {
-            Debug.logError(e, module);
-        }
-        
-        return "success";
-    }
-
-    public static String buildModulesJs(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            StringBuilder builder = new StringBuilder();
-            builder.append("define(\"modules\", function() {\n");
-            builder.append("require([\n");
+            // require
+            builder.append("require.config({");
+            builder.append("\nbaseUrl: \"/angularjs/control\",");
+            builder.append("\nwaitSeconds: 15,");
+            builder.append("\n});");
+            builder.append("\nrequire([\n");
+            
+            // modules
             List<ModelNgModule> ngModules = NgModelDispatcherContext.getAllModelNgModules();
-            List<String> javaScriptPaths = new LinkedList<String>();
+            List<String> moduleJsPaths = new LinkedList<String>();
             for (ModelNgModule ngModule : ngModules) {
                 for (ModelJavaScript modelJavaScript : ngModule.modelJavaScripts) {
                     String javaScriptPath = null;
@@ -306,25 +230,49 @@ public class AngularJsEvents {
                     } else {
                         javaScriptPath = modelJavaScript.path;
                     }
-                    javaScriptPaths.add("\n'" + javaScriptPath + "'");
+                    moduleJsPaths.add("\n'" + javaScriptPath + "'");
                 }
             }
-            builder.append(StringUtil.join(javaScriptPaths, ","));
-            builder.append("\n], function() {})");
             
-            builder.append("});");
+            String moduleJsList = StringUtil.join(moduleJsPaths, ",");
+            builder.append(moduleJsList);
+            builder.append("], function() {");
             
+            // apps
+            for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
+                buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultPath, modelNgApplication.getModelNgViews(), builder);
+            }
+            
+            // bootstrap
+            for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
+                String elementName = "appElement_" + modelNgApplication.name;
+                String elementId = modelNgApplication.name + "-app";
+                builder.append("\nvar " + elementName + " = $('#" + elementId + "');");
+                builder.append("\nif(" + elementName + ") {");
+                builder.append("\nangular.bootstrap(" + elementName + ", ['" + modelNgApplication.name + "']);");
+                builder.append("\n}");
+            }
+            
+            builder.append("\n});");
+
+            // return the JavaScript String
             String javaScriptString = builder.toString();
             response.setContentType("text/javascript");
+        
             response.setContentLength(javaScriptString.getBytes("UTF8").length);
             
-            Writer out = response.getWriter();
-            out.write(javaScriptString);
-            out.flush();
+            Writer out;
+            try {
+                out = response.getWriter();
+                out.write(javaScriptString);
+                out.flush();
+            } catch (IOException e) {
+                Debug.logError(e, module);
+            }
         } catch (UnsupportedEncodingException e) {
-            Debug.logError("Problems with JavaScript encoding: " + e, module);
+            Debug.logError(e, "Problems with JavaScript encoding.", module);
         } catch (IOException e) {
-            Debug.logError(e, module);
+            Debug.logError(e, "Problems with IO.", module);
         }
         
         return "success";

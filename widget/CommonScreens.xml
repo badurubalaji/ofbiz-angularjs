@@ -12,7 +12,6 @@
                 <set field="layoutSettings.companySubtitle" from-field="uiLabelMap.AngularJsCompanySubtitle" global="true"/>
                 
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/control/main.js" global="true"/>
-                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/control/classes.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/require-2.1.8.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/angular.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.9.min.js" global="true"/>

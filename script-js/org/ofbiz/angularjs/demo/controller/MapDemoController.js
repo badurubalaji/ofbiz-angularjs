@@ -42,6 +42,6 @@ function MapDemoController($scope) {
             $scope.myMap.panTo(marker.getPosition());
         };
     } catch (e) {
-        console.error(e);
+        console.error("Could not render map demo. " + e);
     }
 }
