@@ -35,7 +35,6 @@
         <javaScript path="/angularjs/images/js/ade/vendor/angular-sanitize.js"/>
     </ng-module>
     <ng-module name="ui.tinymce">
-        <javaScript path="/angularjs/images/js/tinymce/tinymce.min.js"/>
         <javaScript path="/angularjs/images/js/tinymce.js"/>
     </ng-module>
     <!--
