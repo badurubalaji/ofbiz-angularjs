@@ -45,7 +45,7 @@ public class JavaScriptClass {
         this.rawBody = context.decompileFunctionBody(function, 4);
         
         // get constructor argument
-        Pattern pattern = Pattern.compile(".*?function.*?f.*?(\\()(.*?)(\\))");
+        Pattern pattern = Pattern.compile(".*?function.*?" + this.name + ".*?(\\()(.*?)(\\))");
         Matcher matcher = pattern.matcher(rawFunction);
         while (matcher.find()) {
             constructorArgument = matcher.group(2);

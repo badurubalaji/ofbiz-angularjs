@@ -62,15 +62,11 @@ public class JavaScriptPackage {
     
     public void addJavaScriptClass(String className, Function classFunction, Context context) {
         JavaScriptClass javaScriptClass = new JavaScriptClass(this, className, classFunction, context);
-        Debug.logInfo("111111111111 put[" + packageName + "]: " + className, module);
         javaScriptClasses.put(className, javaScriptClass);
-    	Debug.logInfo("7777777777777777777777777777 [" + this.toString() + "]: " + javaScriptClasses, module);
     }
     
     public JavaScriptClass getJavaScriptClass(String className) {
-    	JavaScriptClass javaScriptClass = javaScriptClasses.get(className);
-    	Debug.logInfo("6666666666666666666666666 [" + this.toString() + "]: " + javaScriptClasses, module);
-    	Debug.logInfo("55555555555555 getJavaScriptClass[" + packageName + "." + className + "]" + javaScriptClass, module);
+        JavaScriptClass javaScriptClass = javaScriptClasses.get(className);
         return javaScriptClass;
     }
     

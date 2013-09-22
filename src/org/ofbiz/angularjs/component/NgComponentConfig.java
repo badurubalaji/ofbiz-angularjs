@@ -56,6 +56,7 @@ public class NgComponentConfig {
     protected List<ProviderResourceInfo> providerResourceInfos = new LinkedList<NgComponentConfig.ProviderResourceInfo>();
     protected List<ControllerResourceInfo> controllerResourceInfos = new LinkedList<NgComponentConfig.ControllerResourceInfo>();
     protected List<ModuleResourceInfo> moduleResourceInfos = new LinkedList<NgComponentConfig.ModuleResourceInfo>();
+    protected List<ApplicationResourceInfo> applicationResourceInfos = new LinkedList<NgComponentConfig.ApplicationResourceInfo>();
     
     protected String globalName = null;
     protected String rootLocation = null;
@@ -143,6 +144,12 @@ public class NgComponentConfig {
         for (Element curElement: UtilXml.childElementList(ngComponentElement, "module-resource")) {
             ModuleResourceInfo moduleResourceInfo = new ModuleResourceInfo(this, curElement);
             this.moduleResourceInfos.add(moduleResourceInfo);
+        }
+        
+        // application-resource - applicationResourceInfos
+        for (Element curElement: UtilXml.childElementList(ngComponentElement, "application-resource")) {
+            ApplicationResourceInfo applicationResourceInfo = new ApplicationResourceInfo(this, curElement);
+            this.applicationResourceInfos.add(applicationResourceInfo);
         }
     }
 
@@ -255,6 +262,14 @@ public class NgComponentConfig {
         return moduleResourceInfos;
     }
     
+    public static List<ApplicationResourceInfo> getAllApplicationResourceInfos() {
+        List<ApplicationResourceInfo> applicationResourceInfos = new LinkedList<NgComponentConfig.ApplicationResourceInfo>();
+        for (NgComponentConfig ngcc : getAllNgComponents()) {
+            applicationResourceInfos.addAll(ngcc.getApplicationResourceInfos());
+        }
+        return applicationResourceInfos;
+    }
+    
     public List<ClasspathInfo> getClasspathInfos() {
         return this.classpathInfos;
     }
@@ -285,6 +300,10 @@ public class NgComponentConfig {
     
     public List<ModuleResourceInfo> getModuleResourceInfos() {
         return this.moduleResourceInfos;
+    }
+    
+    public List<ApplicationResourceInfo> getApplicationResourceInfos() {
+        return this.applicationResourceInfos;
     }
     
     public static class ResourceInfo {
@@ -371,6 +390,15 @@ public class NgComponentConfig {
     public static class ModuleResourceInfo extends ResourceInfo {
 
         public ModuleResourceInfo(NgComponentConfig ngComponentConfig,
+                Element element) {
+            super(ngComponentConfig, element);
+        }
+        
+    }
+    
+    public static class ApplicationResourceInfo extends ResourceInfo {
+
+        public ApplicationResourceInfo(NgComponentConfig ngComponentConfig,
                 Element element) {
             super(ngComponentConfig, element);
         }

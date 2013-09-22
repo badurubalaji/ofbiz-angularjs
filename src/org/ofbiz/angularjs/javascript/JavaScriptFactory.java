@@ -42,7 +42,6 @@ public class JavaScriptFactory {
         if (UtilValidate.isEmpty(packageName)) return null;
         
         JavaScriptPackage javaScriptPackage = javaScriptPackages.get(packageName);
-        Debug.logInfo("44444444444444444 javaScriptPackage[" + packageName + "]: " + javaScriptPackage, module);
         if (UtilValidate.isEmpty(javaScriptPackage)) {
             javaScriptPackage = new JavaScriptPackage(packageName);
             javaScriptPackages.put(packageName, javaScriptPackage);

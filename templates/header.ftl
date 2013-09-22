@@ -12,18 +12,6 @@
             </#list>
         </#if>
         
-        <#list layoutSettings.moduleJavaScripts as moduleJavaScript>
-            <#if moduleJavaScript.fullPath == true>
-                <#assign protocol = "http"/>
-                <#if request.isSecure() == true>
-                    <#assign protocol = "https"/>
-                </#if>
-                <script src="${protocol}://${StringUtil.wrapString(moduleJavaScript.path)}" type="text/javascript"></script>
-            <#else>
-                <script src="<@ofbizContentUrl>${StringUtil.wrapString(moduleJavaScript.path)}</@ofbizContentUrl>" type="text/javascript"></script>
-            </#if>
-        </#list>
-        
         <#if layoutSettings.styleSheets?has_content>
             <#--layoutSettings.styleSheets is a list of style sheets. So, you can have a user-specified "main" style sheet, AND a component style sheet.-->
             <#list layoutSettings.styleSheets as styleSheet>

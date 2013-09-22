@@ -22,7 +22,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.ofbiz.angularjs.application.ModelNgApplication;
+import org.ofbiz.angularjs.application.ModelNgApplicationReader;
 import org.ofbiz.angularjs.component.NgComponentConfig;
+import org.ofbiz.angularjs.component.NgComponentConfig.ApplicationResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.DirectiveResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.FactoryResourceInfo;
 import org.ofbiz.angularjs.component.NgComponentConfig.FilterResourceInfo;
@@ -98,5 +101,14 @@ public class NgModelDispatcherContext {
             modelNgModules.addAll(modelNgModuleMap.values());
         }
         return modelNgModules;
+    }
+
+    public static List<ModelNgApplication> getAllModelNgApplications() {
+        List<ModelNgApplication> modelNgApplications = new LinkedList<ModelNgApplication>();
+        for (ApplicationResourceInfo applicationResourceInfo : NgComponentConfig.getAllApplicationResourceInfos()) {
+            Map<String, ModelNgApplication> applicationNgModuleMap = ModelNgApplicationReader.getModelNgApplicationMap(applicationResourceInfo.createResourceHandler());
+            modelNgApplications.addAll(applicationNgModuleMap.values());
+        }
+        return modelNgApplications;
     }
 }

@@ -9,4 +9,5 @@
     <provider-resource location="ngdef/provider/providers.xml"/>
     <controller-resource location="ngdef/controller/controllers.xml"/>
     <module-resource location="ngdef/module/modules.xml"/>
+    <application-resource location="ngdef/application/applications.xml"/>
 </ng-component>

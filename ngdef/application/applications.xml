@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ng-apps>
-    <ng-app name="angularjs">
-    </ng-app>
+<ng-applications>
+    <ng-application name="angularjs">
+    </ng-application>
+    <!--
     <ng-app name="phonecat" default-path="/phones">
         <view path="/phones" uri="PhoneList" controller="org.ofbiz.angularjs.sample.phone.controller.PhoneListController"/>
         <view path="/phones/:phoneId" uri="PhoneDetail" controller="org.ofbiz.angularjs.sample.phone.controller.PhoneDetailController"/>
     </ng-app>
-</ng-apps>
+    -->
+</ng-applications>

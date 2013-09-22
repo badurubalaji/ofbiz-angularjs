@@ -23,9 +23,6 @@ layoutSettings.moduleStyleSheets = [];
 
 def ngModules = NgModelDispatcherContext.getAllModelNgModules();
 ngModules.each { ngModule ->
-    ngModule.modelJavaScripts.each { modelJavaScript ->
-        layoutSettings.moduleJavaScripts.add(["path": modelJavaScript.path, "fullPath": modelJavaScript.fullPath]);
-    }
     ngModule.modelStyleSheets.each { modelStyleSheet ->
         layoutSettings.moduleStyleSheets.add(["path": modelStyleSheet.path, "fullPath": modelStyleSheet.fullPath]);
     }
