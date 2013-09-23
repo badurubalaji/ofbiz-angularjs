@@ -1417,11 +1417,13 @@ public class AngularJsScreenWidget {
 
         protected String id = null;
         protected String type = null;
+        protected String model = null;
 
         public Tree(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.id = FlexibleStringExpander.getInstance(widgetElement.getAttribute("id")).getOriginal();
             this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
         }
         @Override
         public void renderWidgetString(Appendable writer,
@@ -1434,7 +1436,7 @@ public class AngularJsScreenWidget {
         }
         @Override
         public String rawString() {
-            return "<tree type=\"" + type + "\">";
+            return "<tree type=\"" + type + "\" model=\"" + model + "\">";
         }
         
     }
