@@ -7,7 +7,16 @@
             <#list layoutSettings.javaScripts as javaScript>
                 <#if javaScriptsSet.contains(javaScript)>
                     <#assign nothing = javaScriptsSet.remove(javaScript)/>
-                    <script src="<@ofbizContentUrl>${StringUtil.wrapString(javaScript)}</@ofbizContentUrl>" type="text/javascript"></script>
+                    <#if request.isSecure()>
+                        <#if javaScript.contains("http://")>
+                            <#assign newJavaScript = Static["org.ofbiz.base.util.StringUtil"].replaceString(javaScript, "http://", "https://")/>
+                            <script src="<@ofbizContentUrl>${StringUtil.wrapString(newJavaScript)}</@ofbizContentUrl>" type="text/javascript"></script>
+                        <#else>
+                            <script src="<@ofbizContentUrl>${StringUtil.wrapString(javaScript)}</@ofbizContentUrl>" type="text/javascript"></script>
+                        </#if>
+                    <#else>
+                        <script src="<@ofbizContentUrl>${StringUtil.wrapString(javaScript)}</@ofbizContentUrl>" type="text/javascript"></script>
+                    </#if>
                 </#if>
             </#list>
         </#if>

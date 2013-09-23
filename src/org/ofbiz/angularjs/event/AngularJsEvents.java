@@ -192,87 +192,90 @@ public class AngularJsEvents {
     }
 
     public static String buildMainJs(HttpServletRequest request, HttpServletResponse response) {
-        StringBuilder builder = new StringBuilder();
         
-        try {
-            // classes
-            List<File> classFiles = new LinkedList<File>();
-            List<ClasspathInfo> classpathResoruceInfos = NgComponentConfig.getAllClasspathResourceInfos();
-            for (ClasspathInfo classpathResourceInfo : classpathResoruceInfos) {
-                try {
-                    List<File> jsFiles = FileUtil.findFiles("js", classpathResourceInfo.createResourceHandler().getFullLocation(), null, null);
-                    classFiles.addAll(jsFiles);
-                } catch (Exception e) {
-                    Debug.logWarning(e, module);
-                }
-            }
-            buildJsClasses(classFiles, builder);
-            
-            // require
-            builder.append("require.config({");
-            builder.append("\nbaseUrl: \"/angularjs/control\",");
-            builder.append("\nwaitSeconds: 15,");
-            builder.append("\n});");
-            builder.append("\nrequire([\n");
-            
-            // modules
-            List<ModelNgModule> ngModules = NgModelDispatcherContext.getAllModelNgModules();
-            List<String> moduleJsPaths = new LinkedList<String>();
-            for (ModelNgModule ngModule : ngModules) {
-                for (ModelJavaScript modelJavaScript : ngModule.modelJavaScripts) {
-                    String javaScriptPath = null;
-                    if (modelJavaScript.fullPath) {
-                        String protocol = "http";
-                        if (request.isSecure()) {
-                            protocol = "https";
-                        }
-                        javaScriptPath = protocol + "://" + modelJavaScript.path;
-                    } else {
-                        javaScriptPath = modelJavaScript.path;
-                    }
-                    moduleJsPaths.add("\n'" + javaScriptPath + "'");
-                }
-            }
-            
-            String moduleJsList = StringUtil.join(moduleJsPaths, ",");
-            builder.append(moduleJsList);
-            builder.append("], function() {");
-            
-            // apps
-            for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
-                buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultPath, modelNgApplication.getModelNgViews(), builder);
-            }
-            
-            // bootstrap
-            for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
-                String elementName = "appElement_" + modelNgApplication.name;
-                String elementId = modelNgApplication.name + "-app";
-                builder.append("\nvar " + elementName + " = $('#" + elementId + "');");
-                builder.append("\nif(" + elementName + ") {");
-                builder.append("\nangular.bootstrap(" + elementName + ", ['" + modelNgApplication.name + "']);");
-                builder.append("\n}");
-            }
-            
-            builder.append("\n});");
-
-            // return the JavaScript String
-            String javaScriptString = builder.toString();
-            response.setContentType("text/javascript");
+        synchronized (AngularJsEvents.class) {
+            StringBuilder builder = new StringBuilder();
         
-            response.setContentLength(javaScriptString.getBytes("UTF8").length);
-            
-            Writer out;
             try {
-                out = response.getWriter();
-                out.write(javaScriptString);
-                out.flush();
+                // classes
+                List<File> classFiles = new LinkedList<File>();
+                List<ClasspathInfo> classpathResoruceInfos = NgComponentConfig.getAllClasspathResourceInfos();
+                for (ClasspathInfo classpathResourceInfo : classpathResoruceInfos) {
+                    try {
+                        List<File> jsFiles = FileUtil.findFiles("js", classpathResourceInfo.createResourceHandler().getFullLocation(), null, null);
+                        classFiles.addAll(jsFiles);
+                    } catch (Exception e) {
+                        Debug.logWarning(e, module);
+                    }
+                }
+                buildJsClasses(classFiles, builder);
+                
+                // require
+                builder.append("require.config({");
+                builder.append("\nbaseUrl: \"/angularjs/control\",");
+                builder.append("\nwaitSeconds: 15,");
+                builder.append("\n});");
+                builder.append("\nrequire([\n");
+                
+                // modules
+                List<ModelNgModule> ngModules = NgModelDispatcherContext.getAllModelNgModules();
+                List<String> moduleJsPaths = new LinkedList<String>();
+                for (ModelNgModule ngModule : ngModules) {
+                    for (ModelJavaScript modelJavaScript : ngModule.modelJavaScripts) {
+                        String javaScriptPath = null;
+                        if (modelJavaScript.fullPath) {
+                            String protocol = "http";
+                            if (request.isSecure()) {
+                                protocol = "https";
+                            }
+                            javaScriptPath = protocol + "://" + modelJavaScript.path;
+                        } else {
+                            javaScriptPath = modelJavaScript.path;
+                        }
+                        moduleJsPaths.add("\n'" + javaScriptPath + "'");
+                    }
+                }
+                
+                String moduleJsList = StringUtil.join(moduleJsPaths, ",");
+                builder.append(moduleJsList);
+                builder.append("], function() {");
+                
+                // apps
+                for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
+                    buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultPath, modelNgApplication.getModelNgViews(), builder);
+                }
+                
+                // bootstrap
+                for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
+                    String elementName = "appElement_" + modelNgApplication.name;
+                    String elementId = modelNgApplication.name + "-app";
+                    builder.append("\nvar " + elementName + " = $('#" + elementId + "');");
+                    builder.append("\nif(" + elementName + ") {");
+                    builder.append("\nangular.bootstrap(" + elementName + ", ['" + modelNgApplication.name + "']);");
+                    builder.append("\n}");
+                }
+                
+                builder.append("\n});");
+    
+                // return the JavaScript String
+                String javaScriptString = builder.toString();
+                response.setContentType("text/javascript");
+            
+                response.setContentLength(javaScriptString.getBytes("UTF8").length);
+                
+                Writer out;
+                try {
+                    out = response.getWriter();
+                    out.write(javaScriptString);
+                    out.flush();
+                } catch (IOException e) {
+                    Debug.logError(e, module);
+                }
+            } catch (UnsupportedEncodingException e) {
+                Debug.logError(e, "Problems with JavaScript encoding.", module);
             } catch (IOException e) {
-                Debug.logError(e, module);
+                Debug.logError(e, "Problems with IO.", module);
             }
-        } catch (UnsupportedEncodingException e) {
-            Debug.logError(e, "Problems with JavaScript encoding.", module);
-        } catch (IOException e) {
-            Debug.logError(e, "Problems with IO.", module);
         }
         
         return "success";
