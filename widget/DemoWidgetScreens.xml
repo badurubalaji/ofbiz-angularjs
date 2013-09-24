@@ -104,6 +104,7 @@
         </section>
     </screen>
     <screen name="Form">
+        <!-- http://www.w3resource.com/twitter-bootstrap/forms-tutorial.php -->
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.FormDemoController">

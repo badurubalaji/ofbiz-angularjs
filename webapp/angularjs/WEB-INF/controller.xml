@@ -37,6 +37,9 @@
     <request-map uri="sample"><security https="true" auth="false"/><response name="success" type="view" value="sample"/></request-map>
     <request-map uri="PhoneList"><security https="true" auth="false"/><response name="success" type="view" value="PhoneList"/></request-map>
     <request-map uri="PhoneDetail"><security https="true" auth="false"/><response name="success" type="view" value="PhoneDetail"/></request-map>
+    
+    <!-- Example Request Mappings -->
+    <request-map uri="Example"><security https="true" auth="false"/><response name="success" type="view" value="Example"/></request-map>
     <request-map uri="examples.json">
         <security https="false" auth="false"/>
         <event type="simple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="getExamples"/>
@@ -59,6 +62,10 @@
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://angularjs/widget/AngularJsScreens.xml#main"/>
     <view-map name="widgets" type="screen" page="component://angularjs/widget/AngularJsScreens.xml#widgets"/>
+    
+    <!-- Example View Mappings -->
+    <view-map name="Example" type="screen" page="component://angularjs/widget/ExampleScreens.xml#main"/>
+    
     <view-map name="sample" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#main"/>
     <view-map name="PhoneList" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneList"/>
     <view-map name="PhoneDetail" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneDetail"/>

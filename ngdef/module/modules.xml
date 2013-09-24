@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-modules>
     <ng-module name="ui.bootstrap">
+        <javaScript path="/angularjs/images/js/bootstrap.min.js"/>
         <javaScript path="/angularjs/images/js/ui-bootstrap-0.4.0.min.js"/>
         <javaScript path="/angularjs/images/js/ui-bootstrap-tpls-0.4.0.min.js"/>
+        <styleSheet path="/angularjs/images/css/bootstrap-theme.min.css"/>
         <styleSheet path="/angularjs/images/css/bootstrap.min.css"/>
         <styleSheet path="/angularjs/images/css/bootstrap-responsive.min.css"/>
     </ng-module>

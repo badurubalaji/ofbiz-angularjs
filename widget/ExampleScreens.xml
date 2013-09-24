@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+
+    <screen name="main">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+            </actions>
+            <widgets>
+                <decorator-screen name="AngularJsCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <controller name="org.ofbiz.angularjs.example.controller.ExampleController">
+                            <screenlet title="Find Example">
+                                <form name="form" style="well" target="findExample.json" on-submit-success="onSubmitSuccess" on-submit-error="onSubmitError">
+                                    <container style="form-horizontal">
+                                        <container style="control-group">
+                                            <label text="Example Id: " style="control-label"/>
+                                            <container style="controls">
+                                                <text name="exampleId" model="example.exampleId"/>
+                                            </container>
+                                        </container>
+                                        <container style="control-group">
+                                            <label text="Example Name: " style="control-label"/>
+                                            <container style="controls">
+                                                <text name="exampleName" model="example.exampleName"/>
+                                            </container>
+                                        </container>
+                                        <container style="form-actions">
+                                           <submit text="Submit"/>
+                                        </container>
+                                    </container>
+                                </form>
+                            </screenlet>
+                            <screenlet title="Search Results">
+                                <grid style="gridStyle" row-height="40" target-uri="examples.json" list-name="examples">
+                                    <field name="exampleId" title="Example Id" editable="false"/>
+                                    <field name="exampleName" title="Example Name" editable="true"/>
+                                </grid>
+                            </screenlet>
+                        </controller>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>

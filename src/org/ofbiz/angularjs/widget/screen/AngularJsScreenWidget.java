@@ -673,7 +673,9 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append(this.rawString());
+            writer.append("<fieldset>");
             renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</fieldset>");
             writer.append("</form>");
         }
 
@@ -870,18 +872,20 @@ public class AngularJsScreenWidget {
 
     /**
      * http://mgcrea.github.io/angular-strap/
+     * https://github.com/angular-ui/ui-router
+     * 
      * @author chatree
      *
      */
     @SuppressWarnings("serial")
-    public static class MenunBar extends ModelScreenWidget {
+    public static class MenuBar extends ModelScreenWidget {
         public static final String TAG_NAME = "menu-bar";
         
         protected String title = null;
         protected String target = null;
         protected List<? extends Element> itemElementList = null;
         
-        public MenunBar(ModelScreen modelScreen, Element widgetElement) {
+        public MenuBar(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             title = FlexibleStringExpander.getInstance(widgetElement.getAttribute("title")).getOriginal();
             target = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target")).getOriginal();
@@ -1189,6 +1193,45 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             return "<div class=\"row-fluid\">";
+        }
+    }
+
+    @SuppressWarnings("serial")
+    public static class Screenlet extends ModelScreenWidget {
+        public static final String TAG_NAME = "screenlet";
+        
+        protected String title = null;
+        protected List<ModelScreenWidget> subWidgets = null;
+        
+        public Screenlet(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.title = FlexibleStringExpander.getInstance(widgetElement.getAttribute("title")).getOriginal();
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</div>");
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("<div class=\"panel panel-default\">");
+            builder.append("<div class=\"panel-heading\">");
+            builder.append("<h5 class=\"panel-title\">");
+            builder.append(title);
+            builder.append("</h5>");
+            builder.append("</div>");
+            builder.append("<div class=\"panel-body\">");
+            return builder.toString();
         }
     }
 
