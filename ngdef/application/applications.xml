@@ -2,6 +2,20 @@
 <ng-applications>
     <ng-application name="angularjs">
     </ng-application>
+    <ng-application name="example">
+        <state name="index" url="">
+            <view name="viewA" target="index.viewA" controller="org.ofbiz.angularjs.example.controller.index.ViewAController"/>
+            <view name="viewB" target="index.viewB" controller="org.ofbiz.angularjs.example.controller.index.ViewBController"/>
+        </state>
+        <state name="route1" url="/route1">
+            <view name="viewA" target="route1.viewA" controller="org.ofbiz.angularjs.example.controller.route1.ViewAController"/>
+            <view name="viewB" target="route1.viewB" controller="org.ofbiz.angularjs.example.controller.route1.ViewAController"/>
+        </state>
+        <state name="route2" url="/route2">
+            <view name="viewA" target="route2.viewA" controller="org.ofbiz.angularjs.example.controller.route2.ViewAController"/>
+            <view name="viewB" target="route2.viewB" controller="org.ofbiz.angularjs.example.controller.route2.ViewAController"/>
+        </state>
+    </ng-application>
     <!--
     <ng-app name="phonecat" default-path="/phones">
         <view path="/phones" uri="PhoneList" controller="org.ofbiz.angularjs.sample.phone.controller.PhoneListController"/>

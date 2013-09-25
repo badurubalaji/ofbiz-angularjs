@@ -8,7 +8,7 @@
                 <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
             </actions>
             <widgets>
-                <decorator-screen name="AngularJsCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                <decorator-screen name="ExampleCommonDecorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
                         <controller name="org.ofbiz.angularjs.example.controller.ExampleController">
                             <screenlet title="Find Example">

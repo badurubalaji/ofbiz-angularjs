@@ -8,6 +8,9 @@
         <styleSheet path="/angularjs/images/css/bootstrap.min.css"/>
         <styleSheet path="/angularjs/images/css/bootstrap-responsive.min.css"/>
     </ng-module>
+    <ng-module name="ui.router">
+        <javaScript path="/angularjs/images/js/angular-ui-router.min.js"/>
+    </ng-module>
     <ng-module name="ui.map">
         <javaScript path="/angularjs/images/js/ui-map.js"/>
     </ng-module>

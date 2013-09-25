@@ -37,7 +37,8 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 import org.ofbiz.angularjs.application.ModelNgApplication;
-import org.ofbiz.angularjs.application.ModelNgApplication.ModelNgView;
+import org.ofbiz.angularjs.application.ModelNgState;
+import org.ofbiz.angularjs.application.ModelNgView;
 import org.ofbiz.angularjs.component.NgComponentConfig;
 import org.ofbiz.angularjs.component.NgComponentConfig.ClasspathInfo;
 import org.ofbiz.angularjs.directive.ModelNgDirective;
@@ -101,7 +102,7 @@ public class AngularJsEvents {
         renderer.render(JavaScriptFactory.getRootJavaScriptPackages());
     }
     
-    private static void buildAppJsFunction(String name, String defaultPath, List<? extends ModelNgView> modelNgViews, StringBuilder builder) {
+    private static void buildAppJsFunction(String name, String defaultPath, List<? extends ModelNgState> modelNgStates, StringBuilder builder) {
         builder.append("\nangular.module('" + name + "', [");
         
         // modules
@@ -115,14 +116,30 @@ public class AngularJsEvents {
         }
         builder.append("])\n");
         
-        // views
-        builder.append(".config(['$routeProvider', function($routeProvider) {\n");
-        builder.append("    $routeProvider.");
-        for (ModelNgView modelNgView : modelNgViews) {
-            builder.append("when('" + modelNgView.path + "', {templateUrl: '" + modelNgView.uri + "', controller: '" + modelNgView.controller + "'}).\n");
+        builder.append(".config(function($stateProvider, $routeProvider) {\n");
+        
+        // default path
+        builder.append("$routeProvider.otherwise({redirectTo: '" + defaultPath + "'});");
+        
+        // states
+        if (UtilValidate.isNotEmpty(modelNgStates)) {
+            builder.append("$stateProvider");
+            for (ModelNgState modelNgState : modelNgStates) {
+                builder.append(".state(\"" + modelNgState.name + "\", {");
+                builder.append("url: \"" + modelNgState.url + "\",");
+                builder.append("views: {");
+                
+                List<String> viewDefs = new LinkedList<String>();
+                for (ModelNgView modelNgView : modelNgState.getModelNgViews()) {
+                    viewDefs.add("\"" + modelNgView.name + "\": { template: \"" + modelNgView.target + "\", controller: " + modelNgView.controller + "}");
+                }
+                builder.append(StringUtil.join(viewDefs, ","));
+                
+                builder.append("}})");
+            }
         }
-        builder.append("otherwise({redirectTo: '" + defaultPath + "'});");
-        builder.append("}])\n");
+        
+        builder.append("})\n");
         
         // directives
         String emptyJsFunction = "function() {}";
@@ -243,7 +260,7 @@ public class AngularJsEvents {
             
             // apps
             for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
-                buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultPath, modelNgApplication.getModelNgViews(), builder);
+                buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultPath, modelNgApplication.getModelNgStates(), builder);
             }
             
             // bootstrap

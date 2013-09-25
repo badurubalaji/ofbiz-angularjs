@@ -46,12 +46,30 @@ public class ModelNgApplicationReader extends AbstractModelNgReader {
         ModelNgApplication ngApplication = new ModelNgApplication();
         ngApplication.name = UtilXml.checkEmpty(element.getAttribute("name")).intern();
         ngApplication.defaultPath = UtilXml.checkEmpty(element.getAttribute("default-path")).intern();
-        List<? extends Element> viewElements = UtilXml.childElementList(element, "view");
-        for (Element viewElement : viewElements) {
-            String path = UtilXml.elementAttribute(viewElement, "path", null);
-            String uri = UtilXml.elementAttribute(viewElement, "uri", null);
-            String controller = UtilXml.elementAttribute(viewElement, "controller", null);
-            ngApplication.addView(path, uri, controller);
+        List<? extends Element> stateElements = UtilXml.childElementList(element, "state");
+        for (Element stateElement : stateElements) {
+            String stateName = UtilXml.elementAttribute(stateElement, "name", null);
+            String url = UtilXml.elementAttribute(stateElement, "url", null);
+            
+            ModelNgState modelNgState = new ModelNgState();
+            modelNgState.name = stateName;
+            modelNgState.url = url;
+
+            List<? extends Element> viewElements = UtilXml.childElementList(stateElement, "view");
+            for (Element viewElement : viewElements) {
+                String viewName = UtilXml.elementAttribute(viewElement, "name", null);
+                String target = UtilXml.elementAttribute(viewElement, "target", null);
+                String controller = UtilXml.elementAttribute(viewElement, "controller", null);
+                
+                ModelNgView modelNgView = new ModelNgView();
+                modelNgView.name  = viewName;
+                modelNgView.target = target;
+                modelNgView.controller = controller;
+                
+                modelNgState.addView(modelNgView);
+            }
+            
+            ngApplication.addState(modelNgState);
         }
         return ngApplication;
     }

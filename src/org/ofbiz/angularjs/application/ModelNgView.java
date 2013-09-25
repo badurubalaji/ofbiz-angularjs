@@ -18,25 +18,8 @@
  *******************************************************************************/
 package org.ofbiz.angularjs.application;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.ofbiz.angularjs.model.AbstractModelNg;
-
-@SuppressWarnings("serial")
-public class ModelNgApplication extends AbstractModelNg {
-
-    public final static String module = ModelNgApplication.class.getName();
-    
-    public String defaultPath = null;
-    
-    protected List<ModelNgState> modelNgStates = new LinkedList<ModelNgState>();
-
-    public void addState(ModelNgState modelNgState) {
-        modelNgStates.add(modelNgState);
-    }
-    
-    public List<ModelNgState> getModelNgStates() {
-        return modelNgStates;
-    }
+public class ModelNgView {
+    public String name = null;
+    public String target = null;
+    public String controller = null;
 }

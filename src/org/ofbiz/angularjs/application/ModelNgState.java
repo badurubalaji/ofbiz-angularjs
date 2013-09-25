@@ -21,22 +21,16 @@ package org.ofbiz.angularjs.application;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.ofbiz.angularjs.model.AbstractModelNg;
+public class ModelNgState {
+    public String name = null;
+    public String url = "";
+    protected List<ModelNgView> modelNgViews = new LinkedList<ModelNgView>();
 
-@SuppressWarnings("serial")
-public class ModelNgApplication extends AbstractModelNg {
-
-    public final static String module = ModelNgApplication.class.getName();
-    
-    public String defaultPath = null;
-    
-    protected List<ModelNgState> modelNgStates = new LinkedList<ModelNgState>();
-
-    public void addState(ModelNgState modelNgState) {
-        modelNgStates.add(modelNgState);
+    public void addView(ModelNgView modelNgView) {
+        modelNgViews.add(modelNgView);
     }
     
-    public List<ModelNgState> getModelNgStates() {
-        return modelNgStates;
+    public List<ModelNgView> getModelNgViews() {
+        return modelNgViews;
     }
 }

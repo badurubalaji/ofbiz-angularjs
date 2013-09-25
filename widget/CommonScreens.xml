@@ -84,4 +84,24 @@
             </widgets>
         </section>
     </screen>
+
+    <screen name="ExampleCommonDecorator">
+        <section>
+            <actions>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container id="example-app">
+                                    <decorator-section-include name="body"/>
+                                </container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
 </screens>
