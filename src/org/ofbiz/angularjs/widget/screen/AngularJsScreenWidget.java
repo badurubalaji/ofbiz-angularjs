@@ -883,12 +883,14 @@ public class AngularJsScreenWidget {
         
         protected String title = null;
         protected String target = null;
+        protected String style = "";
         protected List<? extends Element> itemElementList = null;
         
         public MenuBar(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             title = FlexibleStringExpander.getInstance(widgetElement.getAttribute("title")).getOriginal();
             target = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target")).getOriginal();
+            style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
             itemElementList = UtilXml.childElementList(widgetElement, "menu-item");
         }
 
@@ -899,13 +901,13 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             writer.append(this.rawString());
             for (Element itemElement : itemElementList) {
-                String route = UtilXml.elementAttribute(itemElement, "route", null);
                 String target = UtilXml.elementAttribute(itemElement, "target", null);
                 String text = UtilXml.elementAttribute(itemElement, "text", null);
                 
-                writer.append("<li data-match-route=\"" + route + "\"><a href=\"" + target + "\">" + text + "</a></li>");
+                writer.append("<li><a ui-sref=\"" + target + "\">" + text + "</a></li>");
             }
             writer.append("</ul>");
+            writer.append("</div>");
             writer.append("</div>");
             writer.append("</div>");
         }
@@ -913,9 +915,10 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("<div class=\"navbar\" bs-navbar>");
+            builder.append("<div class=\"navbar\" " + style + ">");
             builder.append("<div class=\"navbar-inner\">");
-            builder.append("<a class=\"brand\" href=\"" + target + "\">" + title + "</a>");
+            builder.append("<div class=\"container\">");
+            builder.append("<a class=\"brand\" ui-sref=\"" + target + "\">" + title + "</a>");
             builder.append("<ul class=\"nav\">");
             return builder.toString();
         }
@@ -1656,9 +1659,12 @@ public class AngularJsScreenWidget {
     @SuppressWarnings("serial")
     public static class View extends ModelScreenWidget {
         public static final String TAG_NAME = "view";
+        
+        protected String name = null;
 
         public View(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
+            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name")).getOriginal();
         }
 
         @Override
@@ -1671,7 +1677,7 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            return "<div ng-view=\"\"></div>";
+            return "<div ng-view=\"" + name + "\"></div>";
         }
     }
 }

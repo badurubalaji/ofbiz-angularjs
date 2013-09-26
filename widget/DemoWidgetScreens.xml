@@ -210,10 +210,10 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.MenuBarDemoController">
-                    <menu-bar title="Menu Bar">
-                        <menu-item text="Home" route="/(:?navbar)" target="#/navbar"/>
-                        <menu-item text="Page One" route="/page-one" target="#/page-one"/>
-                        <menu-item text="Page Two" route="/page-two.*" target="#/page-two/sub-a"/>
+                    <menu-bar title="Menu Bar" target="home" style="bs-navbar">
+                        <menu-item text="Home" target="navbar"/>
+                        <menu-item text="Page One" target="page-one"/>
+                        <menu-item text="Page Two" target="page-two/sub-a"/>
                     </menu-bar>
                 </controller>
             </widgets>
