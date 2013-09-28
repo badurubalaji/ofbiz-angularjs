@@ -904,7 +904,7 @@ public class AngularJsScreenWidget {
                 String target = UtilXml.elementAttribute(itemElement, "target", null);
                 String text = UtilXml.elementAttribute(itemElement, "text", null);
                 
-                writer.append("<li><a ui-sref=\"" + target + "\">" + text + "</a></li>");
+                writer.append("<li ng-class=\"{ active: $state.includes('" + target + "') }\"><a ui-sref=\"" + target + "\">" + text + "</a></li>");
             }
             writer.append("</ul>");
             writer.append("</div>");
@@ -1677,7 +1677,7 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            return "<div ng-view=\"" + name + "\"></div>";
+            return "<div ui-view=\"" + name + "\"></div>";
         }
     }
 }

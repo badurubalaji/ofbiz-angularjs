@@ -131,7 +131,7 @@ public class AngularJsEvents {
                 
                 List<String> viewDefs = new LinkedList<String>();
                 for (ModelNgView modelNgView : modelNgState.getModelNgViews()) {
-                    viewDefs.add("\"" + modelNgView.name + "\": { template: \"" + modelNgView.target + "\", controller: " + modelNgView.controller + "}");
+                    viewDefs.add("\"" + modelNgView.name + "\": { templateUrl: \"" + modelNgView.target + "\", controller: " + modelNgView.controller + "}");
                 }
                 builder.append(StringUtil.join(viewDefs, ","));
                 
@@ -170,6 +170,12 @@ public class AngularJsEvents {
         for (ModelNgFactory modelNgFactory : NgModelDispatcherContext.getAllModelNgFactories()) {
             builder.append(".factory('" + modelNgFactory.name + "', " + modelNgFactory.location + ")\n");
         }
+        
+        // run
+        builder.append(".run(function($rootScope, $state, $stateParams) {");
+        builder.append("$rootScope.$state = $state;");
+        builder.append("$rootScope.$stateParams = $stateParams;");
+        builder.append("})");
         
         builder.append(";");
     }
