@@ -45,7 +45,7 @@ public class ModelNgApplicationReader extends AbstractModelNgReader {
             String resourceLocation) {
         ModelNgApplication ngApplication = new ModelNgApplication();
         ngApplication.name = UtilXml.checkEmpty(element.getAttribute("name")).intern();
-        ngApplication.defaultPath = UtilXml.checkEmpty(element.getAttribute("default-path")).intern();
+        ngApplication.defaultState = UtilXml.checkEmpty(element.getAttribute("default-state")).intern();
         List<? extends Element> stateElements = UtilXml.childElementList(element, "state");
         for (Element stateElement : stateElements) {
             String stateName = UtilXml.elementAttribute(stateElement, "name", null);

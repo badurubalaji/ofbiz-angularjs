@@ -102,7 +102,7 @@ public class AngularJsEvents {
         renderer.render(JavaScriptFactory.getRootJavaScriptPackages());
     }
     
-    private static void buildAppJsFunction(String name, String defaultPath, List<? extends ModelNgState> modelNgStates, StringBuilder builder) {
+    private static void buildAppJsFunction(String name, String defaultState, List<? extends ModelNgState> modelNgStates, StringBuilder builder) {
         builder.append("\nangular.module('" + name + "', [");
         
         // modules
@@ -116,10 +116,10 @@ public class AngularJsEvents {
         }
         builder.append("])\n");
         
-        builder.append(".config(function($stateProvider, $routeProvider) {\n");
+        builder.append(".config(function($stateProvider, $urlRouterProvider) {\n");
         
         // default path
-        builder.append("$routeProvider.otherwise({redirectTo: '" + defaultPath + "'});");
+        builder.append("$urlRouterProvider.otherwise(\"" + defaultState + "\");");
         
         // states
         if (UtilValidate.isNotEmpty(modelNgStates)) {
@@ -266,7 +266,7 @@ public class AngularJsEvents {
             
             // apps
             for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
-                buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultPath, modelNgApplication.getModelNgStates(), builder);
+                buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultState, modelNgApplication.getModelNgStates(), builder);
             }
             
             // bootstrap

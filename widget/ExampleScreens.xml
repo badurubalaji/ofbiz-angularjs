@@ -10,37 +10,192 @@
             <widgets>
                 <decorator-screen name="ExampleCommonDecorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
-                        <controller name="org.ofbiz.angularjs.example.controller.ExampleController">
-                            <screenlet title="Find Example">
-                                <form name="form" style="well" target="findExample.json" on-submit-success="onSubmitSuccess" on-submit-error="onSubmitError">
-                                    <container style="form-horizontal">
-                                        <container style="control-group">
-                                            <label text="Example Id: " style="control-label"/>
-                                            <container style="controls">
-                                                <text name="exampleId" model="example.exampleId"/>
-                                            </container>
-                                        </container>
-                                        <container style="control-group">
-                                            <label text="Example Name: " style="control-label"/>
-                                            <container style="controls">
-                                                <text name="exampleName" model="example.exampleName"/>
-                                            </container>
-                                        </container>
-                                        <container style="form-actions">
-                                           <submit text="Submit"/>
-                                        </container>
-                                    </container>
-                                </form>
-                            </screenlet>
-                            <screenlet title="Search Results">
-                                <grid style="gridStyle" row-height="40" target-uri="examples.json" list-name="examples">
-                                    <field name="exampleId" title="Example Id" editable="false"/>
-                                    <field name="exampleName" title="Example Name" editable="true"/>
-                                </grid>
-                            </screenlet>
-                        </controller>
                     </decorator-section>
                 </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="Example">
+        <section>
+            <widgets>
+                <screenlet title="Find Example">
+                    <form name="form" style="well" target="findExample.json" on-submit-success="onSubmitSuccess" on-submit-error="onSubmitError">
+                        <container style="form-horizontal">
+                            <container style="control-group">
+                                <label text="Example Id: " style="control-label"/>
+                                <container style="controls">
+                                    <text name="exampleId" model="example.exampleId"/>
+                                </container>
+                            </container>
+                            <container style="control-group">
+                                <label text="Example Name: " style="control-label"/>
+                                <container style="controls">
+                                    <text name="exampleName" model="example.exampleName"/>
+                                </container>
+                            </container>
+                            <container style="form-actions">
+                               <submit text="Submit"/>
+                            </container>
+                        </container>
+                    </form>
+                </screenlet>
+                <screenlet title="Search Results">
+                    <grid style="gridStyle" row-height="40" target-uri="examples.json" list-name="examples">
+                        <field name="exampleId" title="Example Id" editable="false"/>
+                        <field name="exampleName" title="Example Name" editable="true"/>
+                    </grid>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="Feature">
+        <section>
+            <widgets>
+                <screenlet title="Find Example Feature">
+                    <form name="form" style="well" target="findExample.json" on-submit-success="onSubmitSuccess" on-submit-error="onSubmitError">
+                        <container style="form-horizontal">
+                            <container style="control-group">
+                                <label text="Example Feature Id: " style="control-label"/>
+                                <container style="controls">
+                                    <text name="exampleId" model="example.exampleId"/>
+                                </container>
+                            </container>
+                            <container style="control-group">
+                                <label text="Example Feature Name: " style="control-label"/>
+                                <container style="controls">
+                                    <text name="exampleName" model="example.exampleName"/>
+                                </container>
+                            </container>
+                            <container style="form-actions">
+                               <submit text="Submit"/>
+                            </container>
+                        </container>
+                    </form>
+                </screenlet>
+                <screenlet title="Search Results">
+                    <grid style="gridStyle" row-height="40" target-uri="examples.json" list-name="examples">
+                        <field name="exampleId" title="Example Id" editable="false"/>
+                        <field name="exampleName" title="Example Name" editable="true"/>
+                    </grid>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="Widget">
+        <section>
+            <widgets>
+                <!-- Accordion -->
+                <label text="Accordion" style="h1"/>
+                <include-screen name="Accordion" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Alert -->
+                <label text="Alert" style="h1"/>
+                <include-screen name="Alert" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Calendar -->
+                <label text="Calendar" style="h1"/>
+                <!-- include-screen name="Calendar" location="component://angularjs/widget/DemoWidgetScreens.xml"/-->
+                <horizontal-rule/>
+                
+                <!-- Collapse -->
+                <label text="Collapse" style="h1"/>
+                <include-screen name="Collapse" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Date Picker -->
+                <label text="Date Picker" style="h1"/>
+                <include-screen name="DatePicker" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Date Time -->
+                <label text="Date Time" style="h1"/>
+                <include-screen name="DateTime" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Dropdown -->
+                <label text="Dropdown" style="h1"/>
+                <include-screen name="Dropdown" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Dropdown Toggle -->
+                <label text="Dropdown Toggle" style="h1"/>
+                <include-screen name="DropdownToggle" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Form -->
+                <label text="Form" style="h1"/>
+                <include-screen name="Form" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Google Chart -->
+                <label text="Google Chart" style="h1"/>
+                <include-screen name="GoogleChart" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Grid -->
+                <label text="Grid" style="h1"/>
+                <include-screen name="Grid" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Layout -->
+                <label text="Layout" style="h1"/>
+                <include-screen name="Layout" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Number -->
+                <label text="Number" style="h1"/>
+                <include-screen name="Number" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Map -->
+                <label text="Map" style="h1"/>
+                <include-screen name="Map" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Menu Bar -->
+                <label text="Menu Bar" style="h1"/>
+                <include-screen name="MenuBar" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Modal -->
+                <label text="Modal" style="h1"/>
+                <include-screen name="Modal" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Tabs -->
+                <label text="Tabs" style="h1"/>
+                <include-screen name="Tabs" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Text -->
+                <label text="Text" style="h1"/>
+                <include-screen name="Text" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- TextArea -->
+                <label text="TextArea" style="h1"/>
+                <include-screen name="TextArea" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Time Picker -->
+                <label text="Time Picker" style="h1"/>
+                <include-screen name="TimePicker" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Tree -->
+                <label text="Tree" style="h1"/>
+                <include-screen name="Tree" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
+                <!-- Upload -->
+                <label text="Upload" style="h1"/>
+                <include-screen name="Upload" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
             </widgets>
         </section>
     </screen>

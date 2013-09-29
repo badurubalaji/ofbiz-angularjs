@@ -28,7 +28,7 @@ public class ModelNgApplication extends AbstractModelNg {
 
     public final static String module = ModelNgApplication.class.getName();
     
-    public String defaultPath = null;
+    public String defaultState = null;
     
     protected List<ModelNgState> modelNgStates = new LinkedList<ModelNgState>();
 

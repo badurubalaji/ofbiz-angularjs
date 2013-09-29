@@ -2,18 +2,15 @@
 <ng-applications>
     <ng-application name="angularjs">
     </ng-application>
-    <ng-application name="example">
-        <state name="example" url="example">
-            <view name="viewA" target="index.viewA" controller="org.ofbiz.angularjs.example.controller.index.ViewAController"/>
-            <view name="viewB" target="index.viewB" controller="org.ofbiz.angularjs.example.controller.index.ViewBController"/>
+    <ng-application name="example" default-state="example">
+        <state name="example" url="/example">
+            <view name="main" target="example" controller="org.ofbiz.angularjs.example.controller.ExampleController"/>
         </state>
         <state name="feature" url="/feature">
-            <view name="viewA" target="route1.viewA" controller="org.ofbiz.angularjs.example.controller.route1.ViewAController"/>
-            <view name="viewB" target="route1.viewB" controller="org.ofbiz.angularjs.example.controller.route1.ViewAController"/>
+            <view name="main" target="feature" controller="org.ofbiz.angularjs.example.controller.FeatureController"/>
         </state>
         <state name="widget" url="/widget">
-            <view name="viewA" target="route2.viewA" controller="org.ofbiz.angularjs.example.controller.route2.ViewAController"/>
-            <view name="viewB" target="route2.viewB" controller="org.ofbiz.angularjs.example.controller.route2.ViewAController"/>
+            <view name="main" target="widget" controller="org.ofbiz.angularjs.example.controller.WidgetController"/>
         </state>
     </ng-application>
     <!--

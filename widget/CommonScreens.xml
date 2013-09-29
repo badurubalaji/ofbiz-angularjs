@@ -95,14 +95,13 @@
                         <section>
                             <widgets>
                                 <container id="example-app">
-                                    <menu-bar title="Example Application" target="example" style="navbar-fixed-top">
+                                    <menu-bar title="AngularJs Application" target="example" style="navbar-fixed-top">
                                         <menu-item text="Example" target="example"/>
                                         <menu-item text="Feature" target="feature"/>
                                         <menu-item text="Widget" target="widget"/>
                                     </menu-bar>
                                     <decorator-section-include name="body"/>
-                                    <view name="viewA"/>
-                                    <view name="viewB"/>
+                                    <view name="main"/>
                                 </container>
                             </widgets>
                         </section>
