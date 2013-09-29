@@ -18,7 +18,9 @@ function FormOptionsDirective() {
         $scope.$on("ON_SUBMIT_ERROR", $scope[$attrs.onSubmitError]);
     }
 
-    
+    /**
+     * Compile
+     */
     this.compile = function() {
         return {
             pre: function() {

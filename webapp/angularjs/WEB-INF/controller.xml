@@ -42,6 +42,12 @@
     
     <!-- Example Request Mappings -->
     <request-map uri="Example"><security https="true" auth="false"/><response name="success" type="view" value="Example"/></request-map>
+    <request-map uri="findExample">
+        <security https="true" auth="false"/>
+        <event type="simple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="findExample"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
     <request-map uri="examples.json">
         <security https="false" auth="false"/>
         <event type="simple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="getExamples"/>

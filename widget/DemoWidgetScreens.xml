@@ -143,7 +143,7 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.GridDemoController">
-                    <grid style="gridStyle" row-height="40" target-uri="examples.json" list-name="examples">
+                    <grid style="gridStyle" row-height="40" select-target="examples.json" list-name="examples">
                         <field name="exampleId" title="Example Id" editable="false"/>
                         <field name="exampleName" title="Example Name" editable="true"/>
                     </grid>

@@ -33,7 +33,30 @@ under the License.
         <set field="parameters.viewIndex" from-field="parameters.viewIndex" default="0" type="Integer"/>
         <set field="parameters.viewSize" from-field="parameters.viewSize" default="20" type="Integer"/>
         <script>groovy:
-            request.setAttribute("examples", listIt.getCompleteList());
+            def examples = listIt.getCompleteList();
+            listIt.close();
+            request.setAttribute("examples", examples);
+            request.setAttribute("listSize", listSize);
+            request.setAttribute("viewIndex", parameters.viewIndex);
+            request.setAttribute("viewSize", parameters.viewSize);
+        </script>
+    </simple-method>
+    <simple-method method-name="findExample" short-description="Find example" login-required="true">
+        <set field="performFindInMap.inputFields" from-field="parameters"/>
+        <set field="performFindInMap.entityName" value="Example"/>
+        <set field="performFindInMap.noConditionFind" value="Y"/>
+        <set field="performFindInMap.viewIndex" from-field="parameters.viewIndex"/>
+        <set field="performFindInMap.viewSize" from-field="parameters.viewSize"/>
+        <call-service service-name="performFind" in-map-name="performFindInMap">
+            <result-to-field result-name="listIt" field="listIt"/>
+            <result-to-field result-name="listSize" field="listSize"/>
+        </call-service>
+        <set field="parameters.viewIndex" from-field="parameters.viewIndex" default="0" type="Integer"/>
+        <set field="parameters.viewSize" from-field="parameters.viewSize" default="20" type="Integer"/>
+        <script>groovy:
+            def examples = listIt.getCompleteList();
+            listIt.close();
+            request.setAttribute("examples", examples);
             request.setAttribute("listSize", listSize);
             request.setAttribute("viewIndex", parameters.viewIndex);
             request.setAttribute("viewSize", parameters.viewSize);
