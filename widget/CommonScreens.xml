@@ -42,6 +42,7 @@
                 <platform-specific><html><html-template location="component://angularjs/templates/header.ftl"/></html></platform-specific>
                 
                 <!-- header -->
+                <!--
                 <container style="navbar navbar-inverse navbar-fixed-top">
                     <container style="navbar-inner">
                         <container style="container">
@@ -49,6 +50,7 @@
                         </container>
                     </container>
                 </container>
+                -->
                 
                 <container style="container">
                     <decorator-section-include name="body"/>
@@ -95,7 +97,7 @@
                         <section>
                             <widgets>
                                 <container id="example-app">
-                                    <menu-bar title="AngularJs Application" target="example" style="navbar-fixed-top">
+                                    <menu-bar title="AngularJs" target="example" style="navbar-fixed-top">
                                         <menu-item text="Example" target="example"/>
                                         <menu-item text="Feature" target="feature"/>
                                         <menu-item text="Widget" target="widget"/>

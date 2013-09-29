@@ -9,9 +9,10 @@ function FormOptionsDirective() {
     /**
      * Controller
      */
-    this.controller = function($scope, $element, $attrs, $transclude, $http, appBusy) {
+    this.controller = function($scope, $element, $attrs, $transclude, $http, appBusy, FormService) {
         $scope.$http = $http;
         $scope.appBusy = appBusy;
+        $scope.FormService = FormService;
         
         $scope.$on("ON_SUBMIT_SUCCESS", $scope[$attrs.onSubmitSuccess]);
         $scope.$on("ON_SUBMIT_ERROR", $scope[$attrs.onSubmitError]);
@@ -29,30 +30,10 @@ function FormOptionsDirective() {
                     
                     $element.find("input[type=submit]").bind("click", function() {
                         var data = $element.serialize();
-                        org.ofbiz.angularjs.directive.FormOptionsDirective.post($scope, target, data);
+                        $scope.FormService.post($scope.$http, target, data, $scope.appBusy, $scope);
                     });
                 }
             }
         };
     };
-    
-    /**
-     * Post
-     */
-    this.post = function() {
-        $scope.appBusy.set();
-        $scope.$http({method: "POST", url: target, data: data, headers: {"Content-Type": "application/x-www-form-urlencoded"}})
-        .success(function(data, status, headers, config) {
-            $scope.appBusy.set(false);
-            if (data._ERROR_MESSAGE_ != undefined) {
-                $scope.$emit("ON_SUBMIT_ERROR", data, status, headers, config);
-            } else {
-                $scope.$emit("ON_SUBMIT_SUCCESS", data, status, headers, config);
-            }
-        })
-        .error(function(data, status, headers, config) {
-            $scope.appBusy.set(false);
-            $scope.$emit("ON_SUBMIT_ERROR", data, status, headers, config);
-        });
-    }
 }
