@@ -20,7 +20,7 @@
         <section>
             <widgets>
                 <screenlet title="Find Example">
-                    <form name="form" style="well" target="findExample" on-submit-success="onSubmitSuccess" on-submit-error="onSubmitError">
+                    <form name="form" style="well">
                         <container style="form-horizontal">
                             <container style="control-group">
                                 <label text="Example Id: " style="control-label"/>
@@ -35,13 +35,13 @@
                                 </container>
                             </container>
                             <container style="form-actions">
-                               <submit text="Submit"/>
+                               <button text="Find" on-click="onFindExampleClicked()"/>
                             </container>
                         </container>
                     </form>
                 </screenlet>
                 <screenlet title="Search Results">
-                    <grid style="gridStyle" row-height="40" select-target="findExample" list-name="examples">
+                    <grid model="exampleGrid" style="gridStyle" row-height="40" select-target="findExample" list-name="examples">
                         <field name="exampleId" title="Example Id" editable="false"/>
                         <field name="exampleName" title="Example Name" editable="true"/>
                     </grid>

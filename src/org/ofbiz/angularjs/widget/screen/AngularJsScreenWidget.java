@@ -149,15 +149,15 @@ public class AngularJsScreenWidget {
     public static class Button extends ModelScreenWidget {
         public static final String TAG_NAME = "button";
 
-        protected FlexibleStringExpander textExdr;
-        protected FlexibleStringExpander onClickExdr;
-        protected FlexibleStringExpander styleExdr;
+        protected String text;
+        protected String onClick;
+        protected String style;
 
         public Button(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.textExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text"));
-            this.onClickExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-click"));
-            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
+            this.text = FlexibleStringExpander.getInstance(widgetElement.getAttribute("text")).getOriginal();
+            this.onClick = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-click")).getOriginal();
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
         }
 
         @Override
@@ -170,8 +170,7 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            String style = this.styleExdr.getOriginal();
-            return "<button class=\"btn " + style + "\" ng-click=\"" + this.onClickExdr.getOriginal() + "\">" + this.textExdr.getOriginal() + "</button>";
+            return "<button class=\"btn " + style + "\" ng-click=\"" + this.onClick + "\">" + this.text + "</button>";
         }
         
     }
@@ -756,6 +755,7 @@ public class AngularJsScreenWidget {
     public static class Grid extends ModelScreenWidget {
         public static final String TAG_NAME = "grid";
 
+        protected String model;
         protected String selectTarget;
         protected String listName;
         protected String style;
@@ -764,6 +764,7 @@ public class AngularJsScreenWidget {
         
         public Grid(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
             this.selectTarget = FlexibleStringExpander.getInstance(widgetElement.getAttribute("select-target")).getOriginal();
             this.listName = FlexibleStringExpander.getInstance(widgetElement.getAttribute("list-name")).getOriginal();
             this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
@@ -821,7 +822,7 @@ public class AngularJsScreenWidget {
             }
             columnDefsBuilder.append("]");
             
-            return "<div class=\"" + style + "\" ng-grid=\"grid\" grid-options=\"\" row-height=\"" + rowHeight
+            return "<div model=\"" + model + "\" class=\"" + style + "\" ng-grid=\"grid\" grid-options=\"\" row-height=\"" + rowHeight
                     + "\" select-target=\"" + selectTarget + "\" list-name=\"" + listName + "\" column-defs=\"" + columnDefsBuilder.toString() + "\"></div>";
         }
     }

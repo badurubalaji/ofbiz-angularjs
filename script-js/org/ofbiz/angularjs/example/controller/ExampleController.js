@@ -20,4 +20,8 @@ function ExampleController($scope) {
     $scope.onSubmitError = function(data, status, headers, config) {
         console.log("submit error");
     }
+    
+    $scope.onFindExampleClicked = function(event) {
+        $scope.$broadcast("exampleGrid", {"filterText": "exampleId=" + $scope.example});
+    }
 }

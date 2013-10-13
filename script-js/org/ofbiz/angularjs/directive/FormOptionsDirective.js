@@ -30,10 +30,12 @@ function FormOptionsDirective() {
                 if ($attrs.ngUpload == undefined) {
                     var target = $attrs.target;
                     
-                    $element.find("input[type=submit]").bind("click", function() {
-                        var data = $element.serialize();
-                        $scope.FormService.post($scope.$http, target, data, $scope.appBusy, $scope);
-                    });
+                    if (target) {
+                        $element.find("input[type=submit]").bind("click", function() {
+                            var data = $element.serialize();
+                            $scope.FormService.post($scope.$http, target, data, $scope.appBusy, $scope);
+                        });
+                    }
                 }
             }
         };
