@@ -22,6 +22,10 @@ function ExampleController($scope) {
     }
     
     $scope.onFindExampleClicked = function(event) {
-        $scope.$broadcast("exampleGrid", {"filterText": "exampleId=" + $scope.example});
+        var filterText = null;
+        if ($scope.example) {
+            filterText = "exampleId=" + $scope.example.exampleId;
+        }
+        $scope.$broadcast("exampleGrid", {"filterText": filterText});
     }
 }
