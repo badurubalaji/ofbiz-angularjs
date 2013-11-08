@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpRequest;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
@@ -66,6 +67,20 @@ public class AngularJsEvents {
 
     public final static String module = AngularJsEvents.class.getName();
     public final static String NG_APPS_INIT_PATH = "/WEB-INF/ng-apps.xml";
+    
+    private static String checkPath(String path, boolean fullPath, HttpServletRequest request) {
+        String checkedPath = null;
+        if (fullPath) {
+            String protocol = "http";
+            if (request.isSecure()) {
+                protocol = "https";
+            }
+            checkedPath = protocol + "://" + path;
+        } else {
+            checkedPath = path;
+        }
+        return checkedPath;
+    }
     
     private static void buildJsClasses(List<File> files, StringBuilder builder) throws IOException {
         JavaScriptFactory.clear();
@@ -244,25 +259,26 @@ public class AngularJsEvents {
             // modules
             List<ModelNgModule> ngModules = NgModelDispatcherContext.getAllModelNgModules();
             List<String> moduleJsPaths = new LinkedList<String>();
+            List<String> javaScriptPaths = new LinkedList<String>();
+            
             for (ModelNgModule ngModule : ngModules) {
+                String modulePath = checkPath(ngModule.location, false, request);
                 for (ModelJavaScript modelJavaScript : ngModule.modelJavaScripts) {
-                    String javaScriptPath = null;
-                    if (modelJavaScript.fullPath) {
-                        String protocol = "http";
-                        if (request.isSecure()) {
-                            protocol = "https";
-                        }
-                        javaScriptPath = protocol + "://" + modelJavaScript.path;
-                    } else {
-                        javaScriptPath = modelJavaScript.path;
-                    }
-                    moduleJsPaths.add("\n'" + javaScriptPath + "'");
+                    String javaScriptPath = checkPath(modelJavaScript.path, modelJavaScript.fullPath, request);
+                    javaScriptPaths.add("\n'" + javaScriptPath + "'");
                 }
+                moduleJsPaths.add("\n'" + modulePath + "'");
             }
             
             String moduleJsList = StringUtil.join(moduleJsPaths, ",");
+            String javaScriptJsList = StringUtil.join(javaScriptPaths, ",");
+            
             builder.append(moduleJsList);
             builder.append("], function() {");
+            
+            builder.append("\nrequire([\n");
+            builder.append(javaScriptJsList);
+            builder.append("\n], function() {");
             
             // apps
             for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
@@ -278,6 +294,8 @@ public class AngularJsEvents {
                 builder.append("\nangular.bootstrap(" + elementName + ", ['" + modelNgApplication.name + "']);");
                 builder.append("\n}");
             }
+            
+            builder.append("\n});");
             
             builder.append("\n});");
 
