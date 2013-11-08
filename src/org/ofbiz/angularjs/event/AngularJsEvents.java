@@ -283,7 +283,7 @@ public class AngularJsEvents {
 
             // return the JavaScript String
             String javaScriptString = builder.toString();
-            response.setContentType("text/javascript");
+            response.setContentType("application/x-javascript; charset=UTF-8");
         
             response.setContentLength(javaScriptString.getBytes("UTF8").length);
             
