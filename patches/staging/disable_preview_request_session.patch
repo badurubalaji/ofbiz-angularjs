@@ -1,0 +1,13 @@
+Index: framework/webapp/src/org/ofbiz/webapp/control/LoginWorker.java
+===================================================================
+--- framework/webapp/src/org/ofbiz/webapp/control/LoginWorker.java	(revision 1539991)
++++ framework/webapp/src/org/ofbiz/webapp/control/LoginWorker.java	(working copy)
+@@ -328,7 +328,7 @@
+                 request.removeAttribute("_LOGIN_PASSED_");
+ 
+                 // keep the previous request name in the session
+-                session.setAttribute("_PREVIOUS_REQUEST_", request.getPathInfo());
++                //session.setAttribute("_PREVIOUS_REQUEST_", request.getPathInfo());
+ 
+                 // NOTE: not using the old _PREVIOUS_PARAMS_ attribute at all because it was a security hole as it was used to put data in the URL (never encrypted) that was originally in a form field that may have been encrypted
+                 // keep 2 maps: one for URL parameters and one for form parameters
