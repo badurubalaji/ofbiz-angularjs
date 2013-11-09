@@ -56,12 +56,15 @@ function GridOptionsDirective() {
         /**
          * Get Paged Data Async
          */
-        $scope.getPagedDataAsync = function (selectTarget, listName, pageSize, page, searchText) {
+        $scope.getPagedDataAsync = function (selectTarget, listName, pageSize, page, parameters) {
             setTimeout(function () {
                 var data;
                 var postData = {viewSize: pageSize};
-                if (searchText) {
-                    var ft = searchText.toLowerCase();
+                if (parameters) {
+                    for (key in parameters) {
+                        var value = parameters[key];
+                        postData[key] = value;
+                    }
                     $http.post(selectTarget, postData).success(function (response) {
                         var listSize = response.listSize;
                         var viewIndex = response.viewIndex;
@@ -109,7 +112,7 @@ function GridOptionsDirective() {
             useExternalFilter: true
         };
         
-        $scope.getPagedDataAsync(selectTarget, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, null, $scope);
+        $scope.getPagedDataAsync(selectTarget, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, null);
         
         $scope.$on(modelName, function(event, args) {
             var pageSize = args.pageSize;
@@ -121,10 +124,7 @@ function GridOptionsDirective() {
             if (!currentPage) {
                 currentPage = $scope.pagingOptions.currentPage;
             }
-            if (!filterText) {
-                filterText = $scope.filterOptions.filterText;
-            }
-            $scope.getPagedDataAsync(selectTarget, listName, pageSize, currentPage, filterText);
+            $scope.getPagedDataAsync(selectTarget, listName, pageSize, currentPage, args.parameters);
         });
         
         var rowSize = 10
