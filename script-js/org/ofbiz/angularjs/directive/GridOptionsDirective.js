@@ -15,20 +15,39 @@ function GridOptionsDirective() {
         var selectTarget = $attrs.selectTarget;
         var listName = $attrs.listName;
         var columnDefs = $scope.$eval($attrs.columnDefs);
+        var pageSizes = $scope.$eval($attrs.pageSizes);
+        var pageSize = $scope.$eval($attrs.pageSize);
         
         var enablePaging = true;
         var showFooter = true;
+        
+        if (!pageSizes) {
+            pageSizes = [250, 500, 1000];
+        }
+        
+        if (!pageSize) {
+            pageSize = 250;
+        }
         
         $scope.data = [];
         
         /**
          * Set Paging Data
          */
-        $scope.setPagingData = function(data, page, pageSize) {
-            var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
-            $scope.data = pagedData;
+        $scope.setPagingData = function(data, page, pageSize, viewIndex, listSize) {
+            if (!viewIndex) {
+                viewIndex = 0;
+            }
+            
+            // var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
+            $scope.data = data; // set data for the first loaded
+            $scope.$parent.data = data; // set data for other loaded
             $scope.totalServerItems = data.length;
-            $scope.$parent.data = data;
+            $scope.pagingOptions = {
+                pageSizes: pageSizes,
+                pageSize: pageSize,
+                currentPage: viewIndex + 1
+            };
             if (!$scope.$$phase) {
                 $scope.$apply();
             }
@@ -40,10 +59,13 @@ function GridOptionsDirective() {
         $scope.getPagedDataAsync = function (selectTarget, listName, pageSize, page, searchText) {
             setTimeout(function () {
                 var data;
+                var postData = {viewSize: pageSize};
                 if (searchText) {
                     var ft = searchText.toLowerCase();
-                    $http.get(selectTarget + "?" + searchText).success(function (response) {
+                    $http.post(selectTarget, postData).success(function (response) {
                         var listSize = response.listSize;
+                        var viewIndex = response.viewIndex;
+                        var viewSize = response.viewSize;
                         if (listSize > 0) {
                             
                             // The data has already been filtered from server.
@@ -58,11 +80,11 @@ function GridOptionsDirective() {
                             data = [];
                         }
                         
-                        $scope.setPagingData(data,page,pageSize);
+                        $scope.setPagingData(data, page, pageSize, viewIndex, listSize);
                         appBusy.set(false);
                     });
                 } else {
-                    $http.get(selectTarget).success(function (response) {
+                    $http.post(selectTarget, postData).success(function (response) {
                         var listSize = response.listSize;
                         if (listSize > 0) {
                             $scope.$parent.data = response[listName];
@@ -77,8 +99,8 @@ function GridOptionsDirective() {
         $scope.totalServerItems = 0;
         
         $scope.pagingOptions = {
-            pageSizes: [250, 500, 1000],
-            pageSize: 250,
+            pageSizes: pageSizes,
+            pageSize: pageSize,
             currentPage: 1
         };
         
