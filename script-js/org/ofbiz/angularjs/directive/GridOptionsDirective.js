@@ -42,7 +42,7 @@ function GridOptionsDirective() {
                 var data;
                 if (searchText) {
                     var ft = searchText.toLowerCase();
-                    $http.get(selectTarget).success(function (response) {
+                    $http.get(selectTarget + "?" + searchText).success(function (response) {
                         var listSize = response.listSize;
                         if (listSize > 0) {
                             
@@ -54,8 +54,11 @@ function GridOptionsDirective() {
                             */
                             
                             data = response[listName]
-                            $scope.setPagingData(data,page,pageSize);
+                        } else {
+                            data = [];
                         }
+                        
+                        $scope.setPagingData(data,page,pageSize);
                         appBusy.set(false);
                     });
                 } else {
