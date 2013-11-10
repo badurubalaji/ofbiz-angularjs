@@ -5,10 +5,11 @@
     <vendor></vendor>
     <version>1.0</version>
 
-    <service name="noSyntaxError" engine="interface">
-        <description>
-            Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here 
-        </description>
-    </service> 
+    <service name="performFindJsonList" auth="false" engine="java" invoke="performFindJsonList" location="org.ofbiz.angularjs.common.FindServices">
+        <description>Generic service to return an partial JSON list.</description>
+        <implements service="performFindList"/>
+        <attribute name="listName" mode="IN" type="String" optional="false"></attribute>
+        <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="false"></attribute>
+    </service>
     
 </services>

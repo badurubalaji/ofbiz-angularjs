@@ -22,11 +22,11 @@ function GridOptionsDirective() {
         var showFooter = true;
         
         if (!pageSizes) {
-            pageSizes = [250, 500, 1000];
+            pageSizes = [20, 30, 50, 100, 200];
         }
         
         if (!pageSize) {
-            pageSize = 250;
+            pageSize = 20;
         }
         
         $scope.data = [];
@@ -65,6 +65,7 @@ function GridOptionsDirective() {
                         var value = parameters[key];
                         postData[key] = value;
                     }
+                    appBusy.set();
                     $http.post(selectTarget, postData).success(function (response) {
                         var listSize = response.listSize;
                         var viewIndex = response.viewIndex;
@@ -83,15 +84,21 @@ function GridOptionsDirective() {
                             data = [];
                         }
                         
-                        $scope.setPagingData(data, page, pageSize, viewIndex, listSize);
+                        if (data != null) {
+                            $scope.setPagingData(data, page, pageSize, viewIndex, listSize);
+                        }
                         appBusy.set(false);
                     });
                 } else {
+                    appBusy.set();
                     $http.post(selectTarget, postData).success(function (response) {
                         var listSize = response.listSize;
                         if (listSize > 0) {
-                            $scope.$parent.data = response[listName];
-                            $scope.setPagingData(response[listName],page,pageSize);
+                            var data = response[listName];
+                            if (data != null) {
+                                $scope.$parent.data = data;
+                                $scope.setPagingData(data,page,pageSize);
+                            }
                         }
                         appBusy.set(false);
                     });
