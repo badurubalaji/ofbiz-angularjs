@@ -57,7 +57,7 @@
     </request-map>
     <request-map uri="updateExample">
         <security https="true" auth="true"/>
-        <event type="jsonsimple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="updateExample"/>
+        <event type="simple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="updateExample"/>
         <response name="success" type="request" value="json"/>
         <response name="error" type="request" value="json"/>
     </request-map>

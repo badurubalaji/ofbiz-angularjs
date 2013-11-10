@@ -51,14 +51,13 @@ function ExampleController($scope, $http) {
         $scope.shouldOpenEditExampleModal = false;
     }
     
-    $scope.updateExample = function() {
-        var postData = {};
-        postData.exampleId = $scope.editExample.exampleId;
-        postData.exampleName = $scope.editExample.exampleName;
-        $http.post("updateExample", postData).success(function(reponse) {
-            getExamples();
-            $scope.shouldOpenEditExampleModal = false;
-        });
+    $scope.onUpdateExampleSuccess = function() {
+        getExamples();
+        $scope.shouldOpenEditExampleModal = false;
+    }
+    
+    $scope.onUpdateExampleError = function() {
+        
     }
     
     function openEditExampleModal(exampleId) {
