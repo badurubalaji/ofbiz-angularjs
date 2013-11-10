@@ -72,14 +72,14 @@ function ExampleController($scope, $http) {
     
     function getExamples() {
         var parameters = {};
-        if ($scope.example) {
-            parameters.exampleId = $scope.example.exampleId;
+        if ($scope.findExample) {
+            parameters.exampleId = $scope.findExample.exampleId;
             parameters.exampleId_op = "contains";
             parameters.exampleId_ic = "Y";
-            parameters.exampleName = $scope.example.exampleName;
+            parameters.exampleName = $scope.findExample.exampleName;
             parameters.exampleName_op = "contains";
             parameters.exampleName_ic = "Y";
-            $scope.$broadcast("exampleGrid", {"parameters": parameters});
         }
+        $scope.$broadcast("exampleGrid", {"parameters": parameters});
     }
 }

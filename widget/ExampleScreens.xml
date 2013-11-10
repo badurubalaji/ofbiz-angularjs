@@ -25,13 +25,13 @@
                             <container style="control-group">
                                 <label text="Example Id: " style="control-label"/>
                                 <container style="controls">
-                                    <text name="exampleId" model="example.exampleId"/>
+                                    <text name="exampleId" model="findExample.exampleId"/>
                                 </container>
                             </container>
                             <container style="control-group">
                                 <label text="Example Name: " style="control-label"/>
                                 <container style="controls">
-                                    <text name="exampleName" model="example.exampleName"/>
+                                    <text name="exampleName" model="findExample.exampleName"/>
                                 </container>
                             </container>
                             <container style="form-actions">
