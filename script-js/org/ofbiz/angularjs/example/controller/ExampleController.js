@@ -21,6 +21,16 @@ function ExampleController($scope) {
         console.log("submit error");
     }
     
+    $scope.onBeforeSelectionChanged = function(rowItem, event) {
+        var exampleId = rowItem.entity.exampleId
+        return true;
+    }
+    
+    $scope.onAfterSelectionChanged = function(rowItem, event) {
+        // fire twice (afterSelected/afterDeselected)
+        // https://github.com/angular-ui/ng-grid/issues/395?source=cc
+    }
+    
     $scope.onFindExampleClicked = function(event) {
         var parameters = {};
         if ($scope.example) {

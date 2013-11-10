@@ -41,7 +41,8 @@
                     </form>
                 </screenlet>
                 <screenlet title="Search Results">
-                    <grid model="exampleGrid" style="gridStyle" row-height="40" select-target="findExample" list-name="examples">
+                    <grid model="exampleGrid" style="gridStyle" row-height="40" select-target="findExample" list-name="examples"
+                        on-before-selection-changed="onBeforeSelectionChanged" on-after-selection-changed="onAfterSelectionChanged">
                         <field name="exampleId" title="Example Id" editable="false"/>
                         <field name="exampleName" title="Example Name" editable="true"/>
                     </grid>

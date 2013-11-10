@@ -18,6 +18,9 @@ function GridOptionsDirective() {
         var pageSizes = $scope.$eval($attrs.pageSizes);
         var pageSize = $scope.$eval($attrs.pageSize);
         
+        var onBeforeSelectionChanged = $scope[$attrs.onBeforeSelectionChanged]; // function (rowItem, event) {}
+        var onAfterSelectionChanged = $scope[$attrs.onAfterSelectionChanged]; // function (rowItem, event) { return true; }
+        
         var enablePaging = true;
         var showFooter = true;
         
@@ -153,6 +156,8 @@ function GridOptionsDirective() {
             , enableCellEditOnFocus: true
             , enablePinning: true
             , columnDefs: columnDefs
+            , afterSelectionChange: onAfterSelectionChanged
+            , beforeSelectionChange: onBeforeSelectionChanged
         };
         
         angular.element($element).css("height", (rowSize * rowHeight) + "px");

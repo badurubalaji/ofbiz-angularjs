@@ -760,6 +760,8 @@ public class AngularJsScreenWidget {
         protected String listName;
         protected String style;
         protected int rowHeight;
+        protected String onBeforeSelectionChanged = null;
+        protected String onAfterSelectionChanged = null;
         protected List<? extends Element> fieldElements;
         
         public Grid(ModelScreen modelScreen, Element widgetElement) {
@@ -768,6 +770,8 @@ public class AngularJsScreenWidget {
             this.selectTarget = FlexibleStringExpander.getInstance(widgetElement.getAttribute("select-target")).getOriginal();
             this.listName = FlexibleStringExpander.getInstance(widgetElement.getAttribute("list-name")).getOriginal();
             this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
+            this.onBeforeSelectionChanged = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-before-selection-changed")).getOriginal();
+            this.onAfterSelectionChanged = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-after-selection-changed")).getOriginal();
             try {
                 this.rowHeight = Integer.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("row-height")).getOriginal());
             } catch (Exception e) {
@@ -823,7 +827,8 @@ public class AngularJsScreenWidget {
             columnDefsBuilder.append("]");
             
             return "<div model=\"" + model + "\" class=\"" + style + "\" ng-grid=\"grid\" grid-options=\"\" row-height=\"" + rowHeight
-                    + "\" select-target=\"" + selectTarget + "\" list-name=\"" + listName + "\" column-defs=\"" + columnDefsBuilder.toString() + "\"></div>";
+                    + "\" select-target=\"" + selectTarget + "\" list-name=\"" + listName + "\" column-defs=\"" + columnDefsBuilder.toString()
+                    + "\" on-before-selection-changed=\"" + onBeforeSelectionChanged + "\" on-after-selection-changed=\"" + onAfterSelectionChanged + "\"></div>";
         }
     }
 
