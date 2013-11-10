@@ -6,59 +6,68 @@ package org.ofbiz.angularjs.example.controller;
  * @param $scope
  */
 function ExampleController($scope, $http) {
-	
-	$scope.editExample = {};
     
-    /**
-     * On Submit Success
-     */
-    $scope.onSubmitSuccess = function(event, data, status, headers, config) {
-        $scope.examples = data.examples;
-    }
-    
-    /**
-     * On Submit Error
-     */
-    $scope.onSubmitError = function(data, status, headers, config) {
-        console.log("submit error");
-    }
-    
-    $scope.onBeforeSelectionChanged = function(rowItem, event) {
-        openEditExampleModal(rowItem.entity.exampleId);
-        return true;
-    }
-    
-    $scope.onAfterSelectionChanged = function(rowItem, event) {
-        // fire twice (afterSelected/afterDeselected)
-        // https://github.com/angular-ui/ng-grid/issues/395?source=cc
-    }
-    
-    $scope.onRowDoubleClicked = function(rowItem) {
-        var exampleId = rowItem.exampleId;
-        $scope.shouldOpenEditExampleModal = true;
-    }
-    
-    $scope.onFindExampleClicked = function(event) {
-        getExamples();
-    }
+    $scope.editExample = {};
     
     $scope.editExampleModalOptions = {
         backdropFade: false,
         dialogFade: false
     };
     
-    $scope.closeEditExampleModal = function() {
+    /**
+     * On Submit Success
+     */
+    function onSubmitSuccess(event, data, status, headers, config) {
+        $scope.examples = data.examples;
+    }
+    $scope.onSubmitSuccess = onSubmitSuccess;
+    
+    /**
+     * On Submit Error
+     */
+    function onSubmitError(data, status, headers, config) {
+        console.log("submit error");
+    }
+    $scope.onSubmitError = onSubmitError;
+    
+    function onBeforeSelectionChanged(rowItem, event) {
+        openEditExampleModal(rowItem.entity.exampleId);
+        return true;
+    }
+    $scope.onBeforeSelectionChanged = onBeforeSelectionChanged;
+    
+    function onAfterSelectionChanged(rowItem, event) {
+        // fire twice (afterSelected/afterDeselected)
+        // https://github.com/angular-ui/ng-grid/issues/395?source=cc
+    }
+    $scope.onAfterSelectionChanged = onAfterSelectionChanged;
+    
+    function onRowDoubleClicked(rowItem) {
+        var exampleId = rowItem.exampleId;
+        $scope.shouldOpenEditExampleModal = true;
+    }
+    $scope.onRowDoubleClicked = onRowDoubleClicked;
+    
+    function onFindExampleClicked(event) {
+        getExamples();
+    }
+    $scope.onFindExampleClicked = onFindExampleClicked;
+    
+    function closeEditExampleModal() {
         $scope.shouldOpenEditExampleModal = false;
     }
+    $scope.closeEditExampleModal = closeEditExampleModal;
     
-    $scope.onUpdateExampleSuccess = function() {
+    function onUpdateExampleSuccess() {
         getExamples();
         $scope.shouldOpenEditExampleModal = false;
     }
+    $scope.onUpdateExampleSuccess = onUpdateExampleSuccess;
     
-    $scope.onUpdateExampleError = function() {
+    function onUpdateExampleError() {
         
     }
+    $scope.onUpdateExampleError = onUpdateExampleError;
     
     function openEditExampleModal(exampleId) {
         var postData = {exampleId: exampleId};
