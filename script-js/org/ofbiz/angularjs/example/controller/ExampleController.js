@@ -5,7 +5,7 @@ package org.ofbiz.angularjs.example.controller;
  * 
  * @param $scope
  */
-function ExampleController($scope) {
+function ExampleController($scope, $http) {
 	
 	$scope.editExample = {};
     
@@ -24,9 +24,7 @@ function ExampleController($scope) {
     }
     
     $scope.onBeforeSelectionChanged = function(rowItem, event) {
-        var exampleId = rowItem.entity.exampleId
-        $scope.editExample.exampleId = exampleId;
-        $scope.shouldOpenEditExampleModal = true;
+        openEditExampleModal(rowItem.entity.exampleId);
         return true;
     }
     
@@ -41,6 +39,39 @@ function ExampleController($scope) {
     }
     
     $scope.onFindExampleClicked = function(event) {
+        getExamples();
+    }
+    
+    $scope.editExampleModalOptions = {
+        backdropFade: false,
+        dialogFade: false
+    };
+    
+    $scope.closeEditExampleModal = function() {
+        $scope.shouldOpenEditExampleModal = false;
+    }
+    
+    $scope.updateExample = function() {
+        var postData = {};
+        postData.exampleId = $scope.editExample.exampleId;
+        postData.exampleName = $scope.editExample.exampleName;
+        $http.post("updateExample", postData).success(function(reponse) {
+            getExamples();
+            $scope.shouldOpenEditExampleModal = false;
+        });
+    }
+    
+    function openEditExampleModal(exampleId) {
+        var postData = {exampleId: exampleId};
+        $http.post("getExample", postData).success(function (response) {
+            var example = response["example"];
+            $scope.editExample.exampleId = example.exampleId;
+            $scope.editExample.exampleName = example.exampleName;
+            $scope.shouldOpenEditExampleModal = true;
+        });
+    }
+    
+    function getExamples() {
         var parameters = {};
         if ($scope.example) {
             parameters.exampleId = $scope.example.exampleId;
@@ -49,16 +80,7 @@ function ExampleController($scope) {
             parameters.exampleName = $scope.example.exampleName;
             parameters.exampleName_op = "contains";
             parameters.exampleName_ic = "Y";
+            $scope.$broadcast("exampleGrid", {"parameters": parameters});
         }
-        $scope.$broadcast("exampleGrid", {"parameters": parameters});
-    }
-    
-    $scope.editExampleModalOptions = {
-        backdropFade: true,
-        dialogFade: true
-    };
-    
-    $scope.closeEditExampleModal = function() {
-        $scope.shouldOpenEditExampleModal = false;
     }
 }

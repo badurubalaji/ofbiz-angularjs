@@ -58,17 +58,19 @@
             <widgets>
                 <modal should-be-open="shouldOpenEditExampleModal" options="editExampleModalOptions">
                     <modal-header>
-                        <label style="h1" text="Example [{{editExample.exampleId}}]"/>
+                        <label style="h1" text="Example"/>
                     </modal-header>
                     <modal-body>
-                        <list>
-                            <list-item repeat="item in items">
-                                <label text="{{item}}"/>
-                            </list-item>
-                        </list>
+                        <form>
+                            <label text="ID: "/><text name="exampleId" model="editExample.exampleId"/>
+	                        <line-break/>
+	                        <label text="Name: "/><text name="exampleName" model="editExample.exampleName"/>
+	                        <line-break/>
+                        </form>
                     </modal-body>
                     <modal-footer>
-                        <button style="btn btn-warning cancel" on-click="closeEditExampleModal()" text="Cancel"/>
+                        <button style="btn btn-warning cancel" on-click="updateExample()" text="Save"/>
+                        <button style="btn btn-warning cancel" on-click="closeEditExampleModal()" text="Close"/>
                     </modal-footer>
                 </modal>
             </widgets>
