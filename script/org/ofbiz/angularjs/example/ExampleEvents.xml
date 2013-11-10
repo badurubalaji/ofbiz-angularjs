@@ -46,7 +46,7 @@ under the License.
         <set field="performFindInMap.entityName" value="Example"/>
         <set field="performFindInMap.noConditionFind" value="Y"/>
         <set field="performFindInMap.viewIndex" from-field="parameters.viewIndex"/>
-        <set field="performFindInMap.viewSize" from-field="parameters.viewSize"/>
+        <set field="performFindInMap.viewSize" from-field="parameters.viewSize" type="Integer"/>
         <call-service service-name="performFind" in-map-name="performFindInMap">
             <result-to-field result-name="listIt" field="listIt"/>
             <result-to-field result-name="listSize" field="listSize"/>

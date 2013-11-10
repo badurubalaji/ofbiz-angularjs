@@ -25,6 +25,11 @@ function ExampleController($scope) {
         var parameters = {};
         if ($scope.example) {
             parameters.exampleId = $scope.example.exampleId;
+            parameters.exampleId_op = "contains";
+            parameters.exampleId_ic = "Y";
+            parameters.exampleName = $scope.example.exampleName;
+            parameters.exampleName_op = "contains";
+            parameters.exampleName_ic = "Y";
         }
         $scope.$broadcast("exampleGrid", {"parameters": parameters});
     }
