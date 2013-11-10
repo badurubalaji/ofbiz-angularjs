@@ -8,6 +8,7 @@
 
     <description>AngularJs Component Site Configuration File</description>
     
+    <handler name="jsonsimple" type="request" class="org.ofbiz.angularjs.webapp.event.JsonSimpleEventHandler"/>
     <handler name="screenng" type="view" class="org.ofbiz.widget.screen.MacroScreenViewHandler"/>
 
     <!-- Events to run on every request before security (chains exempt) -->
@@ -44,7 +45,7 @@
     <request-map uri="Example"><security https="true" auth="false"/><response name="success" type="view" value="Example"/></request-map>
     <request-map uri="findExample">
         <security https="true" auth="false"/>
-        <event type="simple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="findExample"/>
+        <event type="jsonsimple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="findExample"/>
         <response name="success" type="request" value="json"/>
         <response name="error" type="request" value="json"/>
     </request-map>
