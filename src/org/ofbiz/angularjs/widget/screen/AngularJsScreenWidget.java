@@ -762,6 +762,7 @@ public class AngularJsScreenWidget {
         protected int rowHeight;
         protected String onBeforeSelectionChanged = null;
         protected String onAfterSelectionChanged = null;
+        protected String onRowDoubleClicked = null;
         protected List<? extends Element> fieldElements;
         
         public Grid(ModelScreen modelScreen, Element widgetElement) {
@@ -772,6 +773,7 @@ public class AngularJsScreenWidget {
             this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
             this.onBeforeSelectionChanged = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-before-selection-changed")).getOriginal();
             this.onAfterSelectionChanged = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-after-selection-changed")).getOriginal();
+            this.onRowDoubleClicked = FlexibleStringExpander.getInstance(widgetElement.getAttribute("on-row-double-clicked")).getOriginal();
             try {
                 this.rowHeight = Integer.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("row-height")).getOriginal());
             } catch (Exception e) {
@@ -828,7 +830,8 @@ public class AngularJsScreenWidget {
             
             return "<div model=\"" + model + "\" class=\"" + style + "\" ng-grid=\"grid\" grid-options=\"\" row-height=\"" + rowHeight
                     + "\" select-target=\"" + selectTarget + "\" list-name=\"" + listName + "\" column-defs=\"" + columnDefsBuilder.toString()
-                    + "\" on-before-selection-changed=\"" + onBeforeSelectionChanged + "\" on-after-selection-changed=\"" + onAfterSelectionChanged + "\"></div>";
+                    + "\" on-before-selection-changed=\"" + onBeforeSelectionChanged + "\" on-after-selection-changed=\"" + onAfterSelectionChanged
+                    + "\" on-row-double-clicked=\"" + onRowDoubleClicked + "\"></div>";
         }
     }
 

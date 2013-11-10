@@ -42,9 +42,10 @@
                 </screenlet>
                 <screenlet title="Search Results">
                     <grid model="exampleGrid" style="gridStyle" row-height="40" select-target="findExample" list-name="examples"
-                        on-before-selection-changed="onBeforeSelectionChanged" on-after-selection-changed="onAfterSelectionChanged">
+                        on-before-selection-changed="onBeforeSelectionChanged" on-after-selection-changed="onAfterSelectionChanged"
+                        on-row-double-clicked="onRowDoubleClicked">
                         <field name="exampleId" title="Example Id" editable="false"/>
-                        <field name="exampleName" title="Example Name" editable="true"/>
+                        <field name="exampleName" title="Example Name" editable="false"/>
                     </grid>
                 </screenlet>
             </widgets>

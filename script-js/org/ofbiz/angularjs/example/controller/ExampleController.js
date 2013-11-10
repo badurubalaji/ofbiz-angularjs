@@ -31,6 +31,10 @@ function ExampleController($scope) {
         // https://github.com/angular-ui/ng-grid/issues/395?source=cc
     }
     
+    $scope.onRowDoubleClicked = function(rowItem) {
+        var exampleId = rowItem.exampleId;
+    }
+    
     $scope.onFindExampleClicked = function(event) {
         var parameters = {};
         if ($scope.example) {
