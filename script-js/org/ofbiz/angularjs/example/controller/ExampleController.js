@@ -6,6 +6,8 @@ package org.ofbiz.angularjs.example.controller;
  * @param $scope
  */
 function ExampleController($scope) {
+	
+	$scope.editExample = {};
     
     /**
      * On Submit Success
@@ -23,6 +25,8 @@ function ExampleController($scope) {
     
     $scope.onBeforeSelectionChanged = function(rowItem, event) {
         var exampleId = rowItem.entity.exampleId
+        $scope.editExample.exampleId = exampleId;
+        $scope.shouldOpenEditExampleModal = true;
         return true;
     }
     
@@ -33,6 +37,7 @@ function ExampleController($scope) {
     
     $scope.onRowDoubleClicked = function(rowItem) {
         var exampleId = rowItem.exampleId;
+        $scope.shouldOpenEditExampleModal = true;
     }
     
     $scope.onFindExampleClicked = function(event) {
@@ -46,5 +51,14 @@ function ExampleController($scope) {
             parameters.exampleName_ic = "Y";
         }
         $scope.$broadcast("exampleGrid", {"parameters": parameters});
+    }
+    
+    $scope.editExampleModalOptions = {
+        backdropFade: true,
+        dialogFade: true
+    };
+    
+    $scope.closeEditExampleModal = function() {
+        $scope.shouldOpenEditExampleModal = false;
     }
 }

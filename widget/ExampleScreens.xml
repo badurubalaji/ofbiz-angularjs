@@ -48,6 +48,29 @@
                         <field name="exampleName" title="Example Name" editable="false"/>
                     </grid>
                 </screenlet>
+                <include-screen name="EditExample"/>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="EditExample">
+        <section>
+            <widgets>
+                <modal should-be-open="shouldOpenEditExampleModal" options="editExampleModalOptions">
+                    <modal-header>
+                        <label style="h1" text="Example [{{editExample.exampleId}}]"/>
+                    </modal-header>
+                    <modal-body>
+                        <list>
+                            <list-item repeat="item in items">
+                                <label text="{{item}}"/>
+                            </list-item>
+                        </list>
+                    </modal-body>
+                    <modal-footer>
+                        <button style="btn btn-warning cancel" on-click="closeEditExampleModal()" text="Cancel"/>
+                    </modal-footer>
+                </modal>
             </widgets>
         </section>
     </screen>
