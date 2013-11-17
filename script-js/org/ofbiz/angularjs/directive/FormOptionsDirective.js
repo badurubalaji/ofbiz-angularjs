@@ -6,6 +6,9 @@ package org.ofbiz.angularjs.directive;
  */
 function FormOptionsDirective() {
     
+    var removeOnSubmitSuccessListener = null;
+    var removeOnSubmitErrorListener = null;
+    
     /**
      * Controller
      */
@@ -14,8 +17,14 @@ function FormOptionsDirective() {
         $scope.appBusy = appBusy;
         $scope.FormService = FormService;
         
-        $scope.$on("ON_SUBMIT_SUCCESS", $scope[$attrs.onSubmitSuccess]);
-        $scope.$on("ON_SUBMIT_ERROR", $scope[$attrs.onSubmitError]);
+        if (removeOnSubmitSuccessListener != null) {
+            removeOnSubmitSuccessListener();
+        }
+        if (removeOnSubmitErrorListener != null) {
+            removeOnSubmitErrorListener();
+        }
+        removeOnSubmitSuccessListener = $scope.$on("ON_SUBMIT_SUCCESS", $scope[$attrs.onSubmitSuccess]);
+        removeOnSubmitErrorListener = $scope.$on("ON_SUBMIT_ERROR", $scope[$attrs.onSubmitError]);
     }
 
     /**
