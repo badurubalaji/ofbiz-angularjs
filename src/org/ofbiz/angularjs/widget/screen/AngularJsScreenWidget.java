@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.GeneralException;
 import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
@@ -807,6 +808,7 @@ public class AngularJsScreenWidget {
                     String name = UtilXml.elementAttribute(fieldElement, "name", null);
                     String title = UtilXml.elementAttribute(fieldElement, "title", null);
                     String editable = UtilXml.elementAttribute(fieldElement, "editable", null);
+                    String cellTemplateUri = UtilXml.elementAttribute(fieldElement, "cell-template-uri", null);
                     
                     fieldsBuilder.append("field:'" + name + "'");
                     if (UtilValidate.isNotEmpty(title)) {
@@ -814,6 +816,9 @@ public class AngularJsScreenWidget {
                     }
                     if (UtilValidate.isNotEmpty(editable)) {
                         fieldsBuilder.append(",enableCellEdit:" + editable);
+                    }
+                    if (UtilValidate.isNotEmpty(cellTemplateUri)) {
+                        fieldsBuilder.append(",cellTemplate:'" + cellTemplateUri + "'");
                     }
                     
                     fieldsBuilder.append("},");

@@ -45,7 +45,7 @@
                         on-before-selection-changed="onBeforeSelectionChanged" on-after-selection-changed="onAfterSelectionChanged"
                         on-row-double-clicked="onRowDoubleClicked">
                         <field name="exampleId" title="Example Id" editable="false"/>
-                        <field name="exampleName" title="Example Name" editable="false"/>
+                        <field name="exampleName" title="Example Name" editable="false" cell-template-uri="ExampleNameGridCell"/>
                     </grid>
                 </screenlet>
                 <include-screen name="EditExample"/>
@@ -223,6 +223,15 @@
                 <label text="Upload" style="h1"/>
                 <include-screen name="Upload" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                 <horizontal-rule/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ExampleNameGridCell">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html><html-template location="component://angularjs/templates/example/ExampleNameGridCell.ftl"/></html>
+                </platform-specific>
             </widgets>
         </section>
     </screen>
