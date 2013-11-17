@@ -808,7 +808,9 @@ public class AngularJsScreenWidget {
                     String name = UtilXml.elementAttribute(fieldElement, "name", null);
                     String title = UtilXml.elementAttribute(fieldElement, "title", null);
                     String editable = UtilXml.elementAttribute(fieldElement, "editable", null);
+                    String headerCellTemplateUri = UtilXml.elementAttribute(fieldElement, "header-cell-template-uri", null);
                     String cellTemplateUri = UtilXml.elementAttribute(fieldElement, "cell-template-uri", null);
+                    String editableCellTemplateUri = UtilXml.elementAttribute(fieldElement, "editable-cell-template-uri", null);
                     
                     fieldsBuilder.append("field:'" + name + "'");
                     if (UtilValidate.isNotEmpty(title)) {
@@ -817,8 +819,14 @@ public class AngularJsScreenWidget {
                     if (UtilValidate.isNotEmpty(editable)) {
                         fieldsBuilder.append(",enableCellEdit:" + editable);
                     }
+                    if (UtilValidate.isNotEmpty(headerCellTemplateUri)) {
+                        fieldsBuilder.append(",headerCellTemplate:'" + headerCellTemplateUri + "'");
+                    }
                     if (UtilValidate.isNotEmpty(cellTemplateUri)) {
                         fieldsBuilder.append(",cellTemplate:'" + cellTemplateUri + "'");
+                    }
+                    if (UtilValidate.isNotEmpty(editableCellTemplateUri)) {
+                        fieldsBuilder.append(",editableCellTemplate:'" + editableCellTemplateUri + "'");
                     }
                     
                     fieldsBuilder.append("},");
