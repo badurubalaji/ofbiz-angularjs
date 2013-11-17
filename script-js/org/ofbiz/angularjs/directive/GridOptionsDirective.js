@@ -22,6 +22,11 @@ function GridOptionsDirective() {
         var onAfterSelectionChanged = $scope[$attrs.onAfterSelectionChanged]; // function (rowItem, event) { return true; }
         var onRowDoubleClicked = $scope[$attrs.onRowDoubleClicked]; // function (rowItem, event) {}
         
+        $scope.filterOptions = {
+            filterText: "",
+            useExternalFilter: true
+        };
+        
         var enablePaging = true;
         var showFooter = true;
         
@@ -33,25 +38,37 @@ function GridOptionsDirective() {
             pageSize = 20;
         }
         
+        $scope.totalServerItems = 0;
+        
+        $scope.pagingOptions = {
+            pageSizes: pageSizes,
+            pageSize: pageSize,
+            currentPage: 1
+        };
+        
         $scope.data = [];
         
         /**
          * Set Paging Data
          */
-        $scope.setPagingData = function(data, page, pageSize, viewIndex, listSize) {
+        $scope.setPagingData = function(data, viewSize, viewIndex, listSize) {
             if (!viewIndex) {
                 viewIndex = 0;
             }
+            var pageSize = viewSize;
+            var currentPage = viewIndex + 1;
             
             // var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
             $scope.data = data; // set data for the first loaded
             $scope.$parent.data = data; // set data for other loaded
-            $scope.totalServerItems = data.length;
+            $scope.totalServerItems = listSize;
+            /*
             $scope.pagingOptions = {
                 pageSizes: pageSizes,
                 pageSize: pageSize,
-                currentPage: viewIndex + 1
+                currentPage: currentPage
             };
+            */
             if (!$scope.$$phase) {
                 $scope.$apply();
             }
@@ -60,10 +77,10 @@ function GridOptionsDirective() {
         /**
          * Get Paged Data Async
          */
-        $scope.getPagedDataAsync = function (selectTarget, listName, pageSize, page, parameters) {
+        $scope.getPagedDataAsync = function (selectTarget, listName, viewSize, viewIndex, parameters) {
             setTimeout(function () {
                 var data;
-                var postData = {viewSize: pageSize};
+                var postData = {viewSize: viewSize, viewIndex: viewIndex};
                 if (parameters) {
                     for (key in parameters) {
                         var value = parameters[key];
@@ -89,7 +106,7 @@ function GridOptionsDirective() {
                         }
                         
                         if (data != null) {
-                            $scope.setPagingData(data, page, pageSize, viewIndex, listSize);
+                            $scope.setPagingData(data, viewSize, viewIndex, listSize);
                         }
                         appBusy.set(false);
                     });
@@ -101,7 +118,7 @@ function GridOptionsDirective() {
                             var data = response[listName];
                             if (data != null) {
                                 $scope.$parent.data = data;
-                                $scope.setPagingData(data,page,pageSize);
+                                $scope.setPagingData(data, viewSize, viewIndex, listSize);
                             }
                         }
                         appBusy.set(false);
@@ -110,33 +127,42 @@ function GridOptionsDirective() {
             }, 100);
         };
         
-        $scope.totalServerItems = 0;
-        
-        $scope.pagingOptions = {
-            pageSizes: pageSizes,
-            pageSize: pageSize,
-            currentPage: 1
-        };
-        
-        $scope.filterOptions = {
-            filterText: "",
-            useExternalFilter: true
-        };
-        
-        $scope.getPagedDataAsync(selectTarget, listName, $scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, null);
+        var viewSize = $scope.pagingOptions.pageSize;
+        var viewIndex = $scope.pagingOptions.currentPage - 1;
+        $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, null);
         
         $scope.$on(modelName, function(event, args) {
             var pageSize = args.pageSize;
             var currentPage = args.currentPage;
             var filterText = args.filterText;
+            
             if (!pageSize) {
                 pageSize = $scope.pagingOptions.pageSize;
             }
             if (!currentPage) {
                 currentPage = $scope.pagingOptions.currentPage;
             }
-            $scope.getPagedDataAsync(selectTarget, listName, pageSize, currentPage, args.parameters);
+            
+            $scope.parameters = args.parameters;
+
+            var viewSize = pageSize;
+            var viewIndex = currentPage - 1;
+            $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, $scope.parameters);
         });
+        
+        $scope.$watch('pagingOptions', function (newVal, oldVal) {
+            if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+              if (!isNaN(newVal.currentPage)) {
+	              var viewIndex = newVal.currentPage - 1;
+	              var viewSize = oldVal.pageSize;
+	              var parameters = $scope.parameters;
+	              if (parameters == null) {
+	                  parameters = {};
+	              }
+	              $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, parameters);
+              }
+            }
+        }, true);
         
         var rowSize = 10
         
@@ -180,6 +206,7 @@ function GridOptionsDirective() {
             data: "data"
             , multiSelect: false
             , enablePaging: enablePaging
+            , pagingOptions: $scope.pagingOptions
             , showFooter: showFooter
             , totalServerItems: "totalServerItems"
             , filterOptions: $scope.filterOptions
