@@ -31,7 +31,7 @@ function ExampleController($scope, $http) {
     $scope.onSubmitError = onSubmitError;
     
     function onBeforeSelectionChanged(rowItem, event) {
-        openEditExampleModal(rowItem.entity.exampleId);
+        //openEditExampleModal(rowItem.entity.exampleId);
         return true;
     }
     $scope.onBeforeSelectionChanged = onBeforeSelectionChanged;
@@ -44,6 +44,7 @@ function ExampleController($scope, $http) {
     
     function onRowDoubleClicked(rowItem) {
         var exampleId = rowItem.exampleId;
+        openEditExampleModal(exampleId);
         $scope.shouldOpenEditExampleModal = true;
     }
     $scope.onRowDoubleClicked = onRowDoubleClicked;
