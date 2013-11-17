@@ -151,16 +151,21 @@ function GridOptionsDirective() {
         });
         
         $scope.$watch('pagingOptions', function (newVal, oldVal) {
-            if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
-              if (!isNaN(newVal.currentPage)) {
-	              var viewIndex = newVal.currentPage - 1;
-	              var viewSize = oldVal.pageSize;
-	              var parameters = $scope.parameters;
-	              if (parameters == null) {
-	                  parameters = {};
-	              }
-	              $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, parameters);
-              }
+            if (newVal !== oldVal) {
+                var viewIndex = 0;
+                var viewSize = newVal.pageSize;
+                if (newVal.currentPage !== oldVal.currentPage) {
+                    if (!isNaN(newVal.currentPage)) {
+                        viewIndex = newVal.currentPage - 1;
+                    }
+                }
+               
+                var parameters = $scope.parameters;
+                if (parameters == null) {
+                    parameters = {};
+                }
+                $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, parameters);
+              
             }
         }, true);
         
