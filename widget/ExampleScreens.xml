@@ -45,7 +45,7 @@
                         on-before-selection-changed="onBeforeSelectionChanged" on-after-selection-changed="onAfterSelectionChanged"
                         on-row-double-clicked="onRowDoubleClicked">
                         <field name="exampleId" title="Example Id" editable="false"/>
-                        <field name="exampleName" title="Example Name" editable="false" cell-template-uri="ExampleNameGridCell"/>
+                        <field name="exampleName" title="Example Name" editable="false" cell-template-uri="ExampleNameGridCell" sort-direction="asc"/>
                     </grid>
                 </screenlet>
                 <include-screen name="EditExample"/>

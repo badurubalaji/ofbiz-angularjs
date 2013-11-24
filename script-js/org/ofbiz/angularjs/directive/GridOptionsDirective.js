@@ -17,6 +17,10 @@ function GridOptionsDirective() {
         var columnDefs = $scope.$eval($attrs.columnDefs);
         var pageSizes = $scope.$eval($attrs.pageSizes);
         var pageSize = $scope.$eval($attrs.pageSize);
+        var sortInfo = null;
+        if ($attrs.sortInfo) {
+            sortInfo = $scope.$eval($attrs.sortInfo);
+        }
         
         var onBeforeSelectionChanged = $scope[$attrs.onBeforeSelectionChanged]; // function (rowItem, event) {}
         var onAfterSelectionChanged = $scope[$attrs.onAfterSelectionChanged]; // function (rowItem, event) { return true; }
@@ -45,6 +49,10 @@ function GridOptionsDirective() {
             pageSize: pageSize,
             currentPage: 1
         };
+        
+        if (sortInfo) {
+            $scope.sortInfo = sortInfo;
+        }
         
         $scope.data = [];
         
@@ -150,6 +158,13 @@ function GridOptionsDirective() {
             $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, $scope.parameters);
         });
         
+        if (sortInfo) {
+            $scope.$watch('sortInfo', function (newVal, oldVal) {
+                var fieldName = newVal.fields[0];
+                var sortDirection = newVal.directions[0];
+            }, true);
+        }
+        
         $scope.$watch('pagingOptions', function (newVal, oldVal) {
             if (newVal !== oldVal) {
                 var viewIndex = 0;
@@ -225,6 +240,10 @@ function GridOptionsDirective() {
             , onRowDoubleClicked: onRowDoubleClicked
             , plugins: [ngGridDoubleClick]
         };
+        
+        if (sortInfo) {
+            $scope.grid.sortInfo = sortInfo;
+        }
         
         angular.element($element).css("height", (rowSize * rowHeight) + "px");
     }

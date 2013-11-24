@@ -20,12 +20,14 @@ package org.ofbiz.angularjs.widget.screen;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.GeneralException;
+import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
 import org.ofbiz.base.util.string.FlexibleStringExpander;
@@ -799,6 +801,8 @@ public class AngularJsScreenWidget {
                 rowHeight = defaultRowHeight;
             }
             
+            StringBuilder sortInfoBuilder = new StringBuilder();
+            List<Map<String, String>> sortDirections = new LinkedList<Map<String,String>>();
             StringBuilder columnDefsBuilder = new StringBuilder();
             columnDefsBuilder.append("[");
             if (UtilValidate.isNotEmpty(fieldElements)) {
@@ -811,6 +815,7 @@ public class AngularJsScreenWidget {
                     String headerCellTemplateUri = UtilXml.elementAttribute(fieldElement, "header-cell-template-uri", null);
                     String cellTemplateUri = UtilXml.elementAttribute(fieldElement, "cell-template-uri", null);
                     String editableCellTemplateUri = UtilXml.elementAttribute(fieldElement, "editable-cell-template-uri", null);
+                    String sortDirection = UtilXml.elementAttribute(fieldElement, "sort-direction", null);
                     
                     fieldsBuilder.append("field:'" + name + "'");
                     if (UtilValidate.isNotEmpty(title)) {
@@ -830,11 +835,36 @@ public class AngularJsScreenWidget {
                     }
                     
                     fieldsBuilder.append("},");
+                    
+                    if (UtilValidate.isNotEmpty(sortDirection)) {
+                        Map<String, String> sortDirectionMap = new HashMap<String, String>();
+                        sortDirectionMap.put("sortField", name);
+                        sortDirectionMap.put("sortDirection", sortDirection);
+                        sortDirections.add(sortDirectionMap);
+                    }
                 }
                 
                 String fieldString = fieldsBuilder.toString();
                 if (fieldString.endsWith(",")) {
                     fieldString = fieldString.substring(0, fieldsBuilder.length() - 1);
+                }
+                
+                if (UtilValidate.isNotEmpty(sortDirections)) {
+                    List<String> sortFields = new LinkedList<String>();
+                    List<String> directions = new LinkedList<String>();
+                    for (Map<String, String> sortDirectionMap : sortDirections) {
+                        String sortField = sortDirectionMap.get("sortField");
+                        String sortDirection = sortDirectionMap.get("sortDirection");
+                        sortFields.add(sortField);
+                        directions.add(sortDirection);
+                    }
+                    
+                    if (UtilValidate.isNotEmpty(sortFields)) {
+                        sortInfoBuilder.append("{");
+                        sortInfoBuilder.append("fields: [" + StringUtil.join(sortFields, ",") + "],");
+                        sortInfoBuilder.append("directions: [" + StringUtil.join(directions, ",") + "]");
+                        sortInfoBuilder.append("}");
+                    }
                 }
                 
                 columnDefsBuilder.append(fieldString);
@@ -844,7 +874,9 @@ public class AngularJsScreenWidget {
             return "<div model=\"" + model + "\" class=\"" + style + "\" ng-grid=\"grid\" grid-options=\"\" row-height=\"" + rowHeight
                     + "\" select-target=\"" + selectTarget + "\" list-name=\"" + listName + "\" column-defs=\"" + columnDefsBuilder.toString()
                     + "\" on-before-selection-changed=\"" + onBeforeSelectionChanged + "\" on-after-selection-changed=\"" + onAfterSelectionChanged
-                    + "\" on-row-double-clicked=\"" + onRowDoubleClicked + "\"></div>";
+                    + "\" on-row-double-clicked=\"" + onRowDoubleClicked
+                    + "\" " + (UtilValidate.isNotEmpty(sortInfoBuilder.toString()) ? "sort-info=\"" + sortInfoBuilder.toString() + "\"" : "")
+                    + "></div>";
         }
     }
 
