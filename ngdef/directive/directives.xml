@@ -17,4 +17,7 @@
     
     <ng-directive name="tree" location="org.ofbiz.angularjs.directive.TreeDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="false"/>
+    
+    <ng-directive name="context" location="org.ofbiz.angularjs.directive.ContextDirective"
+        priority="0" replace="false" transclude="false" restrict="E" scope="false"/>
 </ng-directives>

@@ -61,13 +61,15 @@
                         <label style="h1" text="Example"/>
                     </modal-header>
                     <modal-body>
-                        <form target="updateExample" on-submit-success="onUpdateExampleSuccess" on-submit-error="onUpdateExampleError">
-                           <label text="ID: "/><text name="exampleId" model="editExample.exampleId"/>
-                           <line-break/>
-                           <label text="Name: "/><text name="exampleName" model="editExample.exampleName"/>
-                           <line-break/>
-                            <submit text="Save"/>
-                        </form>
+                        <context target="getExample" parameters="{}" model="editExample" field="example">
+                            <form target="updateExample" on-submit-success="onUpdateExampleSuccess" on-submit-error="onUpdateExampleError">
+                                <label text="ID: "/><text name="exampleId" model="editExample.exampleId"/>
+                                <line-break/>
+                                <label text="Name: "/><text name="exampleName" model="editExample.exampleName"/>
+                                <line-break/>
+                                <submit text="Save"/>
+                            </form>
+                        </context>
                     </modal-body>
                     <modal-footer>
                         <button style="btn btn-warning cancel" on-click="closeEditExampleModal()" text="Close"/>

@@ -25,7 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.GeneralException;
 import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilValidate;
@@ -315,6 +314,39 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             return "<div class=\"container-fluid\">";
+        }
+    }
+
+    @SuppressWarnings("serial")
+    public static class Context extends ModelScreenWidget {
+
+        public static final String TAG_NAME = "context";
+        
+        private String target = null;
+        private String parameters = null;
+        private String model = null;
+        private String field = null;
+        
+        public Context(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.target = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target")).getOriginal();
+            this.parameters = FlexibleStringExpander.getInstance(widgetElement.getAttribute("parameters")).getOriginal();
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+            this.field = FlexibleStringExpander.getInstance(widgetElement.getAttribute("field")).getOriginal();
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append("</context>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<context target=\"" + target + "\" parameters=\"" + parameters + "\" model=\"" + model + "\" field=\"" + field + "\">";
         }
     }
 
