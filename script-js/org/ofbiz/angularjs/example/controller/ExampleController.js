@@ -5,7 +5,7 @@ package org.ofbiz.angularjs.example.controller;
  * 
  * @param $scope
  */
-function ExampleController($scope, $http) {
+function ExampleController($scope, $http, $timeout) {
     
     $scope.editExample = {};
     
@@ -71,13 +71,10 @@ function ExampleController($scope, $http) {
     $scope.onUpdateExampleError = onUpdateExampleError;
     
     function openEditExampleModal(exampleId) {
-        var postData = {exampleId: exampleId};
-        $http.post("getExample", postData).success(function (response) {
-            var example = response["example"];
-            $scope.editExample.exampleId = example.exampleId;
-            $scope.editExample.exampleName = example.exampleName;
+        $timeout(function() {
+            $scope.modalEditExampleId = exampleId;
             $scope.shouldOpenEditExampleModal = true;
-        });
+        }, 100)
     }
     
     function getExamples() {

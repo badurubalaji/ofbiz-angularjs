@@ -61,7 +61,7 @@
                         <label style="h1" text="Example"/>
                     </modal-header>
                     <modal-body>
-                        <context target="getExample" parameters="{}" model="editExample" field="example">
+                        <context target="getExample" parameters="{exampleId: modalEditExampleId}" model="editExample" field="example">
                             <form target="updateExample" on-submit-success="onUpdateExampleSuccess" on-submit-error="onUpdateExampleError">
                                 <label text="ID: "/><text name="exampleId" model="editExample.exampleId"/>
                                 <line-break/>

@@ -16,9 +16,9 @@ function ContextDirective() {
 
         $http.post(target, parameters).success(function (response) {
             if (field != null) {
-                $scope.$parent[model] = response[field];
+                $scope[model] = response[field];
             } else {
-                $scope.$parent[model] = response;
+                $scope[model] = response;
             }
         });
     }
