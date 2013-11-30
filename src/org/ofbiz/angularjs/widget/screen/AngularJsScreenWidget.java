@@ -322,10 +322,11 @@ public class AngularJsScreenWidget {
 
         public static final String TAG_NAME = "context";
         
-        private String target = null;
-        private String parameters = null;
-        private String model = null;
-        private String field = null;
+        protected String target = null;
+        protected String parameters = null;
+        protected String model = null;
+        protected String field = null;
+        protected List<ModelScreenWidget> subWidgets;
         
         public Context(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
@@ -333,6 +334,9 @@ public class AngularJsScreenWidget {
             this.parameters = FlexibleStringExpander.getInstance(widgetElement.getAttribute("parameters")).getOriginal();
             this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
             this.field = FlexibleStringExpander.getInstance(widgetElement.getAttribute("field")).getOriginal();
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
         }
 
         @Override
@@ -341,6 +345,7 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append(this.rawString());
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
             writer.append("</context>");
         }
 

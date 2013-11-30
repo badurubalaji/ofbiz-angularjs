@@ -5,9 +5,11 @@ package org.ofbiz.angularjs.demo.controller;
  * 
  * @param $scope
  */
-function ModalDemoController($scope) {
+function ModalDemoController($scope, $timeout) {
     $scope.open = function () {
-        $scope.shouldBeOpen = true;
+        $timeout(function() {
+            $scope.shouldBeOpen = true;
+        }, 100);
     };
     
     $scope.close = function () {

@@ -1,29 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
-    <screen name="Calendar">
-        <section>
-            <widgets>
-                <controller name="org.ofbiz.angularjs.demo.controller.CalendarDemoController">
-                    <calendar name="myCalendar" options="calendarOptions" model="eventSources"/>
-                </controller>
-            </widgets>
-        </section>
-    </screen>
-    <screen name="Collapse">
-        <section>
-            <widgets>
-                <controller name="org.ofbiz.angularjs.demo.controller.CollapseDemoController">
-                    <button style="btn" on-click="isCollapsed = !isCollapsed" text="Toggle collapse"/>
-                    <collapse collapse="isCollapsed">
-                        <container style="well well-large">
-                            <label text="Some content"/>
-                        </container>
-                    </collapse>
-                </controller>
-            </widgets>
-        </section>
-    </screen>
     <screen name="Accordion">
         <section>
             <widgets>
@@ -53,6 +30,42 @@
                 <controller name="org.ofbiz.angularjs.demo.controller.AlertDemoController">
                     <alert repeat="alert in alerts" type="alert.type" close="closeAlert($index)" text="{{alert.msg}}"/>
                     <button on-click="addAlert()" text="Add Alert"/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Calendar">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.CalendarDemoController">
+                    <calendar name="myCalendar" options="calendarOptions" model="eventSources"/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Collapse">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.CollapseDemoController">
+                    <button style="btn" on-click="isCollapsed = !isCollapsed" text="Toggle collapse"/>
+                    <collapse collapse="isCollapsed">
+                        <container style="well well-large">
+                            <label text="Some content"/>
+                        </container>
+                    </collapse>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="Context">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.ContextDemoController">
+                    <context target="getExample" parameters="{exampleId: findContextExampleId}" model="contextExample" field="example">
+                        <label text="ExampleId: {{contextExample.exampleId}}"/>
+                        <line-break/>
+                        <label text="Example Name: {{contextExample.exampleName}}"/>
+                    </context>
                 </controller>
             </widgets>
         </section>

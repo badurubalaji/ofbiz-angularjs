@@ -13,6 +13,14 @@ function ContextDirective() {
         var parameters = $scope.$eval($attrs.parameters);
         var model = $attrs.model;
         var field = $attrs.field;
+
+        $http.post(target, parameters).success(function (response) {
+            if (field != null) {
+                $scope.$parent[model] = response[field];
+            } else {
+                $scope.$parent[model] = response;
+            }
+        });
     }
 
     /**
