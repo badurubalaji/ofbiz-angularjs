@@ -66,6 +66,23 @@
                         <line-break/>
                         <label text="Example Name: {{contextExample.exampleName}}"/>
                     </context>
+                    <line-break/>
+                    <button style="btn" on-click="open()" text="Open me!"/>
+                    <modal should-be-open="shouldBeOpen" options="opts">
+                        <modal-header>
+                            <label style="h1" text="I'm a modal!"/>
+                        </modal-header>
+                        <modal-body>
+                            <context target="getExample" parameters="{exampleId: findContextModalExampleId}" model="contextModalExample" field="example">
+                                <label text="ExampleId: {{contextModalExample.exampleId}}"/>
+                                <line-break/>
+                                <label text="Example Name: {{contextModalExample.exampleName}}"/>
+                            </context>
+                        </modal-body>
+                        <modal-footer>
+                            <button style="btn btn-warning cancel" on-click="close()" text="Cancel"/>
+                        </modal-footer>
+                    </modal>
                 </controller>
             </widgets>
         </section>
