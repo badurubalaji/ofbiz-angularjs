@@ -6,6 +6,6 @@ package org.ofbiz.angularjs.demo.controller;
  * @param $scope
  * @param $http
  */
-function GoogleChartDemoController($scope, $http) {
+function GoogleChartDemoController($scope) {
 
 }

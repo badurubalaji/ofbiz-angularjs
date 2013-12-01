@@ -3,13 +3,12 @@ package org.ofbiz.angularjs.directive;
 /**
  * Grid Options Directive
  */
-function GridOptionsDirective() {
+function GridOptionsDirective(HttpService) {
     
     /**
      * Controller
      */
-    this.controller = function($scope, $element, $attrs, $transclude, $http, appBusy) {
-        appBusy.set();
+    this.controller = function($scope, $element, $attrs, $transclude) {
         var modelName = $attrs.model;
         var rowHeight = $attrs.rowHeight;
         var selectTarget = $attrs.selectTarget;
@@ -94,8 +93,7 @@ function GridOptionsDirective() {
                         var value = parameters[key];
                         postData[key] = value;
                     }
-                    appBusy.set();
-                    $http.post(selectTarget, postData).success(function (response) {
+                    HttpService.post(selectTarget, postData).success(function (response) {
                         var listSize = response.listSize;
                         var viewIndex = response.viewIndex;
                         var viewSize = response.viewSize;
@@ -116,11 +114,9 @@ function GridOptionsDirective() {
                         if (data != null) {
                             $scope.setPagingData(data, viewSize, viewIndex, listSize);
                         }
-                        appBusy.set(false);
                     });
                 } else {
-                    appBusy.set();
-                    $http.post(selectTarget, postData).success(function (response) {
+                    HttpService.post(selectTarget, postData).success(function (response) {
                         var listSize = response.listSize;
                         if (listSize > 0) {
                             var data = response[listName];
@@ -129,7 +125,6 @@ function GridOptionsDirective() {
                                 $scope.setPagingData(data, viewSize, viewIndex, listSize);
                             }
                         }
-                        appBusy.set(false);
                     });
                 }
             }, 100);

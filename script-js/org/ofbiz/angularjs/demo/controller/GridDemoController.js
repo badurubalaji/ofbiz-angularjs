@@ -6,6 +6,6 @@ package org.ofbiz.angularjs.demo.controller;
  * @param $scope
  * @param $http
  */
-function GridDemoController($scope, $http) {
+function GridDemoController($scope) {
     
 }
