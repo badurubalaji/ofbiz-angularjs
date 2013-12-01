@@ -1,4 +1,4 @@
-package org.ofbiz.angularjs.service;
+package org.ofbiz.angularjs.common.service;
 
 /**
  * Form Service

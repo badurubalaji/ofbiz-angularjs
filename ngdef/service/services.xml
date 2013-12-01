@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ng-services>
-    <ng-service name="FormService" location="org.ofbiz.angularjs.service.FormService"/>
-    <ng-service name="HttpService" location="org.ofbiz.angularjs.service.HttpService"/>
+    <ng-service name="FormService" location="org.ofbiz.angularjs.common.service.FormService"/>
+    <ng-service name="HttpService" location="org.ofbiz.angularjs.common.service.HttpService"/>
 </ng-services>
