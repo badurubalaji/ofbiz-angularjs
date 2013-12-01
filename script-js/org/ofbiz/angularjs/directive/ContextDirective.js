@@ -14,7 +14,9 @@ function ContextDirective() {
         var model = $attrs.model;
         var field = $attrs.field;
 
+        appBusy.set();
         $http.post(target, parameters).success(function (response) {
+            appBusy.set(false);
             if (field != null) {
                 $scope[model] = response[field];
             } else {
