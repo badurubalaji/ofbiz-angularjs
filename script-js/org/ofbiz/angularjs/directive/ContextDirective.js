@@ -3,20 +3,18 @@ package org.ofbiz.angularjs.directive;
 /**
  * Context Directive
  */
-function ContextDirective() {
+function ContextDirective(HttpService) {
     
     /**
      * Controller
      */
-    this.controller = function($scope, $element, $attrs, $transclude, $http, appBusy) {
+    this.controller = function($scope, $element, $attrs, $transclude) {
         var target = $attrs.target;
         var parameters = $scope.$eval($attrs.parameters);
         var model = $attrs.model;
         var field = $attrs.field;
 
-        appBusy.set();
-        $http.post(target, parameters).success(function (response) {
-            appBusy.set(false);
+        HttpService.post(target, parameters).success(function (response) {
             if (field != null) {
                 $scope[model] = response[field];
             } else {

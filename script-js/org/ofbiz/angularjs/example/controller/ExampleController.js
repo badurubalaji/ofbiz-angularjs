@@ -5,7 +5,7 @@ package org.ofbiz.angularjs.example.controller;
  * 
  * @param $scope
  */
-function ExampleController($scope, $http, $timeout) {
+function ExampleController($scope, $timeout) {
     
     $scope.editExample = {};
     
