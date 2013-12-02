@@ -1,6 +1,6 @@
 package org.ofbiz.angularjs.common.service;
 
-function HttpService($q, $http, appBusy) {
+function HttpService($rootScope, $q, $http, appBusy) {
     
     /**
      * Post
@@ -24,10 +24,12 @@ function HttpService($q, $http, appBusy) {
         .success(function(data, status, headers, config) {
             appBusy.set(false);
             successFn(data);
+            $rootScope.$emit("ON_HTTP_RESPONSE_MESSAGE_RECEIVED", { type: "success", msg: "HTTP Request Success!." });
         })
         .error(function(data, status, headers, config) {
             appBusy.set(false);
             errorFn(data);
+            $rootScope.$emit("ON_HTTP_RESPONSE_MESSAGE_RECEIVED", { type: "error", msg: "HTTP Request Error!." });
         });
         return promise;
     }

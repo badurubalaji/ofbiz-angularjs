@@ -1,14 +1,10 @@
 package org.ofbiz.angularjs.example.controller;
 
-function ExampleCommonDecoratorController($scope) {
-    $scope.alerts = [
-                     { type: 'error', msg: 'Oh snap! Change a few things up and try submitting again.' }, 
-                     { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
-                 ];
-                 
-    $scope.addAlert = function() {
-        $scope.alerts.push({msg: "Another alert!"});
-    };
+function ExampleCommonDecoratorController($rootScope, $scope) {
+    
+    $rootScope.$on("ON_HTTP_RESPONSE_MESSAGE_RECEIVED", function(event, responseMessage) {
+        $scope.alerts = [responseMessage];
+    });
     
     $scope.closeAlert = function(index) {
         $scope.alerts.splice(index, 1);
