@@ -9,11 +9,11 @@
         <state name="feature" url="/feature">
             <view name="main" target="feature" controller="org.ofbiz.angularjs.example.controller.FeatureController"/>
         </state>
+        <state name="feature.edit" url="/EditExampleFeature/:exampleFeatureId">
+            <view name="feature" target="EditExampleFeature" controller="org.ofbiz.angularjs.example.controller.EditExampleFeatureController"/>
+        </state>
         <state name="widget" url="/widget">
             <view name="main" target="widget" controller="org.ofbiz.angularjs.example.controller.WidgetController"/>
-        </state>
-        <state name="EditExampleFeature" url="/EditExampleFeature">
-            <view name="main" target="EditExampleFeature" controller="org.ofbiz.angularjs.example.controller.EditExampleFeatureController"/>
         </state>
     </ng-application>
     <!--

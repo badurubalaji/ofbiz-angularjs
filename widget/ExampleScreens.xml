@@ -94,6 +94,8 @@
     <screen name="Feature">
         <section>
             <widgets>
+                <view name="feature">
+                </view>
                 <screenlet title="Find Example Feature">
                     <form name="form" style="well">
                         <container style="form-horizontal">
