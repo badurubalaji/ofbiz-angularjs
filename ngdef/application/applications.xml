@@ -12,6 +12,9 @@
         <state name="widget" url="/widget">
             <view name="main" target="widget" controller="org.ofbiz.angularjs.example.controller.WidgetController"/>
         </state>
+        <state name="EditExampleFeature" url="/EditExampleFeature">
+            <view name="main" target="EditExampleFeature" controller="org.ofbiz.angularjs.example.controller.EditExampleFeatureController"/>
+        </state>
     </ng-application>
     <!--
     <ng-app name="phonecat" default-path="/phones">

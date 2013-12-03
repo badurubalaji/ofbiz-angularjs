@@ -5,7 +5,7 @@ package org.ofbiz.angularjs.example.controller;
  * 
  * @param $scope
  */
-function FeatureController($scope) {
+function FeatureController($scope, $state) {
     
     $scope.onFindButtonClicked = function() {
         getExampleFeatures();
@@ -13,7 +13,7 @@ function FeatureController($scope) {
     
     $scope.onExampleFeatureRowDoubleClicked = function(rowItem) {
         var exampleFeatureId = rowItem.exampleFeatureId;
-        
+        $state.go("EditExampleFeature", {"exampleFeatureId": exampleFeatureId});
     }
     
     function getExampleFeatures() {

@@ -37,6 +37,7 @@
     <request-map uri="feature"><security https="false" auth="true"/><response name="success" type="view" value="Feature"/></request-map>
     <request-map uri="widget"><security https="false" auth="true"/><response name="success" type="view" value="Widget"/></request-map>
     <request-map uri="ExampleNameGridCell"><security https="false" auth="true"/><response name="success" type="view" value="ExampleNameGridCell"/></request-map>
+    <request-map uri="EditExampleFeature"><security https="false" auth="true"/><response name="success" type="view" value="EditExampleFeature"/></request-map>
     
     <request-map uri="sample"><security https="true" auth="false"/><response name="success" type="view" value="sample"/></request-map>
     <request-map uri="PhoneList"><security https="true" auth="false"/><response name="success" type="view" value="PhoneList"/></request-map>
@@ -77,6 +78,7 @@
     <view-map name="Feature" type="screen" page="component://angularjs/widget/ExampleScreens.xml#Feature"/>
     <view-map name="Widget" type="screen" page="component://angularjs/widget/ExampleScreens.xml#Widget"/>
     <view-map name="ExampleNameGridCell" type="screen" page="component://angularjs/widget/ExampleScreens.xml#ExampleNameGridCell"/>
+    <view-map name="EditExampleFeature" type="screen" page="component://angularjs/widget/ExampleScreens.xml#EditExampleFeature"/>
 
     <view-map name="sample" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#main"/>
     <view-map name="PhoneList" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneList"/>

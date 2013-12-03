@@ -79,6 +79,18 @@
         </section>
     </screen>
 
+    <screen name="EditExampleFeature">
+        <section>
+            <widgets>
+                <screenlet title="Edit Example Feature">
+                    <form name="form" style="well">
+                        <label text="{{exampleFeatureId}}"/>
+                    </form>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
+
     <screen name="Feature">
         <section>
             <widgets>
