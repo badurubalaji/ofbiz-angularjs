@@ -3,7 +3,7 @@ package org.ofbiz.angularjs.directive;
 /**
  * Grid Options Directive
  */
-function GridOptionsDirective(HttpService) {
+function GridOptionsDirective(HttpService, $timeout) {
     
     /**
      * Controller
@@ -212,7 +212,9 @@ function GridOptionsDirective(HttpService) {
             self.onDoubleClick = function(event) {
                 var onRowDoubleClicked = self.myGrid.config.onRowDoubleClicked;
                 if (onRowDoubleClicked) {
-                    onRowDoubleClicked(self.$scope.selectedItems[0]);
+                    $timeout(function() {
+                        onRowDoubleClicked(self.$scope.selectedItems[0]);
+                    }, 100)
                 }
             };
         }

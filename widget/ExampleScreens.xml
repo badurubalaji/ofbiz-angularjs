@@ -83,30 +83,31 @@
         <section>
             <widgets>
                 <screenlet title="Find Example Feature">
-                    <form name="form" style="well" target="findExample.json" on-submit-success="onSubmitSuccess" on-submit-error="onSubmitError">
+                    <form name="form" style="well">
                         <container style="form-horizontal">
                             <container style="control-group">
                                 <label text="Example Feature Id: " style="control-label"/>
                                 <container style="controls">
-                                    <text name="exampleId" model="example.exampleId"/>
+                                    <text name="exampleFeatureId" model="findExampleFeature.exampleFeatureId"/>
                                 </container>
                             </container>
                             <container style="control-group">
-                                <label text="Example Feature Name: " style="control-label"/>
+                                <label text="Description: " style="control-label"/>
                                 <container style="controls">
-                                    <text name="exampleName" model="example.exampleName"/>
+                                    <text name="description" model="findExampleFeature.description"/>
                                 </container>
                             </container>
                             <container style="form-actions">
-                               <submit text="Submit"/>
+                               <button text="Find" on-click="onFindButtonClicked()"/>
                             </container>
                         </container>
                     </form>
                 </screenlet>
                 <screenlet title="Search Results">
-                    <grid style="gridStyle" row-height="40" select-target="examples.json" list-name="examples">
-                        <field name="exampleId" title="Example Id" editable="false"/>
-                        <field name="exampleName" title="Example Name" editable="true"/>
+                    <grid model="exampleFeatureGrid" style="gridStyle" row-height="40" select-target="findExampleFeature" list-name="exampleFeatures"
+                        on-row-double-clicked="onExampleFeatureRowDoubleClicked">
+                        <field name="exampleFeatureId" title="Example Feature Id" editable="false"/>
+                        <field name="description" title="Descritpion" editable="false"/>
                     </grid>
                 </screenlet>
             </widgets>

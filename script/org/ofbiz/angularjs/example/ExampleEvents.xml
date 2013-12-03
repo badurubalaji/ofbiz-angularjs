@@ -19,28 +19,6 @@ under the License.
 -->
 
 <simple-methods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/simple-methods-v2.xsd">
-
-    <simple-method method-name="getExamples" short-description="Get examples" login-required="true">
-        <set field="performFindInMap.inputFields" from-field="parameters"/>
-        <set field="performFindInMap.entityName" value="Example"/>
-        <set field="performFindInMap.noConditionFind" value="Y"/>
-        <set field="performFindInMap.viewIndex" from-field="parameters.viewIndex"/>
-        <set field="performFindInMap.viewSize" from-field="parameters.viewSize"/>
-        <call-service service-name="performFind" in-map-name="performFindInMap">
-            <result-to-field result-name="listIt" field="listIt"/>
-            <result-to-field result-name="listSize" field="listSize"/>
-        </call-service>
-        <set field="parameters.viewIndex" from-field="parameters.viewIndex" default="0" type="Integer"/>
-        <set field="parameters.viewSize" from-field="parameters.viewSize" default="20" type="Integer"/>
-        <script>groovy:
-            def examples = listIt.getCompleteList();
-            listIt.close();
-            request.setAttribute("examples", examples);
-            request.setAttribute("listSize", listSize);
-            request.setAttribute("viewIndex", parameters.viewIndex);
-            request.setAttribute("viewSize", parameters.viewSize);
-        </script>
-    </simple-method>
     <simple-method method-name="findExample" short-description="Find example" login-required="true">
         <set field="performFindJsonListInMap.request" value="request"/>
         <set field="performFindJsonListInMap.listName" value="examples"/>
@@ -65,24 +43,16 @@ under the License.
         <set field="updateExampleInMap.exampleName" from-field="parameters.exampleName"/>
         <call-service service-name="updateExample" in-map-name="updateExampleInMap"/>
     </simple-method>
-    <simple-method method-name="getExampleFeatures" short-description="Get example features" login-required="true">
-        <set field="performFindInMap.inputFields" from-field="parameters"/>
-        <set field="performFindInMap.entityName" value="ExampleFeature"/>
-        <set field="performFindInMap.noConditionFind" value="Y"/>
-        <set field="performFindInMap.viewIndex" from-field="parameters.viewIndex"/>
-        <set field="performFindInMap.viewSize" from-field="parameters.viewSize"/>
-        <call-service service-name="performFind" in-map-name="performFindInMap">
-            <result-to-field result-name="listIt" field="listIt"/>
-            <result-to-field result-name="listSize" field="listSize"/>
-        </call-service>
-        <set field="parameters.viewIndex" from-field="parameters.viewIndex" default="0" type="Integer"/>
-        <set field="parameters.viewSize" from-field="parameters.viewSize" default="20" type="Integer"/>
-        <script>groovy:
-            request.setAttribute("exampleFeatures", listIt.getCompleteList());
-            request.setAttribute("listSize", listSize);
-            request.setAttribute("viewIndex", parameters.viewIndex);
-            request.setAttribute("viewSize", parameters.viewSize);
-        </script>
+    <simple-method method-name="findExampleFeature" short-description="Find example feature" login-required="true">
+        <set field="performFindJsonListInMap.request" value="request"/>
+        <set field="performFindJsonListInMap.listName" value="exampleFeatures"/>
+        <set field="performFindJsonListInMap.inputFields" from-field="parameters"/>
+        <set field="performFindJsonListInMap.entityName" value="ExampleFeature"/>
+        <set field="performFindJsonListInMap.noConditionFind" value="Y"/>
+        <set field="performFindJsonListInMap.request" from-field="request"/>
+        <set field="performFindJsonListInMap.viewSize" from-field="parameters.viewSize" type="Integer"/>
+        <set field="performFindJsonListInMap.viewIndex" from-field="parameters.viewIndex" type="Integer"/>
+        <call-service service-name="performFindJsonList" in-map-name="performFindJsonListInMap"/>
     </simple-method>
     <simple-method method-name="createExample" short-description="Create example" login-required="true">
         <set field="createExampleInMap.exampleName" from-field="parameters.name"/>

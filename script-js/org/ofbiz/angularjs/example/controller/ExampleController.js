@@ -71,10 +71,8 @@ function ExampleController($scope, $timeout) {
     $scope.onUpdateExampleError = onUpdateExampleError;
     
     function openEditExampleModal(exampleId) {
-        $timeout(function() {
-            $scope.modalEditExampleId = exampleId;
-            $scope.shouldOpenEditExampleModal = true;
-        }, 100)
+        $scope.modalEditExampleId = exampleId;
+        $scope.shouldOpenEditExampleModal = true;
     }
     
     function getExamples() {
