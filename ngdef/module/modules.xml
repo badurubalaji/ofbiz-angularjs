@@ -7,6 +7,10 @@
         <styleSheet path="/angularjs/images/css/bootstrap.min.css"/>
         <styleSheet path="/angularjs/images/css/bootstrap-responsive.min.css"/>
     </ng-module>
+    
+    <!-- 
+        Wiki: https://github.com/angular-ui/ui-router/wiki
+     -->
     <ng-module name="ui.router" location="/angularjs/images/js/angular-ui-router.min.js">
         
     </ng-module>
