@@ -83,9 +83,13 @@
         <section>
             <widgets>
                 <screenlet title="Edit Example Feature">
-                    <form name="form" style="well">
-                        <label text="{{exampleFeatureId}}"/>
-                    </form>
+                    <context target="getExampleFeature" parameters="{exampleFeatureId: exampleFeatureId}" model="exampleFeature" field="exampleFeature">
+                        <form name="form" style="well">
+                            <label text="Example Feature Id: "/><label text="{{exampleFeature.exampleFeatureId}}"/>
+                            <line-break/>
+                            <label text="Description: "/><text name="description" model="exampleFeature.description"/>
+                        </form>
+                    </context>
                 </screenlet>
             </widgets>
         </section>

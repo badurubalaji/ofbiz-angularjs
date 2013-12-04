@@ -60,4 +60,12 @@ under the License.
         <set field="createExampleInMap.statusId" value="EXST_IN_DESIGN"/>
         <call-service service-name="createExample" in-map-name="createExampleInMap"/>
     </simple-method>
+    <simple-method method-name="getExampleFeature" short-description="Get example feature" login-required="true">
+        <entity-one value-field="exampleFeature" entity-name="ExampleFeature">
+            <field-map field-name="exampleFeatureId" from-field="parameters.exampleFeatureId"/>
+        </entity-one>
+        <script>groovy:
+            request.setAttribute("exampleFeature", exampleFeature);
+        </script>
+    </simple-method>
 </simple-methods>
