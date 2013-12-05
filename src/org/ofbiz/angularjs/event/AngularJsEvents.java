@@ -141,6 +141,7 @@ public class AngularJsEvents {
             builder.append("$stateProvider");
             for (ModelNgState modelNgState : modelNgStates) {
                 builder.append(".state(\"" + modelNgState.name + "\", {");
+                builder.append("abstract: " + modelNgState.isAbstract + ",");
                 builder.append("url: \"" + modelNgState.url + "\",");
                 builder.append("views: {");
                 

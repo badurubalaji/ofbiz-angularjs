@@ -50,10 +50,12 @@ public class ModelNgApplicationReader extends AbstractModelNgReader {
         for (Element stateElement : stateElements) {
             String stateName = UtilXml.elementAttribute(stateElement, "name", null);
             String url = UtilXml.elementAttribute(stateElement, "url", null);
+            boolean isAbstract = Boolean.valueOf(UtilXml.elementAttribute(stateElement, "abstract", null)).booleanValue();
             
             ModelNgState modelNgState = new ModelNgState();
             modelNgState.name = stateName;
             modelNgState.url = url;
+            modelNgState.isAbstract = isAbstract;
 
             List<? extends Element> viewElements = UtilXml.childElementList(stateElement, "view");
             for (Element viewElement : viewElements) {

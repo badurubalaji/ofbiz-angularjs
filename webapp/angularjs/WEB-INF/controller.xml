@@ -34,9 +34,11 @@
     </request-map>
     
     <request-map uri="example"><security https="false" auth="true"/><response name="success" type="view" value="Example"/></request-map>
-    <request-map uri="feature"><security https="false" auth="true"/><response name="success" type="view" value="Feature"/></request-map>
     <request-map uri="widget"><security https="false" auth="true"/><response name="success" type="view" value="Widget"/></request-map>
     <request-map uri="ExampleNameGridCell"><security https="false" auth="true"/><response name="success" type="view" value="ExampleNameGridCell"/></request-map>
+    
+    <request-map uri="ExampleFeature"><security https="false" auth="true"/><response name="success" type="view" value="ExampleFeature"/></request-map>
+    <request-map uri="FindExampleFeature"><security https="false" auth="true"/><response name="success" type="view" value="FindExampleFeature"/></request-map>
     <request-map uri="EditExampleFeature"><security https="false" auth="true"/><response name="success" type="view" value="EditExampleFeature"/></request-map>
     
     <request-map uri="sample"><security https="true" auth="false"/><response name="success" type="view" value="sample"/></request-map>
@@ -81,9 +83,11 @@
     <!-- Example View Mappings -->
     <view-map name="main" type="screen" page="component://angularjs/widget/ExampleScreens.xml#main"/>
     <view-map name="Example" type="screen" page="component://angularjs/widget/ExampleScreens.xml#Example"/>
-    <view-map name="Feature" type="screen" page="component://angularjs/widget/ExampleScreens.xml#Feature"/>
     <view-map name="Widget" type="screen" page="component://angularjs/widget/ExampleScreens.xml#Widget"/>
     <view-map name="ExampleNameGridCell" type="screen" page="component://angularjs/widget/ExampleScreens.xml#ExampleNameGridCell"/>
+    
+    <view-map name="ExampleFeature" type="screen" page="component://angularjs/widget/ExampleScreens.xml#ExampleFeature"/>
+    <view-map name="FindExampleFeature" type="screen" page="component://angularjs/widget/ExampleScreens.xml#FindExampleFeature"/>
     <view-map name="EditExampleFeature" type="screen" page="component://angularjs/widget/ExampleScreens.xml#EditExampleFeature"/>
 
     <view-map name="sample" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#main"/>

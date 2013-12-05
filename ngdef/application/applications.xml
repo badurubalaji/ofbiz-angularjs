@@ -6,14 +6,18 @@
         <state name="example" url="/example">
             <view name="main" target="example" controller="org.ofbiz.angularjs.example.controller.ExampleController"/>
         </state>
-        <state name="feature" url="/feature">
-            <view name="main" target="feature" controller="org.ofbiz.angularjs.example.controller.FeatureController"/>
-        </state>
-        <state name="feature.edit" url="/EditExampleFeature/:exampleFeatureId">
-            <view name="feature" target="EditExampleFeature" controller="org.ofbiz.angularjs.example.controller.EditExampleFeatureController"/>
+        <state name="feature" url="/feature" abstract="true">
+            <view name="main" target="ExampleFeature" controller="org.ofbiz.angularjs.example.controller.ExampleFeatureController"/>
         </state>
         <state name="widget" url="/widget">
             <view name="main" target="widget" controller="org.ofbiz.angularjs.example.controller.WidgetController"/>
+        </state>
+        
+        <state name="feature.list" url="/FindExampleFeature">
+            <view name="feature" target="FindExampleFeature" controller="org.ofbiz.angularjs.example.controller.FindExampleFeatureController"/>
+        </state>
+        <state name="feature.edit" url="/EditExampleFeature/:exampleFeatureId">
+            <view name="feature" target="EditExampleFeature" controller="org.ofbiz.angularjs.example.controller.EditExampleFeatureController"/>
         </state>
     </ng-application>
     <!--

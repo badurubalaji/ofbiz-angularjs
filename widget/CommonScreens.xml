@@ -100,7 +100,7 @@
                                     <controller name="org.ofbiz.angularjs.example.controller.ExampleCommonDecoratorController">
                                         <menu-bar title="AngularJs" target="example" style="navbar-fixed-top">
                                             <menu-item text="Example" target="example"/>
-                                            <menu-item text="Feature" target="feature"/>
+                                            <menu-item text="Feature" target="feature.list"/>
                                             <menu-item text="Widget" target="widget"/>
                                         </menu-bar>
                                         <alert repeat="alert in alerts" type="alert.type" close="closeAlert($index)" text="{{alert.msg}}"/>

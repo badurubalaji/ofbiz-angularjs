@@ -1,11 +1,11 @@
 package org.ofbiz.angularjs.example.controller;
 
 /**
- * Feature Controller
+ * Find Example Feature Controller
  * 
  * @param $scope
  */
-function FeatureController($scope, $state) {
+function FindExampleFeatureController($scope, $state) {
     
     $scope.onFindButtonClicked = function() {
         getExampleFeatures();

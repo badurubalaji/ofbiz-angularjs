@@ -79,6 +79,14 @@
         </section>
     </screen>
 
+    <screen name="ExampleFeature">
+        <section>
+            <widgets>
+                 <view name="feature"/>
+            </widgets>
+        </section>
+    </screen>
+
     <screen name="EditExampleFeature">
         <section>
             <widgets>
@@ -95,11 +103,9 @@
         </section>
     </screen>
 
-    <screen name="Feature">
+    <screen name="FindExampleFeature">
         <section>
             <widgets>
-                <view name="feature">
-                </view>
                 <screenlet title="Find Example Feature">
                     <form name="form" style="well">
                         <container style="form-horizontal">

@@ -24,6 +24,7 @@ import java.util.List;
 public class ModelNgState {
     public String name = null;
     public String url = "";
+    public boolean isAbstract = false;
     protected List<ModelNgView> modelNgViews = new LinkedList<ModelNgView>();
 
     public void addView(ModelNgView modelNgView) {
