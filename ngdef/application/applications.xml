@@ -15,6 +15,7 @@
         
         <!-- 
         http://stackoverflow.com/questions/16822559/three-level-nested-routes-in-angular-ui-router
+        Fix scroll to top: https://github.com/angular-ui/ui-router/issues/110
          -->
         <state name="feature.list" url="/FindExampleFeature">
             <view name="feature.main" target="FindExampleFeature" controller="org.ofbiz.angularjs.example.controller.FindExampleFeatureController"/>
