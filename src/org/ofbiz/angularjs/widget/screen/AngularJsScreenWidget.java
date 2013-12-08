@@ -994,8 +994,13 @@ public class AngularJsScreenWidget {
             for (Element itemElement : itemElementList) {
                 String target = UtilXml.elementAttribute(itemElement, "target", null);
                 String text = UtilXml.elementAttribute(itemElement, "text", null);
+                String activeState = UtilXml.elementAttribute(itemElement, "active-state", null);
                 
-                writer.append("<li ng-class=\"{ active: $state.includes('" + target + "') }\"><a ui-sref=\"" + target + "\">" + text + "</a></li>");
+                if (UtilValidate.isEmpty(activeState)) {
+                    activeState = target;
+                }
+                
+                writer.append("<li ng-class=\"{ active: $state.includes('" + activeState + "') }\"><a ui-sref=\"" + target + "\">" + text + "</a></li>");
             }
             writer.append("</ul>");
             writer.append("</div>");
