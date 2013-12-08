@@ -82,11 +82,37 @@
     <screen name="ExampleFeature">
         <section>
             <widgets>
-                 <view name="feature"/>
+                 <view name="feature.main"/>
             </widgets>
         </section>
     </screen>
-
+    <screen name="CommonExampleFeatureView">
+        <section>
+            <widgets>
+                <menu-bar title="" target="ViewExampleFeature" style="navbar-fixed-top">
+                     <menu-item text="View" target="feature.decorator.view"/>
+                     <menu-item text="Edit" target="feature.decorator.edit"/>
+                     <menu-item text="Example" target="feature.decorator.example"/>
+                 </menu-bar>
+                 <view name="feature.decorator"/>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ViewExampleFeature">
+        <section>
+            <widgets>
+                <screenlet title="View Example Feature">
+                    <context target="getExampleFeature" parameters="{exampleFeatureId: exampleFeatureId}" model="exampleFeature" field="exampleFeature">
+                        <form name="form" style="well">
+                            <label text="Example Feature Id: "/><label text="{{exampleFeature.exampleFeatureId}}"/>
+                            <line-break/>
+                            <label text="Description: "/><label text="{{exampleFeature.description}}"/>
+                        </form>
+                    </context>
+                </screenlet>
+            </widgets>
+        </section>
+    </screen>
     <screen name="EditExampleFeature">
         <section>
             <widgets>

@@ -104,7 +104,6 @@
                                             <menu-item text="Widget" target="widget"/>
                                         </menu-bar>
                                         <alert repeat="alert in alerts" type="alert.type" close="closeAlert($index)" text="{{alert.msg}}"/>
-                                        <decorator-section-include name="body"/>
                                         <view name="main"/>
                                     </controller>
                                 </container>

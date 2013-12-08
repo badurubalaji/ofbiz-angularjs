@@ -6,18 +6,27 @@
         <state name="example" url="/example">
             <view name="main" target="example" controller="org.ofbiz.angularjs.example.controller.ExampleController"/>
         </state>
-        <state name="feature" url="/feature" abstract="true">
+        <state name="feature" url="/ExampleFeature" abstract="true">
             <view name="main" target="ExampleFeature" controller="org.ofbiz.angularjs.example.controller.ExampleFeatureController"/>
         </state>
         <state name="widget" url="/widget">
             <view name="main" target="widget" controller="org.ofbiz.angularjs.example.controller.WidgetController"/>
         </state>
         
+        <!-- 
+        http://stackoverflow.com/questions/16822559/three-level-nested-routes-in-angular-ui-router
+         -->
         <state name="feature.list" url="/FindExampleFeature">
-            <view name="feature" target="FindExampleFeature" controller="org.ofbiz.angularjs.example.controller.FindExampleFeatureController"/>
+            <view name="feature.main" target="FindExampleFeature" controller="org.ofbiz.angularjs.example.controller.FindExampleFeatureController"/>
         </state>
-        <state name="feature.edit" url="/EditExampleFeature/:exampleFeatureId">
-            <view name="feature" target="EditExampleFeature" controller="org.ofbiz.angularjs.example.controller.EditExampleFeatureController"/>
+        <state name="feature.decorator" url="/CommonExampleFeatureView/:exampleFeatureId" abstract="true">
+            <view name="feature.main" target="CommonExampleFeatureView" controller="org.ofbiz.angularjs.example.controller.CommonExampleFeatureViewController"/>
+        </state>
+        <state name="feature.decorator.view" url="/view">
+            <view name="feature.decorator" target="ViewExampleFeature" controller="org.ofbiz.angularjs.example.controller.ViewExampleFeatureController"/>
+        </state>
+        <state name="feature.decorator.edit" url="/edit">
+            <view name="feature.decorator" target="EditExampleFeature" controller="org.ofbiz.angularjs.example.controller.EditExampleFeatureController"/>
         </state>
     </ng-application>
     <!--

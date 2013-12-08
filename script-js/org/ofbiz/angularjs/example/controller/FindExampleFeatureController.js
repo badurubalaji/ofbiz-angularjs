@@ -13,7 +13,7 @@ function FindExampleFeatureController($scope, $state) {
     
     $scope.onExampleFeatureRowDoubleClicked = function(rowItem) {
         var exampleFeatureId = rowItem.exampleFeatureId;
-        $state.go("feature.edit", {"exampleFeatureId": exampleFeatureId});
+        $state.go("feature.decorator.view", {"exampleFeatureId": exampleFeatureId});
     }
     
     function getExampleFeatures() {

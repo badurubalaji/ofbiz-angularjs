@@ -10,6 +10,12 @@ function ExampleCommonDecoratorController($rootScope, $scope) {
         $scope.alerts = [];
     });
     
+    $scope.$on('$viewContentLoading', function(event, viewConfig) {
+    });
+    
+    $scope.$on('$viewContentLoaded', function(event) {
+    });
+    
     $scope.closeAlert = function(index) {
         $scope.alerts.splice(index, 1);
     };
