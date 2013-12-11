@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="ng-modules">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="ng-module"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ng-module">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="javaScript"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="styleSheet"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="attlist.ng-module"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="javaScript">
+        <xs:complexType>
+            <xs:attributeGroup ref="attlist.javaScript"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="styleSheet">
+        <xs:complexType>
+            <xs:attributeGroup ref="attlist.styleSheet"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:attributeGroup name="attlist.ng-module">
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="location" type="xs:string"/>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="attlist.javaScript">
+        <xs:attribute name="path" type="xs:string"/>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="attlist.styleSheet">
+        <xs:attribute name="path" type="xs:string"/>
+    </xs:attributeGroup>
+</xs:schema>

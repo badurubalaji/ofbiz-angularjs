@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ng-applications>
+<ng-applications
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://code.google.com/p/ofbiz-angularjs/dtds/ng-applications.xsd">
     <ng-application name="angularjs">
     </ng-application>
     <ng-application name="example" default-state="example">

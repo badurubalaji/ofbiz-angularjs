@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ng-filters>
+<ng-filters
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://code.google.com/p/ofbiz-angularjs/dtds/ng-filters.xsd">
     <ng-filter name="capitalize" location="org.ofbiz.angularjs.filter.CapitalizeFilter"/>
 </ng-filters>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="ng-filters">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="ng-filter"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ng-filter">
+        <xs:complexType>
+            <xs:attributeGroup ref="attlist.ng-filter"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:attributeGroup name="attlist.ng-filter">
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="location" type="xs:string"/>
+    </xs:attributeGroup>
+</xs:schema>

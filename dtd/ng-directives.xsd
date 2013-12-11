@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="ng-directives">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="ng-directive"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ng-directive">
+        <xs:complexType>
+            <xs:attributeGroup ref="attlist.ng-directive"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:attributeGroup name="attlist.ng-directive">
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="location" type="xs:string"/>
+        <xs:attribute name="priority" type="xs:int"/>
+        <xs:attribute name="replace" type="xs:boolean"/>
+        <xs:attribute name="transclude" type="xs:boolean"/>
+        <xs:attribute name="restrict" type="xs:string"/>
+        <xs:attribute name="false" type="xs:boolean"/>
+    </xs:attributeGroup>
+</xs:schema>

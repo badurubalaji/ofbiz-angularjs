@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="ng-applications">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="ng-application"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ng-application">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="state"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="attlist.ng-application"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="state">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="view"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="attlist.state"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="view">
+        <xs:complexType>
+            <xs:attributeGroup ref="attlist.view"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:attributeGroup name="attlist.ng-application">
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="default-state" type="xs:string"/>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="attlist.state">
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="url" type="xs:string"/>
+        <xs:attribute name="abstract" type="xs:boolean"/>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="attlist.view">
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="target" type="xs:string"/>
+        <xs:attribute name="controller" type="xs:boolean"/>
+    </xs:attributeGroup>
+    <xs:complexType name="any">
+        <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

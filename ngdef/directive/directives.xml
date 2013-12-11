@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ng-directives>
+<ng-directives
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://code.google.com/p/ofbiz-angularjs/dtds/ng-directives.xsd">
     <ng-directive name="currentTime" location="org.ofbiz.angularjs.directive.CurrentTimeDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="false"/>
         

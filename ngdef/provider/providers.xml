@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ng-providers>
+<ng-providers
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://code.google.com/p/ofbiz-angularjs/dtds/ng-providers.xsd">
 <!--     <ng-provider name="phoneStore" location="org.ofbiz.angularjs.provider.PhoneProviders" invoke="phoneStore"/> -->
 </ng-providers>
