@@ -88,6 +88,9 @@ function GridOptionsDirective(HttpService, $timeout) {
             setTimeout(function () {
                 var data;
                 var postData = {viewSize: viewSize, viewIndex: viewIndex};
+                if ($scope.orderBy) {
+                    postData.orderBy = $scope.orderBy;
+                }
                 if (parameters) {
                     for (key in parameters) {
                         var value = parameters[key];
@@ -157,6 +160,12 @@ function GridOptionsDirective(HttpService, $timeout) {
             $scope.$watch('sortInfo', function (newVal, oldVal) {
                 var fieldName = newVal.fields[0];
                 var sortDirection = newVal.directions[0];
+                if ("asc" == sortDirection) {
+                    $scope.orderBy = "-" + fieldName;
+                } else if ("desc" == sortDirection) {
+                    $scope.orderBy = fieldName;
+                }
+                $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, $scope.parameters);
             }, true);
         }
         
@@ -231,6 +240,7 @@ function GridOptionsDirective(HttpService, $timeout) {
             , enableRowSelection: true
             , enableCellEditOnFocus: true
             , enablePinning: true
+            , useExternalSorting: true
             , columnDefs: columnDefs
             , afterSelectionChange: onAfterSelectionChanged
             , beforeSelectionChange: onBeforeSelectionChanged

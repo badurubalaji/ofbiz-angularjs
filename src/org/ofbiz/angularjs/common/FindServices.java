@@ -13,6 +13,8 @@ import org.ofbiz.service.ServiceUtil;
 
 public class FindServices {
 
+    public final static String module = FindServices.class.getName();
+
     public static Map<String, Object> performFindJsonList(DispatchContext dctx, Map<String, Object> context) {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         HttpServletRequest request = (HttpServletRequest) context.remove("request");

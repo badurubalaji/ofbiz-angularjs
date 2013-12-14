@@ -26,6 +26,7 @@ under the License.
         <set field="performFindJsonListInMap.entityName" value="Example"/>
         <set field="performFindJsonListInMap.noConditionFind" value="Y"/>
         <set field="performFindJsonListInMap.request" from-field="request"/>
+        <set field="performFindJsonListInMap.orderBy" from-field="parameters.orderBy"/>
         <set field="performFindJsonListInMap.viewSize" from-field="parameters.viewSize" type="Integer"/>
         <set field="performFindJsonListInMap.viewIndex" from-field="parameters.viewIndex" type="Integer"/>
         <call-service service-name="performFindJsonList" in-map-name="performFindJsonListInMap"/>
