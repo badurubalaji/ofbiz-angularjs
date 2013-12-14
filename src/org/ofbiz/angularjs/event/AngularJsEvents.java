@@ -117,7 +117,7 @@ public class AngularJsEvents {
         renderer.render(JavaScriptFactory.getRootJavaScriptPackages());
     }
     
-    private static void buildAppJsFunction(String name, String defaultState, List<? extends ModelNgState> modelNgStates, StringBuilder builder) {
+    private static void buildAppJsFunction(String name, String defaultState, boolean disableAutoScrolling, List<? extends ModelNgState> modelNgStates, StringBuilder builder) {
         builder.append("\nangular.module('" + name + "', [");
         
         // modules
@@ -131,7 +131,7 @@ public class AngularJsEvents {
         }
         builder.append("])\n");
         
-        builder.append(".config(function($stateProvider, $urlRouterProvider) {\n");
+        builder.append(".config(function($stateProvider, $urlRouterProvider, $anchorScrollProvider) {\n");
         
         // default path
         builder.append("$urlRouterProvider.otherwise(\"" + defaultState + "\");");
@@ -153,6 +153,11 @@ public class AngularJsEvents {
                 
                 builder.append("}})");
             }
+        }
+        builder.append(";");
+        
+        if (disableAutoScrolling) {
+            builder.append("$anchorScrollProvider.disableAutoScrolling();");
         }
         
         builder.append("})\n");
@@ -283,7 +288,7 @@ public class AngularJsEvents {
             
             // apps
             for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
-                buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultState, modelNgApplication.getModelNgStates(), builder);
+                buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultState, modelNgApplication.disableAutoScrolling, modelNgApplication.getModelNgStates(), builder);
             }
             
             // bootstrap

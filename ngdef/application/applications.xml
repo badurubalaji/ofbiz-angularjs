@@ -4,7 +4,7 @@
         xsi:noNamespaceSchemaLocation="http://code.google.com/p/ofbiz-angularjs/dtds/ng-applications.xsd">
     <ng-application name="angularjs">
     </ng-application>
-    <ng-application name="example" default-state="example">
+    <ng-application name="example" default-state="example" disable-auto-scrolling="true">
         <state name="example" url="/example">
             <view name="main" target="example" controller="org.ofbiz.angularjs.example.controller.ExampleController"/>
         </state>
@@ -17,7 +17,6 @@
         
         <!-- 
         http://stackoverflow.com/questions/16822559/three-level-nested-routes-in-angular-ui-router
-        Fix scroll to top: https://github.com/angular-ui/ui-router/issues/110
          -->
         <state name="feature.list" url="/FindExampleFeature">
             <view name="feature.main" target="FindExampleFeature" controller="org.ofbiz.angularjs.example.controller.FindExampleFeatureController"/>

@@ -32,6 +32,7 @@
     <xs:attributeGroup name="attlist.ng-application">
         <xs:attribute name="name" type="xs:string"/>
         <xs:attribute name="default-state" type="xs:string"/>
+        <xs:attribute name="disable-auto-scrolling" type="xs:boolean"/>
     </xs:attributeGroup>
     <xs:attributeGroup name="attlist.state">
         <xs:attribute name="name" type="xs:string"/>

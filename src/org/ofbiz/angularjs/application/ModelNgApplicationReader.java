@@ -46,6 +46,7 @@ public class ModelNgApplicationReader extends AbstractModelNgReader {
         ModelNgApplication ngApplication = new ModelNgApplication();
         ngApplication.name = UtilXml.checkEmpty(element.getAttribute("name")).intern();
         ngApplication.defaultState = UtilXml.checkEmpty(element.getAttribute("default-state")).intern();
+        ngApplication.disableAutoScrolling = Boolean.valueOf(UtilXml.checkEmpty(element.getAttribute("disable-auto-scrolling")).intern());
         List<? extends Element> stateElements = UtilXml.childElementList(element, "state");
         for (Element stateElement : stateElements) {
             String stateName = UtilXml.elementAttribute(stateElement, "name", null);

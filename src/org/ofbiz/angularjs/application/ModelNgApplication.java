@@ -29,6 +29,7 @@ public class ModelNgApplication extends AbstractModelNg {
     public final static String module = ModelNgApplication.class.getName();
     
     public String defaultState = null;
+    public boolean disableAutoScrolling = false;
     
     protected List<ModelNgState> modelNgStates = new LinkedList<ModelNgState>();
 
