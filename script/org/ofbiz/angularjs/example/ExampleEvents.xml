@@ -69,4 +69,14 @@ under the License.
             request.setAttribute("exampleFeature", exampleFeature);
         </script>
     </simple-method>
+    <simple-method method-name="LookupExample" short-description="Lookup example" login-required="true">
+        <set field="performLookupJsonListInMap.request" value="request"/>
+        <set field="performLookupJsonListInMap.entityName" value="Example"/>
+        <set field="performLookupJsonListInMap.searchFields" value="[exampleId, exampleName]"/>
+        <set field="performLookupJsonListInMap.term" from-field="parameters.queryString"/>
+        <set field="performLookupJsonListInMap.request" from-field="request"/>
+        <set field="performLookupJsonListInMap.viewSize" from-field="parameters.viewSize" type="Integer"/>
+        <set field="performLookupJsonListInMap.viewIndex" from-field="parameters.viewIndex" type="Integer"/>
+        <call-service service-name="performLookupJsonList" in-map-name="performLookupJsonListInMap"/>
+    </simple-method>
 </simple-methods>

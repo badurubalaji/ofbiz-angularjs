@@ -232,6 +232,11 @@
                 <include-screen name="Layout" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                 <horizontal-rule/>
                 
+                <!-- Lookup -->
+                <label text="Lookup" style="h1"/>
+                <include-screen name="Lookup" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
                 <!-- Number -->
                 <label text="Number" style="h1"/>
                 <include-screen name="Number" location="component://angularjs/widget/DemoWidgetScreens.xml"/>

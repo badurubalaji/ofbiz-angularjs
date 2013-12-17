@@ -80,6 +80,13 @@
         <response name="error" type="request" value="json"/>
     </request-map>
     
+    <!-- Lookup Request Mappings -->
+    <request-map uri="LookupExample">
+        <security https="true" auth="true"/>
+        <event type="jsonsimple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="LookupExample"/>
+        <response name="success" type="request" value="json"/>
+    </request-map>
+    
     <!-- View Mappings -->
     
     <!-- Example View Mappings -->
@@ -93,6 +100,7 @@
     <view-map name="FindExampleFeature" type="screen" page="component://angularjs/widget/ExampleScreens.xml#FindExampleFeature"/>
     <view-map name="ViewExampleFeature" type="screen" page="component://angularjs/widget/ExampleScreens.xml#ViewExampleFeature"/>
     <view-map name="EditExampleFeature" type="screen" page="component://angularjs/widget/ExampleScreens.xml#EditExampleFeature"/>
+    <view-map name="LookupExample" type="screen" page="component://angularjs/widget/ExampleScreens.xml#LookupExample"/>
     
     <view-map name="sample" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#main"/>
     <view-map name="PhoneList" type="screenng" page="component://angularjs/widget/sample/phone/PhoneViews.xml#PhoneList"/>

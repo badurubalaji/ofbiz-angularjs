@@ -213,6 +213,13 @@
             </widgets>
         </section>
     </screen>
+    <screen name="Lookup">
+        <section>
+            <widgets>
+                <lookup target="LookupExample" description-field-name="exampleName" model="lookupExample"/>
+            </widgets>
+        </section>
+    </screen>
     <screen name="Map">
         <section>
             <widgets>

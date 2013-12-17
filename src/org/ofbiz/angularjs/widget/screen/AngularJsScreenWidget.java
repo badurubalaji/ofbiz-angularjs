@@ -960,6 +960,35 @@ public class AngularJsScreenWidget {
             return "<br/>";
         }
     }
+    
+    @SuppressWarnings("serial")
+    public static class Lookup extends ModelScreenWidget {
+        public static final String TAG_NAME = "lookup";
+        
+        protected String target = null;
+        protected String model = null;
+        protected String descriptionFieldName = null;
+        
+        public Lookup(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            target = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target")).getOriginal();
+            model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+            descriptionFieldName = FlexibleStringExpander.getInstance(widgetElement.getAttribute("description-field-name")).getOriginal();
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<input type=\"text\" target=\"" + target + "\" ng-model=\"" + model + "\" typeahead=\"option as getOptionDescription(option) for option in getOptions($viewValue)\" description-field-name=\"" + descriptionFieldName + "\" lookup/>";
+        }
+    }
 
     /**
      * http://mgcrea.github.io/angular-strap/

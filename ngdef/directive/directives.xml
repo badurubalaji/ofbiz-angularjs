@@ -22,4 +22,7 @@
     
     <ng-directive name="context" location="org.ofbiz.angularjs.directive.ContextDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="false"/>
+    
+    <ng-directive name="lookup" location="org.ofbiz.angularjs.directive.LookupDirective"
+        priority="0" replace="false" transclude="false" restrict="A" scope="false"/>
 </ng-directives>

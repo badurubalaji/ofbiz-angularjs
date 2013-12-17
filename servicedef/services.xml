@@ -11,5 +11,20 @@
         <attribute name="listName" mode="IN" type="String" optional="false"></attribute>
         <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="false"></attribute>
     </service>
+
+    <service name="performLookupJsonList" auth="false" engine="java" invoke="performLookupJsonList" location="org.ofbiz.angularjs.common.LookupServices">
+        <description>Generic service to return lookup JSON list.</description>
+        <attribute name="entityName" mode="IN" type="String" optional="false"/>
+        <attribute name="searchFields" mode="IN" type="String" optional="false"/>
+        <attribute name="term" mode="IN" type="String" optional="false"/>
+        <attribute name="displayFields" mode="IN" type="String" optional="true"/>
+        <attribute name="searchDistinct" mode="IN" type="Boolean" optional="true"/>
+        <attribute name="searchValueFieldName" mode="IN" type="String" optional="true"/>
+        <attribute name="searchType" mode="IN" type="String" optional="true"/>
+        <attribute name="conditionFields" mode="IN" type="List" optional="true"/>
+        <attribute name="andCondition" mode="IN" type="List" optional="true"/>
+        <attribute name="viewSize" mode="IN" type="Integer" optional="true"/>
+        <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="false"></attribute>
+    </service>
     
 </services>
