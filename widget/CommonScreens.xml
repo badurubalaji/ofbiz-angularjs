@@ -23,6 +23,7 @@
                 <set field="layoutSettings.javaScripts[+0]" value="http://www.google.com/jsapi" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="http://maps.googleapis.com/maps/api/js?sensor=false&amp;language=en" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/tinymce/tinymce.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/underscore-min-1.5.2.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/require-2.1.8.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/angular.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.9.min.js" global="true"/>

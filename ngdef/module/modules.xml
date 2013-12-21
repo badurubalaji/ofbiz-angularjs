@@ -52,6 +52,9 @@
     <ng-module name="googlechart.directives" location="/angularjs/images/js/ng-google-chart.js">
         
     </ng-module>
+    <!--
+        http://mgcrea.github.io/angular-strap/
+    -->
     <ng-module name="$strap.directives" location="/angularjs/images/js/angular-strap.min.js">
         
     </ng-module>

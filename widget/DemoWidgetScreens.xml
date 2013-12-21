@@ -243,6 +243,9 @@
             </widgets>
         </section>
     </screen>
+    <!--
+        http://bootply.com/94629
+    -->
     <screen name="MenuBar">
         <section>
             <widgets>
@@ -289,6 +292,16 @@
                     <line-break/>
                     <label text="Price is {{price}}."/>
                 </controller>
+            </widgets>
+        </section>
+    </screen>
+    <!--
+        http://alxhill.com/blog/articles/angular-scrollspy/
+    -->
+    <screen name="Scroll">
+        <section>
+            <widgets>
+                <label text="Scroll"/>
             </widgets>
         </section>
     </screen>
