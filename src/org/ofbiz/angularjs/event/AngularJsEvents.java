@@ -25,13 +25,17 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
 
 import org.apache.http.HttpRequest;
 import org.mozilla.javascript.Context;
@@ -58,6 +62,7 @@ import org.ofbiz.base.component.ComponentConfig.WebappInfo;
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.FileUtil;
 import org.ofbiz.base.util.StringUtil;
+import org.ofbiz.base.util.UtilGenerics;
 import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
 import org.w3c.dom.Document;
@@ -323,6 +328,45 @@ public class AngularJsEvents {
             Debug.logError(e, "Problems with JavaScript encoding.", module);
         } catch (IOException e) {
             Debug.logError(e, "Problems with IO.", module);
+        }
+        
+        return "success";
+    }
+
+    public static String error(HttpServletRequest request, HttpServletResponse response) {
+        List<String> responseMessageList = new LinkedList<String>();
+        String errorMessage = UtilGenerics.cast(request.getAttribute("_ERROR_MESSAGE_"));
+        List<String> errorMessageList = UtilGenerics.cast(request.getAttribute("_ERROR_MESSAGE_LIST_"));
+        if (UtilValidate.isNotEmpty(errorMessage)) {
+            responseMessageList.add(errorMessage);
+        }
+        if (UtilValidate.isNotEmpty(errorMessageList)) {
+            responseMessageList.addAll(errorMessageList);
+        }
+        
+        Map<String, Object> results = new HashMap<String, Object>();
+        results.put("_ERROR_MESSAGE_LIST_", responseMessageList);
+        
+        JSONObject jsonObject = JSONObject.fromObject(results);
+        String jsonStr = jsonObject.toString();
+
+        // set the X-JSON content type
+        response.setContentType("application/x-json");
+        // jsonStr.length is not reliable for unicode characters
+        try {
+            response.setContentLength(jsonStr.getBytes("UTF8").length);
+        } catch (UnsupportedEncodingException e) {
+            Debug.logError("Problems with Json encoding: " + e, module);
+        }
+
+        // return the JSON String
+        Writer out;
+        try {
+            out = response.getWriter();
+            out.write(jsonStr);
+            out.flush();
+        } catch (IOException e) {
+            Debug.logError(e, module);
         }
         
         return "success";

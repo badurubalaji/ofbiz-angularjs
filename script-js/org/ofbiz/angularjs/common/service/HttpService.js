@@ -23,8 +23,20 @@ function HttpService($rootScope, $q, $http, appBusy) {
         $http.post(target, parameters)
         .success(function(data, status, headers, config) {
             appBusy.set(false);
-            successFn(data);
-            $rootScope.$emit("ON_HTTP_RESPONSE_MESSAGE_RECEIVED", { type: "success", msg: "HTTP Request Success!." });
+            if (data._ERROR_MESSAGE_LIST_) {
+                var responseMessages = [];
+                _.each(data._ERROR_MESSAGE_LIST_, function(errorMessage) {
+                    responseMessages.push({ type: "error", msg: errorMessage });
+                });
+                $rootScope.$emit("ON_HTTP_RESPONSE_MESSAGE_RECEIVED", responseMessages);
+            } else {
+                successFn(data);
+                if (data._SUCCESS_MESSAGE_LIST_) {
+                    _.each(data._SUCCESS_MESSAGE_LIST_, function(successMessage) {
+                        $rootScope.$emit("ON_HTTP_RESPONSE_MESSAGE_RECEIVED", [{ type: "success", msg: successMessage }]);
+                    });
+                }
+            }
         })
         .error(function(data, status, headers, config) {
             appBusy.set(false);

@@ -29,10 +29,17 @@
         <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="login"/>
         <response name="success" type="request-redirect" value="main"/>
         <response name="requirePasswordChange" type="view" value="requirePasswordChange"/>
-        <response name="error" type="view" value="login"/>
+        <response name="error" type="request" value="error"/>
     </request-map>
 
     <!-- Request Mappings -->
+    <request-map uri="error">
+        <security https="true" auth="false"/>
+        <event type="java" path="org.ofbiz.angularjs.event.AngularJsEvents" invoke="error"/>
+        <response name="success" type="none"/>
+        <response name="error" type="none"/>
+    </request-map>
+    
     <request-map uri="main"><security https="true" auth="true"/><response name="success" type="view" value="main"/></request-map>
 
     <request-map uri="main.js">
@@ -62,31 +69,31 @@
         <security https="true" auth="true"/>
         <event type="jsonsimple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="findExample"/>
         <response name="success" type="request" value="json"/>
-        <response name="error" type="request" value="json"/>
+        <response name="error" type="request" value="error"/>
     </request-map>
     <request-map uri="getExample">
         <security https="true" auth="true"/>
         <event type="jsonsimple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="getExample"/>
         <response name="success" type="request" value="json"/>
-        <response name="error" type="request" value="json"/>
+        <response name="error" type="request" value="error"/>
     </request-map>
     <request-map uri="updateExample">
         <security https="true" auth="true"/>
         <event type="simple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="updateExample"/>
         <response name="success" type="request" value="json"/>
-        <response name="error" type="request" value="json"/>
+        <response name="error" type="request" value="error"/>
     </request-map>
     <request-map uri="findExampleFeature">
         <security https="false" auth="false"/>
         <event type="jsonsimple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="findExampleFeature"/>
         <response name="success" type="request" value="json"/>
-        <response name="error" type="request" value="json"/>
+        <response name="error" type="request" value="error"/>
     </request-map>
     <request-map uri="getExampleFeature">
         <security https="true" auth="true"/>
         <event type="jsonsimple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="getExampleFeature"/>
         <response name="success" type="request" value="json"/>
-        <response name="error" type="request" value="json"/>
+        <response name="error" type="request" value="error"/>
     </request-map>
     
     <!-- Lookup Request Mappings -->
@@ -94,6 +101,7 @@
         <security https="true" auth="true"/>
         <event type="jsonsimple" path="component://angularjs/script/org/ofbiz/angularjs/example/ExampleEvents.xml" invoke="LookupExample"/>
         <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="error"/>
     </request-map>
     
     <!-- View Mappings -->
