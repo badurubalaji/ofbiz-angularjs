@@ -6,9 +6,17 @@ package org.ofbiz.angularjs.directive;
 function TreeOptionsDirective() {
 
     this.controller = function($scope, $element, $attrs, $transclude, $http) {
-        console.log("tree options");
-        $attrs.treeId = _.uniqueId("tree_");
-	};
+        var id = _.uniqueId("tree_");
+        $attrs.treeId = id;
+        var currentNodeKey = id + ".currentNode";
+        $scope.$watch(currentNodeKey, function(newObj, oldObj) {
+            var currentNode = $scope[id]["currentNode"];
+            if( $scope[id] && angular.isObject(currentNode) ) {
+                // TODO fire event
+                console.log( currentNode );
+            }
+        }, false);
+    };
     
     this.compile = function() {
         return {

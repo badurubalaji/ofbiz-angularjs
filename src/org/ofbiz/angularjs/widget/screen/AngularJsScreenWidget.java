@@ -1617,14 +1617,14 @@ public class AngularJsScreenWidget {
         public static final String TAG_NAME = "tree";
 
         protected String model;
-        protected String nodesFieldName;
+        protected String nodeChildrenFieldName;
         protected String nodeIdFieldName;
         protected String nodeLabelFieldName;
 
         public Tree(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
-            this.nodesFieldName = FlexibleStringExpander.getInstance(widgetElement.getAttribute("nodes-field-name")).getOriginal();
+            this.nodeChildrenFieldName = FlexibleStringExpander.getInstance(widgetElement.getAttribute("node-children-field-name")).getOriginal();
             this.nodeIdFieldName = FlexibleStringExpander.getInstance(widgetElement.getAttribute("node-id-field-name")).getOriginal();
             this.nodeLabelFieldName = FlexibleStringExpander.getInstance(widgetElement.getAttribute("node-label-field-name")).getOriginal();
         }
@@ -1645,7 +1645,7 @@ public class AngularJsScreenWidget {
             builder.append(" data-tree-model=\"" + model + "\"");
             builder.append(" data-node-id=\"" + nodeIdFieldName + "\"");
             builder.append(" data-node-label=\"" + nodeLabelFieldName + "\"");
-            builder.append(" data-node-children=\"" + nodesFieldName + "\"");
+            builder.append(" data-node-children=\"" + nodeChildrenFieldName + "\"");
             builder.append(" tree-options=\"\"");
             builder.append("></div>");
             return builder.toString();
