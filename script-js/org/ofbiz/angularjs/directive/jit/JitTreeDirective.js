@@ -1,9 +1,9 @@
-package org.ofbiz.angularjs.directive;
+package org.ofbiz.angularjs.directive.jit;
 /**
- * Tree Directive
+ * Jit Tree Directive
  * http://philogb.github.io/jit/static/v20/Jit/Examples/Spacetree/example1.html
  */
-function TreeDirective() {
+function JitTreeDirective() {
 
     this.controller = function($scope, $element, $attrs, $transclude, $http) {
         var width = $attrs.width;

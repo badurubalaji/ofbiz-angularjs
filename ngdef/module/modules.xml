@@ -58,4 +58,7 @@
     <ng-module name="$strap.directives" location="/angularjs/images/js/angular-strap.min.js">
         
     </ng-module>
+    <ng-module name="angularTreeview" location="/angularjs/images/js/angular.treeview.min.js">
+        <styleSheet path="/angularjs/images/css/angular.treeview.css"/>
+    </ng-module>
 </ng-modules>

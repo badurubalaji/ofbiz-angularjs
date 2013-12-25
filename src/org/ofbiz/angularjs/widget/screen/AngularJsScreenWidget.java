@@ -916,6 +916,36 @@ public class AngularJsScreenWidget {
                     + "></div>";
         }
     }
+    
+    @SuppressWarnings("serial")
+    public static class JitTree extends ModelScreenWidget {
+        public static final String TAG_NAME = "jit-tree";
+
+        protected String id = null;
+        protected String type = null;
+        protected String model = null;
+
+        public JitTree(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.id = FlexibleStringExpander.getInstance(widgetElement.getAttribute("id")).getOriginal();
+            this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+        }
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append("<div id=\"" + id + "\"></div>");
+            writer.append("</jit-tree>");
+        }
+        @Override
+        public String rawString() {
+            return "<jit-tree type=\"" + type + "\" model=\"" + model + "\">";
+        }
+        
+    }
 
     @SuppressWarnings("serial")
     public static class HorizontalRule extends ModelScreenWidget {
@@ -1586,28 +1616,39 @@ public class AngularJsScreenWidget {
     public static class Tree extends ModelScreenWidget {
         public static final String TAG_NAME = "tree";
 
-        protected String id = null;
-        protected String type = null;
-        protected String model = null;
+        protected String model;
+        protected String nodesFieldName;
+        protected String nodeIdFieldName;
+        protected String nodeLabelFieldName;
 
         public Tree(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.id = FlexibleStringExpander.getInstance(widgetElement.getAttribute("id")).getOriginal();
-            this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
             this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+            this.nodesFieldName = FlexibleStringExpander.getInstance(widgetElement.getAttribute("nodes-field-name")).getOriginal();
+            this.nodeIdFieldName = FlexibleStringExpander.getInstance(widgetElement.getAttribute("node-id-field-name")).getOriginal();
+            this.nodeLabelFieldName = FlexibleStringExpander.getInstance(widgetElement.getAttribute("node-label-field-name")).getOriginal();
         }
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append(this.rawString());
-            writer.append("<div id=\"" + id + "\"></div>");
-            writer.append("</tree>");
         }
+
         @Override
         public String rawString() {
-            return "<tree type=\"" + type + "\" model=\"" + model + "\">";
+            StringBuilder builder = new StringBuilder();
+            builder.append("<div");
+            builder.append(" data-angular-treeview=\"true\"");
+            builder.append(" data-tree-model=\"" + model + "\"");
+            builder.append(" data-node-id=\"" + nodeIdFieldName + "\"");
+            builder.append(" data-node-label=\"" + nodeLabelFieldName + "\"");
+            builder.append(" data-node-children=\"" + nodesFieldName + "\"");
+            builder.append(" tree-options=\"\"");
+            builder.append("></div>");
+            return builder.toString();
         }
         
     }

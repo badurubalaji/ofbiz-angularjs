@@ -181,6 +181,15 @@
             </widgets>
         </section>
     </screen>
+    <screen name="JitTree">
+        <section>
+            <widgets>
+                <controller name="org.ofbiz.angularjs.demo.controller.JitTreeDemoController">
+                    <jit-tree type="space" id="sampleTree" model="json"/>
+                </controller>
+            </widgets>
+        </section>
+    </screen>
     <screen name="Layout">
         <section>
             <widgets>
@@ -395,11 +404,15 @@
             </widgets>
         </section>
     </screen>
+    
+    <!-- 
+    https://github.com/eu81273/angular.treeview
+    -->
     <screen name="Tree">
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.TreeDemoController">
-                    <tree type="space" id="sampleTree" model="json"/>
+                    <tree model="demoTree" nodes-field-name="children" node-id-field-name="id" node-label-field-name="label"/>
                 </controller>
             </widgets>
         </section>

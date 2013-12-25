@@ -227,6 +227,11 @@
                 <include-screen name="Grid" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                 <horizontal-rule/>
                 
+                <!-- Jit Tree -->
+                <label text="Jit Tree" style="h1"/>
+                <include-screen name="JitTree" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
+                <horizontal-rule/>
+                
                 <!-- Layout -->
                 <label text="Layout" style="h1"/>
                 <include-screen name="Layout" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
