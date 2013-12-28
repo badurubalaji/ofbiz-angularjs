@@ -342,7 +342,7 @@
                             <tab-heading>
                                 <label text="View Example"/>
                             </tab-heading>
-                            <label text="{{viewExample}}"/>
+                            <html model="viewExample" restrict="true"/>
                         </tab>
                     </tabs>
                     <horizontal-rule/>

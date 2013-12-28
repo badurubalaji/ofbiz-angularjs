@@ -3,7 +3,7 @@ package org.ofbiz.angularjs.directive;
 /**
  * Tab Options Directive
  */
-function TabOptionsDirective(HttpService) {
+function TabOptionsDirective(HttpService, $templateCache) {
     
     /**
      * Controller
@@ -12,7 +12,10 @@ function TabOptionsDirective(HttpService) {
         var target = $attrs.target;
         var tabbableElement = $element.parent().parent();
         var tabContentElement = angular.element(tabbableElement.children()[1]);
-        $scope.$parent.viewExample = "View Example";
+        
+        HttpService.post(target, {}).success(function(response) {
+            $scope.$parent.viewExample = response;
+        });
     }
 
     /**
@@ -24,7 +27,7 @@ function TabOptionsDirective(HttpService) {
             
             },
             post: function($scope, $element, $attrs, controller) {
-
+                
             }
         };
     };

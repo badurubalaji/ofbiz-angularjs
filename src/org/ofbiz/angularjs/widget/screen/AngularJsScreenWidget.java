@@ -916,6 +916,37 @@ public class AngularJsScreenWidget {
                     + "></div>";
         }
     }
+
+    @SuppressWarnings("serial")
+    public static class Html extends ModelScreenWidget {
+        public static final String TAG_NAME = "html";
+        
+        private String model;
+        private boolean restrict;
+        
+        public Html(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
+            this.restrict = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("restrict")).getOriginal());
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(rawString());
+        }
+
+        @Override
+        public String rawString() {
+            if (restrict) {
+                return "<div ng-bind-html=\"" + model + "\"></div>";
+            } else {
+                return "<div ng-bind-html-unsafe=\"" + model + "\"></div>";
+            }
+        }
+    }
     
     @SuppressWarnings("serial")
     public static class JitTree extends ModelScreenWidget {
@@ -1465,7 +1496,7 @@ public class AngularJsScreenWidget {
                     String active = FlexibleStringExpander.getInstance(tabElement.getAttribute("active")).getOriginal();
                     String disabled = FlexibleStringExpander.getInstance(tabElement.getAttribute("disabled")).getOriginal();
                     String onSelect = FlexibleStringExpander.getInstance(tabElement.getAttribute("on-select")).getOriginal();
-                    String target = FlexibleStringExpander.getInstance(tabElement.getAttribute("type")).getOriginal();
+                    String target = FlexibleStringExpander.getInstance(tabElement.getAttribute("target")).getOriginal();
                     tabWriter.append("<tab ");
                     if (UtilValidate.isNotEmpty(repeat)) {
                         tabWriter.append("ng-repeat=\"" + repeat + "\" ");
