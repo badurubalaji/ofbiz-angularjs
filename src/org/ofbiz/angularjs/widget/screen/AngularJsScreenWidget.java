@@ -1428,19 +1428,26 @@ public class AngularJsScreenWidget {
         }
     }
     
+    /**
+     * http://plnkr.co/edit/g8nIqe37HEjvNOQz5z0p?p=preview
+     * @author chatree
+     *
+     */
     @SuppressWarnings("serial")
     public static class Tabs extends ModelScreenWidget {
         public static final String TAG_NAME = "tabs";
 
         protected List<? extends Element> tabElements;
-        protected FlexibleStringExpander verticalExdr;
-        protected FlexibleStringExpander typeExdr;
+        protected boolean vertical;
+        protected String type;
+        protected String direction;
 
         public Tabs(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.tabElements = UtilXml.childElementList(widgetElement, "tab");
-            this.verticalExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("vertical"));
-            this.typeExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type"));
+            this.vertical = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("vertical")).getOriginal());
+            this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
+            this.direction = FlexibleStringExpander.getInstance(widgetElement.getAttribute("direction")).getOriginal();
         }
 
         @Override
@@ -1453,27 +1460,35 @@ public class AngularJsScreenWidget {
                 // tabs
                 for (Element tabElement : tabElements) {
                     StringWriter tabWriter = new StringWriter();
-                    FlexibleStringExpander repeatExdr = FlexibleStringExpander.getInstance(tabElement.getAttribute("repeat"));
-                    FlexibleStringExpander headingExdr = FlexibleStringExpander.getInstance(tabElement.getAttribute("heading"));
-                    FlexibleStringExpander activeExdr = FlexibleStringExpander.getInstance(tabElement.getAttribute("active"));
-                    FlexibleStringExpander disabledExdr = FlexibleStringExpander.getInstance(tabElement.getAttribute("disabled"));
-                    FlexibleStringExpander onSelectExdr = FlexibleStringExpander.getInstance(tabElement.getAttribute("on-select"));
+                    String repeat = FlexibleStringExpander.getInstance(tabElement.getAttribute("repeat")).getOriginal();
+                    String heading = FlexibleStringExpander.getInstance(tabElement.getAttribute("heading")).getOriginal();
+                    String active = FlexibleStringExpander.getInstance(tabElement.getAttribute("active")).getOriginal();
+                    String disabled = FlexibleStringExpander.getInstance(tabElement.getAttribute("disabled")).getOriginal();
+                    String onSelect = FlexibleStringExpander.getInstance(tabElement.getAttribute("on-select")).getOriginal();
+                    String target = FlexibleStringExpander.getInstance(tabElement.getAttribute("type")).getOriginal();
                     tabWriter.append("<tab ");
-                    if (UtilValidate.isNotEmpty(repeatExdr.getOriginal())) {
-                        tabWriter.append("ng-repeat=\"" + repeatExdr.getOriginal() + "\" ");
+                    if (UtilValidate.isNotEmpty(repeat)) {
+                        tabWriter.append("ng-repeat=\"" + repeat + "\" ");
                     }
-                    if (UtilValidate.isNotEmpty(headingExdr.getOriginal())) {
-                        tabWriter.append("heading=\"" + headingExdr.getOriginal() + "\" ");
+                    if (UtilValidate.isNotEmpty(heading)) {
+                        tabWriter.append("heading=\"" + heading + "\" ");
                     }
-                    if (UtilValidate.isNotEmpty(activeExdr.getOriginal())) {
-                        tabWriter.append("active=\"" + activeExdr.getOriginal() + "\" ");
+                    if (UtilValidate.isNotEmpty(active)) {
+                        tabWriter.append("active=\"" + active + "\" ");
                     }
-                    if (UtilValidate.isNotEmpty(disabledExdr.getOriginal())) {
-                        tabWriter.append("disabled=\"" + disabledExdr.getOriginal() + "\" ");
+                    if (UtilValidate.isNotEmpty(disabled)) {
+                        tabWriter.append("disabled=\"" + disabled + "\" ");
                     }
-                    if (UtilValidate.isNotEmpty(onSelectExdr.getOriginal())) {
-                        tabWriter.append("select=\"" + onSelectExdr.getOriginal() + "\" ");
+                    if (UtilValidate.isNotEmpty(onSelect)) {
+                        tabWriter.append("select=\"" + onSelect + "\" ");
                     }
+                    if (UtilValidate.isNotEmpty(onSelect)) {
+                        tabWriter.append("select=\"" + onSelect + "\" ");
+                    }
+                    if (UtilValidate.isNotEmpty(target)) {
+                        tabWriter.append("target=\"" + target + "\" ");
+                    }
+                    tabWriter.append("tab-options=\"\" ");
                     tabWriter.append(">");
                     
                     // tab heading
@@ -1507,11 +1522,12 @@ public class AngularJsScreenWidget {
         public String rawString() {
             StringBuilder builder = new StringBuilder();
             builder.append("<tabset ");
-            if (UtilValidate.isNotEmpty(verticalExdr.getOriginal())) {
-                builder.append("vertical=\"" + verticalExdr.getOriginal() + "\"");
+            builder.append("vertical=\"" + vertical + "\"");
+            if (UtilValidate.isNotEmpty(type)) {
+                builder.append("type=\"" + type + "\"");
             }
-            if (UtilValidate.isNotEmpty(typeExdr.getOriginal())) {
-                builder.append("type=\"" + typeExdr.getOriginal() + "\"");
+            if (UtilValidate.isNotEmpty(direction)) {
+                builder.append("direction=\"" + direction + "\"");
             }
             builder.append(">");
             return builder.toString();

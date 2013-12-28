@@ -338,6 +338,12 @@
                             </tab-heading>
                             <label text="I've got an HTML heading, and a select callback. Pretty cool!"/>
                         </tab>
+                        <tab target="ViewExample">
+                            <tab-heading>
+                                <label text="View Example"/>
+                            </tab-heading>
+                            <label text="{{viewExample}}"/>
+                        </tab>
                     </tabs>
                     <horizontal-rule/>
                     <tabs vertical="true" type="navType">
