@@ -1496,7 +1496,9 @@ public class AngularJsScreenWidget {
                     String active = FlexibleStringExpander.getInstance(tabElement.getAttribute("active")).getOriginal();
                     String disabled = FlexibleStringExpander.getInstance(tabElement.getAttribute("disabled")).getOriginal();
                     String onSelect = FlexibleStringExpander.getInstance(tabElement.getAttribute("on-select")).getOriginal();
-                    String target = FlexibleStringExpander.getInstance(tabElement.getAttribute("target")).getOriginal();
+                    String targetUri = FlexibleStringExpander.getInstance(tabElement.getAttribute("target-uri")).getOriginal();
+                    String targetParameters = FlexibleStringExpander.getInstance(tabElement.getAttribute("target-parameters")).getOriginal();
+                    String targetContentModel = FlexibleStringExpander.getInstance(tabElement.getAttribute("target-content-model")).getOriginal();
                     tabWriter.append("<tab ");
                     if (UtilValidate.isNotEmpty(repeat)) {
                         tabWriter.append("ng-repeat=\"" + repeat + "\" ");
@@ -1516,8 +1518,14 @@ public class AngularJsScreenWidget {
                     if (UtilValidate.isNotEmpty(onSelect)) {
                         tabWriter.append("select=\"" + onSelect + "\" ");
                     }
-                    if (UtilValidate.isNotEmpty(target)) {
-                        tabWriter.append("target=\"" + target + "\" ");
+                    if (UtilValidate.isNotEmpty(targetUri)) {
+                        tabWriter.append("target-uri=\"" + targetUri + "\" ");
+                    }
+                    if (UtilValidate.isNotEmpty(targetContentModel)) {
+                        tabWriter.append("target-content-model=\"" + targetContentModel + "\" ");
+                    }
+                    if (UtilValidate.isNotEmpty(targetParameters)) {
+                        tabWriter.append("target-parameters=\"" + targetParameters + "\" ");
                     }
                     tabWriter.append("tab-options=\"\" ");
                     tabWriter.append(">");

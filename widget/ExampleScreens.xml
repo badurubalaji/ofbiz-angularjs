@@ -78,6 +78,14 @@
             </widgets>
         </section>
     </screen>
+    <screen name="ViewExample">
+        <section>
+            <widgets>
+                 <label text="View Example: {{example}}"/>
+                 <text model="example"/>
+            </widgets>
+        </section>
+    </screen>
 
     <screen name="ExampleFeature">
         <section>

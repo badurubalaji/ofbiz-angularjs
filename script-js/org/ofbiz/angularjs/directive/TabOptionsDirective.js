@@ -9,13 +9,27 @@ function TabOptionsDirective(HttpService, $templateCache) {
      * Controller
      */
     this.controller = function($scope, $element, $attrs, $transclude) {
-        var target = $attrs.target;
+        var targetUri = $attrs.targetUri;
+        var targetParameters = $scope.$eval($attrs.targetParameters);
+        var targetContentModel = $attrs.targetContentModel;
         var tabbableElement = $element.parent().parent();
         var tabContentElement = angular.element(tabbableElement.children()[1]);
         
-        HttpService.post(target, {}).success(function(response) {
-            $scope.$parent.viewExample = response;
-        });
+        if (targetUri != null && targetContentModel != null) {
+            var parameters = {};
+            if (targetParameters != null) {
+                parameters = $scope.$eval($attrs.targetParameters);
+            }
+            HttpService.post(targetUri, parameters).success(function(response) {
+                var html;
+                if (response.indexOf("<!DOCTYPE html>") >= 0) {
+                    html = response.replace("<!DOCTYPE html>", "");
+                } else {
+                    html = response;
+                }
+                $scope.$parent[targetContentModel] = html;
+            });
+        }
     }
 
     /**
