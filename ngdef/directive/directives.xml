@@ -31,4 +31,6 @@
     
     <ng-directive name="tabOptions" location="org.ofbiz.angularjs.directive.TabOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="false"/>
+    <ng-directive name="compile" location="org.ofbiz.angularjs.directive.CompileDirective"
+        priority="0" replace="false" transclude="false" restrict="A" scope="false"/>
 </ng-directives>

@@ -940,11 +940,14 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
+            /*
             if (restrict) {
                 return "<div ng-bind-html=\"" + model + "\"></div>";
             } else {
                 return "<div ng-bind-html-unsafe=\"" + model + "\"></div>";
             }
+            */
+            return "<div compile=\"" + model + "\"></div>";
         }
     }
     
