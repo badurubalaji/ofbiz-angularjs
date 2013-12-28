@@ -22,11 +22,14 @@ function TabOptionsDirective(HttpService, $templateCache) {
             }
             HttpService.post(targetUri, parameters).success(function(response) {
                 var html;
+                /*
                 if (response.indexOf("<!DOCTYPE html>") >= 0) {
                     html = response.replace("<!DOCTYPE html>", "");
                 } else {
                     html = response;
                 }
+                */
+                html = response;
                 $scope.$parent[targetContentModel] = html;
             });
         }
