@@ -30,6 +30,7 @@ public class ModelNgDirective extends AbstractModelNg {
     public int priority;
     public boolean replace;
     public boolean transclude;
+    public String require;
     public String restrict;
     public String scope;
     public String controllerName;

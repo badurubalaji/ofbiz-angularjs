@@ -225,6 +225,9 @@ public class AngularJsEvents {
             if (UtilValidate.isNotEmpty(modelNgDirective.priority)) {
                 objectBuilder.append(modelNgDirective.name + ".priority = " + modelNgDirective.priority + ";");
             }
+            if (UtilValidate.isNotEmpty(modelNgDirective.require)) {
+                objectBuilder.append(modelNgDirective.name + ".require = \"" + modelNgDirective.require + "\";");
+            }
             if (UtilValidate.isNotEmpty(modelNgDirective.restrict)) {
                 objectBuilder.append(modelNgDirective.name + ".restrict = \"" + modelNgDirective.restrict + "\";");
             }
