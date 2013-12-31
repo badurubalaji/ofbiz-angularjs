@@ -1554,7 +1554,7 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("<tabset ");
+            builder.append("<tabset tab-set-options ");
             builder.append("vertical=\"" + vertical + "\"");
             if (UtilValidate.isNotEmpty(type)) {
                 builder.append("type=\"" + type + "\"");
