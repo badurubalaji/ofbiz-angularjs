@@ -1453,6 +1453,57 @@ public class AngularJsScreenWidget {
         }
     }
     
+    @SuppressWarnings("serial")
+    public static class TabBar extends ModelScreenWidget {
+        public static final String TAG_NAME = "tab-bar";
+
+        protected List<? extends Element> tabItemElements;
+        protected Element tabContentElement;
+        
+        public TabBar(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.tabItemElements = UtilXml.childElementList(widgetElement, "tab-item");
+            this.tabContentElement = UtilXml.firstChildElement(widgetElement, "tab-content");
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            writer.append("<ul class=\"nav nav-tabs\">");
+            if (UtilValidate.isNotEmpty(tabItemElements)) {
+                for (Element tabItemElement : tabItemElements) {
+                    String text = FlexibleStringExpander.getInstance(tabItemElement.getAttribute("text")).getOriginal();
+                    String target = FlexibleStringExpander.getInstance(tabItemElement.getAttribute("target")).getOriginal();
+                    String activeState = FlexibleStringExpander.getInstance(tabItemElement.getAttribute("active-state")).getOriginal();
+                    
+                    if (UtilValidate.isEmpty(activeState)) {
+                        activeState = target;
+                    }
+                    
+                    writer.append("<li ng-class=\"{active: $state.includes('" + activeState + "')}\">");
+                    writer.append("<a ui-sref=\"" + target + "\">" + text + "</a>");
+                    writer.append("</li>");
+                }
+            }
+            writer.append("</div>");
+            
+            if (UtilValidate.isNotEmpty(tabContentElement)) {
+                String viewName = FlexibleStringExpander.getInstance(tabContentElement.getAttribute("view-name")).getOriginal();
+                writer.append("<div class=\"tab-content\" ui-view=\"" + viewName + "\"></div>");
+            }
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div class=\"tabbable\">";
+        }
+
+    }
+    
     /**
      * http://plnkr.co/edit/g8nIqe37HEjvNOQz5z0p?p=preview
      * @author chatree

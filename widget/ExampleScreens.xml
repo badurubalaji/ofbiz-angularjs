@@ -97,12 +97,12 @@
     <screen name="CommonExampleFeatureView">
         <section>
             <widgets>
-                <menu-bar title="" target="ViewExampleFeature" style="navbar-fixed-top">
-                     <menu-item text="View" target="feature.decorator.view"/>
-                     <menu-item text="Edit" target="feature.decorator.edit"/>
-                     <menu-item text="Example" target="feature.decorator.example"/>
-                 </menu-bar>
-                 <view name="feature.decorator"/>
+                 <tab-bar>
+                     <tab-item text="View" target="feature.decorator.view"/>
+                     <tab-item text="Edit" target="feature.decorator.edit"/>
+                     <tab-item text="Example" target="feature.decorator.example"/>
+                     <tab-content view-name="feature.decorator"/>
+                 </tab-bar>
             </widgets>
         </section>
     </screen>
