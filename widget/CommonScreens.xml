@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
-
-    <screen name="main-decorator">
+        
+    <screen name="GlobalActions">
         <section>
             <actions>
                 <property-map resource="AngularJsUiLabels" map-name="uiLabelMap" global="true"/>
                 <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true"/>
-
-                <set field="layoutSettings.companyName" from-field="uiLabelMap.AngularJsCompanyName" global="true"/>
-                <set field="layoutSettings.companySubtitle" from-field="uiLabelMap.AngularJsCompanySubtitle" global="true"/>
                 
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/control/main.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/initialStrap.js" global="true"/>
@@ -26,11 +23,24 @@
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/underscore-min-1.5.2.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/require-2.1.8.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/angular.min.js" global="true"/>
-                <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.9.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.8.2.min.js" global="true"/>
                 
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/jit/jit.js" global="true"/>
                 <set field="layoutSettings.styleSheets[+0]" value="/angularjs/images/css/style.css" global="true"/>
+            </actions>
+            <widgets/>
+        </section>
+    </screen>
 
+    <screen name="main-decorator">
+        <section>
+            <widgets>
+                <include-screen name="GlobalActions"/>
+                <section>
+            <actions>
+                <set field="layoutSettings.companyName" from-field="uiLabelMap.AngularJsCompanyName" global="true"/>
+                <set field="layoutSettings.companySubtitle" from-field="uiLabelMap.AngularJsCompanySubtitle" global="true"/>
+                
                 <set field="activeApp" value="angularjs" global="true"/>
                 <set field="applicationMenuName" value="MainAppBar" global="true"/>
                 <set field="applicationMenuLocation" value="component://angularjs/widget/AngularJsMenus.xml" global="true"/>
@@ -57,6 +67,8 @@
                     <decorator-section-include name="body"/>
                 </container>
                 <platform-specific><html><html-template location="component://angularjs/templates/footer.ftl"/></html></platform-specific>
+            </widgets>
+        </section>
             </widgets>
         </section>
     </screen>
