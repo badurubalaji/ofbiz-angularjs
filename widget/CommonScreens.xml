@@ -27,48 +27,38 @@
                 
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/jit/jit.js" global="true"/>
                 <set field="layoutSettings.styleSheets[+0]" value="/angularjs/images/css/style.css" global="true"/>
+                
+-                <script location="component://angularjs/webapp/angularjs/WEB-INF/actions/SetupModuleResources.groovy"/>
             </actions>
             <widgets/>
+        </section>
+    </screen>
+
+    <screen name="ApplicationDecorator">
+        <section>
+            <widgets>
+                <include-screen name="GlobalActions"/>
+                <section>
+                    <widgets>
+                        <platform-specific><html><html-template location="component://angularjs/templates/header.ftl"/></html></platform-specific>
+                        <container style="container" id="${activeApp}">
+                            <decorator-section-include name="body"/>
+                        </container>
+                        <platform-specific><html><html-template location="component://angularjs/templates/footer.ftl"/></html></platform-specific>
+                    </widgets>
+                </section>
+            </widgets>
         </section>
     </screen>
 
     <screen name="main-decorator">
         <section>
             <widgets>
-                <include-screen name="GlobalActions"/>
                 <section>
-            <actions>
-                <set field="layoutSettings.companyName" from-field="uiLabelMap.AngularJsCompanyName" global="true"/>
-                <set field="layoutSettings.companySubtitle" from-field="uiLabelMap.AngularJsCompanySubtitle" global="true"/>
-                
-                <set field="activeApp" value="angularjs" global="true"/>
-                <set field="applicationMenuName" value="MainAppBar" global="true"/>
-                <set field="applicationMenuLocation" value="component://angularjs/widget/AngularJsMenus.xml" global="true"/>
-                <set field="applicationTitle" value="${uiLabelMap.AngularJsApplication}" global="true"/>
-                
-                <script location="component://angularjs/webapp/angularjs/WEB-INF/actions/SetupModuleResources.groovy"/>
-            </actions>
-            <widgets>
-                <!--include-screen name="ApplicationDecorator" location="component://commonext/widget/CommonScreens.xml"/-->
-                <platform-specific><html><html-template location="component://angularjs/templates/header.ftl"/></html></platform-specific>
-                
-                <!-- header -->
-                <!--
-                <container style="navbar navbar-inverse navbar-fixed-top">
-                    <container style="navbar-inner">
-                        <container style="container">
-                            <link text="Home" style="brand" target="javascript:void(0)" url-mode="plain"/>
-                        </container>
-                    </container>
-                </container>
-                -->
-                
-                <container style="container">
-                    <decorator-section-include name="body"/>
-                </container>
-                <platform-specific><html><html-template location="component://angularjs/templates/footer.ftl"/></html></platform-specific>
-            </widgets>
-        </section>
+                    <widgets>
+                        <include-screen name="ApplicationDecorator"/>
+                    </widgets>
+                </section>
             </widgets>
         </section>
     </screen>
@@ -76,19 +66,17 @@
     <screen name="AngularJsCommonDecorator">
         <section>
             <actions>
+                <set field="activeApp" value="angularjs-app"/>
             </actions>
             <widgets>
                 <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
                         <section>
                             <condition>
-
                                 <!--<if-has-permission permission="ANGULARJS" action="_VIEW"/>-->
                             </condition>
                             <widgets>
-                                <container id="angularjs-app">
-                                    <decorator-section-include name="body"/>
-                                </container>
+                                <decorator-section-include name="body"/>
                             </widgets>
                             <fail-widgets>
                                 <label style="h3">${uiLabelMap.AngularJsViewPermissionError}</label>
@@ -103,23 +91,22 @@
     <screen name="ExampleCommonDecorator">
         <section>
             <actions>
+                <set field="activeApp" value="example-app"/>
             </actions>
             <widgets>
                 <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
                         <section>
                             <widgets>
-                                <container id="example-app">
-                                    <controller name="org.ofbiz.angularjs.example.controller.ExampleCommonDecoratorController">
-                                        <menu-bar title="AngularJs" target="example" style="navbar-fixed-top">
-                                            <menu-item text="Example" target="example"/>
-                                            <menu-item text="Feature" target="feature.list" active-state="feature"/>
-                                            <menu-item text="Widget" target="widget"/>
-                                        </menu-bar>
-                                        <alert repeat="alert in alerts" type="alert.type" close="closeAlert($index)" text="{{alert.msg}}"/>
-                                        <view name="main"/>
-                                    </controller>
-                                </container>
+                                <controller name="org.ofbiz.angularjs.example.controller.ExampleCommonDecoratorController">
+                                    <menu-bar title="AngularJs" target="example" style="navbar-fixed-top">
+                                        <menu-item text="Example" target="example"/>
+                                        <menu-item text="Feature" target="feature.list" active-state="feature"/>
+                                        <menu-item text="Widget" target="widget"/>
+                                    </menu-bar>
+                                    <alert repeat="alert in alerts" type="alert.type" close="closeAlert($index)" text="{{alert.msg}}"/>
+                                    <view name="main"/>
+                                </controller>
                             </widgets>
                         </section>
                     </decorator-section>

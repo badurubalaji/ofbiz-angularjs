@@ -4,13 +4,10 @@
     <!-- The controller elements that are common to all OFBiz components
          can be found in the following xml file. A component can override the
          elements found in the common-controller.xml file. -->
-    <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+    <include location="component://angularjs/webapp/angularjs/WEB-INF/common-controller.xml"/>
 
     <description>AngularJs Component Site Configuration File</description>
     
-    <handler name="jsonsimple" type="request" class="org.ofbiz.angularjs.webapp.event.JsonSimpleEventHandler"/>
-    <handler name="screenng" type="view" class="org.ofbiz.widget.screen.MacroScreenViewHandler"/>
-
     <!-- Events to run on every request before security (chains exempt) -->
     <!--
     <preprocessor>
@@ -22,23 +19,6 @@
         <event name="test" type="java" path="org.ofbiz.webapp.event.TestEvent" invoke="test"/>
     </postprocessor>
     -->
-    
-    <!-- Login Request Mappings -->
-    <request-map uri="login">
-        <security https="true" auth="false"/>
-        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="login"/>
-        <response name="success" type="request-redirect" value="main"/>
-        <response name="requirePasswordChange" type="view" value="requirePasswordChange"/>
-        <response name="error" type="request" value="error"/>
-    </request-map>
-
-    <!-- Request Mappings -->
-    <request-map uri="error">
-        <security https="true" auth="false"/>
-        <event type="java" path="org.ofbiz.angularjs.event.AngularJsEvents" invoke="error"/>
-        <response name="success" type="none"/>
-        <response name="error" type="none"/>
-    </request-map>
     
     <request-map uri="main"><security https="true" auth="true"/><response name="success" type="view" value="main"/></request-map>
 
