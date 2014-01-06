@@ -122,6 +122,42 @@ public class AngularJsEvents {
         renderer.render(JavaScriptFactory.getRootJavaScriptPackages());
     }
     
+    private static void buildCombindAllModule(StringBuilder builder) {
+        builder.append("\nangular.module('combine.all', [])");
+        
+        // directives
+        String emptyJsFunction = "function() {}";
+        for (ModelNgDirective modelNgDirective : NgModelDispatcherContext.getAllModelNgDirectives()) {
+            String directiveJsFunction = createDirectiveJsFunction(modelNgDirective);
+            if (UtilValidate.isEmpty(directiveJsFunction)) {
+                directiveJsFunction = emptyJsFunction;
+            }
+            builder.append(".directive('" + modelNgDirective.name + "', " + directiveJsFunction + ")\n");
+        }
+        
+        // filters
+        for (ModelNgFilter modelNgFilter : NgModelDispatcherContext.getAllModelNgFilters()) {
+            builder.append(".filter('" + modelNgFilter.name + "', " + modelNgFilter.location + ")\n");
+        }
+        
+        // services
+        for (ModelNgService modelNgService : NgModelDispatcherContext.getAllModelNgServices()) {
+            builder.append(".service('" + modelNgService.name + "', " + modelNgService.location + ")\n");
+        }
+        
+        // providers
+        for (ModelNgProvider modelNgProvider : NgModelDispatcherContext.getAllModelNgProviders()) {
+            builder.append(".provider('" + modelNgProvider.name + "', " + modelNgProvider.location + "." + modelNgProvider.invoke + ")\n");
+        }
+        
+        // factories
+        for (ModelNgFactory modelNgFactory : NgModelDispatcherContext.getAllModelNgFactories()) {
+            builder.append(".factory('" + modelNgFactory.name + "', " + modelNgFactory.location + ")\n");
+        }
+        
+        builder.append(";");
+    }
+    
     private static void buildAppJsFunction(String name, String defaultState, boolean disableAutoScrolling, List<? extends ModelNgState> modelNgStates, StringBuilder builder) {
         builder.append("\nangular.module('" + name + "', [");
         
@@ -130,6 +166,7 @@ public class AngularJsEvents {
         for (ModelNgModule modelModule : NgModelDispatcherContext.getAllModelNgModules()) {
             moduleNames.add("'" + modelModule.name + "'");
         }
+        moduleNames.add("'combine.all'");
         
         if (UtilValidate.isNotEmpty(moduleNames)) {
             builder.append(StringUtil.join(moduleNames, ","));
@@ -166,36 +203,6 @@ public class AngularJsEvents {
         }
         
         builder.append("})\n");
-        
-        // directives
-        String emptyJsFunction = "function() {}";
-        for (ModelNgDirective modelNgDirective : NgModelDispatcherContext.getAllModelNgDirectives()) {
-            String directiveJsFunction = createDirectiveJsFunction(modelNgDirective);
-            if (UtilValidate.isEmpty(directiveJsFunction)) {
-                directiveJsFunction = emptyJsFunction;
-            }
-            builder.append(".directive('" + modelNgDirective.name + "', " + directiveJsFunction + ")\n");
-        }
-        
-        // filters
-        for (ModelNgFilter modelNgFilter : NgModelDispatcherContext.getAllModelNgFilters()) {
-            builder.append(".filter('" + modelNgFilter.name + "', " + modelNgFilter.location + ")\n");
-        }
-        
-        // services
-        for (ModelNgService modelNgService : NgModelDispatcherContext.getAllModelNgServices()) {
-            builder.append(".service('" + modelNgService.name + "', " + modelNgService.location + ")\n");
-        }
-        
-        // providers
-        for (ModelNgProvider modelNgProvider : NgModelDispatcherContext.getAllModelNgProviders()) {
-            builder.append(".provider('" + modelNgProvider.name + "', " + modelNgProvider.location + "." + modelNgProvider.invoke + ")\n");
-        }
-        
-        // factories
-        for (ModelNgFactory modelNgFactory : NgModelDispatcherContext.getAllModelNgFactories()) {
-            builder.append(".factory('" + modelNgFactory.name + "', " + modelNgFactory.location + ")\n");
-        }
         
         // run
         builder.append(".run(function($rootScope, $state, $stateParams) {");
@@ -293,6 +300,8 @@ public class AngularJsEvents {
             builder.append("\nrequire([\n");
             builder.append(javaScriptJsList);
             builder.append("\n], function() {");
+            
+            buildCombindAllModule(builder);
             
             // apps
             for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
