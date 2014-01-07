@@ -175,7 +175,9 @@ public class AngularJsEvents {
         builder.append(".config(function($stateProvider, $urlRouterProvider, $anchorScrollProvider) {\n");
         
         // default path
-        builder.append("$urlRouterProvider.otherwise(\"" + defaultState + "\");");
+        if (UtilValidate.isNotEmpty(defaultState)) {
+            builder.append("$urlRouterProvider.otherwise(\"" + defaultState + "\");");
+        }
         
         // states
         if (UtilValidate.isNotEmpty(modelNgStates)) {
@@ -193,6 +195,11 @@ public class AngularJsEvents {
                 builder.append(StringUtil.join(viewDefs, ","));
                 
                 builder.append("}})");
+            }
+
+            // default state
+            if (UtilValidate.isNotEmpty(defaultState)) {
+                builder.append(".state(\"otherwise\", {url: \"" + defaultState + "\"})");
             }
         }
         builder.append(";");
