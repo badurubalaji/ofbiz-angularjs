@@ -174,44 +174,52 @@ public class AngularJsEvents {
         
         builder.append(".config(function($stateProvider, $urlRouterProvider, $anchorScrollProvider) {\n");
         
-        // default path
-        if (UtilValidate.isNotEmpty(defaultState)) {
-            builder.append("$urlRouterProvider.otherwise(\"" + defaultState + "\");");
-        }
+        String defaultUrl = null;
         
         // states
+        StringBuilder stateBuilder = new StringBuilder();
         if (UtilValidate.isNotEmpty(modelNgStates)) {
-            builder.append("$stateProvider");
+            stateBuilder.append("$stateProvider");
             for (ModelNgState modelNgState : modelNgStates) {
-                builder.append(".state(\"" + modelNgState.name + "\", {");
-                builder.append("abstract: " + modelNgState.isAbstract + ",");
-                builder.append("url: \"" + modelNgState.url + "\",");
-                builder.append("views: {");
+
+                if (UtilValidate.isNotEmpty(defaultState) && defaultState.equals(modelNgState.name)) {
+                    defaultUrl = modelNgState.url;
+                }
+                
+                stateBuilder.append("\n//- State[" + modelNgState.name + "] is abstract[" + modelNgState.isAbstract + "] with URL[" + modelNgState.url + "]\n");
+                stateBuilder.append(".state(\"" + modelNgState.name + "\", {");
+                stateBuilder.append("abstract: " + modelNgState.isAbstract + ",");
+                stateBuilder.append("url: \"" + modelNgState.url + "\",");
+                stateBuilder.append("views: {");
                 
                 List<String> viewDefs = new LinkedList<String>();
                 for (ModelNgView modelNgView : modelNgState.getModelNgViews()) {
+                    stateBuilder.append("\n//-- View[" + modelNgView.name + "] with template URL[" + modelNgView.target + "] and controller[" + modelNgView.controller + "]\n");
                     viewDefs.add("\"" + modelNgView.name + "\": { templateUrl: \"" + modelNgView.target + "\", controller: " + modelNgView.controller + "}");
                 }
-                builder.append(StringUtil.join(viewDefs, ","));
+                stateBuilder.append(StringUtil.join(viewDefs, ","));
                 
-                builder.append("}})");
-            }
-
-            // default state
-            if (UtilValidate.isNotEmpty(defaultState)) {
-                builder.append(".state(\"otherwise\", {url: \"" + defaultState + "\"})");
+                stateBuilder.append("}})");
             }
         }
+
+        // default path
+        if (UtilValidate.isNotEmpty(defaultUrl)) {
+            builder.append("//- Default URL[" + defaultUrl + "] of state[" + defaultState + "]\n\n");
+            builder.append("\n$urlRouterProvider.otherwise(\"" + defaultUrl + "\");");
+        }
+        
+        builder.append(stateBuilder);
         builder.append(";");
         
         if (disableAutoScrolling) {
-            builder.append("$anchorScrollProvider.disableAutoScrolling();");
+            builder.append("\n$anchorScrollProvider.disableAutoScrolling();");
         }
         
         builder.append("})\n");
         
         // run
-        builder.append(".run(function($rootScope, $state, $stateParams) {");
+        builder.append("\n.run(function($rootScope, $state, $stateParams) {");
         builder.append("$rootScope.$state = $state;");
         builder.append("$rootScope.$stateParams = $stateParams;");
         builder.append("})");
@@ -309,8 +317,15 @@ public class AngularJsEvents {
             
             buildCombindAllModule(builder);
             
+            builder.append("/*\n");
+            builder.append("*\n");
+            builder.append("* ============== Applications =================");
+            builder.append("*\n");
+            builder.append("*/\n");
+            
             // apps
             for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
+                builder.append("\n// Application [" + modelNgApplication.name + "] with default state[" + modelNgApplication.defaultState + "] and disable auto scrolling[" + modelNgApplication.disableAutoScrolling + "]\n");
                 buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultState, modelNgApplication.disableAutoScrolling, modelNgApplication.getModelNgStates(), builder);
             }
             
