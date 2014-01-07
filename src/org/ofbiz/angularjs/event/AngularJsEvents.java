@@ -179,7 +179,7 @@ public class AngularJsEvents {
         // states
         StringBuilder stateBuilder = new StringBuilder();
         if (UtilValidate.isNotEmpty(modelNgStates)) {
-            stateBuilder.append("$stateProvider");
+            stateBuilder.append("\n$stateProvider");
             for (ModelNgState modelNgState : modelNgStates) {
 
                 if (UtilValidate.isNotEmpty(defaultState) && defaultState.equals(modelNgState.name)) {
@@ -206,7 +206,9 @@ public class AngularJsEvents {
         // default path
         if (UtilValidate.isNotEmpty(defaultUrl)) {
             builder.append("//- Default URL[" + defaultUrl + "] of state[" + defaultState + "]\n\n");
-            builder.append("\n$urlRouterProvider.otherwise(\"" + defaultUrl + "\");");
+            builder.append("\n$urlRouterProvider.otherwise(function($injector, $location) {"
+                    + "return \"" + defaultUrl + "\";"
+                    + "});");
         }
         
         builder.append(stateBuilder);
