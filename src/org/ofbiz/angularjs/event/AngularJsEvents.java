@@ -123,7 +123,18 @@ public class AngularJsEvents {
     }
     
     private static void buildCombindAllModule(StringBuilder builder) {
-        builder.append("\nangular.module('combine.all', [])");
+        builder.append("\nangular.module('combine.all', [");
+        
+        // modules
+        List<String> moduleNames = new LinkedList<String>();
+        for (ModelNgModule modelModule : NgModelDispatcherContext.getAllModelNgModules()) {
+            moduleNames.add("'" + modelModule.name + "'");
+        }
+        
+        if (UtilValidate.isNotEmpty(moduleNames)) {
+            builder.append(StringUtil.join(moduleNames, ","));
+        }
+        builder.append("])\n");
         
         // directives
         String emptyJsFunction = "function() {}";
@@ -159,19 +170,7 @@ public class AngularJsEvents {
     }
     
     private static void buildAppJsFunction(String name, String defaultState, boolean disableAutoScrolling, List<? extends ModelNgState> modelNgStates, StringBuilder builder) {
-        builder.append("\nangular.module('" + name + "', [");
-        
-        // modules
-        List<String> moduleNames = new LinkedList<String>();
-        for (ModelNgModule modelModule : NgModelDispatcherContext.getAllModelNgModules()) {
-            moduleNames.add("'" + modelModule.name + "'");
-        }
-        moduleNames.add("'combine.all'");
-        
-        if (UtilValidate.isNotEmpty(moduleNames)) {
-            builder.append(StringUtil.join(moduleNames, ","));
-        }
-        builder.append("])\n");
+        builder.append("\nangular.module('" + name + "', ['combine.all'])");
         
         builder.append(".config(function($stateProvider, $urlRouterProvider, $anchorScrollProvider) {\n");
         
