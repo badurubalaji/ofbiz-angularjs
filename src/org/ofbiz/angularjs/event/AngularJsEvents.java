@@ -203,12 +203,10 @@ public class AngularJsEvents {
             }
         }
 
-        // default path
+        // default path (One page can have only one default path)
         if (UtilValidate.isNotEmpty(defaultUrl)) {
             builder.append("//- Default URL[" + defaultUrl + "] of state[" + defaultState + "]\n\n");
-            builder.append("\n$urlRouterProvider.otherwise(function($injector, $location) {"
-                    + "return \"" + defaultUrl + "\";"
-                    + "});");
+            builder.append("\n$urlRouterProvider.otherwise(\"" + defaultUrl + "\");");
         }
         
         builder.append(stateBuilder);
@@ -336,7 +334,7 @@ public class AngularJsEvents {
                 String elementName = "appElement_" + modelNgApplication.name;
                 String elementId = modelNgApplication.name + "-app";
                 builder.append("\nvar " + elementName + " = $('#" + elementId + "');");
-                builder.append("\nif(" + elementName + ") {");
+                builder.append("\nif(" + elementName + ".length > 0) {");
                 builder.append("\nangular.bootstrap(" + elementName + ", ['" + modelNgApplication.name + "']);");
                 builder.append("\n}");
             }
