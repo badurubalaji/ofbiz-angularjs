@@ -41,7 +41,7 @@
                 <section>
                     <widgets>
                         <platform-specific><html><html-template location="component://angularjs/templates/header.ftl"/></html></platform-specific>
-                        <container style="container" id="${activeApp}">
+                        <container style="container" id="${activeApp}-app">
                             <decorator-section-include name="body"/>
                         </container>
                         <platform-specific><html><html-template location="component://angularjs/templates/footer.ftl"/></html></platform-specific>
@@ -66,7 +66,7 @@
     <screen name="AngularJsCommonDecorator">
         <section>
             <actions>
-                <set field="activeApp" value="angularjs-app"/>
+                <set field="activeApp" value="angularjs"/>
             </actions>
             <widgets>
                 <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
@@ -91,7 +91,7 @@
     <screen name="ExampleCommonDecorator">
         <section>
             <actions>
-                <set field="activeApp" value="example-app"/>
+                <set field="activeApp" value="example"/>
             </actions>
             <widgets>
                 <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
