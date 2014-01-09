@@ -568,6 +568,7 @@ public class AngularJsScreenWidget {
             if (UtilValidate.isNotEmpty(options)) {
                 builder.append(" ng-options=\"" + options + "\"");
             }
+            builder.append(" class=\"form-control\"");
             builder.append(">");
             return builder.toString();
         }
@@ -679,10 +680,51 @@ public class AngularJsScreenWidget {
     }
 
     @SuppressWarnings("serial")
+    public static class Field extends ModelScreenWidget {
+        public static final String TAG_NAME = "field";
+        
+        protected String title;
+        protected List<ModelScreenWidget> subWidgets;
+        
+        public Field(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.title = FlexibleStringExpander.getInstance(widgetElement.getAttribute("title")).getOriginal();
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(rawString());
+            writer.append("<label class=\"col-sm-2 control-label\">" + title + "</label>");
+            writer.append("<div class=\"col-sm-10\">");
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</div>");
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div class=\"field-group\">";
+        }
+
+    }
+
+    /**
+     * http://getbootstrap.com/css/#forms
+     * @author chatree
+     *
+     */
+    @SuppressWarnings("serial")
     public static class Form extends ModelScreenWidget {
         public static final String TAG_NAME = "form";
 
         protected String name;
+        protected String type;
         protected String target;
         protected boolean validated;
         protected String style;
@@ -694,6 +736,7 @@ public class AngularJsScreenWidget {
         public Form(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name")).getOriginal();
+            this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
             this.target = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target")).getOriginal();
             this.validated = Boolean.valueOf(FlexibleStringExpander.getInstance(widgetElement.getAttribute("validated")).getOriginal());
             this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
@@ -721,7 +764,15 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("<form name=\"" + name + "\" class=\"" + style + "\" ");
+            builder.append("<form name=\"" + name + "\" class=\"");
+            if (UtilValidate.isNotEmpty(type)) {
+                builder.append(type + " ");
+            }
+            if (UtilValidate.isNotEmpty(style)) {
+                builder.append(style);
+            }
+            builder.append("\"");
+            
             if (!validated) {
                 builder.append("novalidate ");
             }
@@ -1653,7 +1704,7 @@ public class AngularJsScreenWidget {
                 type = "text";
             }
             
-            builder.append("<input type=\"" + type + "\" name=\"" + this.name + "\" class=\"" + this.style + "\"");
+            builder.append("<input type=\"" + type + "\" name=\"" + this.name + "\" class=\"form-control " + this.style + "\"");
             if (UtilValidate.isNotEmpty(placeholder)) {
                 builder.append(" placeholder=\"" + this.placeholder + "\"");
             }
@@ -1695,7 +1746,7 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("<textarea class=\"" + this.style + "\"");
+            builder.append("<textarea class=\"form-control " + this.style + "\"");
             if (UtilValidate.isNotEmpty(placeholder)) {
                 builder.append(" placeholder=\"" + this.placeholder + "\"");
             }
