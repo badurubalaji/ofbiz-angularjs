@@ -700,8 +700,10 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append(rawString());
-            writer.append("<label class=\"col-sm-2 control-label\">" + title + "</label>");
-            writer.append("<div class=\"col-sm-10\">");
+            if (UtilValidate.isNotEmpty(title)) {
+                writer.append("<label class=\"control-label\">" + title + "</label>");
+            }
+            writer.append("<div class=\"controls\">");
             renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
             writer.append("</div>");
             writer.append("</div>");
@@ -709,7 +711,7 @@ public class AngularJsScreenWidget {
 
         @Override
         public String rawString() {
-            return "<div class=\"field-group\">";
+            return "<div class=\"control-group\">";
         }
 
     }
@@ -764,7 +766,7 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("<form name=\"" + name + "\" class=\"");
+            builder.append("<form name=\"" + name + "\" role=\"form\" class=\"");
             if (UtilValidate.isNotEmpty(type)) {
                 builder.append(type + " ");
             }
