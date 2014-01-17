@@ -1292,6 +1292,48 @@ public class AngularJsScreenWidget {
     }
     
     @SuppressWarnings("serial")
+    public static class Panel extends ModelScreenWidget {
+        public static final String TAG_NAME = "panel";
+        
+        protected String style;
+        protected String headerText;
+        protected List<ModelScreenWidget> subWidgets;
+        
+        public Panel(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
+            this.headerText = FlexibleStringExpander.getInstance(widgetElement.getAttribute("header-text")).getOriginal();
+
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            if (UtilValidate.isNotEmpty(headerText)) {
+                writer.append("<div class=\"panel-heading\">");
+                writer.append(headerText);
+                writer.append("</div>");
+            }
+            writer.append("<div class=\"panel-body\">");
+            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+            writer.append("</div>");
+            writer.append("</div>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<div class=\"panel " + style + "\">";
+        }
+
+    }
+    
+    @SuppressWarnings("serial")
     public static class PreformattedText extends ModelScreenWidget {
         public static final String TAG_NAME = "preformatted-text";
         
