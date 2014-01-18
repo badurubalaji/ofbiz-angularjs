@@ -302,6 +302,15 @@
             </widgets>
         </section>
     </screen>
+    <screen name="Html">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html><html-template location="component://angularjs/templates/example/html.ftl"/></html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
     <screen name="ExampleNameGridCell">
         <section>
             <widgets>

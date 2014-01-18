@@ -14,6 +14,9 @@
         <state name="widget" url="/widget">
             <view name="main" target="widget" controller="org.ofbiz.angularjs.example.controller.WidgetController"/>
         </state>
+        <state name="html" url="/html">
+            <view name="main" target="html"/>
+        </state>
         
         <!-- 
         http://stackoverflow.com/questions/16822559/three-level-nested-routes-in-angular-ui-router

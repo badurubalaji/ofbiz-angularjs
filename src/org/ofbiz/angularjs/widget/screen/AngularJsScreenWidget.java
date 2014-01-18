@@ -766,10 +766,8 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("<form name=\"" + name + "\" role=\"form\" class=\"");
-            if (UtilValidate.isNotEmpty(type)) {
-                builder.append(type + " ");
-            }
+            String formStyle = "form-" + type;
+            builder.append("<form name=\"" + name + "\" role=\"form\" class=\"" + formStyle + " ");
             if (UtilValidate.isNotEmpty(style)) {
                 builder.append(style);
             }
