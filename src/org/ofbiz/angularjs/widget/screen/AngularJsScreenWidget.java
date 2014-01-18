@@ -900,6 +900,7 @@ public class AngularJsScreenWidget {
                 for (Element fieldElement : fieldElements) {
                     fieldsBuilder.append("{");
                     String name = UtilXml.elementAttribute(fieldElement, "name", null);
+                    String fieldName = UtilXml.elementAttribute(fieldElement, "field-name", null);
                     String title = UtilXml.elementAttribute(fieldElement, "title", null);
                     String editable = UtilXml.elementAttribute(fieldElement, "editable", null);
                     String headerCellTemplateUri = UtilXml.elementAttribute(fieldElement, "header-cell-template-uri", null);
@@ -907,7 +908,11 @@ public class AngularJsScreenWidget {
                     String editableCellTemplateUri = UtilXml.elementAttribute(fieldElement, "editable-cell-template-uri", null);
                     String sortDirection = UtilXml.elementAttribute(fieldElement, "sort-direction", null);
                     
-                    fieldsBuilder.append("field:'" + name + "'");
+                    if (UtilValidate.isNotEmpty(fieldName)) {
+                        fieldsBuilder.append("field:'" + fieldName + "'");
+                    } else {
+                        fieldsBuilder.append("field:'" + name + "'");
+                    }
                     if (UtilValidate.isNotEmpty(title)) {
                         fieldsBuilder.append(",displayName:'" + title + "'");
                     }
