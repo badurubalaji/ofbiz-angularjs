@@ -907,11 +907,12 @@ public class AngularJsScreenWidget {
                     String cellTemplateUri = UtilXml.elementAttribute(fieldElement, "cell-template-uri", null);
                     String editableCellTemplateUri = UtilXml.elementAttribute(fieldElement, "editable-cell-template-uri", null);
                     String sortDirection = UtilXml.elementAttribute(fieldElement, "sort-direction", null);
-                    
+
+                    fieldsBuilder.append("name:'" + name + "'");
                     if (UtilValidate.isNotEmpty(fieldName)) {
-                        fieldsBuilder.append("field:'" + fieldName + "'");
+                        fieldsBuilder.append(",field:'" + fieldName + "'");
                     } else {
-                        fieldsBuilder.append("field:'" + name + "'");
+                        fieldsBuilder.append(",field:'" + name + "'");
                     }
                     if (UtilValidate.isNotEmpty(title)) {
                         fieldsBuilder.append(",displayName:'" + title + "'");

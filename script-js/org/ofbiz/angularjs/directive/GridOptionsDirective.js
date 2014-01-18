@@ -222,10 +222,28 @@ function GridOptionsDirective(HttpService, $timeout) {
                 var onRowDoubleClicked = self.myGrid.config.onRowDoubleClicked;
                 if (onRowDoubleClicked) {
                     $timeout(function() {
-                        onRowDoubleClicked(self.$scope.selectedItems[0]);
+                        var selectedItem = self.$scope.selectedItems[0];
+                        onRowDoubleClicked(adjustFieldNames(selectedItem));
                     }, 100)
                 }
             };
+        }
+        
+        /**
+         * Adjust Field Names
+         * @param rowItem
+         * @returns
+         */
+        function adjustFieldNames(rowItem) {
+            var keys = _.keys(rowItem);
+            _.each(columnDefs, function(columnDef) {
+                if (!_.contains(keys, columnDef.name)) {
+                    var value = rowItem[columnDef.field];
+                    rowItem[columnDef.name] = value;
+                    delete rowItem[columnDef.field];
+                }
+            });
+            return rowItem;
         }
 
         $scope.grid = {
