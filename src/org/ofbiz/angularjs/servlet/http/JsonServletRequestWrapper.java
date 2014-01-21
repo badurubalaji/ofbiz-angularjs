@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
@@ -32,6 +33,8 @@ public class JsonServletRequestWrapper extends HttpServletRequestWrapper {
             jsonObject = (JSONObject) JSONSerializer.toJSON(jsonString);
         } catch (IOException e) {
             Debug.logError(e, module);
+        } catch (JSONException e) {
+            //  Do nothing
         }
     }
     

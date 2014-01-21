@@ -61,7 +61,15 @@
         <servlet-class>org.ofbiz.webapp.control.ControlServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>ControlWebSocketServlet</servlet-name>
+        <display-name>ControlWebSocketServlet</display-name>
+        <description>Main Control Web Socket Servlet</description>
+        <servlet-class>org.ofbiz.angularjs.webapp.control.ControlWebSocketServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping><servlet-name>ControlServlet</servlet-name><url-pattern>/control/*</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>ControlWebSocketServlet</servlet-name><url-pattern>/controlws/endpoint</url-pattern></servlet-mapping>
 
     <session-config><session-timeout>60</session-timeout><!-- in minutes --></session-config>
 
