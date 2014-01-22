@@ -17,6 +17,9 @@
         <state name="html" url="/html">
             <view name="main" target="html"/>
         </state>
+        <state name="socket" url="/socket">
+            <view name="main" target="socket" controller="org.ofbiz.angularjs.example.controller.SocketController"/>
+        </state>
         
         <!-- 
         http://stackoverflow.com/questions/16822559/three-level-nested-routes-in-angular-ui-router

@@ -32,6 +32,7 @@
     <request-map uri="example"><security https="false" auth="true"/><response name="success" type="view" value="Example"/></request-map>
     <request-map uri="widget"><security https="false" auth="true"/><response name="success" type="view" value="Widget"/></request-map>
     <request-map uri="html"><security https="false" auth="true"/><response name="success" type="view" value="Html"/></request-map>
+    <request-map uri="socket"><security https="false" auth="true"/><response name="success" type="view" value="Socket"/></request-map>
     <request-map uri="ExampleNameGridCell"><security https="false" auth="true"/><response name="success" type="view" value="ExampleNameGridCell"/></request-map>
     <request-map uri="ViewExample"><security https="false" auth="true"/><response name="success" type="view" value="ViewExample"/></request-map>
     
@@ -93,6 +94,7 @@
     <view-map name="Example" type="screen" page="component://angularjs/widget/ExampleScreens.xml#Example"/>
     <view-map name="Widget" type="screen" page="component://angularjs/widget/ExampleScreens.xml#Widget"/>
     <view-map name="Html" type="screen" page="component://angularjs/widget/ExampleScreens.xml#Html"/>
+    <view-map name="Socket" type="screen" page="component://angularjs/widget/ExampleScreens.xml#Socket"/>
     <view-map name="ExampleNameGridCell" type="screen" page="component://angularjs/widget/ExampleScreens.xml#ExampleNameGridCell"/>
     <view-map name="ViewExample" type="screen" page="component://angularjs/widget/ExampleScreens.xml#ViewExample"/>
     

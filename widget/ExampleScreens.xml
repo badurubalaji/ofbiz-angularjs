@@ -311,6 +311,15 @@
             </widgets>
         </section>
     </screen>
+    <screen name="Socket">
+        <section>
+            <widgets>
+                <label text="Name: {{name}}"/>
+                <line-break/>
+                <text model="name"/>
+            </widgets>
+        </section>
+    </screen>
     <screen name="ExampleNameGridCell">
         <section>
             <widgets>

@@ -104,6 +104,7 @@
                                         <menu-item text="Feature" target="feature.list" active-state="feature"/>
                                         <menu-item text="Widget" target="widget"/>
                                         <menu-item text="HTML" target="html"/>
+                                        <menu-item text="Socket" target="socket"/>
                                     </menu-bar>
                                     <alert repeat="alert in alerts" type="alert.type" close="closeAlert($index)" text="{{alert.msg}}"/>
                                     <view name="main"/>
