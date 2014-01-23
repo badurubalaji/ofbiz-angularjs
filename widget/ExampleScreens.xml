@@ -317,6 +317,8 @@
                 <label text="Name: {{name}}"/>
                 <line-break/>
                 <text model="name"/>
+                <line-break/>
+                <label text="{{response}}"/>
             </widgets>
         </section>
     </screen>

@@ -7,18 +7,20 @@ function SocketService($rootScope) {
 
     var eventScope = $rootScope.$new(true);
     
-    this.newSocket = function(url) {
-        var socket = new WebSocket(url);
-        socket.onopen = function(event) {
-            
-        }
-        socket.onmessage = function(event) {
-            eventScope.$emit("ON_SOCKET_MESSAGE", event.data);
-        }
-        socket.onclose = function(event) {
-            
-        }
-        return socket;
+    var socket = new WebSocket("wss://localhost:8443/angularjs/controlws");
+    
+    socket.onopen = function(event) {
+        
+    }
+    socket.onmessage = function(event) {
+        eventScope.$emit("ON_SOCKET_MESSAGE", event.data);
+    }
+    socket.onclose = function(event) {
+        
+    }
+    
+    this.send = function(data) {
+        socket.send(data);
     }
     
     this.addHandler = function(eventName, handler) {
