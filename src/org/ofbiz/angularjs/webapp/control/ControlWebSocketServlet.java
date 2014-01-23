@@ -6,6 +6,8 @@ import org.apache.catalina.websocket.StreamInbound;
 import org.apache.catalina.websocket.WebSocketServlet;
 
 public class ControlWebSocketServlet extends WebSocketServlet {
+	
+	public final static String module = ControlWebSocketServlet.class.getName();
 
     @Override
     protected StreamInbound createWebSocketInbound(String subProtocol,

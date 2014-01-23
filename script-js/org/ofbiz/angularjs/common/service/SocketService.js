@@ -3,9 +3,25 @@ package org.ofbiz.angularjs.common.service;
 /**
  * Socket Service
  */
-function SocketService() {
+function SocketService($rootScope) {
+
+    var eventScope = $rootScope.$new(true);
     
-    this.newSocket = function(url, protocal) {
-        return new WebSocket(url, [protocal] );
+    this.newSocket = function(url) {
+        var socket = new WebSocket(url);
+        socket.onopen = function(event) {
+            
+        }
+        socket.onmessage = function(event) {
+            eventScope.$emit("ON_SOCKET_MESSAGE", event.data);
+        }
+        socket.onclose = function(event) {
+            
+        }
+        return socket;
+    }
+    
+    this.addHandler = function(eventName, handler) {
+        eventScope.$on(eventName, handler);
     }
 }

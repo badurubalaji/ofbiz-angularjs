@@ -1577,13 +1577,27 @@ public class AngularJsScreenWidget {
                     String text = FlexibleStringExpander.getInstance(tabItemElement.getAttribute("text")).getOriginal();
                     String target = FlexibleStringExpander.getInstance(tabItemElement.getAttribute("target")).getOriginal();
                     String activeState = FlexibleStringExpander.getInstance(tabItemElement.getAttribute("active-state")).getOriginal();
+                    String style = FlexibleStringExpander.getInstance(tabItemElement.getAttribute("style")).getOriginal();
+                    String onSelect = FlexibleStringExpander.getInstance(tabItemElement.getAttribute("on-select")).getOriginal();
                     
                     if (UtilValidate.isEmpty(activeState)) {
                         activeState = target;
                     }
                     
-                    writer.append("<li ng-class=\"{active: $state.includes('" + activeState + "')}\">");
-                    writer.append("<a ui-sref=\"" + target + "\">" + text + "</a>");
+                    writer.append("<li class=\"" + style + "\" ");
+                    if (UtilValidate.isNotEmpty(target)) {
+                        writer.append("ng-class=\"{active: $state.includes('" + activeState + "')}\"");
+                    }
+                    writer.append(">");
+                    if (UtilValidate.isNotEmpty(target)) {
+                        writer.append("<a ui-sref=\"" + target + "\">" + text + "</a>");
+                    } else {
+                        writer.append("<a ");
+                        if (UtilValidate.isNotEmpty(onSelect)) {
+                            writer.append("ng-click=\"" + onSelect + "\"");
+                        }
+                        writer.append(">" + text + "</a>");
+                    }
                     writer.append("</li>");
                 }
             }

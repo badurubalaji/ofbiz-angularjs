@@ -8,6 +8,8 @@ import org.apache.catalina.websocket.MessageInbound;
 import org.apache.catalina.websocket.StreamInbound;
 
 public class RequestMessageInbound extends MessageInbound {
+	
+	public final static String module = RequestMessageInbound.class.getName();
 
     @Override
     protected void onBinaryMessage(ByteBuffer message) throws IOException {
