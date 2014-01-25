@@ -6,6 +6,10 @@ function HttpService($rootScope, $q, $http, appBusy) {
      * Post
      */
     this.post = function(target, parameters) {
+        return this.post(target, parameters, null);
+    }
+    
+    this.post = function(target, parameters, header) {
         var deferred = $q.defer();
         var promise = deferred.promise;
         var successFn = null;
@@ -20,6 +24,7 @@ function HttpService($rootScope, $q, $http, appBusy) {
         }
         
         appBusy.set();
+        $rootScope.$emit("ON_HTTP_REQUEST_WILL_SEND", {});
         $http.post(target, parameters)
         .success(function(data, status, headers, config) {
             appBusy.set(false);

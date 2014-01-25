@@ -975,6 +975,34 @@ public class AngularJsScreenWidget {
     }
 
     @SuppressWarnings("serial")
+    public static class Hidden extends ModelScreenWidget {
+        public static final String TAG_NAME = "hidden";
+        
+        protected String name;
+        protected String value;
+        
+        public Hidden(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name")).getOriginal();
+            this.value = FlexibleStringExpander.getInstance(widgetElement.getAttribute("value")).getOriginal();
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(rawString());
+        }
+
+        @Override
+        public String rawString() {
+            return "<input type=\"hidden\" name=\"" + name + "\" value=\"" + value + "\"/>";
+        }
+
+    }
+
+    @SuppressWarnings("serial")
     public static class Html extends ModelScreenWidget {
         public static final String TAG_NAME = "html";
         

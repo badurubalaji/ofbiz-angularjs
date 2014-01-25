@@ -2,6 +2,7 @@
 <ng-services
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://code.google.com/p/ofbiz-angularjs/dtds/ng-services.xsd">
+    <ng-service name="GridService" location="org.ofbiz.angularjs.common.service.GridService"/>
     <ng-service name="FormService" location="org.ofbiz.angularjs.common.service.FormService"/>
     <ng-service name="HttpService" location="org.ofbiz.angularjs.common.service.HttpService"/>
     <ng-service name="SocketService" location="org.ofbiz.angularjs.common.service.SocketService"/>

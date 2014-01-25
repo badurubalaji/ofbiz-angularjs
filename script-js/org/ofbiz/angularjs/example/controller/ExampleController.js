@@ -5,7 +5,7 @@ package org.ofbiz.angularjs.example.controller;
  * 
  * @param $scope
  */
-function ExampleController($scope, $timeout) {
+function ExampleController($scope, $timeout, GridService) {
     
     $scope.editExample = {};
     
