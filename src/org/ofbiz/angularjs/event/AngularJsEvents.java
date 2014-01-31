@@ -173,17 +173,27 @@ public class AngularJsEvents {
         builder.append("\nangular.module('" + name + "', ['combine.all'])");
         
         builder.append(".config(function($stateProvider, $urlRouterProvider, $anchorScrollProvider) {\n");
-        
-        String defaultUrl = null;
+
+        String defaultUrl = "";
+        List<String> defaultStateTokens = StringUtil.split(defaultState, ".");
         
         // states
         StringBuilder stateBuilder = new StringBuilder();
         if (UtilValidate.isNotEmpty(modelNgStates)) {
             stateBuilder.append("\n$stateProvider");
             for (ModelNgState modelNgState : modelNgStates) {
+                
+                // append default URL
+                String defaultStateTokenTail = "";
+                for (String defaultStateToken : defaultStateTokens) {
+                    defaultStateTokenTail += defaultStateToken;
 
-                if (UtilValidate.isNotEmpty(defaultState) && defaultState.equals(modelNgState.name)) {
-                    defaultUrl = modelNgState.url;
+                    if (UtilValidate.isNotEmpty(defaultStateTokenTail) && defaultStateTokenTail.equals(modelNgState.name)) {
+                        defaultUrl += modelNgState.url;
+                        break;
+                    }
+                    
+                    defaultStateTokenTail += ".";
                 }
                 
                 stateBuilder.append("\n//- State[" + modelNgState.name + "] is abstract[" + modelNgState.isAbstract + "] with URL[" + modelNgState.url + "]\n");
