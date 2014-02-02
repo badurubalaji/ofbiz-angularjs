@@ -12,6 +12,7 @@ function GridOptionsDirective(HttpService, $timeout) {
         var modelName = $attrs.model;
         var rowHeight = $attrs.rowHeight;
         var selectTarget = $attrs.selectTarget;
+        var selectParameters = $scope.$eval($attrs.selectParameters);
         var listName = $attrs.listName;
         var columnDefs = $scope.$eval($attrs.columnDefs);
         var pageSizes = $scope.$eval($attrs.pageSizes);
@@ -91,6 +92,15 @@ function GridOptionsDirective(HttpService, $timeout) {
                 if ($scope.orderBy) {
                     postData.orderBy = $scope.orderBy;
                 }
+                
+                // add select parameters
+                if (selectParameters) {
+                    for (key in selectParameters) {
+                        var value = selectParameters[key];
+                        postData[key] = value;
+                    }
+                }
+                
                 if (parameters) {
                     for (key in parameters) {
                         var value = parameters[key];
