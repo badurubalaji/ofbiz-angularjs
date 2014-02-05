@@ -1814,6 +1814,7 @@ public class AngularJsScreenWidget {
     public static class TextArea extends ModelScreenWidget {
         public static final String TAG_NAME = "textarea";
 
+        protected String name;
         protected String model;
         protected String style;
         protected String placeholder;
@@ -1821,6 +1822,7 @@ public class AngularJsScreenWidget {
 
         public TextArea(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
+            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name")).getOriginal();
             this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
             this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
             this.placeholder = FlexibleStringExpander.getInstance(widgetElement.getAttribute("placeholder")).getOriginal();
@@ -1838,7 +1840,7 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("<textarea class=\"form-control " + this.style + "\"");
+            builder.append("<textarea name=\"" + this.name + "\" class=\"form-control " + this.style + "\"");
             if (UtilValidate.isNotEmpty(placeholder)) {
                 builder.append(" placeholder=\"" + this.placeholder + "\"");
             }
