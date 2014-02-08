@@ -297,7 +297,7 @@
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.NumberDemoController">
                     <label text="Price: "/>
-                    <number name="price" model="price" type="integer" min="0" max="100" />
+                    <number name="price" model="numberModel.price" type="integer" min="0" max="100" />
                     <line-break/>
                     <label text="Price is {{price}}."/>
                 </controller>

@@ -6,5 +6,7 @@ package org.ofbiz.angularjs.demo.controller;
  * @param $scope
  */
 function NumberDemoController($scope) {
-    
+    var numberModel = {};
+    numberModel.price = 12;
+    $scope.numberModel = numberModel;
 }
