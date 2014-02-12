@@ -18,7 +18,7 @@
         priority="0" replace="false" transclude="false" restrict="A" scope="false"/>
     
     <ng-directive name="jitTree" location="org.ofbiz.angularjs.directive.jit.JitTreeDirective"
-        priority="0" replace="false" transclude="false" restrict="E" scope="false"/>
+        priority="0" replace="false" transclude="false" restrict="A" scope="false"/>
     
     <ng-directive name="context" location="org.ofbiz.angularjs.directive.ContextDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="false"/>

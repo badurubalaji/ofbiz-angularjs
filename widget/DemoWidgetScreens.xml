@@ -185,7 +185,7 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.JitTreeDemoController">
-                    <jit-tree type="space" id="sampleTree" model="json"/>
+                    <jit-tree type="space" model="json"/>
                 </controller>
             </widgets>
         </section>

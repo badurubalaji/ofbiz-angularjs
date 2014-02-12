@@ -16,16 +16,16 @@ function JitTreeDirective() {
             height = "400px";
         }
         
-        var container = $element.find("div");
-        var id = container.attr("id");
-        container.css("width", width);
-        container.css("height", height);
-        container.css("margin", "auto");
-        container.css("position", "relative");
-        container.css("overflow", "hidden");
+        var id = _.uniqueId("jitTree");
+        $element.attr("id", id);
+        $element.css("width", width);
+        $element.css("height", height);
+        $element.css("margin", "auto");
+        $element.css("position", "relative");
+        $element.css("overflow", "hidden");
         
         
-        var st = new $jit.ST({
+        var spaceTree = new $jit.ST({
             //id of viz container element
             injectInto: id,
             //set duration for the animation
@@ -72,14 +72,14 @@ function JitTreeDirective() {
                 label.onclick = function(){
                     /*
                     if(normal.checked) {
-                      st.onClick(node.id);
+                      spaceTree.onClick(node.id);
                     } else {
-                    st.setRoot(node.id, 'animate');
+                    spaceTree.setRoot(node.id, 'animate');
                     }
                     */
                     
-                    //st.setRoot(node.id, 'animate');
-                    st.onClick(node.id);
+                    //spaceTree.setRoot(node.id, 'animate');
+                    spaceTree.onClick(node.id);
                 };
                 //set label styles
                 var style = label.style;
@@ -135,15 +135,15 @@ function JitTreeDirective() {
         });
         
         var model = $scope[$attrs.model];
-        
-        //load json data
-        st.loadJSON(model);
-        //compute node positions and layout
-        st.compute();
-        //optional: make a translation of the tree
-        st.geom.translate(new $jit.Complex(-200, 0), "current");
-        //emulate a click on the root node.
-        st.onClick(st.root);
+        if (model != null) {
+            loadNodes(spaceTree, model);
+        } else {
+            $scope.$watch($attrs.model, function(value) {
+                if (value != null) {
+                    loadNodes(spaceTree, value);
+                }
+            });
+        }
     };
     
     this.compile = function() {
@@ -160,4 +160,15 @@ function JitTreeDirective() {
     this.link = function() {
     
     };
+    
+    function loadNodes(spaceTree, model) {
+        //load json data
+        spaceTree.loadJSON(model);
+        //compute node positions and layout
+        spaceTree.compute();
+        //optional: make a translation of the tree
+        spaceTree.geom.translate(new $jit.Complex(-200, 0), "current");
+        //emulate a click on the root node.
+        spaceTree.onClick(spaceTree.root);
+    }
 }

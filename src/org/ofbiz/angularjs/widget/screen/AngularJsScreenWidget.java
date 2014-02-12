@@ -1033,13 +1033,11 @@ public class AngularJsScreenWidget {
     public static class JitTree extends ModelScreenWidget {
         public static final String TAG_NAME = "jit-tree";
 
-        protected String id = null;
         protected String type = null;
         protected String model = null;
 
         public JitTree(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.id = FlexibleStringExpander.getInstance(widgetElement.getAttribute("id")).getOriginal();
             this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
             this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
         }
@@ -1049,12 +1047,11 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append(this.rawString());
-            writer.append("<div id=\"" + id + "\"></div>");
-            writer.append("</jit-tree>");
+            writer.append("</div>");
         }
         @Override
         public String rawString() {
-            return "<jit-tree type=\"" + type + "\" model=\"" + model + "\">";
+            return "<div jit-tree type=\"" + type + "\" model=\"" + model + "\">";
         }
         
     }
