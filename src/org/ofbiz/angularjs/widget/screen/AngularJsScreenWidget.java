@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.GeneralException;
 import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilValidate;
@@ -1763,19 +1764,19 @@ public class AngularJsScreenWidget {
     public static class Text extends ModelScreenWidget {
         public static final String TAG_NAME = "text";
 
-        protected String name;
-        protected String type;
-        protected String model;
-        protected String style;
-        protected String placeholder;
+        protected FlexibleStringExpander nameExdr;
+        protected FlexibleStringExpander typeExdr;
+        protected FlexibleStringExpander modelExdr;
+        protected FlexibleStringExpander styleExdr;
+        protected FlexibleStringExpander placeholderExdr;
 
         public Text(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.name = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name")).getOriginal();
-            this.type = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type")).getOriginal();
-            this.model = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model")).getOriginal();
-            this.style = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style")).getOriginal();
-            this.placeholder = FlexibleStringExpander.getInstance(widgetElement.getAttribute("placeholder")).getOriginal();
+            this.nameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name"));
+            this.typeExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type"));
+            this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
+            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("style"));
+            this.placeholderExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("placeholder"));
         }
 
         @Override
@@ -1783,26 +1784,28 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
-        }
-
-        @Override
-        public String rawString() {
-            StringBuilder builder = new StringBuilder();
+            String name = nameExdr.expandString(context);
+            String type = typeExdr.expandString(context);
+            String model = modelExdr.expandString(context);
+            String style = styleExdr.expandString(context);
+            String placeholder = placeholderExdr.expandString(context);
             if (UtilValidate.isEmpty(type)) {
                 type = "text";
             }
             
-            builder.append("<input type=\"" + type + "\" name=\"" + this.name + "\" class=\"form-control " + this.style + "\"");
+            writer.append("<input type=\"" + type + "\" name=\"" + name + "\" class=\"form-control " + style + "\"");
             if (UtilValidate.isNotEmpty(placeholder)) {
-                builder.append(" placeholder=\"" + this.placeholder + "\"");
+                writer.append(" placeholder=\"" + placeholder + "\"");
             }
             if (UtilValidate.isNotEmpty(model)) {
-                builder.append(" ng-model=\"" + this.model + "\"");
+                writer.append(" ng-model=\"" + model + "\"");
             }
-            builder.append("/>");
-            
-            return builder.toString();
+            writer.append("/>");
+        }
+
+        @Override
+        public String rawString() {
+            return "<input/>";
         }
         
     }
