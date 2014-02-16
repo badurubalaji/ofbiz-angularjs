@@ -5,9 +5,10 @@ package org.ofbiz.angularjs.directive.jit;
  */
 function JitTreeDirective() {
 
-    this.controller = function($scope, $element, $attrs, $transclude, $http) {
+    this.controller = function($scope, $element, $attrs, $transclude, $http, HttpService) {
         var width = $attrs.width;
         var height = $attrs.height;
+        var nodeTemplateUrl = $attrs.nodeTemplateUrl;
         
         if (width == null) {
             width = "100%";
@@ -68,7 +69,6 @@ function JitTreeDirective() {
             //your node.
             onCreateLabel: function(label, node){
                 label.id = node.id;            
-                label.innerHTML = node.name;
                 label.onclick = function(){
                     /*
                     if(normal.checked) {
@@ -78,18 +78,27 @@ function JitTreeDirective() {
                     }
                     */
                     
-                    //spaceTree.setRoot(node.id, 'animate');
+                    // spaceTree.setRoot(node.id, 'animate');
                     spaceTree.onClick(node.id);
                 };
-                //set label styles
-                var style = label.style;
-                style.width = 60 + 'px';
-                style.height = 17 + 'px';            
-                style.cursor = 'pointer';
-                style.color = '#333';
-                style.fontSize = '0.8em';
-                style.textAlign= 'center';
-                style.paddingTop = '3px';
+
+                if (!_.isEmpty(nodeTemplateUrl)) {
+                    HttpService.post(nodeTemplateUrl, {id: node.id, data: node.data})
+                        .success(function(data) {
+                            label.innerHTML = data;
+                        });;
+                } else {
+                    label.innerHTML = node.name;
+                    //set label styles
+                    var style = label.style;
+                    style.width = 60 + 'px';
+                    style.height = 70 + 'px';
+                    style.cursor = 'pointer';
+                    style.color = '#333';
+                    style.fontSize = '0.8em';
+                    style.textAlign= 'center';
+                    style.paddingTop = '3px';
+                }
             },
             
             //This method is called right before plotting

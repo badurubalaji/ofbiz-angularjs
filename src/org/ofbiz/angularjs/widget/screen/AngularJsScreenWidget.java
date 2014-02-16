@@ -1052,18 +1052,20 @@ public class AngularJsScreenWidget {
 
         protected FlexibleStringExpander typeExdr = null;
         protected FlexibleStringExpander modelExdr = null;
+        protected FlexibleStringExpander nodeTemplateUrlExdr = null;
 
         public JitTree(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.typeExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type"));
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
+            this.nodeTemplateUrlExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("node-template-url"));
         }
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<div jit-tree type=\"" + typeExdr.expandString(context) + "\" model=\"" + modelExdr.expandString(context) + "\">");
+            writer.append("<div jit-tree type=\"" + typeExdr.expandString(context) + "\" model=\"" + modelExdr.expandString(context) + "\" node-template-url=\"" + nodeTemplateUrlExdr.expandString(context) + "\">");
             writer.append("</div>");
         }
         @Override
