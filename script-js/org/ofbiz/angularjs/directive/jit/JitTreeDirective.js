@@ -9,6 +9,9 @@ function JitTreeDirective() {
         var width = $attrs.width;
         var height = $attrs.height;
         var nodeTemplateUrl = $attrs.nodeTemplateUrl;
+        var levelDistance = $attrs.levelDistance;
+        var nodeHeight = $attrs.nodeHeight;
+        var nodeWidth = $attrs.nodeWidth;
         
         if (width == null) {
             width = "100%";
@@ -16,6 +19,26 @@ function JitTreeDirective() {
         if (height == null) {
             height = "400px";
         }
+        
+        if(_.isEmpty(levelDistance)) {
+            levelDistance = 100;
+        } else {
+            levelDistance = parseInt(levelDistance);
+        }
+        
+        if(_.isEmpty(nodeHeight)) {
+            nodeHeight = 100;
+        } else {
+            nodeHeight = parseInt(nodeHeight);
+        }
+        
+        if(_.isEmpty(nodeWidth)) {
+            nodeWidth = 100;
+        } else {
+            nodeWidth = parseInt(nodeWidth);
+        }
+        
+        console.log(levelDistance + ", " + nodeHeight + ", " + nodeWidth);
         
         var id = _.uniqueId("jitTree");
         $element.attr("id", id);
@@ -34,7 +57,7 @@ function JitTreeDirective() {
             //set animation transition type
             transition: $jit.Trans.Quart.easeInOut,
             //set distance between node and its children
-            levelDistance: 50,
+            levelDistance: levelDistance,
             //enable panning
             Navigation: {
               enable:true,
@@ -44,10 +67,10 @@ function JitTreeDirective() {
             //set overridable=true for styling individual
             //nodes or edges
             Node: {
-                height: 20,
-                width: 60,
+                height: nodeHeight,
+                width: nodeWidth,
                 type: 'rectangle',
-                color: '#aaa',
+                //color: '#aaa',
                 overridable: true
             },
             
@@ -121,7 +144,7 @@ function JitTreeDirective() {
                         node.eachSubnode(function(n) { count++; });
                         //assign a node color based on
                         //how many children it has
-                        node.data.$color = ['#aaa', '#baa', '#caa', '#daa', '#eaa', '#faa'][count];                    
+                        node.data.$color = ['#aaa', '#baa', '#caa', '#daa', '#eaa', '#faa'][count];
                     }
                 }
             },

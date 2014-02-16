@@ -1053,19 +1053,26 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander typeExdr = null;
         protected FlexibleStringExpander modelExdr = null;
         protected FlexibleStringExpander nodeTemplateUrlExdr = null;
+        protected FlexibleStringExpander levelDistanceExdr = null;
+        protected FlexibleStringExpander nodeHeightExdr = null;
+        protected FlexibleStringExpander nodeWidthExdr = null;
 
         public JitTree(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.typeExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("type"));
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
             this.nodeTemplateUrlExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("node-template-url"));
+            this.levelDistanceExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("level-distance"));
+            this.nodeHeightExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("node-height"));
+            this.nodeWidthExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("node-width"));
         }
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<div jit-tree type=\"" + typeExdr.expandString(context) + "\" model=\"" + modelExdr.expandString(context) + "\" node-template-url=\"" + nodeTemplateUrlExdr.expandString(context) + "\">");
+            writer.append("<div jit-tree type=\"" + typeExdr.expandString(context) + "\" model=\"" + modelExdr.expandString(context) + "\" node-template-url=\"" + nodeTemplateUrlExdr.expandString(context) + "\" "
+                    + "level-distanc=\"" + levelDistanceExdr.expandString(context) + "\" node-height=\"" + nodeHeightExdr.expandString(context) + "\" node-width=\"" + nodeWidthExdr.expandString(context) + "\">");
             writer.append("</div>");
         }
         @Override
