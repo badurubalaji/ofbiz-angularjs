@@ -14,6 +14,8 @@ function LookupDirective(HttpService) {
     this.controller = function($scope, $element, $attrs, $transclude, $http) {
         var target = $attrs.target;
         var descriptionFieldName = $attrs.descriptionFieldName;
+        var ngModel = $attrs.ngModel;
+        var fieldName = $attrs.fieldName;
         
         $scope.getOptions = function($viewValue) {
             
@@ -31,6 +33,14 @@ function LookupDirective(HttpService) {
                 return "";
             }
         }
+        
+        $scope.$watch(ngModel, function(value) {
+           var fieldValue = null;
+           if (_.isObject(value) && !_.isEmpty(fieldName)) {
+               fieldValue = value[fieldName];
+           }
+           $element.next().next().val(fieldValue);
+        });
     }
 
     /**

@@ -1176,15 +1176,19 @@ public class AngularJsScreenWidget {
     @SuppressWarnings("serial")
     public static class Lookup extends ModelScreenWidget {
         public static final String TAG_NAME = "lookup";
-        
+
+        protected FlexibleStringExpander nameExdr = null;
         protected FlexibleStringExpander targetExdr = null;
         protected FlexibleStringExpander modelExdr = null;
+        protected FlexibleStringExpander fieldNameExdr = null;
         protected FlexibleStringExpander descriptionFieldNameExdr = null;
         
         public Lookup(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
+            nameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name"));
             targetExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target"));
             modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
+            fieldNameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("field-name"));
             descriptionFieldNameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("description-field-name"));
         }
 
@@ -1193,7 +1197,10 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<input type=\"text\" target=\"" + targetExdr.expandString(context) + "\" ng-model=\"" + modelExdr.expandString(context) + "\" typeahead=\"option as getOptionDescription(option) for option in getOptions($viewValue)\" description-field-name=\"" + descriptionFieldNameExdr.expandString(context) + "\" lookup/>");
+            writer.append("<span>");
+            writer.append("<input type=\"text\" target=\"" + targetExdr.expandString(context) + "\" ng-model=\"" + modelExdr.expandString(context) + "\" typeahead=\"option as getOptionDescription(option) for option in getOptions($viewValue)\" description-field-name=\"" + descriptionFieldNameExdr.expandString(context) + "\" field-name=\"" + fieldNameExdr.expandString(context) + "\" lookup/>");
+            writer.append("<input type=\"hidden\" name=\"" + nameExdr.expandString(context) + "\"/>");
+            writer.append("</span>");
         }
 
         @Override
