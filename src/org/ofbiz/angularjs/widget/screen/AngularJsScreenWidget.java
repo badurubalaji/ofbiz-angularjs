@@ -25,6 +25,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.ofbiz.base.util.BshUtil;
+import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.GeneralException;
 import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilValidate;
@@ -35,9 +37,21 @@ import org.ofbiz.widget.screen.ModelScreenWidget;
 import org.ofbiz.widget.screen.ScreenStringRenderer;
 import org.w3c.dom.Element;
 
+import bsh.EvalError;
+import bsh.Interpreter;
+
 public class AngularJsScreenWidget {
 
     public final static String module = AngularJsScreenWidget.class.getName();
+
+    private static Interpreter getBshInterpreter(Map<String, Object> context) throws EvalError {
+        Interpreter bsh = (Interpreter) context.get("bshInterpreter");
+        if (bsh == null) {
+            bsh = BshUtil.makeInterpreter(context);
+            context.put("bshInterpreter", bsh);
+        }
+        return bsh;
+    }
     
     @SuppressWarnings("serial")
     public static class Accordion extends ModelScreenWidget {
@@ -688,6 +702,7 @@ public class AngularJsScreenWidget {
         public static final String TAG_NAME = "field";
         
         protected FlexibleStringExpander titleExdr;
+        protected FlexibleStringExpander useWhenExdr;
         protected List<ModelScreenWidget> subWidgets;
         
         public Field(ModelScreen modelScreen, Element widgetElement) {
@@ -695,6 +710,7 @@ public class AngularJsScreenWidget {
             // read sub-widgets
             List<? extends Element> subElementList = UtilXml.childElementList(widgetElement);
             this.titleExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("title"));
+            this.useWhenExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("use-when"));
             this.subWidgets = ModelScreenWidget.readSubWidgets(this.modelScreen, subElementList);
         }
 
@@ -703,14 +719,45 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(rawString());
-            if (UtilValidate.isNotEmpty(titleExdr.getOriginal())) {
-                writer.append("<label class=\"control-label\">" + titleExdr.expandString(context) + "</label>");
+            
+            boolean usewhen = true;
+            String useWhenStr = useWhenExdr.expandString(context);
+            if (UtilValidate.isEmpty(useWhenStr)) {
+                usewhen = true;
+            } else {
+                try {
+                    Interpreter bsh = getBshInterpreter(context);
+                    Object retVal = bsh.eval(StringUtil.convertOperatorSubstitutions(useWhenStr));
+                    boolean condTrue = false;
+                    // retVal should be a Boolean, if not something weird is up...
+                    if (retVal instanceof Boolean) {
+                        Boolean boolVal = (Boolean) retVal;
+                        condTrue = boolVal.booleanValue();
+                    } else {
+                        throw new IllegalArgumentException("Return value from use-when condition eval was not a Boolean: "
+                                + (retVal != null ? retVal.getClass().getName() : "null") + " [" + retVal + "] on the field " + this.name);
+                    }
+    
+                    usewhen = condTrue;
+                } catch (EvalError e) {
+                    String errMsg = "Error evaluating BeanShell use-when condition [" + useWhenStr + "] on the field "
+                            + this.name  + ": " + e.toString();
+                    Debug.logError(e, errMsg, module);
+                    //Debug.logError("For use-when eval error context is: " + context, module);
+                    throw new IllegalArgumentException(errMsg);
+                }
             }
-            writer.append("<div class=\"controls\">");
-            renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
-            writer.append("</div>");
-            writer.append("</div>");
+            
+            if (usewhen) {
+                writer.append(rawString());
+                if (UtilValidate.isNotEmpty(titleExdr.getOriginal())) {
+                    writer.append("<label class=\"control-label\">" + titleExdr.expandString(context) + "</label>");
+                }
+                writer.append("<div class=\"controls\">");
+                renderSubWidgetsString(this.subWidgets, writer, context, screenStringRenderer);
+                writer.append("</div>");
+                writer.append("</div>");
+            }
         }
 
         @Override
