@@ -554,15 +554,21 @@ public class AngularJsScreenWidget {
     public static class Dropdown extends ModelScreenWidget {
         public static final String TAG_NAME = "dropdown";
 
+        protected FlexibleStringExpander nameExdr = null;
         protected FlexibleStringExpander modelExdr;
-        protected FlexibleStringExpander optionsExdr;
-        protected FlexibleStringExpander defaultTextExdr;
+        protected FlexibleStringExpander targetExdr;
+        protected FlexibleStringExpander placeholderExdr;
+        protected FlexibleStringExpander fieldNameExdr = null;
+        protected FlexibleStringExpander descriptionFieldNameExdr = null;
         
         public Dropdown(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
+            nameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name"));
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
-            this.optionsExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("options"));
-            this.defaultTextExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("default-text"));
+            this.targetExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target"));
+            this.placeholderExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("placeholder"));
+            fieldNameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("field-name"));
+            descriptionFieldNameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("description-field-name"));
         }
 
         @Override
@@ -570,20 +576,20 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<select ");
+            writer.append("<data dropdown-options");
             if (UtilValidate.isNotEmpty(modelExdr.getOriginal())) {
                 writer.append(" ng-model=\"" + modelExdr.expandString(context) + "\"");
             }
-            if (UtilValidate.isNotEmpty(optionsExdr.getOriginal())) {
-                writer.append(" ng-options=\"" + optionsExdr.expandString(context) + "\"");
+            if (UtilValidate.isNotEmpty(targetExdr.getOriginal())) {
+                writer.append(" target=\"" + targetExdr.expandString(context) + "\"");
             }
-            writer.append(" class=\"form-control\"");
+            writer.append(" description-field-name=\"" + descriptionFieldNameExdr.expandString(context) + "\" field-name=\"" + fieldNameExdr.expandString(context) + "\"");
+            writer.append(" placeholder=\"" + placeholderExdr.expandString(context) + "\" class=\"form-control\"");
             writer.append(">");
-            
-            if (UtilValidate.isNotEmpty(defaultTextExdr.getOriginal())) {
-                writer.append("<option value=\"\">" + defaultTextExdr.expandString(context) + "</option>");
+            if (UtilValidate.isNotEmpty(placeholderExdr.getOriginal())) {
+                writer.append("<option></option>");
             }
-            writer.append("</select>");
+            writer.append("</data>");
         }
 
         @Override

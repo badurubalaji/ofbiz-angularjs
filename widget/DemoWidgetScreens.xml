@@ -116,8 +116,8 @@
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.DropdownDemoController">
                     <label text="Color:"/>
-                    <dropdown model="color" options="c.name for c in colors" default-text="-- chose color --"/>
-                    <label text="Currently selected: {{ {selected_color:color}  }}"/>
+                    <dropdown model="country" target="FindCountry" field-name="geoId" description-field-name="geoName" placeholder="Choose Country"/>
+                    <label text="Currently selected: {{country.geoName}}"/>
                 </controller>
             </widgets>
         </section>
@@ -397,11 +397,11 @@
                     <preformatted-text>Time is: {{mytime | date:'shortTime' }}</preformatted-text>
                     <container>
                         <label text="Hours step is: "/>
-                        <dropdown model="hstep" options="opt for opt in options.hstep"/>
+<!--                         <dropdown model="hstep" options="opt for opt in options.hstep"/> -->
                     </container>
                     <container>
                         <label text="Minutes step is: "/>
-                        <dropdown model="mstep" options="opt for opt in options.mstep"/>
+<!--                         <dropdown model="mstep" options="opt for opt in options.mstep"/> -->
                     </container>
                     <button text="12H / 24H" on-click="toggleMode()"/>
                     <button text="Set to 14:00" on-click="update()"/>

@@ -25,6 +25,7 @@
                 <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.11.0.min.js" global="true"/>
                 
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/jit/jit.js" global="true"/>
+                
                 <set field="layoutSettings.styleSheets[+0]" value="/angularjs/images/css/style.css" global="true"/>
                 
 -                <script location="component://angularjs/webapp/angularjs/WEB-INF/actions/SetupModuleResources.groovy"/>
