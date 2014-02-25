@@ -576,7 +576,7 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<data dropdown-options");
+            writer.append("<data ui-select2=\"select2Options\" dropdown-options");
             if (UtilValidate.isNotEmpty(modelExdr.getOriginal())) {
                 writer.append(" ng-model=\"" + modelExdr.expandString(context) + "\"");
             }
