@@ -16,13 +16,14 @@
         <description>Generic service to return lookup JSON list.</description>
         <attribute name="entityName" mode="IN" type="String" optional="false"/>
         <attribute name="searchFields" mode="IN" type="String" optional="false"/>
-        <attribute name="term" mode="IN" type="String" optional="false"/>
+        <attribute name="term" mode="IN" type="String" optional="true"/>
         <attribute name="displayFields" mode="IN" type="String" optional="true"/>
         <attribute name="searchDistinct" mode="IN" type="Boolean" optional="true"/>
         <attribute name="searchValueFieldName" mode="IN" type="String" optional="true"/>
         <attribute name="searchType" mode="IN" type="String" optional="true"/>
         <attribute name="conditionFields" mode="IN" type="List" optional="true"/>
         <attribute name="andCondition" mode="IN" type="List" optional="true"/>
+        <attribute name="noConditionFind" mode="IN" type="String" optional="true"></attribute>
         <attribute name="viewSize" mode="IN" type="Integer" optional="true"/>
         <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="false"></attribute>
     </service>

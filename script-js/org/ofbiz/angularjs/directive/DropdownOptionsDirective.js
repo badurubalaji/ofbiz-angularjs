@@ -7,6 +7,7 @@ function DropdownOptionsDirective(HttpService, $rootScope) {
      */
     this.controller = function($scope, $element, $attrs, $transclude, $http) {
         var target = $attrs.target;
+        var parameters = $scope.$eval($attrs.parameters);
         var fieldName = $attrs.fieldName;
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
@@ -15,8 +16,22 @@ function DropdownOptionsDirective(HttpService, $rootScope) {
         $scope.select2Options = {
             placeholder: placeholder,
             allowClear: true,
-            data:[{id:0,text:'enhancement'},{id:1,text:'bug'},{id:2,text:'duplicate'},{id:3,text:'invalid'},{id:4,text:'wontfix'}]
-        }
+            data:[]
+        };
+        
+        HttpService.post(target, parameters).success(function (response) {
+            var options = response.options;
+            if (options) {
+                var data = [];
+	            for (var i = 0; i < options.length; i ++) {
+	                var option = options[i];
+	                data.push({"id": option[fieldName], "text": option[descriptionFieldName]});
+	            }
+	            
+	            $scope.select2Options.data = data;
+	            $($element).select2($scope.select2Options);
+            }
+        });
         
     }
 

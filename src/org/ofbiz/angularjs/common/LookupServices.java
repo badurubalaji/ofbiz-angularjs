@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilGenerics;
 import org.ofbiz.base.util.UtilProperties;
@@ -44,6 +45,7 @@ public class LookupServices {
         String searchType = (String) context.remove("searchType");
         List<String> conditionFields = (List) context.remove("conditionFields");
         EntityCondition andCondition = (EntityCondition) context.remove("andCondition");
+        String noConditionFind = (String) context.get("noConditionFind");
         Integer viewSize = (Integer) context.remove("viewSize");
         
         if (UtilValidate.isEmpty(displayFields)) {
@@ -98,7 +100,7 @@ public class LookupServices {
             // TODO: add additional conditions
         }
         
-        if (UtilValidate.isNotEmpty(orExprs) && UtilValidate.isNotEmpty(entityName) && UtilValidate.isNotEmpty(displayFields)) {
+        if ((UtilValidate.isNotEmpty(orExprs) && UtilValidate.isNotEmpty(entityName) && UtilValidate.isNotEmpty(displayFields)) || "Y".equals(noConditionFind)) {
             mainAndConds.add(EntityCondition.makeCondition(orExprs, EntityOperator.OR));
             
             if (UtilValidate.isNotEmpty(andCondition)) {

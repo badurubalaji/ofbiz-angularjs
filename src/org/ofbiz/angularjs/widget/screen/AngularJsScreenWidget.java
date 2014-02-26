@@ -557,6 +557,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander nameExdr = null;
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander targetExdr;
+        protected FlexibleStringExpander parametersExdr;
         protected FlexibleStringExpander placeholderExdr;
         protected FlexibleStringExpander fieldNameExdr = null;
         protected FlexibleStringExpander descriptionFieldNameExdr = null;
@@ -566,9 +567,10 @@ public class AngularJsScreenWidget {
             nameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("name"));
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("model"));
             this.targetExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("target"));
+            this.parametersExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("parameters"));
             this.placeholderExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("placeholder"));
-            fieldNameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("field-name"));
-            descriptionFieldNameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("description-field-name"));
+            this.fieldNameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("field-name"));
+            this.descriptionFieldNameExdr = FlexibleStringExpander.getInstance(widgetElement.getAttribute("description-field-name"));
         }
 
         @Override
@@ -582,6 +584,9 @@ public class AngularJsScreenWidget {
             }
             if (UtilValidate.isNotEmpty(targetExdr.getOriginal())) {
                 writer.append(" target=\"" + targetExdr.expandString(context) + "\"");
+            }
+            if (UtilValidate.isNotEmpty(parametersExdr.getOriginal())) {
+                writer.append(" parameters=\"" + parametersExdr.expandString(context) + "\"");
             }
             writer.append(" description-field-name=\"" + descriptionFieldNameExdr.expandString(context) + "\" field-name=\"" + fieldNameExdr.expandString(context) + "\"");
             writer.append(" placeholder=\"" + placeholderExdr.expandString(context) + "\" class=\"form-control\"");

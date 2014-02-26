@@ -33,6 +33,13 @@
         <response name="requirePasswordChange" type="view" value="requirePasswordChange"/>
         <response name="error" type="request" value="error"/>
     </request-map>
+    
+    <request-map uri="LookupGeo">
+        <security https="true" auth="true"/>
+        <event type="jsonsimple" path="component://angularjs/script/org/ofbiz/angularjs/common/CommonEvents.xml" invoke="LookupGeo"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="error"/>
+    </request-map>
 
     <!-- Request Mappings -->
     <request-map uri="error">
