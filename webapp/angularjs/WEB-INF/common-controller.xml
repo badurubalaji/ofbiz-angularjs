@@ -48,4 +48,11 @@
         <response name="success" type="none"/>
         <response name="error" type="none"/>
     </request-map>
+    
+    <request-map uri="upload">
+        <security https="true" auth="false"/>
+        <event type="java" path="org.ofbiz.angularjs.data.DataEvents" invoke="upload"/>
+        <response name="success" type="none"/>
+        <response name="error" type="none"/>
+    </request-map>
 </site-conf>

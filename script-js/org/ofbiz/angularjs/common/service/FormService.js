@@ -26,6 +26,8 @@ function FormService(HttpService) {
             if (data._ERROR_MESSAGE_ != undefined || data._ERROR_MESSAGE_LIST_ != undefined) {
                 $scope.$emit("ON_SUBMIT_ERROR", data, status, headers, config);
             } else {
+                console.log("response: " + data, status, headers, config);
+                console.log("data: " + angular.toJson(data));
                 $scope.$emit("ON_SUBMIT_SUCCESS", data, status, headers, config);
             }
         })

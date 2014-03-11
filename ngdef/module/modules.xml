@@ -67,4 +67,11 @@
         <styleSheet path="/angularjs/images/js/select2/select2.css"/>
         <styleSheet path="/angularjs/images/js/select2/select2-bootstrap.css"/>
     </ng-module>
+    <!--
+    http://angular-file-upload.appspot.com/
+     -->
+    <ng-module name="angularFileUpload" location="/angularjs/images/js/file-upload/angular-file-upload.js">
+        <javaScript path="/angularjs/images/js/file-upload/angular-file-upload-html5-shim.js"/>
+        <javaScript path="/angularjs/images/js/file-upload/FileAPI.min.js"/>
+    </ng-module>
 </ng-modules>
