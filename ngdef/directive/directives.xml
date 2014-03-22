@@ -40,4 +40,7 @@
     
     <ng-directive name="dropdownOptions" location="org.ofbiz.angularjs.directive.DropdownOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="false"/>
+    
+    <ng-directive name="fileOptions" location="org.ofbiz.angularjs.directive.FileOptionsDirective"
+        priority="0" replace="false" transclude="false" restrict="A" scope="false"/>
 </ng-directives>

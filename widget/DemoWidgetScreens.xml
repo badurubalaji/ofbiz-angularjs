@@ -436,9 +436,9 @@
                         <text name="fullname" model="fullname"/>
                         <line-break/>
                         <label text="Your picture: "/>
-                        <file name="file"/>
+                        <file name="file" on-upload-success="onUploadSuccess"/>
                         <line-break/>
-                        <submit text="Submit" on-upload="uploadComplete(content, completed)"/>
+                        <image src="/content/control/img?imgId={{dataResourceId}}"/>
                     </form>
                 </controller>
             </widgets>
