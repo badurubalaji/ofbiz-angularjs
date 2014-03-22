@@ -804,12 +804,15 @@ public class AngularJsScreenWidget {
         public static final String TAG_NAME = "file";
         
         protected FlexibleStringExpander nameExdr;
+        protected FlexibleStringExpander parametersExdr;
         protected FlexibleStringExpander onUploadSuccessExdr;
         
         public File(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("name"));
+            this.parametersExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("parameters"));
             this.onUploadSuccessExdr = FlexibleStringExpander
                     .getInstance(widgetElement
                             .getAttribute("on-upload-success"));
@@ -824,6 +827,8 @@ public class AngularJsScreenWidget {
             writer.append(" ng-file-select=\"onFileSelect($files)\"");
             writer.append(" on-upload-success=\""
                     + onUploadSuccessExdr.expandString(context) + "\"");
+            writer.append(" parameters=\""
+                    + parametersExdr.expandString(context) + "\"");
             writer.append(" name=\"" + nameExdr.expandString(context) + "\"/>");
         }
         

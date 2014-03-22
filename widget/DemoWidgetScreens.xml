@@ -436,7 +436,7 @@
                         <text name="fullname" model="fullname"/>
                         <line-break/>
                         <label text="Your picture: "/>
-                        <file name="file" on-upload-success="onUploadSuccess"/>
+                        <file name="file" on-upload-success="onUploadSuccess" parameters="{'fullname': fullname}"/>
                         <line-break/>
                         <image src="/content/control/img?imgId={{dataResourceId}}"/>
                     </form>

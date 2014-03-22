@@ -16,12 +16,13 @@ function FileOptionsDirective(HttpService, $upload) {
             //$files: an array of files selected, each file has name, size, and type.
             for (var i = 0; i < $files.length; i++) {
               var file = $files[i];
+              var parameters = $scope.$eval($attrs.parameters);
               $scope.upload = $upload.upload({
                 url: 'upload', //upload.php script, node.js route, or servlet url
                 // method: POST or PUT,
                 // headers: {'headerKey': 'headerValue'},
                 // withCredentials: true,
-                data: {myObj: $scope.myModelObj},
+                data: parameters,
                 file: file,
                 // file: $files, //upload multiple files, this feature only works in HTML5 FromData browsers
                 /* set file formData name for 'Content-Desposition' header. Default: 'file' */
