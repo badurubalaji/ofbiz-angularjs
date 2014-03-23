@@ -23,9 +23,11 @@ import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.FileUtil;
 import org.ofbiz.base.util.UtilGenerics;
 import org.ofbiz.base.util.UtilHttp;
+import org.ofbiz.base.util.UtilMisc;
 import org.ofbiz.base.util.UtilProperties;
 import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.content.data.DataResourceWorker;
+import org.ofbiz.entity.Delegator;
 import org.ofbiz.entity.GenericValue;
 import org.ofbiz.service.LocalDispatcher;
 
@@ -77,13 +79,16 @@ public class DataEvents {
         HttpSession session = request.getSession();
         LocalDispatcher dispatcher = (LocalDispatcher) request
                 .getAttribute("dispatcher");
+        Delegator delegator = (Delegator) request.getAttribute("delegator");
         
         GenericValue userLogin = (GenericValue) session
                 .getAttribute("userLogin");
         
+        Map<String, String> fieldMap = new HashMap<String, String>();
+        FileItem fileItem = null;
+        
         try {
             StringBuilder sb = new StringBuilder("{\"fields\": [");
-            
             if (request.getHeader("Content-Type") != null
                     && request.getHeader("Content-Type").startsWith(
                             "multipart/form-data")) {
@@ -112,30 +117,40 @@ public class DataEvents {
                     return "error";
                 }
                 
-                int fileItemCount = fileItems.size();
-                int fileItemIndex = 0;
                 for (FileItem item : fileItems) {
                     String fieldName = item.getFieldName();
                     String fileName = item.getName();
                     InputStream inputStream = item.getInputStream();
                     
+                    if (UtilValidate.isNotEmpty(fileName)) {
+                        fileItem = item;
+                    } else {
+                        String value = read(inputStream);
+                        fieldMap.put(fieldName, value);
+                    }
+                }
+                
+                int fieldCount = fieldMap.size();
+                int fieldIndex = 0;
+                for (String fieldName : fieldMap.keySet()) {
+                    String fieldValue = fieldMap.get(fieldName);
+                    
                     sb.append("{");
                     sb.append("\"fieldName\":\"").append(fieldName)
                             .append("\",");
-                    if (item.getName() != null) {
-                        sb.append("\"name\":\"").append(item.getName())
-                                .append("\",");
-                    }
+                    sb.append(" \"value\":\"").append(fieldValue).append("\"");
                     
-                    if (UtilValidate.isNotEmpty(fileName)) {
+                    if (UtilValidate.isNotEmpty(fileItem)) {
+                        String fileName = fileItem.getName();
+                        InputStream inputStream = fileItem.getInputStream();
                         
-                        byte[] fileBytes = item.get();
+                        byte[] fileBytes = fileItem.get();
                         if (fileBytes != null && fileBytes.length > 0) {
                             String mimeType = DataResourceWorker
                                     .getMimeTypeFromImageFileName(fileName);
                             if (UtilValidate.isNotEmpty(mimeType)) {
                                 
-                                sb.append("\"file\":{");
+                                sb.append(", \"file\":{");
                                 
                                 sb.append("\"size\":\"")
                                         .append(size(inputStream)).append("\"");
@@ -148,30 +163,57 @@ public class DataEvents {
                                 ByteBuffer uploadedFile = ByteBuffer
                                         .wrap(fileBytes);
                                 
-                                Map<String, Object> createContentFromUploadedFileInMap = new HashMap<String, Object>();
-                                createContentFromUploadedFileInMap.put(
-                                        "userLogin", userLogin);
-                                createContentFromUploadedFileInMap.put(
-                                        "_uploadedFile_fileName", fileName);
-                                // createContentFromUploadedFileInMap.put(
-                                // "dataResourceTypeId", "IMAGE_OBJECT");
-                                createContentFromUploadedFileInMap.put(
-                                        "uploadedFile", uploadedFile);
-                                createContentFromUploadedFileInMap.put(
-                                        "isPublic", "Y");
-                                Map<String, Object> createContentFromUploadedFileResults = dispatcher
-                                        .runSync(
-                                                "createContentFromUploadedFile",
-                                                createContentFromUploadedFileInMap);
-                                String contentId = (String) createContentFromUploadedFileResults
-                                        .get("contentId");
-                                String dataResourceId = (String) createContentFromUploadedFileResults
+                                String dataResourceId = fieldMap
                                         .get("dataResourceId");
+                                GenericValue dataResource = delegator.findOne(
+                                        "DataResource", UtilMisc.toMap(
+                                                "dataResourceId",
+                                                dataResourceId), false);
                                 
-                                sb.append(",\"contentId\":\"")
-                                        .append(contentId).append("\"");
-                                sb.append(",\"dataResourceId\":\"")
-                                        .append(dataResourceId).append("\"");
+                                if (UtilValidate.isEmpty(dataResource)) {
+                                    Map<String, Object> createContentFromUploadedFileInMap = new HashMap<String, Object>();
+                                    createContentFromUploadedFileInMap.put(
+                                            "userLogin", userLogin);
+                                    createContentFromUploadedFileInMap.put(
+                                            "_uploadedFile_fileName", fileName);
+                                    // createContentFromUploadedFileInMap.put(
+                                    // "dataResourceTypeId", "IMAGE_OBJECT");
+                                    createContentFromUploadedFileInMap.put(
+                                            "uploadedFile", uploadedFile);
+                                    createContentFromUploadedFileInMap.put(
+                                            "isPublic", "Y");
+                                    Map<String, Object> createContentFromUploadedFileResults = dispatcher
+                                            .runSync(
+                                                    "createContentFromUploadedFile",
+                                                    createContentFromUploadedFileInMap);
+                                    String contentId = (String) createContentFromUploadedFileResults
+                                            .get("contentId");
+                                    dataResourceId = (String) createContentFromUploadedFileResults
+                                            .get("dataResourceId");
+                                    
+                                    sb.append(",\"contentId\":\"")
+                                            .append(contentId).append("\"");
+                                    sb.append(",\"dataResourceId\":\"")
+                                            .append(dataResourceId)
+                                            .append("\"");
+                                } else {
+                                    Map<String, Object> attachUploadToDataResourceInMap = new HashMap<String, Object>();
+                                    attachUploadToDataResourceInMap.put(
+                                            "userLogin", userLogin);
+                                    attachUploadToDataResourceInMap.put(
+                                            "dataResourceId", dataResourceId);
+                                    attachUploadToDataResourceInMap.put(
+                                            "uploadedFile", uploadedFile);
+                                    attachUploadToDataResourceInMap.put(
+                                            "_uploadedFile_fileName", fileName);
+                                    dispatcher.runSync(
+                                            "attachUploadToDataResource",
+                                            attachUploadToDataResourceInMap);
+                                    
+                                    sb.append(", \"dataResourceId\":\"")
+                                            .append(dataResourceId)
+                                            .append("\"");
+                                }
                                 
                                 sb.append("}");
                             } else {
@@ -180,18 +222,15 @@ public class DataEvents {
                                 return "error";
                             }
                         }
-                    } else {
-                        sb.append("\"value\":\"").append(read(inputStream))
-                                .append("\"");
                     }
                     
                     sb.append("}");
-                    if (fileItemIndex < fileItemCount - 1) {
+                    if (fieldIndex < fieldCount - 1) {
                         sb.append(",");
                     }
-                    
-                    fileItemIndex++;
+                    fieldIndex++;
                 }
+                
             } else {
                 sb.append("{\"size\":\"" + size(request.getInputStream())
                         + "\"}");
@@ -219,5 +258,4 @@ public class DataEvents {
         }
         return "success";
     }
-    
 }

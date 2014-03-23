@@ -36,7 +36,6 @@ function FileOptionsDirective(HttpService, $upload) {
                 _.each(data.fields, function(field) {
                     var file = field.file;
                     if (file != null) {
-                        $scope.dataResourceId = file.dataResourceId;
                         if (onUploadSuccess != null) {
                             $scope.file = file;
                             $scope.$eval(onUploadSuccess + "(file);");
