@@ -69,6 +69,7 @@
     </ng-module>
     <!--
     http://angular-file-upload.appspot.com/
+    http://uncorkedstudios.com/blog/multipartformdata-file-upload-with-angularjs
      -->
     <ng-module name="angularFileUpload" location="/angularjs/images/js/file-upload/angular-file-upload.js">
         <javaScript path="/angularjs/images/js/file-upload/angular-file-upload-html5-shim.js"/>

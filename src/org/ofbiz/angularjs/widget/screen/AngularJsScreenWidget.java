@@ -804,18 +804,14 @@ public class AngularJsScreenWidget {
         public static final String TAG_NAME = "file";
         
         protected FlexibleStringExpander nameExdr;
-        protected FlexibleStringExpander parametersExdr;
-        protected FlexibleStringExpander onUploadSuccessExdr;
+        protected FlexibleStringExpander modelExdr;
         
         public File(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("name"));
-            this.parametersExdr = FlexibleStringExpander
-                    .getInstance(widgetElement.getAttribute("parameters"));
-            this.onUploadSuccessExdr = FlexibleStringExpander
-                    .getInstance(widgetElement
-                            .getAttribute("on-upload-success"));
+            this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("model"));
         }
         
         @Override
@@ -825,11 +821,8 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             writer.append("<input type=\"file\" file-options=\"\"");
             writer.append(" ng-file-select=\"onFileSelect($files)\"");
-            writer.append(" on-upload-success=\""
-                    + onUploadSuccessExdr.expandString(context) + "\"");
-            writer.append(" parameters=\""
-                    + parametersExdr.expandString(context) + "\"");
-            writer.append(" name=\"" + nameExdr.expandString(context) + "\"/>");
+            writer.append(" model=\"" + modelExdr.expandString(context) + "\"");
+            writer.append("/>");
         }
         
         @Override

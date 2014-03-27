@@ -84,8 +84,7 @@ public class DataEvents {
         GenericValue userLogin = (GenericValue) session
                 .getAttribute("userLogin");
         
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        FileItem fileItem = null;
+        Map<String, Object> fieldMap = new HashMap<String, Object>();
         
         try {
             StringBuilder sb = new StringBuilder("{\"fields\": [");
@@ -123,7 +122,7 @@ public class DataEvents {
                     InputStream inputStream = item.getInputStream();
                     
                     if (UtilValidate.isNotEmpty(fileName)) {
-                        fileItem = item;
+                        fieldMap.put(fieldName, item);
                     } else {
                         String value = read(inputStream);
                         fieldMap.put(fieldName, value);
@@ -133,14 +132,15 @@ public class DataEvents {
                 int fieldCount = fieldMap.size();
                 int fieldIndex = 0;
                 for (String fieldName : fieldMap.keySet()) {
-                    String fieldValue = fieldMap.get(fieldName);
+                    Object fieldValue = fieldMap.get(fieldName);
                     
                     sb.append("{");
                     sb.append("\"fieldName\":\"").append(fieldName)
                             .append("\",");
                     sb.append(" \"value\":\"").append(fieldValue).append("\"");
                     
-                    if (UtilValidate.isNotEmpty(fileItem)) {
+                    if (fieldValue instanceof FileItem) {
+                        FileItem fileItem = (FileItem) fieldValue;
                         String fileName = fileItem.getName();
                         InputStream inputStream = fileItem.getInputStream();
                         
@@ -163,7 +163,7 @@ public class DataEvents {
                                 ByteBuffer uploadedFile = ByteBuffer
                                         .wrap(fileBytes);
                                 
-                                String dataResourceId = fieldMap
+                                String dataResourceId = (String) fieldMap
                                         .get("dataResourceId");
                                 GenericValue dataResource = delegator.findOne(
                                         "DataResource", UtilMisc.toMap(
