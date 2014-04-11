@@ -29,7 +29,7 @@
                 
                 <set field="layoutSettings.styleSheets[+0]" value="/angularjs/images/css/style.css" global="true"/>
                 
--                <script location="component://angularjs/webapp/angularjs/WEB-INF/actions/SetupModuleResources.groovy"/>
+                <script location="component://angularjs/webapp/angularjs/WEB-INF/actions/SetupModuleResources.groovy"/>
             </actions>
             <widgets/>
         </section>

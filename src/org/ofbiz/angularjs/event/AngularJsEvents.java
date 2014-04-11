@@ -24,7 +24,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import org.apache.http.HttpRequest;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
@@ -57,23 +55,19 @@ import org.ofbiz.angularjs.module.ModelNgModule;
 import org.ofbiz.angularjs.module.ModelNgModule.ModelJavaScript;
 import org.ofbiz.angularjs.provider.ModelNgProvider;
 import org.ofbiz.angularjs.service.ModelNgService;
-import org.ofbiz.base.component.ComponentConfig;
-import org.ofbiz.base.component.ComponentConfig.WebappInfo;
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.FileUtil;
 import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilGenerics;
 import org.ofbiz.base.util.UtilValidate;
-import org.ofbiz.base.util.UtilXml;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public class AngularJsEvents {
-
+    
     public final static String module = AngularJsEvents.class.getName();
     public final static String NG_APPS_INIT_PATH = "/WEB-INF/ng-apps.xml";
     
-    private static String checkPath(String path, boolean fullPath, HttpServletRequest request) {
+    private static String checkPath(String path, boolean fullPath,
+            HttpServletRequest request) {
         String checkedPath = null;
         if (fullPath) {
             String protocol = "http";
@@ -87,9 +81,10 @@ public class AngularJsEvents {
         return checkedPath;
     }
     
-    private static void buildJsClasses(List<File> files, StringBuilder builder) throws IOException {
+    private static void buildJsClasses(List<File> files, StringBuilder builder)
+            throws IOException {
         JavaScriptFactory.clear();
-
+        
         Context context = Context.enter();
         for (File file : files) {
             String packageName = null;
@@ -97,23 +92,29 @@ public class AngularJsEvents {
             try {
                 if (file.getAbsolutePath().endsWith(".js")) {
                     Scriptable scope = context.initStandardObjects();
-                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    BufferedReader reader = new BufferedReader(new FileReader(
+                            file));
                     String packageLine = reader.readLine();
-
+                    
                     // find package name
-                    Pattern packagePattern = Pattern.compile(".*?package.*?(.*?);");
-                    Matcher packageMatcher = packagePattern.matcher(packageLine);
+                    Pattern packagePattern = Pattern
+                            .compile(".*?package.*?(.*?);");
+                    Matcher packageMatcher = packagePattern
+                            .matcher(packageLine);
                     while (packageMatcher.find()) {
                         packageName = packageMatcher.group(1).trim();
                     }
                     
                     context.evaluateReader(scope, reader, null, 2, null);
                     className = file.getName().replace(".js", "").trim();
-                    Function classFunction = (Function) scope.get(className, scope);
-                    JavaScriptFactory.addJavaScriptClass(packageName, className, classFunction, context);
+                    Function classFunction = (Function) scope.get(className,
+                            scope);
+                    JavaScriptFactory.addJavaScriptClass(packageName,
+                            className, classFunction, context);
                 }
             } catch (Exception e) {
-                Debug.logError(e, "Could not compile " + packageName + "." + className + " class", module);
+                Debug.logError(e, "Could not compile " + packageName + "."
+                        + className + " class", module);
             }
         }
         Context.exit();
@@ -127,7 +128,8 @@ public class AngularJsEvents {
         
         // modules
         List<String> moduleNames = new LinkedList<String>();
-        for (ModelNgModule modelModule : NgModelDispatcherContext.getAllModelNgModules()) {
+        for (ModelNgModule modelModule : NgModelDispatcherContext
+                .getAllModelNgModules()) {
             moduleNames.add("'" + modelModule.name + "'");
         }
         
@@ -138,42 +140,55 @@ public class AngularJsEvents {
         
         // directives
         String emptyJsFunction = "function() {}";
-        for (ModelNgDirective modelNgDirective : NgModelDispatcherContext.getAllModelNgDirectives()) {
+        for (ModelNgDirective modelNgDirective : NgModelDispatcherContext
+                .getAllModelNgDirectives()) {
             String directiveJsFunction = createDirectiveJsFunction(modelNgDirective);
             if (UtilValidate.isEmpty(directiveJsFunction)) {
                 directiveJsFunction = emptyJsFunction;
             }
-            builder.append(".directive('" + modelNgDirective.name + "', " + directiveJsFunction + ")\n");
+            builder.append(".directive('" + modelNgDirective.name + "', "
+                    + directiveJsFunction + ")\n");
         }
         
         // filters
-        for (ModelNgFilter modelNgFilter : NgModelDispatcherContext.getAllModelNgFilters()) {
-            builder.append(".filter('" + modelNgFilter.name + "', " + modelNgFilter.location + ")\n");
+        for (ModelNgFilter modelNgFilter : NgModelDispatcherContext
+                .getAllModelNgFilters()) {
+            builder.append(".filter('" + modelNgFilter.name + "', "
+                    + modelNgFilter.location + ")\n");
         }
         
         // services
-        for (ModelNgService modelNgService : NgModelDispatcherContext.getAllModelNgServices()) {
-            builder.append(".service('" + modelNgService.name + "', " + modelNgService.location + ")\n");
+        for (ModelNgService modelNgService : NgModelDispatcherContext
+                .getAllModelNgServices()) {
+            builder.append(".service('" + modelNgService.name + "', "
+                    + modelNgService.location + ")\n");
         }
         
         // providers
-        for (ModelNgProvider modelNgProvider : NgModelDispatcherContext.getAllModelNgProviders()) {
-            builder.append(".provider('" + modelNgProvider.name + "', " + modelNgProvider.location + "." + modelNgProvider.invoke + ")\n");
+        for (ModelNgProvider modelNgProvider : NgModelDispatcherContext
+                .getAllModelNgProviders()) {
+            builder.append(".provider('" + modelNgProvider.name + "', "
+                    + modelNgProvider.location + "." + modelNgProvider.invoke
+                    + ")\n");
         }
         
         // factories
-        for (ModelNgFactory modelNgFactory : NgModelDispatcherContext.getAllModelNgFactories()) {
-            builder.append(".factory('" + modelNgFactory.name + "', " + modelNgFactory.location + ")\n");
+        for (ModelNgFactory modelNgFactory : NgModelDispatcherContext
+                .getAllModelNgFactories()) {
+            builder.append(".factory('" + modelNgFactory.name + "', "
+                    + modelNgFactory.location + ")\n");
         }
         
         builder.append(";");
     }
     
-    private static void buildAppJsFunction(String name, String defaultState, boolean disableAutoScrolling, List<? extends ModelNgState> modelNgStates, StringBuilder builder) {
+    private static void buildAppJsFunction(String name, String defaultState,
+            boolean disableAutoScrolling,
+            List<? extends ModelNgState> modelNgStates, StringBuilder builder) {
         builder.append("\nangular.module('" + name + "', ['combine.all'])");
         
         builder.append(".config(function($stateProvider, $urlRouterProvider, $anchorScrollProvider) {\n");
-
+        
         String defaultUrl = "";
         List<String> defaultStateTokens = StringUtil.split(defaultState, ".");
         
@@ -187,8 +202,9 @@ public class AngularJsEvents {
                 String defaultStateTokenTail = "";
                 for (String defaultStateToken : defaultStateTokens) {
                     defaultStateTokenTail += defaultStateToken;
-
-                    if (UtilValidate.isNotEmpty(defaultStateTokenTail) && defaultStateTokenTail.equals(modelNgState.name)) {
+                    
+                    if (UtilValidate.isNotEmpty(defaultStateTokenTail)
+                            && defaultStateTokenTail.equals(modelNgState.name)) {
                         defaultUrl += modelNgState.url;
                         break;
                     }
@@ -196,37 +212,48 @@ public class AngularJsEvents {
                     defaultStateTokenTail += ".";
                 }
                 
-                stateBuilder.append("\n//- State[" + modelNgState.name + "] is abstract[" + modelNgState.isAbstract + "] with URL[" + modelNgState.url + "]\n");
+                stateBuilder.append("\n//- State[" + modelNgState.name
+                        + "] is abstract[" + modelNgState.isAbstract
+                        + "] with URL[" + modelNgState.url + "]\n");
                 stateBuilder.append(".state(\"" + modelNgState.name + "\", {");
-                stateBuilder.append("abstract: " + modelNgState.isAbstract + ",");
+                stateBuilder.append("abstract: " + modelNgState.isAbstract
+                        + ",");
                 stateBuilder.append("url: \"" + modelNgState.url + "\",");
                 stateBuilder.append("views: {");
                 
                 List<String> viewDefs = new LinkedList<String>();
                 for (ModelNgView modelNgView : modelNgState.getModelNgViews()) {
-                    stateBuilder.append("\n//-- View[" + modelNgView.name + "] with template URL[" + modelNgView.target + "] and controller[" + modelNgView.controller + "]\n");
-                    viewDefs.add("\"" + modelNgView.name + "\": { templateUrl: \"" + modelNgView.target + "\", controller: " + modelNgView.controller + "}");
+                    stateBuilder.append("\n//-- View[" + modelNgView.name
+                            + "] with template URL[" + modelNgView.target
+                            + "] and controller[" + modelNgView.controller
+                            + "]\n");
+                    viewDefs.add("\"" + modelNgView.name
+                            + "\": { templateUrl: \"" + modelNgView.target
+                            + "\", controller: " + modelNgView.controller + "}");
                 }
                 stateBuilder.append(StringUtil.join(viewDefs, ","));
                 
                 stateBuilder.append("}})");
             }
         }
-
+        
         // default path (One page can have only one default path)
         if (UtilValidate.isNotEmpty(defaultUrl)) {
-            builder.append("//- Default URL[" + defaultUrl + "] of state[" + defaultState + "]\n\n");
-            builder.append("\n$urlRouterProvider.otherwise(\"" + defaultUrl + "\");");
+            builder.append("//- Default URL[" + defaultUrl + "] of state["
+                    + defaultState + "]\n\n");
+            builder.append("\n$urlRouterProvider.otherwise(\"" + defaultUrl
+                    + "\");");
         }
         
         builder.append(stateBuilder);
         builder.append(";");
         
-        if (disableAutoScrolling) {
-            builder.append("\n$anchorScrollProvider.disableAutoScrolling();");
-        }
-        
         builder.append("})\n");
+        
+        // disable auto scrolling
+        if (disableAutoScrolling) {
+            builder.append(".value('$anchorScroll', angular.noop)");
+        }
         
         // run
         builder.append("\n.run(function($rootScope, $state, $stateParams) {");
@@ -237,34 +264,44 @@ public class AngularJsEvents {
         builder.append(";");
     }
     
-    private static String createDirectiveJsFunction(ModelNgDirective modelNgDirective) {
-        JavaScriptClass javaScriptClass = JavaScriptFactory.getJavaScriptClass(modelNgDirective.location);
+    private static String createDirectiveJsFunction(
+            ModelNgDirective modelNgDirective) {
+        JavaScriptClass javaScriptClass = JavaScriptFactory
+                .getJavaScriptClass(modelNgDirective.location);
         if (UtilValidate.isNotEmpty(javaScriptClass)) {
             // object builder
             StringBuilder objectBuilder = new StringBuilder();
-            objectBuilder.append("var " + modelNgDirective.name + " = new " + modelNgDirective.location
-                    + "(" + javaScriptClass.getConstructorArgument() + ");");
+            objectBuilder.append("var " + modelNgDirective.name + " = new "
+                    + modelNgDirective.location + "("
+                    + javaScriptClass.getConstructorArgument() + ");");
             if (UtilValidate.isNotEmpty(modelNgDirective.replace)) {
-                objectBuilder.append(modelNgDirective.name + ".replace = " + modelNgDirective.replace + ";");
+                objectBuilder.append(modelNgDirective.name + ".replace = "
+                        + modelNgDirective.replace + ";");
             }
             if (UtilValidate.isNotEmpty(modelNgDirective.transclude)) {
-                objectBuilder.append(modelNgDirective.name + ".transclude = " + modelNgDirective.transclude + ";");
+                objectBuilder.append(modelNgDirective.name + ".transclude = "
+                        + modelNgDirective.transclude + ";");
             }
             if (UtilValidate.isNotEmpty(modelNgDirective.scope)) {
-                objectBuilder.append(modelNgDirective.name + ".scope = " + modelNgDirective.scope + ";");
+                objectBuilder.append(modelNgDirective.name + ".scope = "
+                        + modelNgDirective.scope + ";");
             }
             if (UtilValidate.isNotEmpty(modelNgDirective.priority)) {
-                objectBuilder.append(modelNgDirective.name + ".priority = " + modelNgDirective.priority + ";");
+                objectBuilder.append(modelNgDirective.name + ".priority = "
+                        + modelNgDirective.priority + ";");
             }
             if (UtilValidate.isNotEmpty(modelNgDirective.require)) {
-                objectBuilder.append(modelNgDirective.name + ".require = \"" + modelNgDirective.require + "\";");
+                objectBuilder.append(modelNgDirective.name + ".require = \""
+                        + modelNgDirective.require + "\";");
             }
             if (UtilValidate.isNotEmpty(modelNgDirective.restrict)) {
-                objectBuilder.append(modelNgDirective.name + ".restrict = \"" + modelNgDirective.restrict + "\";");
+                objectBuilder.append(modelNgDirective.name + ".restrict = \""
+                        + modelNgDirective.restrict + "\";");
             }
-    
+            
             StringBuilder builder = new StringBuilder();
-            builder.append("function(" + javaScriptClass.getConstructorArgument() + ") {");
+            builder.append("function("
+                    + javaScriptClass.getConstructorArgument() + ") {");
             builder.append(objectBuilder.toString());
             builder.append(" return " + modelNgDirective.name + ";");
             builder.append("}");
@@ -273,19 +310,23 @@ public class AngularJsEvents {
             return "";
         }
     }
-
-    public static String buildMainJs(HttpServletRequest request, HttpServletResponse response) {
+    
+    public static String buildMainJs(HttpServletRequest request,
+            HttpServletResponse response) {
         
         StringBuilder builder = new StringBuilder();
-    
+        
         try {
             synchronized (AngularJsEvents.class) {
                 // classes
                 List<File> classFiles = new LinkedList<File>();
-                List<ClasspathInfo> classpathResoruceInfos = NgComponentConfig.getAllClasspathResourceInfos();
+                List<ClasspathInfo> classpathResoruceInfos = NgComponentConfig
+                        .getAllClasspathResourceInfos();
                 for (ClasspathInfo classpathResourceInfo : classpathResoruceInfos) {
                     try {
-                        List<File> jsFiles = FileUtil.findFiles("js", classpathResourceInfo.createResourceHandler().getFullLocation(), null, null);
+                        List<File> jsFiles = FileUtil.findFiles("js",
+                                classpathResourceInfo.createResourceHandler()
+                                        .getFullLocation(), null, null);
                         classFiles.addAll(jsFiles);
                     } catch (Exception e) {
                         Debug.logWarning(e, module);
@@ -302,14 +343,16 @@ public class AngularJsEvents {
             builder.append("\nrequire([\n");
             
             // modules
-            List<ModelNgModule> ngModules = NgModelDispatcherContext.getAllModelNgModules();
+            List<ModelNgModule> ngModules = NgModelDispatcherContext
+                    .getAllModelNgModules();
             List<String> moduleJsPaths = new LinkedList<String>();
             List<String> javaScriptPaths = new LinkedList<String>();
             
             for (ModelNgModule ngModule : ngModules) {
                 String modulePath = checkPath(ngModule.location, false, request);
                 for (ModelJavaScript modelJavaScript : ngModule.modelJavaScripts) {
-                    String javaScriptPath = checkPath(modelJavaScript.path, modelJavaScript.fullPath, request);
+                    String javaScriptPath = checkPath(modelJavaScript.path,
+                            modelJavaScript.fullPath, request);
                     javaScriptPaths.add("\n'" + javaScriptPath + "'");
                 }
                 moduleJsPaths.add("\n'" + modulePath + "'");
@@ -334,29 +377,40 @@ public class AngularJsEvents {
             builder.append("*/\n");
             
             // apps
-            for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
-                builder.append("\n// Application [" + modelNgApplication.name + "] with default state[" + modelNgApplication.defaultState + "] and disable auto scrolling[" + modelNgApplication.disableAutoScrolling + "]\n");
-                buildAppJsFunction(modelNgApplication.name, modelNgApplication.defaultState, modelNgApplication.disableAutoScrolling, modelNgApplication.getModelNgStates(), builder);
+            for (ModelNgApplication modelNgApplication : NgModelDispatcherContext
+                    .getAllModelNgApplications()) {
+                builder.append("\n// Application [" + modelNgApplication.name
+                        + "] with default state["
+                        + modelNgApplication.defaultState
+                        + "] and disable auto scrolling["
+                        + modelNgApplication.disableAutoScrolling + "]\n");
+                buildAppJsFunction(modelNgApplication.name,
+                        modelNgApplication.defaultState,
+                        modelNgApplication.disableAutoScrolling,
+                        modelNgApplication.getModelNgStates(), builder);
             }
             
             // bootstrap
-            for (ModelNgApplication modelNgApplication : NgModelDispatcherContext.getAllModelNgApplications()) {
+            for (ModelNgApplication modelNgApplication : NgModelDispatcherContext
+                    .getAllModelNgApplications()) {
                 String elementName = "appElement_" + modelNgApplication.name;
                 String elementId = modelNgApplication.name + "-app";
-                builder.append("\nvar " + elementName + " = $('#" + elementId + "');");
+                builder.append("\nvar " + elementName + " = $('#" + elementId
+                        + "');");
                 builder.append("\nif(" + elementName + ".length > 0) {");
-                builder.append("\nangular.bootstrap(" + elementName + ", ['" + modelNgApplication.name + "']);");
+                builder.append("\nangular.bootstrap(" + elementName + ", ['"
+                        + modelNgApplication.name + "']);");
                 builder.append("\n}");
             }
             
             builder.append("\n});");
             
             builder.append("\n});");
-
+            
             // return the JavaScript String
             String javaScriptString = builder.toString();
             response.setContentType("application/x-javascript; charset=UTF-8");
-        
+            
             response.setContentLength(javaScriptString.getBytes("UTF8").length);
             
             Writer out;
@@ -375,11 +429,14 @@ public class AngularJsEvents {
         
         return "success";
     }
-
-    public static String error(HttpServletRequest request, HttpServletResponse response) {
+    
+    public static String error(HttpServletRequest request,
+            HttpServletResponse response) {
         List<String> responseMessageList = new LinkedList<String>();
-        String errorMessage = UtilGenerics.cast(request.getAttribute("_ERROR_MESSAGE_"));
-        List<String> errorMessageList = UtilGenerics.cast(request.getAttribute("_ERROR_MESSAGE_LIST_"));
+        String errorMessage = UtilGenerics.cast(request
+                .getAttribute("_ERROR_MESSAGE_"));
+        List<String> errorMessageList = UtilGenerics.cast(request
+                .getAttribute("_ERROR_MESSAGE_LIST_"));
         if (UtilValidate.isNotEmpty(errorMessage)) {
             responseMessageList.add(errorMessage);
         }
@@ -392,7 +449,7 @@ public class AngularJsEvents {
         
         JSONObject jsonObject = JSONObject.fromObject(results);
         String jsonStr = jsonObject.toString();
-
+        
         // set the X-JSON content type
         response.setContentType("application/x-json");
         // jsonStr.length is not reliable for unicode characters
@@ -401,7 +458,7 @@ public class AngularJsEvents {
         } catch (UnsupportedEncodingException e) {
             Debug.logError("Problems with Json encoding: " + e, module);
         }
-
+        
         // return the JSON String
         Writer out;
         try {
