@@ -3,13 +3,14 @@ package org.ofbiz.angularjs.directive;
 /**
  * Grid Options Directive
  */
-function GridOptionsDirective(HttpService, $timeout) {
+function GridOptionsDirective(HttpService, $timeout, $parse) {
     
     /**
      * Controller
      */
     this.controller = function($scope, $element, $attrs, $transclude) {
         var modelName = $attrs.model;
+        var selectedItemsSetter = $parse($attrs.selectedItems).assign;
         var rowHeight = $attrs.rowHeight;
         var selectTarget = $attrs.selectTarget;
         var selectParameters = $scope.$eval($attrs.selectParameters);
@@ -17,9 +18,16 @@ function GridOptionsDirective(HttpService, $timeout) {
         var columnDefs = $scope.$eval($attrs.columnDefs);
         var pageSizes = $scope.$eval($attrs.pageSizes);
         var pageSize = $scope.$eval($attrs.pageSize);
+        var showSelectionCheckbox = $scope.$eval($attrs.showSelectionCheckbox);
+        var checkboxHeaderTemplate = null;
         var sortInfo = null;
+        
         if ($attrs.sortInfo) {
             sortInfo = $scope.$eval($attrs.sortInfo);
+        }
+        
+        if (showSelectionCheckbox) {
+            checkboxHeaderTemplate = "<input class=\"ngSelectionHeader\" type=\"checkbox\" ng-show=\"multiSelect\" ng-model=\"allSelected\" ng-change=\"toggleSelectAll(allSelected, true)\"/>";
         }
         
         var onBeforeSelectionChanged = $scope[$attrs.onBeforeSelectionChanged]; // function (rowItem, event) {}
@@ -55,6 +63,8 @@ function GridOptionsDirective(HttpService, $timeout) {
         }
         
         $scope.data = [];
+        $scope.selectedItems = [];
+        $scope.selectedItemsToDispatch = [];
         
         /**
          * Set Paging Data
@@ -198,6 +208,12 @@ function GridOptionsDirective(HttpService, $timeout) {
             }
         }, true);
         
+        if (selectedItemsSetter != null) {
+            $scope.$watch("selectedItemsToDispatch", function (newVal, oldVal) {
+                selectedItemsSetter($scope.$parent, newVal);
+            });
+        }
+        
         var rowSize = 10
         
         if (rowSize > 20) {
@@ -263,14 +279,23 @@ function GridOptionsDirective(HttpService, $timeout) {
             , pagingOptions: $scope.pagingOptions
             , showFooter: showFooter
             , totalServerItems: "totalServerItems"
+            , selectedItems: $scope.selectedItems
             , filterOptions: $scope.filterOptions
+            , showSelectionCheckbox: showSelectionCheckbox
+            , checkboxHeaderTemplate: checkboxHeaderTemplate
+            //, selectWithCheckboxOnly: true
             , enableCellSelection: false
             , enableRowSelection: true
             , enableCellEditOnFocus: true
             , enablePinning: true
             , useExternalSorting: true
             , columnDefs: columnDefs
-            , afterSelectionChange: onAfterSelectionChanged
+            , afterSelectionChange: function(rowItem, event) {
+                $scope.selectedItemsToDispatch = $scope.selectedItems;
+                if (typeof(onAfterSelectionChanged) == "function") {
+                    onAfterSelectionChanged(rowItem, event);
+                }
+            }
             , beforeSelectionChange: onBeforeSelectionChanged
             , onRowDoubleClicked: onRowDoubleClicked
             , plugins: [ngGridDoubleClick]

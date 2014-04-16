@@ -1104,9 +1104,11 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander selectTargetExdr;
         protected FlexibleStringExpander selectParametersExdr;
+        protected FlexibleStringExpander selectedItemsExdr;
         protected FlexibleStringExpander listNameExdr;
         protected FlexibleStringExpander styleExdr;
         protected FlexibleStringExpander rowHeightExdr;
+        protected FlexibleStringExpander showSelectionCheckboxExdr;
         protected FlexibleStringExpander onBeforeSelectionChangedExdr = null;
         protected FlexibleStringExpander onAfterSelectionChangedExdr = null;
         protected FlexibleStringExpander onRowDoubleClickedExdr = null;
@@ -1121,6 +1123,8 @@ public class AngularJsScreenWidget {
             this.selectParametersExdr = FlexibleStringExpander
                     .getInstance(widgetElement
                             .getAttribute("select-parameters"));
+            this.selectedItemsExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("selected-items"));
             this.listNameExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("list-name"));
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -1136,6 +1140,9 @@ public class AngularJsScreenWidget {
                             .getAttribute("on-row-double-clicked"));
             this.rowHeightExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("row-height"));
+            this.showSelectionCheckboxExdr = FlexibleStringExpander
+                    .getInstance(widgetElement
+                            .getAttribute("show-selection-checkbox"));
             this.fieldElements = UtilXml.childElementList(widgetElement,
                     "field");
         }
@@ -1258,6 +1265,8 @@ public class AngularJsScreenWidget {
                     + selectTargetExdr.expandString(context)
                     + "\" select-parameters=\""
                     + selectParametersExdr.expandString(context)
+                    + "\" selected-items=\""
+                    + selectedItemsExdr.expandString(context)
                     + "\" list-name=\""
                     + listNameExdr.expandString(context)
                     + "\" column-defs=\""
@@ -1268,6 +1277,9 @@ public class AngularJsScreenWidget {
                     + onAfterSelectionChangedExdr.expandString(context)
                     + "\" on-row-double-clicked=\""
                     + onRowDoubleClickedExdr.expandString(context)
+                    + "\" "
+                    + "\" show-selection-checkbox=\""
+                    + showSelectionCheckboxExdr.expandString(context)
                     + "\" "
                     + (UtilValidate.isNotEmpty(sortInfoBuilder.toString()) ? "sort-info=\""
                             + sortInfoBuilder.toString() + "\""
