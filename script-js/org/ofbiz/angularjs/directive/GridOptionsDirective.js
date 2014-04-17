@@ -13,7 +13,6 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
         var selectedItemsSetter = $parse($attrs.selectedItems).assign;
         var rowHeight = $attrs.rowHeight;
         var selectTarget = $attrs.selectTarget;
-        var selectParameters = $scope.$eval($attrs.selectParameters);
         var listName = $attrs.listName;
         var columnDefs = $scope.$eval($attrs.columnDefs);
         var pageSizes = $scope.$eval($attrs.pageSizes);
@@ -21,6 +20,19 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
         var showSelectionCheckbox = $scope.$eval($attrs.showSelectionCheckbox);
         var checkboxHeaderTemplate = null;
         var sortInfo = null;
+        
+        var selectParameters = null;
+        if ($attrs.selectParameters.indexOf("{") == 0) {
+            // parse Map from String
+            selectParameters = $scope.$eval($attrs.selectParameters);
+        } else {
+            selectParameters = $scope.$parent[$attrs.selectParameters];
+            // This would work if the directive does not create a new scope.
+            // http://stackoverflow.com/questions/17838745/angularjs-watch-for-change-in-parent-scope
+            $scope.$watch($attrs.selectParameters, function (newVal, oldVal) {
+                
+            });
+        }
         
         if ($attrs.sortInfo) {
             sortInfo = $scope.$eval($attrs.sortInfo);
