@@ -30,7 +30,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             // This would work if the directive does not create a new scope.
             // http://stackoverflow.com/questions/17838745/angularjs-watch-for-change-in-parent-scope
             $scope.$watch($attrs.selectParameters, function (newVal, oldVal) {
-                
+                onParametersChanged(newVal);
             });
         }
         
@@ -169,23 +169,30 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
         var viewIndex = $scope.pagingOptions.currentPage - 1;
         $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, null);
         
+        function onParametersChanged(args) {
+            if (args != null) {
+                var pageSize = args.pageSize;
+                var currentPage = args.currentPage;
+                var filterText = args.filterText;
+                
+                if (!pageSize) {
+                    pageSize = $scope.pagingOptions.pageSize;
+                }
+                if (!currentPage) {
+                    currentPage = $scope.pagingOptions.currentPage;
+                }
+                
+                $scope.parameters = args.parameters;
+    
+                var viewSize = pageSize;
+                var viewIndex = currentPage - 1;
+                $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, $scope.parameters);
+            }
+        }
+        
+        // TODO should be removed
         $scope.$on(modelName, function(event, args) {
-            var pageSize = args.pageSize;
-            var currentPage = args.currentPage;
-            var filterText = args.filterText;
-            
-            if (!pageSize) {
-                pageSize = $scope.pagingOptions.pageSize;
-            }
-            if (!currentPage) {
-                currentPage = $scope.pagingOptions.currentPage;
-            }
-            
-            $scope.parameters = args.parameters;
-
-            var viewSize = pageSize;
-            var viewIndex = currentPage - 1;
-            $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, $scope.parameters);
+            onParametersChanged(args);
         });
         
         if (sortInfo) {
