@@ -17,6 +17,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
         var columnDefs = $scope.$eval($attrs.columnDefs);
         var pageSizes = $scope.$eval($attrs.pageSizes);
         var pageSize = $scope.$eval($attrs.pageSize);
+        var multiSelect = Boolean($scope.$eval($attrs.multiSelect));
         var showSelectionCheckbox = $scope.$eval($attrs.showSelectionCheckbox);
         var checkboxHeaderTemplate = null;
         var sortInfo = null;
@@ -293,7 +294,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
 
         $scope.grid = {
             data: "data"
-            , multiSelect: false
+            , multiSelect: multiSelect
             , enablePaging: enablePaging
             , pagingOptions: $scope.pagingOptions
             , showFooter: showFooter

@@ -1108,6 +1108,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander listNameExdr;
         protected FlexibleStringExpander styleExdr;
         protected FlexibleStringExpander rowHeightExdr;
+        protected FlexibleStringExpander multiSelectExdr;
         protected FlexibleStringExpander showSelectionCheckboxExdr;
         protected FlexibleStringExpander onBeforeSelectionChangedExdr = null;
         protected FlexibleStringExpander onAfterSelectionChangedExdr = null;
@@ -1140,6 +1141,9 @@ public class AngularJsScreenWidget {
                             .getAttribute("on-row-double-clicked"));
             this.rowHeightExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("row-height"));
+            this.multiSelectExdr = FlexibleStringExpander
+                    .getInstance(widgetElement
+                            .getAttribute("multi-select"));
             this.showSelectionCheckboxExdr = FlexibleStringExpander
                     .getInstance(widgetElement
                             .getAttribute("show-selection-checkbox"));
@@ -1277,6 +1281,9 @@ public class AngularJsScreenWidget {
                     + onAfterSelectionChangedExdr.expandString(context)
                     + "\" on-row-double-clicked=\""
                     + onRowDoubleClickedExdr.expandString(context)
+                    + "\" "
+                    + "\" multi-select=\""
+                    + multiSelectExdr.expandString(context)
                     + "\" "
                     + "\" show-selection-checkbox=\""
                     + showSelectionCheckboxExdr.expandString(context)
