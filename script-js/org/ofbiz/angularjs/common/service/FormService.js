@@ -3,12 +3,12 @@ package org.ofbiz.angularjs.common.service;
 /**
  * Form Service
  */
-function FormService(HttpService, $upload) {
+function FormService($http, HttpService, $upload, appBusy) {
     
     /**
      * Post
      */
-    this.post = function($http, target, data, appBusy, $scope) {
+    this.post = function(target, data, $scope) {
         appBusy.set();
         /*
         var config = {};
@@ -22,7 +22,7 @@ function FormService(HttpService, $upload) {
         $http({method: "POST", url: target, data: data, headers: {"Content-Type": "application/x-www-form-urlencoded"}})
         
         .success(function(data, status, headers, config) {
-            $scope.appBusy.set(false);
+            appBusy.set(false);
             if (data._ERROR_MESSAGE_ != undefined || data._ERROR_MESSAGE_LIST_ != undefined) {
                 $scope.$emit("ON_SUBMIT_ERROR", data, status, headers, config);
             } else {
@@ -65,5 +65,27 @@ function FormService(HttpService, $upload) {
           //.error(...)
           //.then(success, error, progress); 
         }
+    }
+    
+    /**
+     * Post Multi
+     */
+    this.postMulti = function(target, rowItems, data, $scope) {
+        appBusy.set();
+        var rowItemIndex = 0;
+        _.each(rowItems, function(rowItem) {
+            var pairs = _.pairs(rowItem)
+            _.each(pairs, function(pair) {
+                var key = pair[0];
+                var value = pair[1];
+                if (value != null) {
+                    var multiKey = key + "_o_" + rowItemIndex;
+                    data[multiKey] = value;
+                }
+            });
+            
+            rowItemIndex ++;
+        });
+        this.post(target, data, $scope);
     }
 }

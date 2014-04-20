@@ -4,7 +4,7 @@ package org.ofbiz.angularjs.directive;
  * Form Options Directive
  * 
  */
-function FormOptionsDirective() {
+function FormOptionsDirective($http, appBusy, FormService) {
     
     var removeOnSubmitSuccessListener = null;
     var removeOnSubmitErrorListener = null;
@@ -12,9 +12,7 @@ function FormOptionsDirective() {
     /**
      * Controller
      */
-    this.controller = function($scope, $element, $attrs, $transclude, $http, appBusy, FormService) {
-        $scope.$http = $http;
-        $scope.appBusy = appBusy;
+    this.controller = function($scope, $element, $attrs, $transclude) {
         $scope.FormService = FormService;
         
         if (removeOnSubmitSuccessListener != null) {
@@ -42,7 +40,7 @@ function FormOptionsDirective() {
                     if (target) {
                         $element.find("input[type=submit]").bind("click", function() {
                             var data = $element.serialize();
-                            $scope.FormService.post($scope.$http, target, data, $scope.appBusy, $scope);
+                            $scope.FormService.post($scope.$http, target, data, $scope);
                         });
                     }
                 }

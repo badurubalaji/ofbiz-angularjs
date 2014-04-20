@@ -269,7 +269,9 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                 if (onRowDoubleClicked) {
                     $timeout(function() {
                         var selectedItem = self.$scope.selectedItems[0];
-                        onRowDoubleClicked(adjustFieldNames(selectedItem));
+                        var extendedSelectedItem = {};
+                        _.extend(extendedSelectedItem, selectedItem) ;
+                        onRowDoubleClicked(adjustFieldNames(extendedSelectedItem));
                     }, 100)
                 }
             };
@@ -311,7 +313,13 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             , useExternalSorting: true
             , columnDefs: columnDefs
             , afterSelectionChange: function(rowItem, event) {
-                $scope.selectedItemsToDispatch = $scope.selectedItems;
+                var selectedItemsToDispatch = [];
+                _.each($scope.selectedItems, function (selectedItem) {
+                    var selectedItemToDispatch = {};
+                    _.extend(selectedItemToDispatch, selectedItem);
+                    selectedItemsToDispatch.push(adjustFieldNames(selectedItemToDispatch));
+                });
+                $scope.selectedItemsToDispatch = selectedItemsToDispatch;
                 if (typeof(onAfterSelectionChanged) == "function") {
                     onAfterSelectionChanged(rowItem, event);
                 }
