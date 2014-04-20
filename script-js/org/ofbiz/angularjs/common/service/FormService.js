@@ -70,8 +70,9 @@ function FormService($http, HttpService, $upload, appBusy) {
     /**
      * Post Multi
      */
-    this.postMulti = function(target, rowItems, data, $scope) {
+    this.postMulti = function(target, data, rowItems, $scope) {
         appBusy.set();
+        var rowItemsQueryString = "&";
         var rowItemIndex = 0;
         _.each(rowItems, function(rowItem) {
             var pairs = _.pairs(rowItem)
@@ -81,11 +82,12 @@ function FormService($http, HttpService, $upload, appBusy) {
                 if (value != null) {
                     var multiKey = key + "_o_" + rowItemIndex;
                     data[multiKey] = value;
+                    rowItemsQueryString += (multiKey + "=" + value + "&");
                 }
             });
             
             rowItemIndex ++;
         });
-        this.post(target, data, $scope);
+        this.post(target, data + rowItemsQueryString, $scope);
     }
 }
