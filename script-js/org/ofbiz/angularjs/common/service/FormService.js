@@ -8,7 +8,7 @@ function FormService($http, HttpService, $upload, appBusy) {
     /**
      * Post
      */
-    this.post = function(target, data, $scope) {
+    this.post = function(target, data, successHandler, errorHandler, $scope) {
         appBusy.set();
         /*
         var config = {};
@@ -24,13 +24,22 @@ function FormService($http, HttpService, $upload, appBusy) {
         .success(function(data, status, headers, config) {
             appBusy.set(false);
             if (data._ERROR_MESSAGE_ != undefined || data._ERROR_MESSAGE_LIST_ != undefined) {
+                if (typeof(errorHandler) == "function") {
+                    errorHandler(data, status, headers, config);
+                }
                 $scope.$emit("ON_SUBMIT_ERROR", data, status, headers, config);
             } else {
+                if (typeof(successHandler) == "function") {
+                    successHandler(data, status, headers, config);
+                }
                 $scope.$emit("ON_SUBMIT_SUCCESS", data, status, headers, config);
             }
         })
         .error(function(data, status, headers, config) {
             appBusy.set(false);
+            if (typeof(errorHandler) == "function") {
+                errorHandler(data, status, headers, config);
+            }
             $scope.$emit("ON_SUBMIT_ERROR", data, status, headers, config);
         });
     }
@@ -70,7 +79,7 @@ function FormService($http, HttpService, $upload, appBusy) {
     /**
      * Post Multi
      */
-    this.postMulti = function(target, data, rowItems, $scope) {
+    this.postMulti = function(target, data, rowItems, successHandler, errorHandler, $scope) {
         appBusy.set();
         var rowItemsQueryString = "&";
         var rowItemIndex = 0;
@@ -88,6 +97,6 @@ function FormService($http, HttpService, $upload, appBusy) {
             
             rowItemIndex ++;
         });
-        this.post(target, data + rowItemsQueryString, $scope);
+        this.post(target, data + rowItemsQueryString, successHandler, errorHandler, $scope);
     }
 }

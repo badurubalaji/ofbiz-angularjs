@@ -40,7 +40,11 @@ function FormOptionsDirective($http, appBusy, FormService) {
                     if (target) {
                         $element.find("input[type=submit]").bind("click", function() {
                             var data = $element.serialize();
-                            $scope.FormService.post($scope.$http, target, data, $scope);
+                            $scope.FormService.post($http, target, data, function(data, status, headers, config) {
+                                
+                            }, function(data, status, headers, config) {
+                                
+                            }, $scope);
                         });
                     }
                 }
