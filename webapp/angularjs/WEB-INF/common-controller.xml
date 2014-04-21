@@ -8,10 +8,12 @@
 
     <description>AngularJs Component Site Configuration File</description>
     
+    <!--
     <handler name="jsonsimple" type="request" class="org.ofbiz.angularjs.webapp.event.JsonSimpleEventHandler"/>
     <handler name="jsonservice" type="request" class="org.ofbiz.angularjs.webapp.event.JsonServiceEventHandler"/>
     <handler name="screenjson" type="view" class="org.ofbiz.angularjs.widget.screen.MacroJsonScreenViewHandler"/>
     <handler name="screenng" type="view" class="org.ofbiz.widget.screen.MacroScreenViewHandler"/>
+    -->
 
     <!-- Events to run on every request before security (chains exempt) -->
     <!--
@@ -36,7 +38,7 @@
     
     <request-map uri="LookupGeo">
         <security https="true" auth="true"/>
-        <event type="jsonsimple" path="component://angularjs/script/org/ofbiz/angularjs/common/CommonEvents.xml" invoke="LookupGeo"/>
+        <event type="simple" path="component://angularjs/script/org/ofbiz/angularjs/common/CommonEvents.xml" invoke="LookupGeo"/>
         <response name="success" type="request" value="json"/>
         <response name="error" type="request" value="error"/>
     </request-map>

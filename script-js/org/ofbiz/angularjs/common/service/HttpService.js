@@ -25,7 +25,21 @@ function HttpService($rootScope, $q, $http, appBusy) {
         
         appBusy.set();
         $rootScope.$emit("ON_HTTP_REQUEST_WILL_SEND", {});
-        $http.post(target, parameters)
+        var queryString = null;
+        if (typeof(parameters) == "object") {
+            queryString = "&";
+            var keys = _.keys(parameters);
+            _.each(keys, function(paramName) {
+                var paramValue = parameters[paramName];
+                if (paramValue != null) {
+                    queryString += paramName + "=" + paramValue + "&";
+                }
+            });
+        } else {
+            queryString = parameters;
+        }
+        
+        $http({method: "POST", url: target, data: queryString, headers: {"Content-Type": "application/x-www-form-urlencoded"}})
         .success(function(data, status, headers, config) {
             appBusy.set(false);
             if (data._ERROR_MESSAGE_LIST_) {
