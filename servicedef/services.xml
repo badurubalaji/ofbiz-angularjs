@@ -22,7 +22,7 @@
         <attribute name="searchValueFieldName" mode="IN" type="String" optional="true"/>
         <attribute name="searchType" mode="IN" type="String" optional="true"/>
         <attribute name="conditionFields" mode="IN" type="List" optional="true"/>
-        <attribute name="andCondition" mode="IN" type="List" optional="true"/>
+        <attribute name="andCondition" mode="IN" type="org.ofbiz.entity.condition.EntityCondition" optional="true"/>
         <attribute name="noConditionFind" mode="IN" type="String" optional="true"></attribute>
         <attribute name="viewSize" mode="IN" type="Integer" optional="true"/>
         <attribute name="request" mode="IN" type="javax.servlet.http.HttpServletRequest" optional="false"></attribute>

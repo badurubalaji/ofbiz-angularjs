@@ -8,18 +8,23 @@ function FormService($http, HttpService, $upload, appBusy) {
     /**
      * Post
      */
-    this.post = function(target, data, successHandler, errorHandler, $scope) {
+    this.post = function(target, parameters, successHandler, errorHandler, $scope) {
         appBusy.set();
-        /*
-        var config = {};
-        config.method = "POST";
-        config.url = target;
-        config.data = data;
-        config.header = {"Content-Type": "application/x-www-form-urlencoded"};
-        HttpService.post(target, data, config.header)
-        $http(config)
-        */
-        $http({method: "POST", url: target, data: data, headers: {"Content-Type": "application/x-www-form-urlencoded"}})
+        var queryString = null;
+        if (typeof(parameters) == "object") {
+            queryString = "";
+            var keys = _.keys(parameters);
+            _.each(keys, function(paramName) {
+                var paramValue = parameters[paramName];
+                if (paramValue != null) {
+                    queryString += paramName + "=" + paramValue + "&";
+                }
+            });
+            queryString = queryString.substring(0, queryString.length - 1);
+        } else {
+            queryString = parameters;
+        }
+        $http({method: "POST", url: target, data: queryString, headers: {"Content-Type": "application/x-www-form-urlencoded"}})
         
         .success(function(data, status, headers, config) {
             appBusy.set(false);

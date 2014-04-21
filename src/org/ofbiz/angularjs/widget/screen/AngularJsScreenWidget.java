@@ -934,8 +934,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander validatedExdr;
         protected FlexibleStringExpander styleExdr;
         protected FlexibleStringExpander uploadExdr;
-        protected FlexibleStringExpander onSubmitSuccessExdr = null;
-        protected FlexibleStringExpander onSubmitErrorExdr = null;
+        protected FlexibleStringExpander onSubmitExdr = null;
         protected List<ModelScreenWidget> subWidgets;
         
         public Form(ModelScreen modelScreen, Element widgetElement) {
@@ -952,11 +951,8 @@ public class AngularJsScreenWidget {
                     .getAttribute("style"));
             this.uploadExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("upload"));
-            this.onSubmitSuccessExdr = FlexibleStringExpander
-                    .getInstance(widgetElement
-                            .getAttribute("on-submit-success"));
-            this.onSubmitErrorExdr = FlexibleStringExpander
-                    .getInstance(widgetElement.getAttribute("on-submit-error"));
+            this.onSubmitExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("on-submit"));
             
             // read sub-widgets
             List<? extends Element> subElementList = UtilXml
@@ -992,10 +988,8 @@ public class AngularJsScreenWidget {
             } else {
                 writer.append("target=\"" + targetExdr.expandString(context)
                         + "\" ");
-                writer.append("on-submit-success=\""
-                        + onSubmitSuccessExdr.expandString(context) + "\" ");
-                writer.append("on-submit-error=\""
-                        + onSubmitErrorExdr.expandString(context) + "\" ");
+                writer.append("ng-submit=\""
+                        + onSubmitExdr.expandString(context) + "\" ");
             }
             
             writer.append(" form-options=\"\">");
@@ -1142,8 +1136,7 @@ public class AngularJsScreenWidget {
             this.rowHeightExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("row-height"));
             this.multiSelectExdr = FlexibleStringExpander
-                    .getInstance(widgetElement
-                            .getAttribute("multi-select"));
+                    .getInstance(widgetElement.getAttribute("multi-select"));
             this.showSelectionCheckboxExdr = FlexibleStringExpander
                     .getInstance(widgetElement
                             .getAttribute("show-selection-checkbox"));
