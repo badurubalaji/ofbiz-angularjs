@@ -8,44 +8,23 @@ function FormService($http, HttpService, $upload, appBusy) {
     /**
      * Post
      */
-    this.post = function(target, parameters, successHandler, errorHandler, $scope) {
-        appBusy.set();
-        var queryString = null;
-        if (typeof(parameters) == "object") {
-            queryString = "";
-            var keys = _.keys(parameters);
-            _.each(keys, function(paramName) {
-                var paramValue = parameters[paramName];
-                if (paramValue != null) {
-                    queryString += paramName + "=" + paramValue + "&";
-                }
-            });
-            queryString = queryString.substring(0, queryString.length - 1);
-        } else {
-            queryString = parameters;
-        }
-        $http({method: "POST", url: target, data: queryString, headers: {"Content-Type": "application/x-www-form-urlencoded"}})
-        
+    this.post = function(target, parameters, successHandler, errorHandler) {
+        HttpService.post(target, parameters, {"Content-Type": "application/x-www-form-urlencoded"})
         .success(function(data, status, headers, config) {
-            appBusy.set(false);
             if (data._ERROR_MESSAGE_ != undefined || data._ERROR_MESSAGE_LIST_ != undefined) {
                 if (typeof(errorHandler) == "function") {
                     errorHandler(data, status, headers, config);
                 }
-                $scope.$emit("ON_SUBMIT_ERROR", data, status, headers, config);
             } else {
                 if (typeof(successHandler) == "function") {
                     successHandler(data, status, headers, config);
                 }
-                $scope.$emit("ON_SUBMIT_SUCCESS", data, status, headers, config);
             }
         })
         .error(function(data, status, headers, config) {
-            appBusy.set(false);
             if (typeof(errorHandler) == "function") {
                 errorHandler(data, status, headers, config);
             }
-            $scope.$emit("ON_SUBMIT_ERROR", data, status, headers, config);
         });
     }
     
@@ -84,8 +63,7 @@ function FormService($http, HttpService, $upload, appBusy) {
     /**
      * Post Multi
      */
-    this.postMulti = function(target, data, rowItems, successHandler, errorHandler, $scope) {
-        appBusy.set();
+    this.postMulti = function(target, data, rowItems, successHandler, errorHandler) {
         var rowItemsQueryString = "&";
         var rowItemIndex = 0;
         _.each(rowItems, function(rowItem) {
@@ -102,6 +80,6 @@ function FormService($http, HttpService, $upload, appBusy) {
             
             rowItemIndex ++;
         });
-        this.post(target, data + rowItemsQueryString, successHandler, errorHandler, $scope);
+        this.post(target, data + rowItemsQueryString, successHandler, errorHandler);
     }
 }
