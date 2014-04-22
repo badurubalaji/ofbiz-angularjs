@@ -53,6 +53,7 @@ function HttpService($rootScope, $q, $http, appBusy) {
                 _.each(data._ERROR_MESSAGE_LIST_, function(errorMessage) {
                     responseMessages.push({ type: "error", msg: errorMessage });
                 });
+                errorFn(data);
                 $rootScope.$emit("ON_HTTP_RESPONSE_MESSAGE_RECEIVED", responseMessages);
             } else {
                 successFn(data);
