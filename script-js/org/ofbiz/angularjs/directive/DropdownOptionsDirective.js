@@ -13,23 +13,42 @@ function DropdownOptionsDirective(HttpService, $rootScope) {
         var placeholder = $attrs.placeholder;
         var ngModel = $attrs.ngModel;
         
+        if (fieldName == null) {
+            fieldName = "id";
+        }
+        if (descriptionFieldName == null) {
+            descriptionFieldName = "text";
+        }
+        
         $scope.select2Options = {
             placeholder: placeholder,
             allowClear: true,
-            data:[]
+            data:[],
+            id: function(object) {
+                return object;
+            },
+            formatSelection: function(object, container) {
+                return object[descriptionFieldName];
+            },
+            formatResult: function(object, container, query) {
+                return object[descriptionFieldName];
+            }
         };
         
         HttpService.post(target, parameters).success(function (response) {
             var options = response.options;
             if (options) {
                 var data = [];
-	            for (var i = 0; i < options.length; i ++) {
-	                var option = options[i];
-	                data.push({"id": option[fieldName], "text": option[descriptionFieldName]});
-	            }
-	            
-	            $scope.select2Options.data = data;
-	            $($element).select2($scope.select2Options);
+                for (var i = 0; i < options.length; i ++) {
+                    var option = options[i];
+                    var dataObj = {};
+                    dataObj[fieldName] = option[fieldName];
+                    dataObj[descriptionFieldName] = option[descriptionFieldName];
+                    data.push(dataObj);
+                }
+                
+                $scope.select2Options.data = data;
+                $($element).select2($scope.select2Options);
             }
         });
         
