@@ -32,6 +32,9 @@ function DropdownOptionsDirective(HttpService, $rootScope) {
             },
             formatResult: function(object, container, query) {
                 return object[descriptionFieldName];
+            },
+            initSelection: function(element, callback) {
+                // TODO http://ivaynberg.github.io/select2/
             }
         };
         
