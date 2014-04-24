@@ -9,7 +9,6 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
      * Controller
      */
     this.controller = function($scope, $element, $attrs, $transclude) {
-        var modelName = $attrs.model;
         var selectedItemsSetter = $parse($attrs.selectedItems).assign;
         var rowHeight = $attrs.rowHeight;
         var selectTarget = $attrs.selectTarget;
@@ -190,11 +189,6 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                 $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, $scope.parameters);
             }
         }
-        
-        // TODO should be removed
-        $scope.$on(modelName, function(event, args) {
-            onParametersChanged(args);
-        });
         
         if (sortInfo) {
             $scope.$watch('sortInfo', function (newVal, oldVal) {

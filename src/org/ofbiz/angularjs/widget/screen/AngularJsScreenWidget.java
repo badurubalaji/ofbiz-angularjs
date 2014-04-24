@@ -1095,7 +1095,6 @@ public class AngularJsScreenWidget {
     public static class Grid extends ModelScreenWidget {
         public static final String TAG_NAME = "grid";
         
-        protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander selectTargetExdr;
         protected FlexibleStringExpander selectParametersExdr;
         protected FlexibleStringExpander selectedItemsExdr;
@@ -1111,8 +1110,6 @@ public class AngularJsScreenWidget {
         
         public Grid(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
-                    .getAttribute("model"));
             this.selectTargetExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("select-target"));
             this.selectParametersExdr = FlexibleStringExpander
@@ -1252,9 +1249,7 @@ public class AngularJsScreenWidget {
                 columnDefsBuilder.append(fieldString);
             }
             columnDefsBuilder.append("]");
-            writer.append("<div model=\""
-                    + modelExdr.expandString(context)
-                    + "\" class=\""
+            writer.append("<div class=\""
                     + styleExdr.expandString(context)
                     + "\" ng-grid=\"grid\" grid-options=\"\" row-height=\""
                     + rowHeight
