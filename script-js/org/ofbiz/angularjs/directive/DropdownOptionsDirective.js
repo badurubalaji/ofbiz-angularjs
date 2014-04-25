@@ -12,6 +12,7 @@ function DropdownOptionsDirective(HttpService, $rootScope) {
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
         var ngModel = $attrs.ngModel;
+        var defaultValue = $scope.$eval($attrs.defaultValue);
         
         if (fieldName == null) {
             fieldName = "id";
@@ -35,6 +36,14 @@ function DropdownOptionsDirective(HttpService, $rootScope) {
             },
             initSelection: function(element, callback) {
                 // TODO http://ivaynberg.github.io/select2/
+                var data = [];
+                $(element.val().split(",")).each(function () {
+                    var dataObj = {};
+                    dataObj[fieldName] = this;
+                    dataObj[descriptionFieldName] = this;
+                    data.push(dataObj);
+                });
+                callback(data);
             }
         };
         
@@ -51,7 +60,9 @@ function DropdownOptionsDirective(HttpService, $rootScope) {
                 }
                 
                 $scope.select2Options.data = data;
-                $($element).select2($scope.select2Options);
+                var select2 = $($element).select2($scope.select2Options);
+                select2.select2("val", null);
+                select2.select2("val", defaultValue);
             }
         });
         

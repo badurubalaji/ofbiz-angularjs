@@ -651,6 +651,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander placeholderExdr;
         protected FlexibleStringExpander fieldNameExdr = null;
         protected FlexibleStringExpander descriptionFieldNameExdr = null;
+        protected FlexibleStringExpander defaultValueExdr = null;
         
         public Dropdown(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
@@ -669,6 +670,8 @@ public class AngularJsScreenWidget {
             this.descriptionFieldNameExdr = FlexibleStringExpander
                     .getInstance(widgetElement
                             .getAttribute("description-field-name"));
+            this.defaultValueExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("default-value"));
         }
         
         @Override
@@ -693,6 +696,8 @@ public class AngularJsScreenWidget {
                     + descriptionFieldNameExdr.expandString(context)
                     + "\" field-name=\"" + fieldNameExdr.expandString(context)
                     + "\"");
+            writer.append(" default-value=\""
+                    + defaultValueExdr.expandString(context) + "\"");
             writer.append(" placeholder=\""
                     + placeholderExdr.expandString(context)
                     + "\" class=\"form-control\"");
