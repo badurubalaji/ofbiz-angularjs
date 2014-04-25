@@ -30,7 +30,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             // This would work if the directive does not create a new scope.
             // http://stackoverflow.com/questions/17838745/angularjs-watch-for-change-in-parent-scope
             $scope.$watch($attrs.selectParameters, function (newVal, oldVal) {
-                onParametersChanged(newVal);
+                onParametersChanged({parameters: newVal});
             });
         }
         
