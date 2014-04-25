@@ -842,6 +842,7 @@ public class AngularJsScreenWidget {
         
         protected FlexibleStringExpander titleExdr;
         protected FlexibleStringExpander useWhenExdr;
+        protected FlexibleStringExpander helpTextExdr;
         protected List<ModelScreenWidget> subWidgets;
         
         public Field(ModelScreen modelScreen, Element widgetElement) {
@@ -853,6 +854,8 @@ public class AngularJsScreenWidget {
                     .getAttribute("title"));
             this.useWhenExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("use-when"));
+            this.helpTextExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("help-text"));
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
@@ -911,6 +914,11 @@ public class AngularJsScreenWidget {
                 writer.append("<div class=\"controls\">");
                 renderSubWidgetsString(this.subWidgets, writer, context,
                         screenStringRenderer);
+                if (UtilValidate.isNotEmpty(helpTextExdr.getOriginal())) {
+                    writer.append("<p class=\"help-block\">");
+                    writer.append(helpTextExdr.expandString(context));
+                    writer.append("</p>");
+                }
                 writer.append("</div>");
                 writer.append("</div>");
             }
@@ -925,6 +933,7 @@ public class AngularJsScreenWidget {
     
     /**
      * http://getbootstrap.com/css/#forms
+     * http://www.w3resource.com/twitter-bootstrap/forms-tutorial.php
      * 
      * @author chatree
      * 
@@ -935,6 +944,7 @@ public class AngularJsScreenWidget {
         
         protected FlexibleStringExpander nameExdr;
         protected FlexibleStringExpander typeExdr;
+        protected FlexibleStringExpander legendExdr;
         protected FlexibleStringExpander targetExdr;
         protected FlexibleStringExpander validatedExdr;
         protected FlexibleStringExpander styleExdr;
@@ -948,6 +958,8 @@ public class AngularJsScreenWidget {
                     .getAttribute("name"));
             this.typeExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("type"));
+            this.legendExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("legend"));
             this.targetExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("target"));
             this.validatedExdr = FlexibleStringExpander
@@ -999,6 +1011,8 @@ public class AngularJsScreenWidget {
             
             writer.append(" form-options=\"\">");
             writer.append("<fieldset>");
+            writer.append("<legend>" + legendExdr.expandString(context)
+                    + "</legend>");
             renderSubWidgetsString(this.subWidgets, writer, context,
                     screenStringRenderer);
             writer.append("</fieldset>");

@@ -154,6 +154,20 @@
                     <line-break/>
                     <preformatted-text>form = {{user | json}}"</preformatted-text>
                     <preformatted-text>master = {{master | json}}"</preformatted-text>
+                    <form type="horizontal" legend="This is a form">
+                        <field title="Title 1" help-text="Please input title 1.">
+                            <text/>
+                        </field>
+                        <field title="Title 2">
+                            <dropdown model="country" target="LookupGeo" parameters="{geoTypeId: 'COUNTRY'}" field-name="geoId" description-field-name="geoName" default-value="ABW" placeholder="Choose Country"/>
+                        </field>
+                        <field title="File input">
+                            <file/>
+                        </field>
+                        <field title="Text area">
+                            <textarea/>
+                        </field>
+                    </form>
                 </controller>
             </widgets>
         </section>
