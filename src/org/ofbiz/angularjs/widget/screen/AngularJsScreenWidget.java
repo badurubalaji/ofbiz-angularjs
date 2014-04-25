@@ -710,7 +710,7 @@ public class AngularJsScreenWidget {
         
         @Override
         public String rawString() {
-            return "<select/>";
+            return "<data/>";
         }
     }
     

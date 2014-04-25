@@ -116,7 +116,7 @@
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.DropdownDemoController">
                     <label text="Color:"/>
-                    <dropdown model="country" target="LookupGeo" parameters="{geoTypeId: 'COUNTRY'}" field-name="geoId" description-field-name="geoName" placeholder="Choose Country"/>
+                    <dropdown model="country" target="LookupGeo" parameters="{geoTypeId: 'COUNTRY'}" field-name="geoId" description-field-name="geoName" default-value="ABW" placeholder="Choose Country"/>
                     <label text="Currently selected: {{country.geoName}}"/>
                 </controller>
             </widgets>

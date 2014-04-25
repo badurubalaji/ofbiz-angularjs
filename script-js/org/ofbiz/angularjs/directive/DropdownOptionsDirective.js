@@ -1,18 +1,21 @@
 package org.ofbiz.angularjs.directive;
 
-function DropdownOptionsDirective(HttpService, $rootScope) {
+function DropdownOptionsDirective(HttpService, $rootScope, $http) {
     
     /**
      * Controller
      */
-    this.controller = function($scope, $element, $attrs, $transclude, $http) {
+    this.controller = function($scope, $element, $attrs, $transclude) {
         var target = $attrs.target;
         var parameters = $scope.$eval($attrs.parameters);
         var fieldName = $attrs.fieldName;
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
         var ngModel = $attrs.ngModel;
-        var defaultValue = $scope.$eval($attrs.defaultValue);
+        var defaultValue = $scope[$attrs.defaultValue];
+        if (defaultValue == null) {
+            defaultValue = $attrs.defaultValue;
+        }
         
         if (fieldName == null) {
             fieldName = "id";
@@ -36,18 +39,14 @@ function DropdownOptionsDirective(HttpService, $rootScope) {
             },
             initSelection: function(element, callback) {
                 // TODO http://ivaynberg.github.io/select2/
-                var data = [];
-                $(element.val().split(",")).each(function () {
-                    var dataObj = {};
-                    dataObj[fieldName] = this;
-                    dataObj[descriptionFieldName] = this;
-                    data.push(dataObj);
-                });
-                callback(data);
+                var option = element.val();
+                callback(option);
+                $scope[ngModel] = option;
             }
         };
         
         HttpService.post(target, parameters).success(function (response) {
+            var defaultDescription = null;
             var options = response.options;
             if (options) {
                 var data = [];
@@ -57,12 +56,19 @@ function DropdownOptionsDirective(HttpService, $rootScope) {
                     dataObj[fieldName] = option[fieldName];
                     dataObj[descriptionFieldName] = option[descriptionFieldName];
                     data.push(dataObj);
+
+                    if (option[fieldName] == defaultValue) {
+                        defaultDescription = option[descriptionFieldName];
+                    }
                 }
                 
                 $scope.select2Options.data = data;
                 var select2 = $($element).select2($scope.select2Options);
                 select2.select2("val", null);
-                select2.select2("val", defaultValue);
+                var dataObj = {};
+                dataObj[fieldName] = defaultValue;
+                dataObj[descriptionFieldName] = defaultDescription;
+                select2.select2("val", dataObj);
             }
         });
         
