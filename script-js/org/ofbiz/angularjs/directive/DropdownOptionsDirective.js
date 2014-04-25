@@ -40,8 +40,11 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http) {
             initSelection: function(element, callback) {
                 // TODO http://ivaynberg.github.io/select2/
                 var option = element.val();
-                callback(option);
-                $scope[ngModel] = option;
+                var value = option[fieldName];
+                if (!_.isEmpty(value)) {
+                    callback(option);
+                    $scope[ngModel] = option;
+                }
             }
         };
         
