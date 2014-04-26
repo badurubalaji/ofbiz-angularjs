@@ -1011,8 +1011,10 @@ public class AngularJsScreenWidget {
             
             writer.append(" form-options=\"\">");
             writer.append("<fieldset>");
-            writer.append("<legend>" + legendExdr.expandString(context)
-                    + "</legend>");
+            if (UtilValidate.isNotEmpty(legendExdr.getOriginal())) {
+                writer.append("<legend>" + legendExdr.expandString(context)
+                        + "</legend>");
+            }
             renderSubWidgetsString(this.subWidgets, writer, context,
                     screenStringRenderer);
             writer.append("</fieldset>");
