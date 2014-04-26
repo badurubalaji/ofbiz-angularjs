@@ -12,16 +12,19 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http) {
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
         var ngModel = $attrs.ngModel;
-        var defaultValue = $scope[$attrs.defaultValue];
-        if (defaultValue == null) {
-            defaultValue = $attrs.defaultValue;
-        }
+        var defaultValue = null;
         
-        if (fieldName == null) {
-            fieldName = "id";
-        }
-        if (descriptionFieldName == null) {
-            descriptionFieldName = "text";
+        if (!_.isEmpty($attrs.defaultValue)) { // There is default value;
+            $scope.$watch($attrs.defaultValue, function(newValue) {
+                if (newValue != null) {
+                    defaultValue = newValue;
+                } else {
+                    defaultValue = $attrs.defaultValue;
+                }
+                setup();
+            });
+        } else { // There is not default value.
+            setup();
         }
         
         $scope.select2Options = {
@@ -48,33 +51,41 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http) {
             }
         };
         
-        HttpService.post(target, parameters).success(function (response) {
-            var defaultDescription = null;
-            var options = response.options;
-            if (options) {
-                var data = [];
-                for (var i = 0; i < options.length; i ++) {
-                    var option = options[i];
-                    var dataObj = {};
-                    dataObj[fieldName] = option[fieldName];
-                    dataObj[descriptionFieldName] = option[descriptionFieldName];
-                    data.push(dataObj);
-
-                    if (option[fieldName] == defaultValue) {
-                        defaultDescription = option[descriptionFieldName];
-                    }
-                }
-                
-                $scope.select2Options.data = data;
-                var select2 = $($element).select2($scope.select2Options);
-                select2.select2("val", null);
-                var dataObj = {};
-                dataObj[fieldName] = defaultValue;
-                dataObj[descriptionFieldName] = defaultDescription;
-                select2.select2("val", dataObj);
+        function setup() {
+            if (fieldName == null) {
+                fieldName = "id";
             }
-        });
-        
+            if (descriptionFieldName == null) {
+                descriptionFieldName = "text";
+            }
+            
+            HttpService.post(target, parameters).success(function (response) {
+                var defaultDescription = null;
+                var options = response.options;
+                if (options) {
+                    var data = [];
+                    for (var i = 0; i < options.length; i ++) {
+                        var option = options[i];
+                        var dataObj = {};
+                        dataObj[fieldName] = option[fieldName];
+                        dataObj[descriptionFieldName] = option[descriptionFieldName];
+                        data.push(dataObj);
+
+                        if (option[fieldName] == defaultValue) {
+                            defaultDescription = option[descriptionFieldName];
+                        }
+                    }
+                    
+                    $scope.select2Options.data = data;
+                    var select2 = $($element).select2($scope.select2Options);
+                    select2.select2("val", null);
+                    var dataObj = {};
+                    dataObj[fieldName] = defaultValue;
+                    dataObj[descriptionFieldName] = defaultDescription;
+                    select2.select2("val", dataObj);
+                }
+            });
+        }
     }
 
     /**
