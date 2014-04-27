@@ -110,13 +110,13 @@ public class AngularJsScreenWidget {
     }
     
     @SuppressWarnings("serial")
-    public static class Action extends ModelScreenWidget {
+    public static class ActionPanel extends ModelScreenWidget {
         
-        public static final String TAG_NAME = "action";
+        public static final String TAG_NAME = "action-panel";
         
         protected List<ModelScreenWidget> subWidgets;
         
-        public Action(ModelScreen modelScreen, Element widgetElement) {
+        public ActionPanel(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             // read sub-widgets
             List<? extends Element> subElementList = UtilXml
