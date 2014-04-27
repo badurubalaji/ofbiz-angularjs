@@ -110,6 +110,39 @@ public class AngularJsScreenWidget {
     }
     
     @SuppressWarnings("serial")
+    public static class Action extends ModelScreenWidget {
+        
+        public static final String TAG_NAME = "action";
+        
+        protected List<ModelScreenWidget> subWidgets;
+        
+        public Action(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            // read sub-widgets
+            List<? extends Element> subElementList = UtilXml
+                    .childElementList(widgetElement);
+            this.subWidgets = ModelScreenWidget.readSubWidgets(
+                    this.modelScreen, subElementList);
+        }
+        
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append(this.rawString());
+            renderSubWidgetsString(this.subWidgets, writer, context,
+                    screenStringRenderer);
+            writer.append("</div>");
+        }
+        
+        @Override
+        public String rawString() {
+            return "<div class=\"form-actions\">";
+        }
+    }
+    
+    @SuppressWarnings("serial")
     public static class Alert extends ModelScreenWidget {
         public static final String TAG_NAME = "alert";
         
