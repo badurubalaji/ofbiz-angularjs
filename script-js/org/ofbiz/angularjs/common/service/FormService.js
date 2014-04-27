@@ -3,7 +3,7 @@ package org.ofbiz.angularjs.common.service;
 /**
  * Form Service
  */
-function FormService($http, HttpService, $upload, appBusy) {
+function FormService($q, $http, HttpService, $upload, appBusy) {
     
     /**
      * Post
@@ -18,7 +18,12 @@ function FormService($http, HttpService, $upload, appBusy) {
             successFn = fn;
             return promise;
         }
-    	
+        
+        promise.error = function(fn) {
+            errorFn = fn;
+            return promise;
+        }
+    
         HttpService.post(target, parameters, {"Content-Type": "application/x-www-form-urlencoded"})
         .success(function(data, status, headers, config) {
             if (data._ERROR_MESSAGE_ != undefined || data._ERROR_MESSAGE_LIST_ != undefined) {

@@ -53,10 +53,15 @@ function HttpService($rootScope, $q, $http, appBusy) {
                 _.each(data._ERROR_MESSAGE_LIST_, function(errorMessage) {
                     responseMessages.push({ type: "error", msg: errorMessage });
                 });
-                errorFn(data);
+                
+                if (typeof(errorFn) == "function") {
+                    errorFn(data);
+                }
                 $rootScope.$emit("ON_HTTP_RESPONSE_MESSAGE_RECEIVED", responseMessages);
             } else {
-                successFn(data);
+                if (typeof(successFn) == "function") {
+                    successFn(data);
+                }
                 if (data._SUCCESS_MESSAGE_LIST_) {
                     _.each(data._SUCCESS_MESSAGE_LIST_, function(successMessage) {
                         $rootScope.$emit("ON_HTTP_RESPONSE_MESSAGE_RECEIVED", [{ type: "success", msg: successMessage }]);
@@ -66,7 +71,9 @@ function HttpService($rootScope, $q, $http, appBusy) {
         })
         .error(function(data, status, headers, config) {
             appBusy.set(false);
-            errorFn(data);
+            if (typeof(errorFn) == "function") {
+                errorFn(data);
+            }
             $rootScope.$emit("ON_HTTP_RESPONSE_MESSAGE_RECEIVED", { type: "error", msg: "HTTP Request Error!." });
         });
         return promise;
