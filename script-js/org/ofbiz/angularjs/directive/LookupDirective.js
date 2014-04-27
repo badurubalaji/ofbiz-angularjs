@@ -6,12 +6,12 @@ package org.ofbiz.angularjs.directive;
  * Fetch data from sercer: http://plnkr.co/edit/t1neIS?p=preview
  * JSONP: http://docs.angularjs.org/api/ng.$http#methods_jsonp
  */
-function LookupDirective(HttpService) {
+function LookupDirective(HttpService, FormService) {
     
     /**
      * Controller
      */
-    this.controller = function($scope, $element, $attrs, $transclude, $http) {
+    this.controller = function($scope, $element, $attrs, $transclude) {
         var target = $attrs.target;
         var descriptionFieldName = $attrs.descriptionFieldName;
         var ngModel = $attrs.ngModel;
@@ -21,8 +21,8 @@ function LookupDirective(HttpService) {
             
             var parameters = {queryString: $viewValue};
             
-            return $http.post(target, parameters).then(function(response) {
-                return response.data.options
+            return FormService.post(target, parameters, function(response) {
+                return response.options
             });
         }
         

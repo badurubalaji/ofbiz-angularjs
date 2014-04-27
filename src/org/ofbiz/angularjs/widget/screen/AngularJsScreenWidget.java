@@ -114,10 +114,13 @@ public class AngularJsScreenWidget {
         
         public static final String TAG_NAME = "action-panel";
         
+        protected FlexibleStringExpander useWhenExdr;
         protected List<ModelScreenWidget> subWidgets;
         
         public ActionPanel(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
+            this.useWhenExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("use-when"));
             // read sub-widgets
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
@@ -130,10 +133,52 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
-            renderSubWidgetsString(this.subWidgets, writer, context,
-                    screenStringRenderer);
-            writer.append("</div>");
+            
+            boolean usewhen = true;
+            String useWhenStr = useWhenExdr.expandString(context);
+            if (UtilValidate.isEmpty(useWhenStr)) {
+                usewhen = true;
+            } else {
+                try {
+                    Interpreter bsh = getBshInterpreter(context);
+                    Object retVal = bsh.eval(StringUtil
+                            .convertOperatorSubstitutions(useWhenStr));
+                    boolean condTrue = false;
+                    // retVal should be a Boolean, if not something weird is
+                    // up...
+                    if (retVal instanceof Boolean) {
+                        Boolean boolVal = (Boolean) retVal;
+                        condTrue = boolVal.booleanValue();
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Return value from use-when condition eval was not a Boolean: "
+                                        + (retVal != null ? retVal.getClass()
+                                                .getName() : "null") + " ["
+                                        + retVal + "] on the field "
+                                        + this.name);
+                    }
+                    
+                    usewhen = condTrue;
+                } catch (EvalError e) {
+                    String errMsg = "Error evaluating BeanShell use-when condition ["
+                            + useWhenStr
+                            + "] on the field "
+                            + this.name
+                            + ": "
+                            + e.toString();
+                    Debug.logError(e, errMsg, module);
+                    // Debug.logError("For use-when eval error context is: " +
+                    // context, module);
+                    throw new IllegalArgumentException(errMsg);
+                }
+            }
+            
+            if (usewhen) {
+                writer.append(this.rawString());
+                renderSubWidgetsString(this.subWidgets, writer, context,
+                        screenStringRenderer);
+                writer.append("</div>");
+            }
         }
         
         @Override
@@ -978,7 +1023,6 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander nameExdr;
         protected FlexibleStringExpander typeExdr;
         protected FlexibleStringExpander legendExdr;
-        protected FlexibleStringExpander targetExdr;
         protected FlexibleStringExpander validatedExdr;
         protected FlexibleStringExpander styleExdr;
         protected FlexibleStringExpander uploadExdr;
@@ -993,8 +1037,6 @@ public class AngularJsScreenWidget {
                     .getAttribute("type"));
             this.legendExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("legend"));
-            this.targetExdr = FlexibleStringExpander.getInstance(widgetElement
-                    .getAttribute("target"));
             this.validatedExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("validated"));
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -1033,11 +1075,7 @@ public class AngularJsScreenWidget {
             }
             if (upload) {
                 writer.append("ng-upload ");
-                writer.append("action=\"" + targetExdr.expandString(context)
-                        + "\"");
             } else {
-                writer.append("target=\"" + targetExdr.expandString(context)
-                        + "\" ");
                 writer.append("ng-submit=\""
                         + onSubmitExdr.expandString(context) + "\" ");
             }
@@ -2299,7 +2337,6 @@ public class AngularJsScreenWidget {
     public static class Text extends ModelScreenWidget {
         public static final String TAG_NAME = "text";
         
-        protected FlexibleStringExpander nameExdr;
         protected FlexibleStringExpander typeExdr;
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander styleExdr;
@@ -2307,8 +2344,6 @@ public class AngularJsScreenWidget {
         
         public Text(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
-            this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
-                    .getAttribute("name"));
             this.typeExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("type"));
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -2324,7 +2359,6 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            String name = nameExdr.expandString(context);
             String type = typeExdr.expandString(context);
             String model = modelExdr.expandString(context);
             String style = styleExdr.expandString(context);
@@ -2333,8 +2367,8 @@ public class AngularJsScreenWidget {
                 type = "text";
             }
             
-            writer.append("<input type=\"" + type + "\" name=\"" + name
-                    + "\" class=\"form-control " + style + "\"");
+            writer.append("<input type=\"" + type + "\" class=\"form-control "
+                    + style + "\"");
             if (UtilValidate.isNotEmpty(placeholder)) {
                 writer.append(" placeholder=\"" + placeholder + "\"");
             }
