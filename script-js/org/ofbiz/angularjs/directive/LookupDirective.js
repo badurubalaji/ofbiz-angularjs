@@ -21,7 +21,7 @@ function LookupDirective(HttpService, FormService) {
             
             var parameters = {queryString: $viewValue};
             
-            return FormService.post(target, parameters, function(response) {
+            return FormService.post(target, parameters).success(function(response) {
                 return response.options
             });
         }

@@ -8,24 +8,36 @@ function FormService($http, HttpService, $upload, appBusy) {
     /**
      * Post
      */
-    this.post = function(target, parameters, successHandler, errorHandler) {
+    this.post = function(target, parameters) {
+        var deferred = $q.defer();
+        var promise = deferred.promise;
+        var successFn = null;
+        var errorFn = null;
+        
+        promise.success = function(fn) {
+            successFn = fn;
+            return promise;
+        }
+    	
         HttpService.post(target, parameters, {"Content-Type": "application/x-www-form-urlencoded"})
         .success(function(data, status, headers, config) {
             if (data._ERROR_MESSAGE_ != undefined || data._ERROR_MESSAGE_LIST_ != undefined) {
-                if (typeof(errorHandler) == "function") {
-                    errorHandler(data, status, headers, config);
+                if (typeof(errorFn) == "function") {
+                    errorFn(data, status, headers, config);
                 }
             } else {
-                if (typeof(successHandler) == "function") {
-                    successHandler(data, status, headers, config);
+                if (typeof(successFn) == "function") {
+                    successFn(data, status, headers, config);
                 }
             }
         })
         .error(function(data, status, headers, config) {
-            if (typeof(errorHandler) == "function") {
-                errorHandler(data, status, headers, config);
+            if (typeof(errorFn) == "function") {
+                errorFn(data, status, headers, config);
             }
         });
+
+        return promise;
     }
     
     this.upload = function(target, files, parameters, onProgress, onSuccess) {
@@ -63,7 +75,17 @@ function FormService($http, HttpService, $upload, appBusy) {
     /**
      * Post Multi
      */
-    this.postMulti = function(target, data, rowItems, successHandler, errorHandler) {
+    this.postMulti = function(target, data, rowItems) {
+        var deferred = $q.defer();
+        var promise = deferred.promise;
+        var successFn = null;
+        var errorFn = null;
+        
+        promise.success = function(fn) {
+            successFn = fn;
+            return promise;
+        }
+        
         var rowItemsQueryString = "&";
         var rowItemIndex = 0;
         _.each(rowItems, function(rowItem) {
@@ -80,6 +102,6 @@ function FormService($http, HttpService, $upload, appBusy) {
             
             rowItemIndex ++;
         });
-        this.post(target, data + rowItemsQueryString, successHandler, errorHandler);
+        this.post(target, data + rowItemsQueryString).success(successFn).error(errorFn);
     }
 }
