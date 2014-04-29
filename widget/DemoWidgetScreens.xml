@@ -239,7 +239,9 @@
     <screen name="Lookup">
         <section>
             <widgets>
-                <lookup target="LookupExample" description-field-name="exampleName" model="lookupExample"/>
+                <lookup target="LookupExample" field-name="exampleId" description-field-name="exampleName" model="lookupExample" placeholder="Lookup Example"/>
+                <line-break/>
+                <label text="Selected example: {{lookupExample}}"/>
             </widgets>
         </section>
     </screen>

@@ -13,34 +13,77 @@ function LookupDirective(HttpService, FormService) {
      */
     this.controller = function($scope, $element, $attrs, $transclude) {
         var target = $attrs.target;
-        var descriptionFieldName = $attrs.descriptionFieldName;
-        var ngModel = $attrs.ngModel;
+        var parameters = $scope.$eval($attrs.parameters);
         var fieldName = $attrs.fieldName;
+        var descriptionFieldName = $attrs.descriptionFieldName;
+        var placeholder = $attrs.placeholder;
+        var ngModel = $attrs.ngModel;
+        var defaultValue = null;
         
-        $scope.getOptions = function($viewValue) {
-            
-            var parameters = {queryString: $viewValue};
-            
-            return FormService.post(target, parameters).success(function(response) {
-                return response.options
+        if (!_.isEmpty($attrs.defaultValue)) { // There is default value;
+            $scope.$watch($attrs.defaultValue, function(newValue) {
+                if (newValue != null) {
+                    defaultValue = newValue;
+                } else {
+                    defaultValue = $attrs.defaultValue;
+                }
+                setup();
             });
+        } else { // There is not default value.
+            setup();
         }
         
-        $scope.getOptionDescription = function(option) {
-            if (option && descriptionFieldName) {
-                return option[descriptionFieldName];
-            } else {
-                return "";
+        $scope.select2Options = {
+            placeholder: placeholder,
+            minimumInputLength: 1,
+            ajax: {
+                url: target,
+                dataType: "json",
+                type: "POST",
+                data: function(term, page) {
+                    return {
+                        term: term,
+                        viewSize: 10
+                    };
+                },
+                results: function(data, page) {
+                    var options = null;
+                    if (data.options != null) {
+                        options = data.options;
+                    } else {
+                        options = [];
+                    }
+                    return {results: options};
+                }
+            },
+            id: function(object) {
+                return object;
+            },
+            formatSelection: function(object, container) {
+                return object[descriptionFieldName];
+            },
+            formatResult: function(object, container, query) {
+                return object[descriptionFieldName];
+            },
+            initSelection: function(element, callback) {
+                // TODO http://ivaynberg.github.io/select2/
+                var option = element.val();
+                var value = option[fieldName];
+                if (!_.isEmpty(value)) {
+                    callback(option);
+                    $scope[ngModel] = option;
+                }
+            }
+        };
+        
+        function setup() {
+            if (fieldName == null) {
+                fieldName = "id";
+            }
+            if (descriptionFieldName == null) {
+                descriptionFieldName = "text";
             }
         }
-        
-        $scope.$watch(ngModel, function(value) {
-           var fieldValue = null;
-           if (_.isObject(value) && !_.isEmpty(fieldName)) {
-               fieldValue = value[fieldName];
-           }
-           $element.next().next().val(fieldValue);
-        });
     }
 
     /**
