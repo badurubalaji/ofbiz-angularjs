@@ -20,6 +20,10 @@ function LookupDirective(HttpService, FormService) {
         var ngModel = $attrs.ngModel;
         var defaultValue = null;
         
+        if (_.isEmpty(parameters)) {
+            parameters = {};
+        }
+        
         if (!_.isEmpty($attrs.defaultValue)) { // There is default value;
             $scope.$watch($attrs.defaultValue, function(newValue) {
                 if (newValue != null) {
@@ -41,10 +45,9 @@ function LookupDirective(HttpService, FormService) {
                 dataType: "json",
                 type: "POST",
                 data: function(term, page) {
-                    return {
-                        term: term,
-                        viewSize: 10
-                    };
+                    parameters.term = term;
+                    parameters.viewSize = 10;
+                    return parameters;
                 },
                 results: function(data, page) {
                     var options = null;
