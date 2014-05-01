@@ -60,7 +60,7 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http) {
             }
             
             HttpService.post(target, parameters).success(function (response) {
-                var defaultDescription = null;
+                var defaultOption = null;
                 var options = response.options;
                 if (options) {
                     var data = [];
@@ -72,17 +72,16 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http) {
                         data.push(dataObj);
 
                         if (option[fieldName] == defaultValue) {
-                            defaultDescription = option[descriptionFieldName];
+                            defaultOption = option;
                         }
                     }
                     
                     $scope.select2Options.data = data;
                     var select2 = $($element).select2($scope.select2Options);
                     select2.select2("val", null);
-                    var dataObj = {};
-                    dataObj[fieldName] = defaultValue;
-                    dataObj[descriptionFieldName] = defaultDescription;
-                    select2.select2("val", dataObj);
+                    if (defaultOption != null) {
+                        select2.select2("val", defaultOption);
+                    }
                 }
             });
         }
