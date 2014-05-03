@@ -91,6 +91,7 @@ function LookupDirective(HttpService, FormService) {
             // set default value
             if(!_.isEmpty(defaultValue)) {
                 parameters.term = defaultValue;
+                parameters.viewSize = 10;
                 HttpService.post(target, parameters).success(function (response) {
                     var defaultOption = null;
                     var options = response.options;
