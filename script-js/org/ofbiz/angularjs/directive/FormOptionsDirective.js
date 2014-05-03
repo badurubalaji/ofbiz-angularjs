@@ -7,23 +7,11 @@ package org.ofbiz.angularjs.directive;
 function FormOptionsDirective($http, appBusy, $parse, FormService) {
     
     /**
-     * Controller
+     * Link
      */
-    this.controller = function($scope, $element, $attrs, $transclude) {
-
-        
+    this.link = function($scope, $element, $attrs) {
+        $element.bind("submit", function() {
+            $scope.ngSubmit();
+        });
     }
-
-    /**
-     * Compile
-     */
-    this.compile = function() {
-        return {
-            pre: function() {
-            
-            },
-            post: function($scope, $element, $attrs, controller) {
-            }
-        };
-    };
 }

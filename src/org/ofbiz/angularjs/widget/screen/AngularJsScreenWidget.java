@@ -491,7 +491,7 @@ public class AngularJsScreenWidget {
                     + targetExdr.expandString(context) + "\" parameters=\""
                     + parametersExdr.expandString(context) + "\" ng-model=\""
                     + modelExdr.expandString(context) + "\" field=\""
-                    + fieldExdr.expandString(context) + "\">");
+                    + fieldExdr.expandString(context) + "\" ng-transclude>");
             renderSubWidgetsString(this.subWidgets, writer, context,
                     screenStringRenderer);
             writer.append("</context>");
