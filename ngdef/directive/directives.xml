@@ -15,10 +15,10 @@
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
         
     <ng-directive name="formOptions" location="org.ofbiz.angularjs.directive.FormOptionsDirective"
-        priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
+        priority="0" replace="false" transclude="true" restrict="A" scope="{}"/>
     
     <ng-directive name="jitTree" location="org.ofbiz.angularjs.directive.jit.JitTreeDirective"
-        priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
+        priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>
     
     <ng-directive name="context" location="org.ofbiz.angularjs.directive.ContextDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="{parameters:'=', ngModel:'='}"/>
@@ -42,5 +42,5 @@
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
     
     <ng-directive name="fileOptions" location="org.ofbiz.angularjs.directive.FileOptionsDirective"
-        priority="0" replace="false" transclude="false" restrict="A" scope="{}  "/>
+        priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
 </ng-directives>

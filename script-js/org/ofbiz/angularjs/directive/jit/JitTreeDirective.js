@@ -166,16 +166,11 @@ function JitTreeDirective() {
             }
         });
         
-        var model = $scope[$attrs.model];
-        if (model != null) {
-            loadNodes(spaceTree, model);
-        } else {
-            $scope.$watch($attrs.model, function(value) {
-                if (value != null) {
-                    loadNodes(spaceTree, value);
-                }
-            });
-        }
+        $scope.$watch("ngModel", function(model) {
+            if (model != null) {
+                loadNodes(spaceTree, model);
+            }
+        })
     };
     
     this.compile = function() {

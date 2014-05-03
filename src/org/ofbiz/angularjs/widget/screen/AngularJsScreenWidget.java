@@ -1080,7 +1080,7 @@ public class AngularJsScreenWidget {
                         + onSubmitExdr.expandString(context) + "\" ");
             }
             
-            writer.append(" form-options=\"\">");
+            writer.append(" form-options=\"\" ng-transclude>");
             writer.append("<fieldset>");
             if (UtilValidate.isNotEmpty(legendExdr.getOriginal())) {
                 writer.append("<legend>" + legendExdr.expandString(context)
@@ -1472,7 +1472,7 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             writer.append("<div jit-tree type=\""
-                    + typeExdr.expandString(context) + "\" model=\""
+                    + typeExdr.expandString(context) + "\" ng-model=\""
                     + modelExdr.expandString(context)
                     + "\" node-template-url=\""
                     + nodeTemplateUrlExdr.expandString(context) + "\" "
