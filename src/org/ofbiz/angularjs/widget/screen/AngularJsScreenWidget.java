@@ -489,7 +489,7 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             writer.append("<context target=\""
                     + targetExdr.expandString(context) + "\" parameters=\""
-                    + parametersExdr.expandString(context) + "\" model=\""
+                    + parametersExdr.expandString(context) + "\" ng-model=\""
                     + modelExdr.expandString(context) + "\" field=\""
                     + fieldExdr.expandString(context) + "\">");
             renderSubWidgetsString(this.subWidgets, writer, context,

@@ -10,17 +10,22 @@ function ContextDirective(HttpService) {
      */
     this.controller = function($scope, $element, $attrs, $transclude) {
         var target = $attrs.target;
-        var parameters = $scope.$eval($attrs.parameters);
-        var model = $attrs.model;
+        var parameters = $scope.$parent[$attrs.parameters];
         var field = $attrs.field;
-
-        HttpService.post(target, parameters).success(function (response) {
-            if (field != null) {
-                $scope[model] = response[field];
-            } else {
-                $scope[model] = response;
-            }
+        
+        $scope.$watch("ngModel", function(newValue) {
+            $scope[$attrs.ngModel] = newValue;
         });
+
+        if (!_.isEmpty(target)) {
+            HttpService.post(target, parameters).success(function (response) {
+                if (field != null) {
+                    $scope.ngModel = response[field];
+                } else {
+                    $scope.ngModel = response;
+                }
+            });
+        }
     }
 
     /**
