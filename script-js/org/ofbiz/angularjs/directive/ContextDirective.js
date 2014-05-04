@@ -10,8 +10,12 @@ function ContextDirective(HttpService) {
      */
     this.controller = function($scope, $element, $attrs, $transclude) {
         var target = $attrs.target;
-        var parameters = $scope.$parent[$attrs.parameters];
+        var parameters = $scope.parameters;
         var field = $attrs.field;
+        
+        if (_.isEmpty(parameters)) {
+            parameters = {};
+        }
         
         $scope.$watch("ngModel", function(newValue) {
             $scope[$attrs.ngModel] = newValue;

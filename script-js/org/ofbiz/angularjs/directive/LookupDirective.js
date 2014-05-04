@@ -13,7 +13,7 @@ function LookupDirective(HttpService, FormService) {
      */
     this.controller = function($scope, $element, $attrs, $transclude) {
         var target = $attrs.target;
-        var parameters = $scope.$eval($attrs.parameters);
+        var parameters = $scope.parameters;
         var fieldName = $attrs.fieldName;
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
@@ -25,13 +25,11 @@ function LookupDirective(HttpService, FormService) {
         }
         
         if (!_.isEmpty($attrs.defaultValue)) { // There is default value;
-            $scope.$watch($attrs.defaultValue, function(newValue) {
+            $scope.$watch("defaultValue", function(newValue) {
                 if (newValue != null) {
                     defaultValue = newValue;
-                } else {
-                    defaultValue = $attrs.defaultValue;
+                    setup();
                 }
-                setup();
             });
         } else { // There is not default value.
             setup();

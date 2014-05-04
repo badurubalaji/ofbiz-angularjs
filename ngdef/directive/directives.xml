@@ -24,7 +24,7 @@
         priority="0" replace="false" transclude="true" restrict="E" scope="{parameters:'=', ngModel:'='}"/>
     
     <ng-directive name="lookup" location="org.ofbiz.angularjs.directive.LookupDirective"
-        priority="0" replace="false" transclude="false" restrict="A" scope="{parameters: '='}"/>
+        priority="0" replace="false" transclude="false" restrict="A" scope="{parameters:'=', defaultValue:'='}"/>
     
     <ng-directive name="treeOptions" location="org.ofbiz.angularjs.directive.TreeOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
