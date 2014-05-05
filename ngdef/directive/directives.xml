@@ -24,7 +24,7 @@
         priority="0" replace="false" transclude="true" restrict="E" scope="{parameters:'=', ngModel:'='}"/>
     
     <ng-directive name="lookup" location="org.ofbiz.angularjs.directive.LookupDirective"
-        priority="0" replace="false" transclude="false" restrict="A" scope="{parameters:'=', defaultValue:'='}"/>
+        priority="0" replace="false" transclude="false" restrict="A" scope="{parameters:'=', defaultValue:'=', ngModel:'='}"/>
     
     <ng-directive name="treeOptions" location="org.ofbiz.angularjs.directive.TreeOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
@@ -39,7 +39,7 @@
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
     
     <ng-directive name="dropdownOptions" location="org.ofbiz.angularjs.directive.DropdownOptionsDirective"
-        priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
+        priority="0" replace="false" transclude="true" restrict="A" scope="{parameters:'=', defaultValue:'=', ngModel:'='}"/>
     
     <ng-directive name="fileOptions" location="org.ofbiz.angularjs.directive.FileOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>

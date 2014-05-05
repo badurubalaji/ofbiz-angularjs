@@ -17,7 +17,6 @@ function LookupDirective(HttpService, FormService) {
         var fieldName = $attrs.fieldName;
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
-        var ngModel = $attrs.ngModel;
         var defaultValue = null;
         
         if (_.isEmpty(parameters)) {
@@ -73,7 +72,7 @@ function LookupDirective(HttpService, FormService) {
                 var value = option[fieldName];
                 if (!_.isEmpty(value)) {
                     callback(option);
-                    $scope[ngModel] = option;
+                    $scope.ngModel = option;
                 }
             }
         };

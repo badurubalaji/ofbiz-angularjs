@@ -1,31 +1,35 @@
 package org.ofbiz.angularjs.directive;
 
-function DropdownOptionsDirective(HttpService, $rootScope, $http) {
+function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
     
     /**
      * Controller
      */
     this.controller = function($scope, $element, $attrs, $transclude) {
         var target = $attrs.target;
-        var parameters = $scope.$eval($attrs.parameters);
+        var parameters = $scope.parameters;
         var fieldName = $attrs.fieldName;
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
-        var ngModel = $attrs.ngModel;
         var defaultValue = null;
         
         if (!_.isEmpty($attrs.defaultValue)) { // There is default value;
-            $scope.$watch($attrs.defaultValue, function(newValue) {
+            $scope.$watch("defaultValue", function(newValue) {
                 if (newValue != null) {
                     defaultValue = newValue;
-                } else {
-                    defaultValue = $attrs.defaultValue;
+                    setup();
                 }
-                setup();
             });
         } else { // There is not default value.
             setup();
         }
+        
+        // set top scope property when every the value is changed
+        $scope.$watch($attrs.ngModel, function(newValue, oldValue) {
+            if (newValue != oldValue) {
+                ScopeUtil.setTopScopeProperty($scope, $attrs.ngModel, newValue);
+            }
+        });
         
         $scope.select2Options = {
             placeholder: placeholder,
@@ -41,12 +45,12 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http) {
                 return object[descriptionFieldName];
             },
             initSelection: function(element, callback) {
-                // TODO http://ivaynberg.github.io/select2/
+                // See http://ivaynberg.github.io/select2/
                 var option = element.val();
                 var value = option[fieldName];
                 if (!_.isEmpty(value)) {
                     callback(option);
-                    $scope[ngModel] = option;
+                    $scope.ngModel = option;
                 }
             }
         };
