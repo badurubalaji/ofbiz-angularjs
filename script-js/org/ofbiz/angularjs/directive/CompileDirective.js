@@ -13,7 +13,7 @@ function CompileDirective(HttpService, $compile) {
         $scope.$watch(
                 function($scope) {
                    // watch the 'compile' expression for changes
-                  return $scope.$eval($attrs.compile);
+                  return $scope.$eval($scope.ngModel);
                 },
                 function(value) {
                   // when the 'compile' expression changes

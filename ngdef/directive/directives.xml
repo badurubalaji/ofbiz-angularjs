@@ -36,11 +36,14 @@
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
     
     <ng-directive name="compile" location="org.ofbiz.angularjs.directive.CompileDirective"
-        priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
+        priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>
     
     <ng-directive name="dropdownOptions" location="org.ofbiz.angularjs.directive.DropdownOptionsDirective"
-        priority="0" replace="false" transclude="true" restrict="A" scope="{parameters:'=', defaultValue:'=', ngModel:'='}"/>
+        priority="0" replace="false" transclude="false" restrict="A" scope="{parameters:'=', defaultValue:'=', ngModel:'='}"/>
     
     <ng-directive name="fileOptions" location="org.ofbiz.angularjs.directive.FileOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
+    
+    <ng-directive name="html" location="org.ofbiz.angularjs.directive.HtmlDirective"
+        priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>
 </ng-directives>

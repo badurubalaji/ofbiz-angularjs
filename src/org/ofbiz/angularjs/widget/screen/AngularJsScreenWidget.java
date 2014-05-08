@@ -1428,13 +1428,13 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<div compile=\"" + modelExdr.expandString(context)
-                    + "\"></div>");
+            writer.append("<div html ng-model=\""
+                    + modelExdr.expandString(context) + "\"></div>");
         }
         
         @Override
         public String rawString() {
-            return "<div compile/>";
+            return "<div html/>";
         }
     }
     
