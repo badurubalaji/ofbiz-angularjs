@@ -89,9 +89,10 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             var currentPage = viewIndex + 1;
             
             // var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
-            $scope.data = data; // set data for the first loaded
-            $scope.$parent.data = data; // set data for other loaded
+            $scope.data = adjustDataFieldNames(data); // set data for the first loaded
+            $scope.$parent.data = $scope.data; // set data for other loaded
             $scope.totalServerItems = listSize;
+            
             /*
             $scope.pagingOptions = {
                 pageSizes: pageSizes,
@@ -265,7 +266,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                         var selectedItem = self.$scope.selectedItems[0];
                         var extendedSelectedItem = {};
                         _.extend(extendedSelectedItem, selectedItem) ;
-                        onRowDoubleClicked(adjustFieldNames(extendedSelectedItem));
+                        onRowDoubleClicked(extendedSelectedItem);
                     }, 100)
                 }
             };
@@ -287,7 +288,37 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             });
             return rowItem;
         }
+        
+        /**
+         * Adjust Data Field Names
+         * @param data
+         * @returns Adjusted Data Field Names
+         */
+        function adjustDataFieldNames(data) {
+            var adjustedData = [];
+            _.each(data, function(rowItem) {
+                var adjustedRowItem = adjustFieldNames(rowItem);
+                adjustedData.push(adjustedRowItem);
+            });
+            return adjustedData;
+        }
+        
+        /**
+         * Adjust Column Defs
+         * @param columnDefs
+         * @returns Adjusted Column Defs
+         */
+        function adjustColumnDefs(columnDefs) {
+            var adjustedColumnDefs = [];
+            _.each(columnDefs, function(columnDef) {
+                var adjustedColumnDef = _.clone(columnDef);
+                adjustedColumnDef.field = columnDef.name;
+                adjustedColumnDefs.push(adjustedColumnDef);
+            });
+            return adjustedColumnDefs;
+        }
 
+        // configure grid
         $scope.grid = {
             data: "data"
             , multiSelect: multiSelect
@@ -305,13 +336,13 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             , enableCellEditOnFocus: true
             , enablePinning: true
             , useExternalSorting: true
-            , columnDefs: columnDefs
+            , columnDefs: adjustColumnDefs(columnDefs)
             , afterSelectionChange: function(rowItem, event) {
                 var selectedItemsToDispatch = [];
                 _.each($scope.selectedItems, function (selectedItem) {
                     var selectedItemToDispatch = {};
                     _.extend(selectedItemToDispatch, selectedItem);
-                    selectedItemsToDispatch.push(adjustFieldNames(selectedItemToDispatch));
+                    selectedItemsToDispatch.push(selectedItemToDispatch);
                 });
                 $scope.selectedItemsToDispatch = selectedItemsToDispatch;
                 if (typeof(onAfterSelectionChanged) == "function") {
