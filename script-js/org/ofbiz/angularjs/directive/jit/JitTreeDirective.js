@@ -3,7 +3,7 @@ package org.ofbiz.angularjs.directive.jit;
  * Jit Tree Directive
  * http://philogb.github.io/jit/static/v20/Jit/Examples/Spacetree/example1.html
  */
-function JitTreeDirective() {
+function JitTreeDirective($compile) {
 
     this.controller = function($scope, $element, $attrs, $transclude, $http, HttpService) {
         var width = $attrs.width;
@@ -106,10 +106,14 @@ function JitTreeDirective() {
                 };
 
                 if (!_.isEmpty(nodeTemplateUrl)) {
-                    HttpService.post(nodeTemplateUrl, {id: node.id, data: node.data})
+                    var parameters = _.clone(node.data);
+                    parameters.id = node.id;
+                    HttpService.post(nodeTemplateUrl, parameters)
                         .success(function(data) {
-                            label.innerHTML = data;
-                        });;
+                            var element = angular.element(label);
+                            element.html(data);
+                            $compile(element.contents())($scope);
+                        });
                 } else {
                     label.innerHTML = node.name;
                     //set label styles
