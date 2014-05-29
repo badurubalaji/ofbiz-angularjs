@@ -23,7 +23,7 @@ function ContextDirective(HttpService) {
 
         if (!_.isEmpty(target)) {
             HttpService.post(target, parameters).success(function (response) {
-                if (field != null) {
+                if (!_.isEmpty(field)) {
                     $scope.ngModel = response[field];
                 } else {
                     $scope.ngModel = response;

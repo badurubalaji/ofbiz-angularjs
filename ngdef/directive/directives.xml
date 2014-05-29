@@ -46,4 +46,7 @@
     
     <ng-directive name="html" location="org.ofbiz.angularjs.directive.HtmlDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>
+    
+    <ng-directive name="report" location="org.ofbiz.angularjs.directive.ReportDirective"
+        priority="0" replace="false" transclude="false" restrict="A" scope="{location:'@', format:'@'}"/>
 </ng-directives>

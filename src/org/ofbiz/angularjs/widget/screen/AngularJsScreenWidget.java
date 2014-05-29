@@ -1991,6 +1991,45 @@ public class AngularJsScreenWidget {
     }
     
     @SuppressWarnings("serial")
+    public static class Report extends ModelScreenWidget {
+        public static final String TAG_NAME = "report";
+        
+        protected FlexibleStringExpander locationExdr;
+        protected FlexibleStringExpander formatExdr;
+        protected FlexibleStringExpander widthExdr;
+        protected FlexibleStringExpander heightExdr;
+        
+        public Report(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.locationExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("location"));
+            this.formatExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("format"));
+            this.widthExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("width"));
+            this.heightExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("height"));
+        }
+        
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append("<div report location=\""
+                    + locationExdr.expandString(context) + "\" format=\""
+                    + formatExdr.expandString(context) + "\" width=\""
+                    + widthExdr.expandString(context) + "\" height=\""
+                    + heightExdr.expandString(context) + "\"></div>");
+        }
+        
+        @Override
+        public String rawString() {
+            return "<report>";
+        }
+    }
+    
+    @SuppressWarnings("serial")
     public static class Row extends ModelScreenWidget {
         public static final String TAG_NAME = "row";
         
