@@ -213,7 +213,7 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<alert ng-repeat=\""
+            writer.append("<alert ng-cloak ng-repeat=\""
                     + this.repeatExdr.expandString(context) + "\" type=\""
                     + typeExdr.expandString(context) + "\" close=\""
                     + closeExdr.expandString(context) + "\">");
