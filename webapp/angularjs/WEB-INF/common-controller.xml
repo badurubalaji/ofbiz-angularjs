@@ -42,6 +42,12 @@
         <response name="success" type="request" value="json"/>
         <response name="error" type="request" value="error"/>
     </request-map>
+    
+    <request-map uri="CommentsPanelTemplate">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="CommentsPanelTemplate"/>
+        <response name="error" type="request" value="error"/>
+    </request-map>
 
     <!-- Request Mappings -->
     <request-map uri="error">
@@ -57,4 +63,8 @@
         <response name="success" type="none"/>
         <response name="error" type="none"/>
     </request-map>
+    
+    <!-- View Mappings -->
+    
+    <view-map name="CommentsPanelTemplate" type="screen" page="component://angularjs/widget/DirectiveScreens.xml#CommentsPanelTemplate"/>
 </site-conf>
