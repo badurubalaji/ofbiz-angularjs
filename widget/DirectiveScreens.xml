@@ -7,7 +7,11 @@
             <actions>
             </actions>
             <widgets>
-                <label text="comments panel template"/>
+                <panel header-text="Comments">
+                    <list>
+                        <list-item repeat="comment in comments"><label text="{{comment}}"/></list-item>
+                    </list>
+                </panel>
             </widgets>
         </section>
     </screen>

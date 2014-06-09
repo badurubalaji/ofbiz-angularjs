@@ -51,5 +51,5 @@
         priority="0" replace="false" transclude="false" restrict="A" scope="{location:'@', format:'@'}"/>
     
     <ng-directive name="commentsPanel" location="org.ofbiz.angularjs.directive.CommentsPanelDirective"
-        priority="0" replace="false" transclude="false" restrict="E" scope="{}"/>
+        priority="0" replace="false" transclude="false" restrict="E" scope="{ngModel:'='}"/>
 </ng-directives>

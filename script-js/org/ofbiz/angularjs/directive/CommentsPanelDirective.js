@@ -1,6 +1,12 @@
 package org.ofbiz.angularjs.directive;
 
-function CommentsPanelDirective(FormService) {
+/**
+ * Comment Panel Directive
+ * 
+ * @param $compile
+ * @param FormService
+ */
+function CommentsPanelDirective($compile, FormService) {
     
     /**
      * Controller
@@ -16,10 +22,16 @@ function CommentsPanelDirective(FormService) {
             pre: function($scope, $element, $attrs) {
                 FormService.post("CommentsPanelTemplate", {}).success(function(data) {
                     $element.html(data);
+                    $scope[$attrs.ngModel] = $scope.ngModel;
+                    $compile($element.contents())($scope);
                 });
             },
             post: function($scope, $element, $attrs) {
-
+                $scope.$watch($attrs.ngModel, function(newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        $compile($element.contents())($scope);
+                    }
+                });
             }
         };
     };
