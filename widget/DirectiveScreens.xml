@@ -9,8 +9,23 @@
             <widgets>
                 <panel header-text="Comments">
                     <list>
-                        <list-item repeat="comment in comments"><label text="{{comment.contentName}}"/></list-item>
+                        <list-item repeat="comment in comments">
+                            <form>
+                                <field><label text="{{comment.contentName}}"/></field>
+                                <field><button text="Reply" style="btn-warning"/></field>
+                            </form>
+                        </list-item>
                     </list>
+                </panel>
+                <panel header-text="Add Comment">
+                    <form type="horizontal">
+                        <field title="Comment">
+                            <textarea/>
+                        </field>
+                        <field>
+                            <submit text="Post" style="btn-success"/>
+                        </field>
+                    </form>
                 </panel>
             </widgets>
         </section>
