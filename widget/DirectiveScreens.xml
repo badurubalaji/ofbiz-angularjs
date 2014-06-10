@@ -9,7 +9,7 @@
             <widgets>
                 <panel header-text="Comments">
                     <list>
-                        <list-item repeat="comment in comments"><label text="{{comment}}"/></list-item>
+                        <list-item repeat="comment in comments"><label text="{{comment.contentName}}"/></list-item>
                     </list>
                 </panel>
             </widgets>

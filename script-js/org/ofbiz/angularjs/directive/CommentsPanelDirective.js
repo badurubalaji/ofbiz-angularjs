@@ -7,6 +7,19 @@ package org.ofbiz.angularjs.directive;
  * @param FormService
  */
 function CommentsPanelDirective($compile, FormService) {
+
+    function loadComments(contentId, $element, $scope) {
+        // get content response
+        FormService.post("getComments", {contentId: contentId}).success(function(getCommentsResponse) {
+        
+            // get comments panel template
+            FormService.post("CommentsPanelTemplate", {}).success(function(template) {
+                $element.html(template);
+                $scope["comments"] = getCommentsResponse.comments;
+                $compile($element.contents())($scope);
+            });
+        });
+    }
     
     /**
      * Controller
@@ -20,18 +33,11 @@ function CommentsPanelDirective($compile, FormService) {
     this.compile = function() {
         return {
             pre: function($scope, $element, $attrs) {
-                FormService.post("CommentsPanelTemplate", {}).success(function(data) {
-                    $element.html(data);
-                    $scope[$attrs.ngModel] = $scope.ngModel;
-                    $compile($element.contents())($scope);
+                $scope.$watch("contentId", function(newVal, oldVal) {
+                    loadComments(newVal, $element, $scope);
                 });
             },
             post: function($scope, $element, $attrs) {
-                $scope.$watch($attrs.ngModel, function(newVal, oldVal) {
-                    if (newVal != oldVal) {
-                        $compile($element.contents())($scope);
-                    }
-                });
             }
         };
     };

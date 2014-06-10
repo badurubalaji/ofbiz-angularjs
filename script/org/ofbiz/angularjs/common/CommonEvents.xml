@@ -31,4 +31,26 @@ under the License.
         <set field="performLookupJsonListInMap.viewIndex" from-field="parameters.viewIndex" type="Integer"/>
         <call-service service-name="performLookupJsonList" in-map-name="performLookupJsonListInMap"/>
     </simple-method>
+    <simple-method method-name="getComments" short-description="Get comments" login-required="true">
+        <entity-condition entity-name="ContentAssocViewTo" use-cache="true" list="responseList">
+            <condition-list combine="and">
+                <condition-expr field-name="caContentId" operator="equals" value="${parameters.contentId}"/>
+                <condition-expr field-name="caContentAssocTypeId" operator="equals" value="RESPONSE"/>
+                <condition-expr field-name="caThruDate" operator="equals" value=""/>
+            </condition-list>
+            <order-by field-name="caFromDate DESC"/>
+        </entity-condition>
+        <set field="viewIndex" from-field="requestParameters.VIEW_INDEX" type="Integer"/>
+        
+        <create-object class-name="java.util.LinkedList" field="comments"/>
+        <iterate entry="rsp" list="responseList">
+            <set field="comment.contentId" from-field="rsp.contentId"/>
+            <set field="comment.contentName" from-field="rsp.contentName"/>
+            <set field="comment.ownerContentId" from-field="rsp.ownerContentId"/>
+            
+            <set field="comments[+0]" from-field="comment"/>
+        </iterate>
+        
+        <field-to-request field="comments"/>
+    </simple-method>
 </simple-methods>

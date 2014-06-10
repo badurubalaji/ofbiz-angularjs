@@ -5,6 +5,5 @@ package org.ofbiz.angularjs.demo.controller;
  * @param $scope
  */
 function CommentsPanelDemoController($scope) {
-    var comments = ["1", "2", "3"];
-    $scope.comments = comments;
+    $scope.contentId = "BLG10000";
 }
