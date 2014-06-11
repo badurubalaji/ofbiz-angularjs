@@ -13,12 +13,15 @@ function CommentsPanelDirective($compile, FormService) {
         // get content response
         FormService.post("getComments", {contentId: contentId}).success(function(getCommentsResponse) {
             
-            $scope.onAddNewComment = function(newComment) {
-                if (!_.isEmpty(newComment)) {
-                    if (!_.isEmpty(newComment.textData)) {
-                        var parameters = _.clone(newComment);
+            $scope.onAddNewComment = function() {
+                if (!_.isEmpty($scope.newComment)) {
+                    if (!_.isEmpty($scope.newComment.textData)) {
+                        var parameters = _.clone($scope.newComment);
                         parameters.contentIdFrom = contentId;
-                        FormService.post("createComment", parameters);
+                        FormService.post("createComment", parameters).success(function(data) {
+                            var newContentId = data.contentId;
+                            $scope.newComment = {};
+                        });
                     }
                 }
             }
