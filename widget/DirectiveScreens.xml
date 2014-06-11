@@ -18,9 +18,9 @@
                     </list>
                 </panel>
                 <panel header-text="Add Comment">
-                    <form type="horizontal">
+                    <form type="horizontal" on-submit="onAddNewComment(newComment)">
                         <field title="Comment">
-                            <textarea/>
+                            <textarea model="newComment.textData"/>
                         </field>
                         <field>
                             <submit text="Post" style="btn-success"/>

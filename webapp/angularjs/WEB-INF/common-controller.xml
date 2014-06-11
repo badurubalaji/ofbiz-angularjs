@@ -48,6 +48,18 @@
         <response name="success" type="view" value="CommentsPanelTemplate"/>
         <response name="error" type="request" value="error"/>
     </request-map>
+    <request-map uri="getComments">
+        <security https="true" auth="false"/>
+        <event type="simple" path="component://angularjs/script/org/ofbiz/angularjs/content/ContentEvents.xml" invoke="getComments"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="error"/>
+    </request-map>
+    <request-map uri="createComment">
+        <security https="true" auth="true"/>
+        <event type="simple" path="component://angularjs/script/org/ofbiz/angularjs/content/ContentEvents.xml" invoke="createComment"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="error"/>
+    </request-map>
 
     <!-- Request Mappings -->
     <request-map uri="error">
@@ -62,13 +74,6 @@
         <event type="java" path="org.ofbiz.angularjs.data.DataEvents" invoke="upload"/>
         <response name="success" type="none"/>
         <response name="error" type="none"/>
-    </request-map>
-    
-    <request-map uri="getComments">
-        <security https="true" auth="false"/>
-        <event type="simple" path="component://angularjs/script/org/ofbiz/angularjs/common/CommonEvents.xml" invoke="getComments"/>
-        <response name="success" type="request" value="json"/>
-        <response name="error" type="request" value="error"/>
     </request-map>
     
     <!-- View Mappings -->
