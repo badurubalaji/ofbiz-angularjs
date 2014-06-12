@@ -32,6 +32,7 @@ under the License.
         
         <create-object class-name="java.util.LinkedList" field="comments"/>
         <iterate entry="rsp" list="responseList">
+            <create-object class-name="java.util.HashMap" field="comment"/>
             <set field="comment.contentId" from-field="rsp.contentId"/>
             <set field="comment.contentName" from-field="rsp.contentName"/>
             <set field="comment.ownerContentId" from-field="rsp.ownerContentId"/>
