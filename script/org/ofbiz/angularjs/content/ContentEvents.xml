@@ -36,6 +36,11 @@ under the License.
             <set field="comment.contentName" from-field="rsp.contentName"/>
             <set field="comment.ownerContentId" from-field="rsp.ownerContentId"/>
             
+            <entity-one value-field="electronicText" entity-name="ElectronicText">
+                <field-map field-name="dataResourceId" from-field="rsp.dataResourceId"/>
+            </entity-one>
+            <set field="comment.textData" from-field="electronicText.textData"/>
+            
             <set field="comments[+0]" from-field="comment"/>
         </iterate>
         
@@ -44,6 +49,7 @@ under the License.
     <simple-method method-name="createComment" short-description="Create comment" login-required="true">
         <set field="createTextContentInMap.contentIdFrom" from-field="parameters.contentIdFrom"/>
         <set field="createTextContentInMap.textData" from-field="parameters.textData"/>
+        <set field="createTextContentInMap.contentAssocTypeId" value="RESPONSE"/>
         <call-service service-name="createTextContent" in-map-name="createTextContentInMap">
             <result-to-field result-name="contentId"/>
         </call-service>

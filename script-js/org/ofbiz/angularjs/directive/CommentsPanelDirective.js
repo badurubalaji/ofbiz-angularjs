@@ -10,7 +10,7 @@ function CommentsPanelDirective($compile, FormService) {
 
     function loadComments(contentId, $element, $scope) {
         
-        // get content response
+        // get comments
         FormService.post("getComments", {contentId: contentId}).success(function(getCommentsResponse) {
             
             $scope.onAddNewComment = function() {
@@ -20,7 +20,13 @@ function CommentsPanelDirective($compile, FormService) {
                         parameters.contentIdFrom = contentId;
                         FormService.post("createComment", parameters).success(function(data) {
                             var newContentId = data.contentId;
+                            $scope.onCreateSuccess(data);
                             $scope.newComment = {};
+                            
+                            // reload comments
+                            FormService.post("getComments", {contentId: contentId}).success(function(reloadCommentsResponse) {
+                                $scope.comments = reloadCommentsResponse.comments;
+                            });
                         });
                     }
                 }

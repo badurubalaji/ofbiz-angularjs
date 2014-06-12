@@ -12,6 +12,7 @@
                         <list-item repeat="comment in comments">
                             <form>
                                 <field><label text="{{comment.contentName}}"/></field>
+                                <field><label text="{{comment.textData}}"/></field>
                                 <field><button text="Reply" style="btn-warning"/></field>
                             </form>
                         </list-item>
