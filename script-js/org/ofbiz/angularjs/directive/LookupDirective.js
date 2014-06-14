@@ -115,6 +115,10 @@ function LookupDirective(HttpService, FormService) {
                     }
                 });
             }
+
+            $($element).on("change", function(e) {
+                $scope.ngModel = e.val;
+            });
         }
     }
 

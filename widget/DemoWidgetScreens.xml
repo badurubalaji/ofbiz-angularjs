@@ -239,9 +239,11 @@
     <screen name="Lookup">
         <section>
             <widgets>
-                <lookup target="LookupExample" field-name="exampleId" description-field-name="exampleName" model="lookupExample" placeholder="Lookup Example"/>
-                <line-break/>
-                <label text="Selected example: {{lookupExample}}"/>
+                <controller name="org.ofbiz.angularjs.demo.controller.LookupDemoController">
+                    <lookup target="LookupExample" field-name="exampleId" description-field-name="exampleName" model="lookupExample" placeholder="Lookup Example"/>
+                    <line-break/>
+                    <label text="Selected example: {{lookupExample}}"/>
+                </controller>
             </widgets>
         </section>
     </screen>
