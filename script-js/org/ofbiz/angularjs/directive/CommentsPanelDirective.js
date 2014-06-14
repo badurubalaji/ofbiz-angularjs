@@ -55,7 +55,9 @@ function CommentsPanelDirective($compile, FormService) {
         return {
             pre: function($scope, $element, $attrs) {
                 $scope.$watch("contentId", function(newVal, oldVal) {
-                    loadComments(newVal, $element, $scope);
+                    if (!_.isEmpty(newVal)) {
+                        loadComments(newVal, $element, $scope);
+                    }
                 });
             },
             post: function($scope, $element, $attrs) {
