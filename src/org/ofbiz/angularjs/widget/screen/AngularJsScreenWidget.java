@@ -433,6 +433,42 @@ public class AngularJsScreenWidget {
     }
     
     @SuppressWarnings("serial")
+    public static class CommentsPanel extends ModelScreenWidget {
+        public static final String TAG_NAME = "comments-panel";
+        
+        protected FlexibleStringExpander contentIdExdr;
+        protected FlexibleStringExpander onCreateSuccessExdr;
+        
+        public CommentsPanel(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.contentIdExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("content-id"));
+            this.onCreateSuccessExdr = FlexibleStringExpander
+                    .getInstance(widgetElement
+                            .getAttribute("on-create-success"));
+        }
+        
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append("<comments-panel");
+            writer.append(" content-id=\""
+                    + contentIdExdr.expandString(context) + "\"");
+            writer.append(" on-create-success=\""
+                    + onCreateSuccessExdr.expandString(context) + "\"");
+            writer.append("/>");
+        }
+        
+        @Override
+        public String rawString() {
+            return "<comments-panel/>";
+        }
+        
+    }
+    
+    @SuppressWarnings("serial")
     public static class ContainerFluid extends ModelScreenWidget {
         public static final String TAG_NAME = "container-fluid";
         
