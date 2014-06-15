@@ -4,7 +4,5 @@ package org.ofbiz.angularjs.demo.controller;
  * @param $scope
  */
 function LookupDemoController($scope) {
-    $scope.$watch("lookupExample", function(newVal) {
-        console.log("looked up exampe: " + JSON.stringify(newVal));
-    });
+    $scope.defaultExampleId = "EX01";
 }

@@ -17,21 +17,9 @@ function LookupDirective(HttpService, FormService) {
         var fieldName = $attrs.fieldName;
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
-        var defaultValue = null;
         
         if (_.isEmpty(parameters)) {
             parameters = {};
-        }
-        
-        if (!_.isEmpty($attrs.defaultValue)) { // There is default value;
-            $scope.$watch("defaultValue", function(newValue) {
-                if (newValue != null) {
-                    defaultValue = newValue;
-                    setup();
-                }
-            });
-        } else { // There is not default value.
-            setup();
         }
         
         $scope.select2Options = {
@@ -77,49 +65,48 @@ function LookupDirective(HttpService, FormService) {
             }
         };
         
-        function setup() {
-            if (fieldName == null) {
-                fieldName = "id";
-            }
-            if (descriptionFieldName == null) {
-                descriptionFieldName = "text";
-            }
-            
-            // set default value
-            if(!_.isEmpty(defaultValue)) {
-                parameters.term = defaultValue;
-                parameters.viewSize = 10;
-                HttpService.post(target, parameters).success(function (response) {
-                    var defaultOption = null;
-                    var options = response.options;
-                    if (options) {
-                        var data = [];
-                        for (var i = 0; i < options.length; i ++) {
-                            var option = options[i];
-                            var dataObj = {};
-                            dataObj[fieldName] = option[fieldName];
-                            dataObj[descriptionFieldName] = option[descriptionFieldName];
-                            data.push(dataObj);
+        if (fieldName == null) {
+            fieldName = "id";
+        }
+        if (descriptionFieldName == null) {
+            descriptionFieldName = "text";
+        }
+        
+        // set default value
+        var defaultValue = $scope.defaultValue;
+        if(!_.isEmpty(defaultValue)) {
+            parameters.term = defaultValue;
+            parameters.viewSize = 10;
+            HttpService.post(target, parameters).success(function (response) {
+                var defaultOption = null;
+                var options = response.options;
+                if (options) {
+                    var data = [];
+                    for (var i = 0; i < options.length; i ++) {
+                        var option = options[i];
+                        var dataObj = {};
+                        dataObj[fieldName] = option[fieldName];
+                        dataObj[descriptionFieldName] = option[descriptionFieldName];
+                        data.push(dataObj);
 
-                            if (option[fieldName] == defaultValue) {
-                                defaultOption = option;
-                            }
-                        }
-                        
-                        $scope.select2Options.data = data;
-                        var select2 = $($element).select2($scope.select2Options);
-                        select2.select2("val", null);
-                        if (defaultOption != null) {
-                            select2.select2("val", defaultOption);
+                        if (option[fieldName] == defaultValue) {
+                            defaultOption = option;
                         }
                     }
-                });
-            }
-
-            $($element).on("change", function(e) {
-                $scope.ngModel = e.val;
+                    
+                    $scope.select2Options.data = data;
+                    var select2 = $($element).select2($scope.select2Options);
+                    select2.select2("val", null);
+                    if (defaultOption != null) {
+                        select2.select2("val", defaultOption);
+                    }
+                }
             });
         }
+
+        $($element).on("change", function(e) {
+            $scope.ngModel = e.val;
+        });
     }
 
     /**
@@ -131,7 +118,7 @@ function LookupDirective(HttpService, FormService) {
             
             },
             post: function($scope, $element, $attrs, controller) {
-
+                
             }
         };
     };
