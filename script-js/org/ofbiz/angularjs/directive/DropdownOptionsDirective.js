@@ -17,8 +17,8 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
             $scope.$watch("defaultValue", function(newValue) {
                 if (newValue != null) {
                     defaultValue = newValue;
-                    setup();
                 }
+                setup();
             });
         } else { // There is not default value.
             setup();
