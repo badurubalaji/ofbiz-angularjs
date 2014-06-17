@@ -6,7 +6,7 @@ package org.ofbiz.angularjs.directive;
  * Fetch data from sercer: http://plnkr.co/edit/t1neIS?p=preview
  * JSONP: http://docs.angularjs.org/api/ng.$http#methods_jsonp
  */
-function LookupDirective(HttpService, FormService) {
+function LookupDirective(HttpService, FormService, ScopeUtil) {
     
     /**
      * Controller
@@ -106,7 +106,8 @@ function LookupDirective(HttpService, FormService) {
         });
 
         $($element).on("change", function(e) {
-            $scope.ngModel = e.val;
+            //$scope.ngModel = e.val;
+            ScopeUtil.setTopScopeProperty($scope, $attrs.ngModel, e.val);
         });
     }
 
