@@ -73,36 +73,37 @@ function LookupDirective(HttpService, FormService) {
         }
         
         // set default value
-        var defaultValue = $scope.defaultValue;
-        if(!_.isEmpty(defaultValue)) {
-            parameters.term = defaultValue;
-            parameters.viewSize = 10;
-            HttpService.post(target, parameters).success(function (response) {
-                var defaultOption = null;
-                var options = response.options;
-                if (options) {
-                    var data = [];
-                    for (var i = 0; i < options.length; i ++) {
-                        var option = options[i];
-                        var dataObj = {};
-                        dataObj[fieldName] = option[fieldName];
-                        dataObj[descriptionFieldName] = option[descriptionFieldName];
-                        data.push(dataObj);
+        $scope.$watch("defaultValue", function(defaultValue) {
+            if(!_.isEmpty(defaultValue)) {
+                parameters.term = defaultValue;
+                parameters.viewSize = 10;
+                HttpService.post(target, parameters).success(function (response) {
+                    var defaultOption = null;
+                    var options = response.options;
+                    if (options) {
+                        var data = [];
+                        for (var i = 0; i < options.length; i ++) {
+                            var option = options[i];
+                            var dataObj = {};
+                            dataObj[fieldName] = option[fieldName];
+                            dataObj[descriptionFieldName] = option[descriptionFieldName];
+                            data.push(dataObj);
 
-                        if (option[fieldName] == defaultValue) {
-                            defaultOption = option;
+                            if (option[fieldName] == defaultValue) {
+                                defaultOption = option;
+                            }
+                        }
+                        
+                        $scope.select2Options.data = data;
+                        var select2 = $($element).select2($scope.select2Options);
+                        select2.select2("val", null);
+                        if (defaultOption != null) {
+                            select2.select2("val", defaultOption);
                         }
                     }
-                    
-                    $scope.select2Options.data = data;
-                    var select2 = $($element).select2($scope.select2Options);
-                    select2.select2("val", null);
-                    if (defaultOption != null) {
-                        select2.select2("val", defaultOption);
-                    }
-                }
-            });
-        }
+                });
+            }
+        });
 
         $($element).on("change", function(e) {
             $scope.ngModel = e.val;
