@@ -238,9 +238,12 @@
     </screen>
     <screen name="Lookup">
         <section>
+            <actions>
+                <set field="modelName" value="editExample"/>
+            </actions>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.LookupDemoController">
-                    <lookup target="LookupExample" field-name="exampleId" description-field-name="exampleName" model="lookupExample" placeholder="Lookup Example" default-value="defaultExampleId"/>
+                    <lookup target="LookupExample" field-name="exampleId" description-field-name="exampleName" model="lookupExample" placeholder="Lookup Example" default-value="${modelName}.exampleId"/>
                     <line-break/>
                     <label text="Selected example: {{lookupExample}}"/>
                 </controller>
