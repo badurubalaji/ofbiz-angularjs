@@ -4,5 +4,7 @@ package org.ofbiz.angularjs.demo.controller;
  * @param $scope
  */
 function LookupDemoController($scope) {
-    $scope.defaultExampleId = "EX01";
+    var editExample = {};
+    editExample.exampleId = "EX01";
+    $scope.editExample = editExample;
 }
