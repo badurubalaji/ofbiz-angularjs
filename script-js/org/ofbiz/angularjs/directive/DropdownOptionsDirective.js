@@ -28,6 +28,7 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
         $scope.$watch($attrs.ngModel, function(newValue, oldValue) {
             if (newValue != oldValue) {
                 ScopeUtil.setTopScopeProperty($scope, $attrs.ngModel, newValue);
+                $scope.ngModel = newValue;
             }
         });
         
@@ -92,16 +93,14 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
     }
 
     /**
-     * Compile
+     * Link
      */
-    this.compile = function() {
-        return {
-            pre: function() {
-            
-            },
-            post: function($scope, $element, $attrs, controller) {
-                
+    this.link = function($scope, $element, $attrs, ngModel) {
+        ngModel.$render = function() {
+            var viewValue = ngModel.$viewValue;
+            if (!_.isEmpty(viewValue)) {
+                //console.log("render: " + JSON.stringify(viewValue));
             }
-        };
+        }
     };
 }
