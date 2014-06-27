@@ -50,7 +50,13 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
                 var option = element.val();
                 var value = option[fieldName];
                 if (!_.isEmpty(value)) {
-                    callback(option);
+                    if (callback != null) {
+                        try {
+                            callback(option);
+                        } catch (e) {
+                            console.warn(e);
+                        }
+                    }
                     $scope.ngModel = option;
                 }
             }
