@@ -5,6 +5,9 @@ package org.ofbiz.angularjs.demo.controller;
  * @param $scope
  */
 function DropdownDemoController($scope) {
+
+    $scope.lookupGeoParameters = {geoTypeId: 'COUNTRY'};
+
     $scope.colors = [
        {name:'black', shade:'dark'},
        {name:'white', shade:'light'},

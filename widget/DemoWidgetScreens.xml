@@ -14,7 +14,7 @@
                             <label text="{{group.content}}"/>
                         </accordion-group>
                         <accordion-group heading="Dynamic Body Content">
-                            <button text="Add Item" on-click="addItem()" style="btn btn-small"/>
+                            <button text="Add Item" on-click="addItem()" style="btn-small"/>
                             <list>
                                 <list-item repeat="item in items"><label text="{{item}}"/></list-item>
                             </list>
@@ -61,7 +61,7 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.ContextDemoController">
-                    <context target="getExample" parameters="{exampleId: findContextExampleId}" model="contextExample" field="example">
+                    <context target="getExample" parameters="getExampleParameters" model="contextExample" field="example">
                         <label text="ExampleId: {{contextExample.exampleId}}"/>
                         <line-break/>
                         <label text="Example Name: {{contextExample.exampleName}}"/>
@@ -80,7 +80,7 @@
                             </context>
                         </modal-body>
                         <modal-footer>
-                            <button style="btn btn-warning cancel" on-click="close()" text="Cancel"/>
+                            <button style="btn-warning cancel" on-click="close()" text="Cancel"/>
                         </modal-footer>
                     </modal>
                 </controller>
@@ -93,10 +93,10 @@
                 <controller name="org.ofbiz.angularjs.demo.controller.DatePickerDemoController">
                     <date-picker model="dt" show-weeks="showWeeks" starting-day="1" date-disabled="disabled(date, mode)" min="minDate" max="'2015-06-22'"/>
                     <preformatted-text>Selected date is: <emphasized-text>{{dt | date:'fullDate' }}</emphasized-text></preformatted-text>
-                    <button style="btn btn-small btn-inverse" on-click="today()" text="Today"/>
-                    <button style="btn btn-small btn-success" on-click="toggleWeeks()" text="Toggle Weeks"/>
-                    <button style="btn btn-small btn-danger" on-click="clear()" text="Clear"/>
-                    <button style="btn btn-small" on-click="toggleMin()" text="After today restriction"/>
+                    <button style="btn-small btn-inverse" on-click="today()" text="Today"/>
+                    <button style="btn-small btn-success" on-click="toggleWeeks()" text="Toggle Weeks"/>
+                    <button style="btn-small btn-danger" on-click="clear()" text="Clear"/>
+                    <button style="btn-small" on-click="toggleMin()" text="After today restriction"/>
                 </controller>
             </widgets>
         </section>
@@ -116,7 +116,7 @@
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.DropdownDemoController">
                     <label text="Color:"/>
-                    <dropdown model="country" target="LookupGeo" parameters="{geoTypeId: 'COUNTRY'}" field-name="geoId" description-field-name="geoName" default-value="ABW" placeholder="Choose Country"/>
+                    <dropdown model="country" target="LookupGeo" parameters="lookupGeoParameters" field-name="geoId" description-field-name="geoName" default-value="ABW" placeholder="Choose Country"/>
                     <label text="Currently selected: {{country.geoName}}"/>
                 </controller>
             </widgets>
@@ -159,10 +159,7 @@
                             <text/>
                         </field>
                         <field title="Title 2">
-                            <dropdown model="country" target="LookupGeo" parameters="{geoTypeId: 'COUNTRY'}" field-name="geoId" description-field-name="geoName" default-value="ABW" placeholder="Choose Country"/>
-                        </field>
-                        <field title="File input">
-                            <file/>
+                            <dropdown model="country" target="LookupGeo" parameters="lookupGeoParameters" field-name="geoId" description-field-name="geoName" default-value="ABW" placeholder="Choose Country"/>
                         </field>
                         <field title="Text area">
                             <textarea/>
@@ -306,7 +303,7 @@
                             </list>
                         </modal-body>
                         <modal-footer>
-                            <button style="btn btn-warning cancel" on-click="close()" text="Cancel"/>
+                            <button style="btn-warning cancel" on-click="close()" text="Cancel"/>
                         </modal-footer>
                     </modal>
                 </controller>
@@ -341,9 +338,9 @@
                 <controller name="org.ofbiz.angularjs.demo.controller.TabsDemoController">
                     <label text="Select a tab by setting active binding to true:"/>
                     <line-break/>
-                    <button style="btn btn-small" on-click="tabs[0].active = true" text="Select second tab"/>
-                    <button style="btn btn-small" on-click="tabs[1].active = true" text="Select third tab"/>
-                    <button style="btn btn-small" on-click="tabs[1].disabled = ! tabs[1].disabled" text="Enable / Disable third tab"/>
+                    <button style="btn-small" on-click="tabs[0].active = true" text="Select second tab"/>
+                    <button style="btn-small" on-click="tabs[1].active = true" text="Select third tab"/>
+                    <button style="btn-small" on-click="tabs[1].disabled = ! tabs[1].disabled" text="Enable / Disable third tab"/>
                     <horizontal-rule/>
                     <tabs>
                         <tab heading="Static title">
