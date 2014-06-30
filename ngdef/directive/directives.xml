@@ -4,52 +4,52 @@
         xsi:noNamespaceSchemaLocation="http://code.google.com/p/ofbiz-angularjs/dtds/ng-directives.xsd">
     <ng-directive name="currentTime" location="org.ofbiz.angularjs.directive.CurrentTimeDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="{}"/>
-        
+
     <ng-directive name="gridOptions" location="org.ofbiz.angularjs.directive.GridOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
-        
+
     <ng-directive name="uiMapOptions" location="org.ofbiz.angularjs.directive.UiMapOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
-        
+
     <ng-directive name="googleChartOptions" location="org.ofbiz.angularjs.directive.GoogleChartOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="false"/>
-        
+
     <ng-directive name="formOptions" location="org.ofbiz.angularjs.directive.FormOptionsDirective"
         priority="0" replace="false" transclude="true" restrict="A" scope="{ngSubmit: '&amp;ngSubmit'}"/>
-    
+
     <ng-directive name="jitTree" location="org.ofbiz.angularjs.directive.jit.JitTreeDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>
-    
+
     <ng-directive name="context" location="org.ofbiz.angularjs.directive.ContextDirective"
         priority="0" replace="false" transclude="true" restrict="E" scope="{parameters:'=', ngModel:'='}"/>
-    
+
     <ng-directive name="lookup" location="org.ofbiz.angularjs.directive.LookupDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{parameters:'=', defaultValue:'=', ngModel:'='}"/>
-    
+
     <ng-directive name="treeOptions" location="org.ofbiz.angularjs.directive.TreeOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
-    
+
     <ng-directive name="tabSetOptions" location="org.ofbiz.angularjs.directive.TabSetOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
-    
+
     <ng-directive name="tabOptions" location="org.ofbiz.angularjs.directive.TabOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
-    
+
     <ng-directive name="compile" location="org.ofbiz.angularjs.directive.CompileDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>
-    
+
     <ng-directive name="dropdownOptions" location="org.ofbiz.angularjs.directive.DropdownOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" require="?ngModel" scope="{parameters:'=', defaultValue:'=', ngModel:'='}"/>
-    
+
     <ng-directive name="fileOptions" location="org.ofbiz.angularjs.directive.FileOptionsDirective"
-        priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
-    
+        priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>
+
     <ng-directive name="html" location="org.ofbiz.angularjs.directive.HtmlDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>
-    
+
     <ng-directive name="report" location="org.ofbiz.angularjs.directive.ReportDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{location:'@', format:'@'}"/>
-    
+
     <ng-directive name="commentsPanel" location="org.ofbiz.angularjs.directive.CommentsPanelDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="{contentId:'=', onCreateSuccess:'&amp;'}"/>
 </ng-directives>

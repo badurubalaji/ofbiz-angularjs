@@ -3,20 +3,16 @@ package org.ofbiz.angularjs.directive;
 /**
  * File Options Directive
  */
-function FileOptionsDirective(HttpService, $parse) {
-    
+function FileOptionsDirective(HttpService, $parse, ScopeUtil) {
+
     /**
      * Controller
      */
     this.controller = function($scope, $element, $attrs, $transclude) {
-        
-        var model = $parse($attrs.model);
-        var modelSetter = model.assign;
-        
+
         $scope.onFileSelect = function($files) {
-            $scope.$apply(function() {
-                modelSetter($scope, $files);
-            });
+            $scope.ngModel = $files;
+            ScopeUtil.setTopScopeProperty($scope, $attrs.ngModel, $files);
         }
     }
 
@@ -26,7 +22,7 @@ function FileOptionsDirective(HttpService, $parse) {
     this.compile = function() {
         return {
             pre: function() {
-            
+
             },
             post: function($scope, $element, $attrs, controller) {
 
