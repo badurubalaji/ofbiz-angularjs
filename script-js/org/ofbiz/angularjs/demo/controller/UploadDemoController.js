@@ -8,11 +8,11 @@ function UploadDemoController($scope, FormService) {
     $scope.onUploadSuccess = function (data) {
         $scope.dataResourceId = data.dataResourceId;
     };
-    
+
     $scope.$watch("files", function(files) {
         console.log("change: " + files);
     });
-    
+
     $scope.upload = function() {
         FormService.upload("upload"
             , $scope.files
@@ -25,6 +25,7 @@ function UploadDemoController($scope, FormService) {
                  var file = field.file;
                  if (file != null) {
                      console.log("file uploaded: " + file);
+                     $scope.dataResourceId = file.dataResourceId;
                  }
             })
         })
