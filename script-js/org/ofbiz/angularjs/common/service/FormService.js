@@ -4,7 +4,7 @@ package org.ofbiz.angularjs.common.service;
  * Form Service
  */
 function FormService($q, $http, HttpService, $upload, appBusy) {
-    
+
     /**
      * Post
      */
@@ -13,17 +13,17 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
         var promise = deferred.promise;
         var successFn = null;
         var errorFn = null;
-        
+
         promise.success = function(fn) {
             successFn = fn;
             return promise;
         }
-        
+
         promise.error = function(fn) {
             errorFn = fn;
             return promise;
         }
-    
+
         HttpService.post(target, parameters, {"Content-Type": "application/x-www-form-urlencoded"})
         .success(function(data, status, headers, config) {
             if (data._ERROR_MESSAGE_ != undefined || data._ERROR_MESSAGE_LIST_ != undefined) {
@@ -44,8 +44,29 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
 
         return promise;
     }
-    
+
     this.upload = function(target, files, parameters, onProgress, onSuccess) {
+        var deferred = $q.defer();
+        var promise = deferred.promise;
+        var progressFn = null;
+        var successFn = null;
+        var errorFn = null;
+
+        promise.progress = function(fn) {
+            progressFn = fn;
+            return promise;
+        }
+
+        promise.success = function(fn) {
+            successFn = fn;
+            return promise;
+        }
+
+        promise.error = function(fn) {
+            errorFn = fn;
+            return promise;
+        }
+
         //$files: an array of files selected, each file has name, size, and type.
         for (var i = 0; i < files.length; i++) {
           var file = files[i];
@@ -62,21 +83,29 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
             /* customize how data is added to formData. See #40#issuecomment-28612000 for example */
             //formDataAppender: function(formData, key, val){} //#40#issuecomment-28612000
           }).progress(function(evt) {
-            if (onProgress != null) {
+            if (progressFn != null) {
                 var percent = parseInt(100.0 * evt.loaded / evt.total);
-                onProgress(percent)
+                progressFn(percent)
             }
-          }).success(function(data, status, headers, config) {
-            // file is uploaded successfully
-              if (onSuccess != null) {
-                  onSuccess(data);
+          })
+          .success(function(data, status, headers, config) {
+              // file is uploaded successfully
+              if (successFn != null) {
+                  successFn(data);
+              }
+          })
+          .error(function(data, status, headers, config) {
+              // file is uploaded fail
+              if (errorFn != null) {
+                  errorFn(data);
               }
           });
-          //.error(...)
-          //.then(success, error, progress); 
+          //.then(success, error, progress);
         }
+
+        return promise;
     }
-    
+
     /**
      * Post Multi
      */
@@ -85,12 +114,12 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
         var promise = deferred.promise;
         var successFn = null;
         var errorFn = null;
-        
+
         promise.success = function(fn) {
             successFn = fn;
             return promise;
         }
-        
+
         var rowItemsQueryString = "&";
         var rowItemIndex = 0;
         _.each(rowItems, function(rowItem) {
@@ -104,7 +133,7 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
                     rowItemsQueryString += (multiKey + "=" + value + "&");
                 }
             });
-            
+
             rowItemIndex ++;
         });
         this.post(target, data + rowItemsQueryString).success(successFn).error(errorFn);

@@ -16,18 +16,18 @@ function UploadDemoController($scope, FormService) {
     $scope.upload = function() {
         FormService.upload("upload"
             , $scope.files
-            , {fullname: $scope.fullname}
-            , function(percent) {
+            , {fullname: $scope.fullname})
+            .progress(function(percent) {
                 console.log("percent: " + percent);
-            }
-            , function(data) {
-                  _.each(data.fields, function(field) {
-                 var file = field.file;
-                 if (file != null) {
-                     console.log("file uploaded: " + file);
-                     $scope.dataResourceId = file.dataResourceId;
-                 }
             })
-        })
+            .success(function(data) {
+                _.each(data.fields, function(field) {
+                    var file = field.file;
+                    if (file != null) {
+                        console.log("file uploaded: " + file);
+                        $scope.dataResourceId = file.dataResourceId;
+                    }
+                });
+            });
     }
 }
