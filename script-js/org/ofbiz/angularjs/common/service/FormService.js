@@ -45,7 +45,7 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
         return promise;
     }
 
-    this.upload = function(target, files, parameters, onProgress, onSuccess) {
+    this.upload = function(target, files, parameters) {
         var deferred = $q.defer();
         var promise = deferred.promise;
         var progressFn = null;

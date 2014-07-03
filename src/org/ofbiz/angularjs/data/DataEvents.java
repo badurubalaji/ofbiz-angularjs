@@ -176,6 +176,8 @@ public class DataEvents {
                                             .get("contentName");
                                     String description = (String) fieldMap
                                             .get("description");
+                                    String contentTypeId = (String) fieldMap
+                                            .get("contentTypeId");
                                     String contentPurposeTypeId = (String) fieldMap
                                             .get("contentPurposeTypeId");
 
@@ -186,6 +188,8 @@ public class DataEvents {
                                             "contentName", contentName);
                                     createContentFromUploadedFileInMap.put(
                                             "description", description);
+                                    createContentFromUploadedFileInMap.put(
+                                            "contentTypeId", contentTypeId);
                                     createContentFromUploadedFileInMap.put(
                                             "contentPurposeTypeId", contentPurposeTypeId);
                                     createContentFromUploadedFileInMap.put(
