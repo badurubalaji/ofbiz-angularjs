@@ -67,6 +67,8 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
             return promise;
         }
 
+        appBusy.set();
+
         //$files: an array of files selected, each file has name, size, and type.
         for (var i = 0; i < files.length; i++) {
           var file = files[i];
@@ -90,12 +92,14 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
           })
           .success(function(data, status, headers, config) {
               // file is uploaded successfully
+              appBusy.set(false);
               if (successFn != null) {
                   successFn(data);
               }
           })
           .error(function(data, status, headers, config) {
               // file is uploaded fail
+              appBusy.set(false);
               if (errorFn != null) {
                   errorFn(data);
               }
