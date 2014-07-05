@@ -25,7 +25,6 @@ import java.util.Map;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
-import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilValidate;
 
@@ -38,19 +37,20 @@ public class JavaScriptPackage {
     protected List<JavaScriptPackage> children = new LinkedList<JavaScriptPackage>();
     protected String name = null;
     protected Map<String, JavaScriptClass> javaScriptClasses = new HashMap<String, JavaScriptClass>();
-    
+
     public JavaScriptPackage(String packageName) {
         this.packageName = packageName;
         List<String> packageTokens = StringUtil.split(packageName, ".");
         if (UtilValidate.isNotEmpty(packageTokens)) {
             this.name = packageTokens.remove(packageTokens.size() - 1);
             String parentPackagePath = StringUtil.join(packageTokens, ".");
-            this.parent = JavaScriptFactory.getJavaScriptPackage(parentPackagePath);
-            
+            this.parent = JavaScriptFactory
+                    .getJavaScriptPackage(parentPackagePath);
+
             if (UtilValidate.isNotEmpty(this.parent)) {
                 this.parent.getChildren().add(this);
             }
-            
+
             if (packageName.indexOf(".") < 0) {
                 JavaScriptFactory.addRootJavaScriptPackage(this);
             }
@@ -59,25 +59,27 @@ public class JavaScriptPackage {
             JavaScriptFactory.addRootJavaScriptPackage(this);
         }
     }
-    
-    public void addJavaScriptClass(String className, Function classFunction, Context context) {
-        JavaScriptClass javaScriptClass = new JavaScriptClass(this, className, classFunction, context);
+
+    public void addJavaScriptClass(String className, Function classFunction,
+            Context context) {
+        JavaScriptClass javaScriptClass = new JavaScriptClass(this, className,
+                classFunction, context);
         javaScriptClasses.put(className, javaScriptClass);
     }
-    
+
+    public List<JavaScriptPackage> getChildren() {
+        return children;
+    }
+
     public JavaScriptClass getJavaScriptClass(String className) {
         JavaScriptClass javaScriptClass = javaScriptClasses.get(className);
         return javaScriptClass;
     }
-    
-    public List<JavaScriptPackage> getChildren() {
-        return children;
-    }
-    
+
     public String getPackagePath() {
         return packageName;
     }
-    
+
     public String rawString() {
         String rawString = "";
         if (UtilValidate.isEmpty(parent)) {
@@ -85,17 +87,17 @@ public class JavaScriptPackage {
         } else {
             rawString = name + ": {\n";
         }
-        
+
         // render sub packages
         for (JavaScriptPackage javaScriptPackage : getChildren()) {
             rawString += javaScriptPackage.rawString();
         }
-        
+
         // render classes
         for (JavaScriptClass javaScriptClass : javaScriptClasses.values()) {
             rawString += javaScriptClass.rawString();
         }
-        
+
         rawString += "\n},\n";
         return rawString;
     }

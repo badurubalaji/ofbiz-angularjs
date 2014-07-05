@@ -24,21 +24,31 @@ import java.util.List;
 public class JavaScriptRenderer {
 
     public final static String module = JavaScriptRenderer.class.getName();
-    
+
     protected Appendable writer;
-    
+
     public JavaScriptRenderer(Appendable writer) {
         this.writer = writer;
     }
-    
-    public void render(List<JavaScriptPackage> javaScriptPackages) throws IOException {
+
+    public void render(List<JavaScriptPackage> javaScriptPackages)
+            throws IOException {
         // render packages
         StringBuilder packageBuilder = new StringBuilder();
         for (JavaScriptPackage javaScriptPackage : javaScriptPackages) {
-            packageBuilder.append(javaScriptPackage.rawString());
+            String packageRawString = javaScriptPackage.rawString();
+
+            // remove the last comma ','
+            packageRawString = packageRawString.substring(0,
+                    packageRawString.length() - 2)
+                    + "\n";
+
+            packageBuilder.append(packageRawString);
         }
-        // remove the last comma ','
-        writer.append(packageBuilder.toString().subSequence(0, packageBuilder.toString().length() - 2));
+
+        String packagesString = packageBuilder.toString();
+
+        writer.append(packagesString);
         writer.append("\n");
     }
 }
