@@ -1100,11 +1100,7 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
             
-            String type = typeExdr.expandString(context);
-            if (UtilValidate.isEmpty(type)) {
-                type = "horizontal";
-            }
-            String formStyle = "form-" + type;
+            String formStyle = "form-" + typeExdr.expandString(context);
             boolean validated = Boolean.valueOf(validatedExdr
                     .expandString(context));
             

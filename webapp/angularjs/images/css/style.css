@@ -93,11 +93,17 @@ img {
 }
 
 /*
+=== Button
+*/
+.btn {
+    margin-bottom: 5px !important;
+}
+
+/*
 === Panel =====
 */
 .panel {
   padding: 15px;
-  margin-top: 5px;
   margin-bottom: 20px;
   background-color: #ffffff;
   border: 1px solid #dddddd;
