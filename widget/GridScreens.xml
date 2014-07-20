@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://code.google.com/p/ofbiz-angularjs/dtds/ng-screens.xsd">
+
+    <screen name="DateGridCell">
+        <section>
+            <actions>
+            </actions>
+            <widgets>
+                <date-time model="row"/>
+            </widgets>
+        </section>
+    </screen>
+</screens>

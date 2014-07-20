@@ -7,7 +7,7 @@
     <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
 
     <description>AngularJs Component Site Configuration File</description>
-    
+
     <!--
     <handler name="jsonsimple" type="request" class="org.ofbiz.angularjs.webapp.event.JsonSimpleEventHandler"/>
     <handler name="jsonservice" type="request" class="org.ofbiz.angularjs.webapp.event.JsonServiceEventHandler"/>
@@ -26,7 +26,7 @@
         <event name="test" type="java" path="org.ofbiz.webapp.event.TestEvent" invoke="test"/>
     </postprocessor>
     -->
-    
+
     <!-- Login Request Mappings -->
     <request-map uri="login">
         <security https="true" auth="false"/>
@@ -35,14 +35,16 @@
         <response name="requirePasswordChange" type="view" value="requirePasswordChange"/>
         <response name="error" type="request" value="error"/>
     </request-map>
-    
+
     <request-map uri="LookupGeo">
         <security https="true" auth="true"/>
         <event type="simple" path="component://angularjs/script/org/ofbiz/angularjs/common/CommonEvents.xml" invoke="LookupGeo"/>
         <response name="success" type="request" value="json"/>
         <response name="error" type="request" value="error"/>
     </request-map>
-    
+
+    <!-- Comments Request Mappings -->
+
     <request-map uri="CommentsPanelTemplate">
         <security https="true" auth="true"/>
         <response name="success" type="view" value="CommentsPanelTemplate"/>
@@ -68,15 +70,22 @@
         <response name="success" type="none"/>
         <response name="error" type="none"/>
     </request-map>
-    
+
     <request-map uri="upload">
         <security https="true" auth="false"/>
         <event type="java" path="org.ofbiz.angularjs.data.DataEvents" invoke="upload"/>
         <response name="success" type="none"/>
         <response name="error" type="none"/>
     </request-map>
-    
+
+    <!-- Grid Request Mappings -->
+    <request-map uri="DateGridCell">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="DateGridCell"/>
+    </request-map>
+
     <!-- View Mappings -->
-    
+
     <view-map name="CommentsPanelTemplate" type="screen" page="component://angularjs/widget/DirectiveScreens.xml#CommentsPanelTemplate"/>
+    <view-map name="DateGridCell" type="screen" page="component://angularjs/widget/GridScreens.xml#DateGridCell"/>
 </site-conf>

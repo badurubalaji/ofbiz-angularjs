@@ -21,5 +21,5 @@ under the License.
 try {
     google.load('visualization', '1', {packages: ['corechart']});
 } catch (e) {
-    console.error(e);
+    //console.error(e);
 }

@@ -9,24 +9,24 @@
         <styleSheet path="/angularjs/images/css/bootstrap.min.css"/>
         <styleSheet path="/angularjs/images/css/bootstrap-responsive.min.css"/>
     </ng-module>
-    
-    <!-- 
+
+    <!--
         Wiki: https://github.com/angular-ui/ui-router/wiki
      -->
     <ng-module name="ui.router" location="/angularjs/images/js/angular-ui-router.min.js">
-        
+
     </ng-module>
     <ng-module name="ui.map" location="/angularjs/images/js/ui-map.js">
-        
+
     </ng-module>
     <ng-module name="ui.event" location="/angularjs/images/js/ui-utils/modules/event/event.js">
-        
+
     </ng-module>
     <ng-module name="ngGrid" location="/angularjs/images/js/ng-grid-2.0.7.min.js">
         <styleSheet path="/angularjs/images/css/ng-grid.min.css"/>
     </ng-module>
     <ng-module name="ngUpload" location="/angularjs/images/js/ng-upload.js">
-        
+
     </ng-module>
     <ng-module name="ADE" location="/angularjs/images/js/ade/common/ade.js">
         <javaScript path="/angularjs/images/js/ade/vendor/jquery.json-2.3.min.js"/>
@@ -37,28 +37,28 @@
         <styleSheet path="/angularjs/images/css/ade/vendor/datepicker.css"/>
     </ng-module>
     <ng-module name="ngSanitize" location="/angularjs/images/js/ade/vendor/angular-sanitize.js">
-        
+
     </ng-module>
     <ng-module name="ui.tinymce" location="/angularjs/images/js/tinymce.js">
-        
+
     </ng-module>
     <ng-module name="ui.calendar" location="/angularjs/images/js/calendar/calendar.js">
         <styleSheet path="/angularjs/images/css/calendar/fullcalendar.css"/>
         <styleSheet path="/angularjs/images/css/calendar/fullcalendar.print.css"/>
     </ng-module>
     <ng-module name="kalitte.services" location="/angularjs/images/js/appBusy.js">
-        
+
     </ng-module>
     <ng-module name="googlechart.directives" location="/angularjs/images/js/ng-google-chart.js">
-        
+
     </ng-module>
     <!--
         http://mgcrea.github.io/angular-strap/
     -->
     <ng-module name="$strap.directives" location="/angularjs/images/js/angular-strap.min.js">
-        
+
     </ng-module>
-    
+
     <ng-module name="angularTreeview" location="/angularjs/images/js/angular.treeview.min.js">
         <styleSheet path="/angularjs/images/css/angular.treeview.css"/>
     </ng-module>
