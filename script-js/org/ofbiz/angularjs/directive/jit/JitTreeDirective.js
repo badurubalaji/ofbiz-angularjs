@@ -12,34 +12,34 @@ function JitTreeDirective($compile) {
         var levelDistance = $attrs.levelDistance;
         var nodeHeight = $attrs.nodeHeight;
         var nodeWidth = $attrs.nodeWidth;
-        
+
         if (width == null) {
             width = "100%";
         }
         if (height == null) {
             height = "400px";
         }
-        
+
         if(_.isEmpty(levelDistance)) {
             levelDistance = 100;
         } else {
             levelDistance = parseInt(levelDistance);
         }
-        
+
         if(_.isEmpty(nodeHeight)) {
             nodeHeight = 100;
         } else {
             nodeHeight = parseInt(nodeHeight);
         }
-        
+
         if(_.isEmpty(nodeWidth)) {
             nodeWidth = 100;
         } else {
             nodeWidth = parseInt(nodeWidth);
         }
-        
+
         console.log(levelDistance + ", " + nodeHeight + ", " + nodeWidth);
-        
+
         var id = _.uniqueId("jitTree");
         $element.attr("id", id);
         $element.css("width", width);
@@ -47,8 +47,8 @@ function JitTreeDirective($compile) {
         $element.css("margin", "auto");
         $element.css("position", "relative");
         $element.css("overflow", "hidden");
-        
-        
+
+
         var spaceTree = new $jit.ST({
             //id of viz container element
             injectInto: id,
@@ -73,25 +73,25 @@ function JitTreeDirective($compile) {
                 //color: '#aaa',
                 overridable: true
             },
-            
+
             Edge: {
                 type: 'bezier',
                 overridable: true
             },
-            
+
             onBeforeCompute: function(node){
                 console.log("loading " + node.name);
             },
-            
+
             onAfterCompute: function(){
                 console.log("done");
             },
-            
+
             //This method is called on DOM label creation.
             //Use this method to add event handlers and styles to
             //your node.
             onCreateLabel: function(label, node){
-                label.id = node.id;            
+                label.id = node.id;
                 label.onclick = function(){
                     /*
                     if(normal.checked) {
@@ -100,9 +100,10 @@ function JitTreeDirective($compile) {
                     spaceTree.setRoot(node.id, 'animate');
                     }
                     */
-                    
+
                     // spaceTree.setRoot(node.id, 'animate');
                     spaceTree.onClick(node.id);
+                    $scope.onNodeClicked({node: node});
                 };
 
                 if (!_.isEmpty(nodeTemplateUrl)) {
@@ -127,7 +128,7 @@ function JitTreeDirective($compile) {
                     style.paddingTop = '3px';
                 }
             },
-            
+
             //This method is called right before plotting
             //a node. It's useful for changing an individual node
             //style properties before plotting it.
@@ -152,7 +153,7 @@ function JitTreeDirective($compile) {
                     }
                 }
             },
-            
+
             //This method is called right before plotting
             //an edge. It's useful for changing an individual edge
             //style properties before plotting it.
@@ -169,29 +170,29 @@ function JitTreeDirective($compile) {
                 }
             }
         });
-        
+
         $scope.$watch("ngModel", function(model) {
             if (model != null) {
                 loadNodes(spaceTree, model);
             }
         })
     };
-    
+
     this.compile = function() {
         return {
             pre: function() {
-            
+
             },
             post: function() {
-            
+
             }
         };
     };
-    
+
     this.link = function() {
-    
+
     };
-    
+
     function loadNodes(spaceTree, model) {
         //load json data
         spaceTree.loadJSON(model);
