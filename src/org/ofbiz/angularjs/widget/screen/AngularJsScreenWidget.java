@@ -2168,7 +2168,6 @@ public class AngularJsScreenWidget {
         
         protected FlexibleStringExpander textExdr;
         protected FlexibleStringExpander styleExdr;
-        protected FlexibleStringExpander onUploadExdr;
         
         public Submit(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
@@ -2176,8 +2175,6 @@ public class AngularJsScreenWidget {
                     .getAttribute("text"));
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("style"));
-            this.onUploadExdr = FlexibleStringExpander
-                    .getInstance(widgetElement.getAttribute("on-upload"));
         }
         
         @Override
@@ -2188,10 +2185,6 @@ public class AngularJsScreenWidget {
             writer.append("<input type=\"submit\" class=\"btn "
                     + styleExdr.expandString(context) + "\" value=\""
                     + textExdr.expandString(context) + "\"");
-            if (UtilValidate.isNotEmpty(onUploadExdr.getOriginal())) {
-                writer.append(" upload-submit=\""
-                        + onUploadExdr.expandString(context) + "\"");
-            }
             writer.append("/>");
         }
         
