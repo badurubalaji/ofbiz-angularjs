@@ -48,7 +48,7 @@
         priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>
 
     <ng-directive name="report" location="org.ofbiz.angularjs.directive.ReportDirective"
-        priority="0" replace="false" transclude="false" restrict="A" scope="{location:'@', format:'@'}"/>
+        priority="0" replace="false" transclude="false" restrict="A" scope="{location:'@', format:'@', parameters:'='}"/>
 
     <ng-directive name="commentsPanel" location="org.ofbiz.angularjs.directive.CommentsPanelDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="{contentId:'=', onCreateSuccess:'&amp;'}"/>
