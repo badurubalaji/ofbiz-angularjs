@@ -35,7 +35,7 @@ function ContextDirective(HttpService) {
         });
 
         $scope.$watch("parameters", function(newValue) {
-            if (_.isEmpty(parameters)) {
+            if (_.isEmpty(newValue)) {
                 parameters = newValue;
                 sendRequest();
             }

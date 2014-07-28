@@ -35,6 +35,8 @@
         <fileset dir="../../framework/webapp/lib" includes="*.jar"/>
         <fileset dir="../../framework/webapp/build/lib" includes="*.jar"/>
         <fileset dir="../../applications/content/build/lib" includes="*.jar"/>
+        <fileset dir="../../specialpurpose/birt/lib" includes="*.jar"/>
+        <fileset dir="../../specialpurpose/birt/build/lib" includes="*.jar"/>
     </path>
 
     <!-- ================================================================= -->
@@ -102,7 +104,7 @@
         <patch strip="0" patchfile="patches/framework.patch" dir="${ofbiz.home.dir}" failonerror="true"/>
         <patch strip="0" patchfile="patches/applications.patch" dir="${ofbiz.home.dir}" failonerror="true"/>
         <patch strip="0" patchfile="patches/specialpurpose.patch" dir="${ofbiz.home.dir}" failonerror="true"/>
-        <delete>          
+        <delete>
             <fileset dir="${ofbiz.home.dir}" includes="**/*.rej"/>
         </delete>
     </target>

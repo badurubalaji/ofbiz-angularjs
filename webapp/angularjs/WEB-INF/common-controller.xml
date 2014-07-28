@@ -75,13 +75,21 @@
         <security https="true" auth="false"/>
         <event type="java" path="org.ofbiz.angularjs.data.DataEvents" invoke="upload"/>
         <response name="success" type="none"/>
-        <response name="error" type="none"/>
+        <response name="error" type="request" value="json"/>
     </request-map>
 
     <!-- Grid Request Mappings -->
     <request-map uri="DateGridCell">
         <security https="true" auth="true"/>
         <response name="success" type="view" value="DateGridCell"/>
+    </request-map>
+
+    <!-- Report Request Mappings -->
+    <request-map uri="serveReport">
+        <security https="true" auth="false"/>
+        <event type="java" path="org.ofbiz.angularjs.report.ReportEvents" invoke="serveReport"/>
+        <response name="success" type="none"/>
+        <response name="error" type="none"/>
     </request-map>
 
     <!-- View Mappings -->

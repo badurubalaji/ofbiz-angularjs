@@ -2031,6 +2031,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander formatExdr;
         protected FlexibleStringExpander widthExdr;
         protected FlexibleStringExpander heightExdr;
+        protected FlexibleStringExpander parametersExdr;
         
         public Report(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
@@ -2042,6 +2043,8 @@ public class AngularJsScreenWidget {
                     .getAttribute("width"));
             this.heightExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("height"));
+            this.parametersExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("parameters"));
         }
         
         @Override
@@ -2053,7 +2056,8 @@ public class AngularJsScreenWidget {
                     + locationExdr.expandString(context) + "\" format=\""
                     + formatExdr.expandString(context) + "\" width=\""
                     + widthExdr.expandString(context) + "\" height=\""
-                    + heightExdr.expandString(context) + "\"></div>");
+                    + heightExdr.expandString(context) + "\" parameters=\""
+                    + parametersExdr.expandString(context) + "\"></div>");
         }
         
         @Override
