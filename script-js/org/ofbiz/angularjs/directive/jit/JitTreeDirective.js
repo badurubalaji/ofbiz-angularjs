@@ -38,7 +38,7 @@ function JitTreeDirective($compile) {
             nodeWidth = parseInt(nodeWidth);
         }
 
-        console.log(levelDistance + ", " + nodeHeight + ", " + nodeWidth);
+        // console.log(levelDistance + ", " + nodeHeight + ", " + nodeWidth);
 
         var id = _.uniqueId("jitTree");
         $element.attr("id", id);
@@ -80,11 +80,11 @@ function JitTreeDirective($compile) {
             },
 
             onBeforeCompute: function(node){
-                console.log("loading " + node.name);
+                // console.log("loading " + node.name);
             },
 
             onAfterCompute: function(){
-                console.log("done");
+                // console.log("done");
             },
 
             //This method is called on DOM label creation.

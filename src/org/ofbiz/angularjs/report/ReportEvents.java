@@ -24,7 +24,6 @@ import org.ofbiz.base.util.GeneralException;
 import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilGenerics;
 import org.ofbiz.base.util.UtilHttp;
-import org.ofbiz.base.util.UtilProperties;
 import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.birt.BirtFactory;
 import org.ofbiz.birt.BirtWorker;
@@ -36,6 +35,8 @@ import org.xml.sax.SAXException;
 public class ReportEvents {
     
     public final static String module = ReportEvents.class.getName();
+    
+    public final static String RUNTIME_REPORT_DIR = "images/runtime/report";
     
     public static String serveReport(HttpServletRequest request,
             HttpServletResponse response) {
@@ -99,11 +100,14 @@ public class ReportEvents {
                 response.setHeader("Content-Disposition",
                         "attachment; filename=" + outputFileName);
             }
-            
+            ;
             context.put(BirtWorker.BIRT_LOCALE, locale);
-            String birtImageDirectory = UtilProperties.getPropertyValue("birt",
-                    "birt.html.image.directory");
+            String birtImageDirectory = request.getServletContext()
+                    .getRealPath(RUNTIME_REPORT_DIR);
             context.put(BirtWorker.BIRT_IMAGE_DIRECTORY, birtImageDirectory);
+            String birtBaseImageUrl = request.getContextPath() + "/"
+                    + RUNTIME_REPORT_DIR;
+            context.put(BirtWorker.BIRT_BASE_IMAGE_URL, birtBaseImageUrl);
             BirtWorker.exportReport(design, context, contentType,
                     response.getOutputStream());
         } catch (BirtException e) {
