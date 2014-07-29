@@ -1,0 +1,191 @@
+Index: specialpurpose/birt/src/org/ofbiz/birt/BirtWorker.java
+===================================================================
+--- specialpurpose/birt/src/org/ofbiz/birt/BirtWorker.java	(revision 1614369)
++++ specialpurpose/birt/src/org/ofbiz/birt/BirtWorker.java	(working copy)
+@@ -47,20 +47,22 @@
+ import org.ofbiz.service.LocalDispatcher;
+ 
+ public class BirtWorker {
+-
++    
+     public final static String module = BirtWorker.class.getName();
+-
++    
+     public final static String BIRT_PARAMETERS = "birtParameters";
+     public final static String REPORT_ENGINE = "reportEngine";
+     public final static String BIRT_LOCALE = "birtLocale";
+     public final static String BIRT_IMAGE_DIRECTORY = "birtImageDirectory";
++    public final static String BIRT_BASE_IMAGE_URL = "birtBaseImageUrl";
+     public final static String BIRT_CONTENT_TYPE = "birtContentType";
+     public final static String BIRT_OUTPUT_FILE_NAME = "birtOutputFileName";
+-
++    
+     private static HTMLServerImageHandler imageHandler = new HTMLServerImageHandler();
+-
++    
+     /**
+      * export report
++     * 
+      * @param design
+      * @param context
+      * @param contentType
+@@ -69,74 +71,88 @@
+      * @throws GeneralException
+      * @throws SQLException
+      */
+-    public static void exportReport(IReportRunnable design, Map<String, ? extends Object> context, String contentType, OutputStream output)
+-        throws EngineException, GeneralException, SQLException {
+-
+-        Locale birtLocale = (Locale)context.get(BIRT_LOCALE);
+-        String birtImageDirectory = (String)context.get(BIRT_IMAGE_DIRECTORY);
+-
++    public static void exportReport(IReportRunnable design,
++            Map<String, ? extends Object> context, String contentType,
++            OutputStream output) throws EngineException, GeneralException,
++            SQLException {
++        
++        Locale birtLocale = (Locale) context.get(BIRT_LOCALE);
++        String birtImageDirectory = (String) context.get(BIRT_IMAGE_DIRECTORY);
++        String birtBaseImageUrl = (String) context.get(BIRT_BASE_IMAGE_URL);
++        
+         if (contentType == null) {
+             contentType = "text/html";
+         }
+         if (birtImageDirectory == null) {
+-             birtImageDirectory = "/";
++            birtImageDirectory = "/";
+         }
+         Debug.logInfo("Get report engine", module);
+         IReportEngine engine = BirtFactory.getReportEngine();
+-
++        
+         IRunAndRenderTask task = engine.createRunAndRenderTask(design);
+         if (birtLocale != null) {
+             Debug.logInfo("Set BIRT locale:" + birtLocale, module);
+             task.setLocale(birtLocale);
+         }
+-
++        
+         // set parameters if exists
+-        Map<String, Object> parameters = UtilGenerics.cast(context.get(BirtWorker.BIRT_PARAMETERS));
++        Map<String, Object> parameters = UtilGenerics.cast(context
++                .get(BirtWorker.BIRT_PARAMETERS));
+         if (parameters != null) {
+             Debug.logInfo("Set BIRT parameters:" + parameters, module);
+             task.setParameterValues(parameters);
+         }
+-
++        
+         // set output options
+         RenderOption options = new RenderOption();
+         if ("text/html".equalsIgnoreCase(contentType)) { // HTML
+             options.setOutputFormat(RenderOption.OUTPUT_FORMAT_HTML);
+             HTMLRenderOption htmlOptions = new HTMLRenderOption(options);
+             htmlOptions.setImageDirectory(birtImageDirectory);
+-            htmlOptions.setBaseImageURL(birtImageDirectory);
++            htmlOptions.setBaseImageURL(birtBaseImageUrl);
+             options.setImageHandler(imageHandler);
+-        } else if ("application/postscript".equalsIgnoreCase(contentType)) { // Post Script
++        } else if ("application/postscript".equalsIgnoreCase(contentType)) { // Post
++                                                                             // Script
+             options.setOutputFormat("postscript");
+         } else if ("application/pdf".equalsIgnoreCase(contentType)) { // PDF
+             options.setOutputFormat(RenderOption.OUTPUT_FORMAT_PDF);
+             PDFRenderOption pdfOptions = new PDFRenderOption(options);
+-            pdfOptions.setOption(IPDFRenderOption.PAGE_OVERFLOW, Boolean.TRUE );
+-        } else if ("application/vnd.ms-word".equalsIgnoreCase(contentType)) { // MS Word
++            pdfOptions.setOption(IPDFRenderOption.PAGE_OVERFLOW, Boolean.TRUE);
++        } else if ("application/vnd.ms-word".equalsIgnoreCase(contentType)) { // MS
++                                                                              // Word
+             options.setOutputFormat("doc");
+-        }  else if ("application/vnd.ms-excel".equalsIgnoreCase(contentType)) { // MS Excel
++        } else if ("application/vnd.ms-excel".equalsIgnoreCase(contentType)) { // MS
++                                                                               // Excel
+             options.setOutputFormat("xls");
+             new EXCELRenderOption(options);
+-        } else if ("application/vnd.ms-powerpoint".equalsIgnoreCase(contentType)) { // MS Power Point
++        } else if ("application/vnd.ms-powerpoint"
++                .equalsIgnoreCase(contentType)) { // MS Power Point
+             options.setOutputFormat("ppt");
+-        } else if ("application/vnd.oasis.opendocument.text".equalsIgnoreCase(contentType)) { // Open Document Text
++        } else if ("application/vnd.oasis.opendocument.text"
++                .equalsIgnoreCase(contentType)) { // Open Document Text
+             options.setOutputFormat("odt");
+-        } else if ("application/vnd.oasis.opendocument.spreadsheet".equalsIgnoreCase(contentType)) { // Open Document Spreadsheet
++        } else if ("application/vnd.oasis.opendocument.spreadsheet"
++                .equalsIgnoreCase(contentType)) { // Open Document Spreadsheet
+             options.setOutputFormat("ods");
+-        } else if ("application/vnd.oasis.opendocument.presentation".equalsIgnoreCase(contentType)) { // Open Document Presentation
++        } else if ("application/vnd.oasis.opendocument.presentation"
++                .equalsIgnoreCase(contentType)) { // Open Document Presentation
+             options.setOutputFormat("odp");
+-        } else if ("application/vnd.openxmlformats-officedocument.wordprocessingml.document".equalsIgnoreCase(contentType)) { // MS Word 2007
++        } else if ("application/vnd.openxmlformats-officedocument.wordprocessingml.document"
++                .equalsIgnoreCase(contentType)) { // MS Word 2007
+             options.setOutputFormat("docx");
+-        } else if ("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".equalsIgnoreCase(contentType)) { // MS Excel 2007
++        } else if ("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
++                .equalsIgnoreCase(contentType)) { // MS Excel 2007
+             options.setOutputFormat("xlsx");
+-        } else if ("application/vnd.openxmlformats-officedocument.presentationml.presentation".equalsIgnoreCase(contentType)) { // MS Word 2007
++        } else if ("application/vnd.openxmlformats-officedocument.presentationml.presentation"
++                .equalsIgnoreCase(contentType)) { // MS Word 2007
+             options.setOutputFormat("pptx");
+         } else {
+             throw new GeneralException("Unknown content type : " + contentType);
+         }
+-
++        
+         options.setOutputStream(output);
+         task.setRenderOption(options);
+-
++        
+         // run report
+         Debug.logInfo("BIRT's locale is: " + task.getLocale(), module);
+         Debug.logInfo("Run report's task", module);
+@@ -146,11 +162,13 @@
+     
+     /**
+      * set web context objects
++     * 
+      * @param appContext
+      * @param request
+      * @param response
+      */
+-    public static void setWebContextObjects(Map<String, Object> appContext, HttpServletRequest request, HttpServletResponse response) {
++    public static void setWebContextObjects(Map<String, Object> appContext,
++            HttpServletRequest request, HttpServletResponse response) {
+         HttpSession session = request.getSession();
+         ServletContext servletContext = session.getServletContext();
+         
+@@ -165,14 +183,16 @@
+         if (UtilValidate.isNotEmpty(delegator)) {
+             appContext.put("delegator", delegator);
+         }
+-
++        
+         // set JDBC connection
+-        //appContext.put("OdaJDBCDriverPassInConnection", connection);
+-
++        // appContext.put("OdaJDBCDriverPassInConnection", connection);
++        
+         // set dispatcher
+-        LocalDispatcher dispatcher = (LocalDispatcher) session.getAttribute("dispatcher");
++        LocalDispatcher dispatcher = (LocalDispatcher) session
++                .getAttribute("dispatcher");
+         if (UtilValidate.isEmpty(dispatcher)) {
+-            dispatcher = (LocalDispatcher) servletContext.getAttribute("dispatcher");
++            dispatcher = (LocalDispatcher) servletContext
++                    .getAttribute("dispatcher");
+         }
+         if (UtilValidate.isEmpty(dispatcher)) {
+             dispatcher = (LocalDispatcher) request.getAttribute("dispatcher");
+@@ -180,7 +200,7 @@
+         if (UtilValidate.isNotEmpty(dispatcher)) {
+             appContext.put("dispatcher", dispatcher);
+         }
+-
++        
+         // set security
+         Security security = (Security) session.getAttribute("security");
+         if (UtilValidate.isEmpty(security)) {
