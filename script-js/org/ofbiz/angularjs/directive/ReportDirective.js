@@ -5,27 +5,15 @@ function ReportDirective(HttpService) {
     /**
      * Controller
      */
-    this.controller = function($scope, $element, $attrs, $transclude) {
+    this.controller = function($scope, $element, $attrs, $transclude, FormService) {
 
         function setContent() {
-            var parametersStr = "";
-            var paramKeys = _.keys(parameters);
-            _.each(paramKeys, function(paramName) {
-                var paramValue = parameters[paramName];
-                parametersStr += paramName + "_EQS_" + paramValue;
-                parametersStr += ",";
+
+            var serveReportParams = _.clone(parameters);
+            serveReportParams["__location"] = location;
+            FormService.post("serveReport", serveReportParams).success(function(result) {
+                $element.html(result);
             });
-
-
-            if (format == "png" || format == "jpg") {
-                var src = "serveReport" + "?__location=" + location + "&__parameters=" + parametersStr;
-                $element.html("<iframe src=\"" + src + "\" width=\"" + width + "\" height=\"" + height + "\"/>");
-            } else if (format == "html" || format == "pdf") {
-                var src = "/birt/output?__report=" + location + "&&__format=" + format;
-                $element.html("<iframe src=\"" + src + "\" width=\"" + width + "\" height=\"" + height + "\"/>");
-            } else {
-                 console.log("Unsupported fomat found: " + format);
-            }
         }
 
       var format = $attrs.format;

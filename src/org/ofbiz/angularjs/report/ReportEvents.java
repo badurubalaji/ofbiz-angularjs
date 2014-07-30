@@ -3,8 +3,6 @@ package org.ofbiz.angularjs.report;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -21,7 +19,6 @@ import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.GeneralException;
-import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilGenerics;
 import org.ofbiz.base.util.UtilHttp;
 import org.ofbiz.base.util.UtilValidate;
@@ -58,20 +55,6 @@ public class ReportEvents {
         }
         
         String contentType = "text/html";
-        String parametersParam = (String) parametersMap.get("__parameters");
-        Map<String, String> reportParametersMap = new HashMap<String, String>();
-        if (UtilValidate.isNotEmpty(parametersParam)) {
-            List<String> paramPairs = StringUtil.split(parametersParam, ",");
-            for (String paramPair : paramPairs) {
-                if (UtilValidate.isNotEmpty(paramPair)) {
-                    List<String> paramTokens = StringUtil.split(paramPair,
-                            "_EQS_");
-                    String paramName = paramTokens.get(0);
-                    String paramValue = paramTokens.get(1);
-                    reportParametersMap.put(paramName, paramValue);
-                }
-            }
-        }
         
         try {
             IReportEngine engine = org.ofbiz.birt.BirtFactory.getReportEngine();
@@ -91,7 +74,7 @@ public class ReportEvents {
             BirtWorker.setWebContextObjects(appContext, request, response);
             
             Map<String, Object> context = FastMap.newInstance();
-            context.put(BirtWorker.BIRT_PARAMETERS, reportParametersMap);
+            context.put(BirtWorker.BIRT_PARAMETERS, parametersMap);
             
             // set output file name
             String outputFileName = (String) request
