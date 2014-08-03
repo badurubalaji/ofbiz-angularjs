@@ -4,7 +4,7 @@ package org.ofbiz.angularjs.directive;
  * Grid Options Directive
  */
 function GridOptionsDirective(HttpService, $timeout, $parse) {
-    
+
     /**
      * Controller
      */
@@ -20,7 +20,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
         var showSelectionCheckbox = $scope.$eval($attrs.showSelectionCheckbox);
         var checkboxHeaderTemplate = null;
         var sortInfo = null;
-        
+
         var selectParameters = null;
         if ($attrs.selectParameters.indexOf("{") == 0) {
             // parse Map from String
@@ -33,51 +33,51 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                 onParametersChanged({parameters: newVal});
             });
         }
-        
+
         if ($attrs.sortInfo) {
             sortInfo = $scope.$eval($attrs.sortInfo);
         }
-        
+
         if (showSelectionCheckbox) {
             checkboxHeaderTemplate = "<input class=\"ngSelectionHeader\" type=\"checkbox\" ng-show=\"multiSelect\" ng-model=\"allSelected\" ng-change=\"toggleSelectAll(allSelected, true)\"/>";
         }
-        
+
         var onBeforeSelectionChanged = $scope[$attrs.onBeforeSelectionChanged]; // function (rowItem, event) {}
         var onAfterSelectionChanged = $scope[$attrs.onAfterSelectionChanged]; // function (rowItem, event) { return true; }
         var onRowDoubleClicked = $scope[$attrs.onRowDoubleClicked]; // function (rowItem, event) {}
-        
+
         $scope.filterOptions = {
             filterText: "",
             useExternalFilter: true
         };
-        
+
         var enablePaging = true;
         var showFooter = true;
-        
+
         if (!pageSizes) {
             pageSizes = [20, 30, 50, 100, 200];
         }
-        
+
         if (!pageSize) {
             pageSize = 20;
         }
-        
+
         $scope.totalServerItems = 0;
-        
+
         $scope.pagingOptions = {
             pageSizes: pageSizes,
             pageSize: pageSize,
             currentPage: 1
         };
-        
+
         if (sortInfo) {
             $scope.sortInfo = sortInfo;
         }
-        
+
         $scope.data = [];
         $scope.selectedItems = [];
         $scope.selectedItemsToDispatch = [];
-        
+
         /**
          * Set Paging Data
          */
@@ -87,12 +87,12 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             }
             var pageSize = viewSize;
             var currentPage = viewIndex + 1;
-            
+
             // var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
             $scope.data = adjustDataFieldNames(data); // set data for the first loaded
             $scope.$parent.data = $scope.data; // set data for other loaded
             $scope.totalServerItems = listSize;
-            
+
             /*
             $scope.pagingOptions = {
                 pageSizes: pageSizes,
@@ -104,7 +104,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                 $scope.$apply();
             }
         };
-        
+
         /**
          * Get Paged Data Async
          */
@@ -115,7 +115,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                 if ($scope.orderBy) {
                     postData.orderBy = $scope.orderBy;
                 }
-                
+
                 // add select parameters
                 if (selectParameters) {
                     for (key in selectParameters) {
@@ -123,7 +123,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                         postData[key] = value;
                     }
                 }
-                
+
                 if (parameters) {
                     for (key in parameters) {
                         var value = parameters[key];
@@ -134,19 +134,19 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                         var viewIndex = response.viewIndex;
                         var viewSize = response.viewSize;
                         if (listSize > 0) {
-                            
+
                             // The data has already been filtered from server.
                             /*
                             data = response[listName].filter(function(item) {
                                 return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
                             });
                             */
-                            
+
                             data = response[listName]
                         } else {
                             data = [];
                         }
-                        
+
                         if (data != null) {
                             $scope.setPagingData(data, viewSize, viewIndex, listSize);
                         }
@@ -165,32 +165,32 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                 }
             }, 100);
         };
-        
+
         var viewSize = $scope.pagingOptions.pageSize;
         var viewIndex = $scope.pagingOptions.currentPage - 1;
         $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, null);
-        
+
         function onParametersChanged(args) {
             if (args != null) {
                 var pageSize = args.pageSize;
                 var currentPage = args.currentPage;
                 var filterText = args.filterText;
-                
+
                 if (!pageSize) {
                     pageSize = $scope.pagingOptions.pageSize;
                 }
                 if (!currentPage) {
                     currentPage = $scope.pagingOptions.currentPage;
                 }
-                
+
                 $scope.parameters = args.parameters;
-    
+
                 var viewSize = pageSize;
                 var viewIndex = currentPage - 1;
                 $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, $scope.parameters);
             }
         }
-        
+
         if (sortInfo) {
             $scope.$watch('sortInfo', function (newVal, oldVal) {
                 var fieldName = newVal.fields[0];
@@ -203,7 +203,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                 $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, $scope.parameters);
             }, true);
         }
-        
+
         $scope.$watch('pagingOptions', function (newVal, oldVal) {
             if (newVal !== oldVal) {
                 var viewIndex = 0;
@@ -213,30 +213,30 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                         viewIndex = newVal.currentPage - 1;
                     }
                 }
-               
+
                 var parameters = $scope.parameters;
                 if (parameters == null) {
                     parameters = {};
                 }
                 $scope.getPagedDataAsync(selectTarget, listName, viewSize, viewIndex, parameters);
-              
+
             }
         }, true);
-        
+
         if (selectedItemsSetter != null) {
             $scope.$watch("selectedItemsToDispatch", function (newVal, oldVal) {
                 selectedItemsSetter($scope.$parent, newVal);
             });
         }
-        
+
         var rowSize = 10
-        
+
         if (rowSize > 20) {
             enablePaging = true;
             showFooter = true;
         }
-        
-        /* 
+
+        /*
          DoubleClick row plugin
          http://developer.the-hideout.de/?p=113
         */
@@ -244,7 +244,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             var self = this;
             self.$scope = null;
             self.myGrid = null;
-         
+
             // The init method gets called during the ng-grid directive execution.
             self.init = function(scope, grid, services) {
                 // The directive passes in the grid scope and the grid object which
@@ -271,7 +271,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
                 }
             };
         }
-        
+
         /**
          * Adjust Field Names
          * @param rowItem
@@ -288,7 +288,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             });
             return rowItem;
         }
-        
+
         /**
          * Adjust Data Field Names
          * @param data
@@ -302,7 +302,7 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             });
             return adjustedData;
         }
-        
+
         /**
          * Adjust Column Defs
          * @param columnDefs
@@ -337,6 +337,16 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             , enablePinning: true
             , useExternalSorting: true
             , columnDefs: adjustColumnDefs(columnDefs)
+            , init:function(grid,$scope) {
+                // ng-grid does not take 100% width on page load but shows fine on resize
+                // http://stackoverflow.com/questions/15523959/ng-grid-does-not-take-100-width-on-page-load-but-shows-fine-on-resize
+                setTimeout(function() {
+                    $scope.grid.$gridServices.DomUtilityService.RebuildGrid(
+                        $scope.grid.$gridScope,
+                        $scope.grid.ngGrid
+                    );
+                },500);
+            }
             , afterSelectionChange: function(rowItem, event) {
                 var selectedItemsToDispatch = [];
                 _.each($scope.selectedItems, function (selectedItem) {
@@ -353,11 +363,11 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             , onRowDoubleClicked: onRowDoubleClicked
             , plugins: [ngGridDoubleClick]
         };
-        
+
         if (sortInfo) {
             $scope.grid.sortInfo = sortInfo;
         }
-        
+
         angular.element($element).css("height", (rowSize * rowHeight) + "px");
     }
 
@@ -367,10 +377,10 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
     this.compile = function() {
         return {
             pre: function() {
-            
+
             },
             post: function($scope, $element, $attrs, controller) {
-                
+
             }
         };
     };
