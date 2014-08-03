@@ -103,7 +103,7 @@ function JitTreeDirective($compile) {
 
                     // spaceTree.setRoot(node.id, 'animate');
                     spaceTree.onClick(node.id);
-                    $scope.onNodeClicked({node: node});
+                    $scope.nodeClick({node: node});
                 };
 
                 if (!_.isEmpty(nodeTemplateUrl)) {

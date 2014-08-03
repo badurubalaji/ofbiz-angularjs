@@ -1486,7 +1486,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander levelDistanceExdr = null;
         protected FlexibleStringExpander nodeHeightExdr = null;
         protected FlexibleStringExpander nodeWidthExdr = null;
-        protected FlexibleStringExpander onNodeClickedExdr = null;
+        protected FlexibleStringExpander nodeClickExdr = null;
         
         public JitTree(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
@@ -1503,8 +1503,8 @@ public class AngularJsScreenWidget {
                     .getInstance(widgetElement.getAttribute("node-height"));
             this.nodeWidthExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("node-width"));
-            this.onNodeClickedExdr = FlexibleStringExpander
-                    .getInstance(widgetElement.getAttribute("on-node-clicked"));
+            this.nodeClickExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("node-click"));
         }
         
         @Override
@@ -1521,9 +1521,8 @@ public class AngularJsScreenWidget {
                     + levelDistanceExdr.expandString(context)
                     + "\" node-height=\""
                     + nodeHeightExdr.expandString(context) + "\" node-width=\""
-                    + nodeWidthExdr.expandString(context)
-                    + "\" on-node-clicked=\""
-                    + onNodeClickedExdr.expandString(context) + "\">");
+                    + nodeWidthExdr.expandString(context) + "\" node-click=\""
+                    + nodeClickExdr.expandString(context) + "\">");
             writer.append("</div>");
         }
         
