@@ -45,7 +45,7 @@ public class ReportEvents {
         Locale locale = UtilHttp.getLocale(request);
         Map<String, Object> parametersMap = UtilHttp.getParameterMap(request);
         
-        String location = (String) parametersMap.get("__location");
+        String location = (String) parametersMap.remove("__location");
         
         if (UtilValidate.isEmpty(location)) {
             String errMsg = "Location could not be empty.";
