@@ -1236,6 +1236,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander onBeforeSelectionChangedExdr = null;
         protected FlexibleStringExpander onAfterSelectionChangedExdr = null;
         protected FlexibleStringExpander onRowDoubleClickedExdr = null;
+        protected FlexibleStringExpander afterDataLoadExdr = null;
         protected List<? extends Element> fieldElements;
 
         public Grid(ModelScreen modelScreen, Element widgetElement) {
@@ -1260,6 +1261,9 @@ public class AngularJsScreenWidget {
             this.onRowDoubleClickedExdr = FlexibleStringExpander
                     .getInstance(widgetElement
                             .getAttribute("on-row-double-clicked"));
+            this.afterDataLoadExdr = FlexibleStringExpander
+                    .getInstance(widgetElement
+                            .getAttribute("after-data-load"));
             this.rowHeightExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("row-height"));
             this.multiSelectExdr = FlexibleStringExpander
@@ -1399,10 +1403,9 @@ public class AngularJsScreenWidget {
                     + onAfterSelectionChangedExdr.expandString(context)
                     + "\" on-row-double-clicked=\""
                     + onRowDoubleClickedExdr.expandString(context)
-                    + "\" "
+                    + "\" after-data-load=\"" + afterDataLoadExdr.expandString(context)
                     + "\" multi-select=\""
                     + multiSelectExdr.expandString(context)
-                    + "\" "
                     + "\" show-selection-checkbox=\""
                     + showSelectionCheckboxExdr.expandString(context)
                     + "\" "

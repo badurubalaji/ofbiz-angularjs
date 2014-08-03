@@ -6,7 +6,7 @@
         priority="0" replace="false" transclude="false" restrict="E" scope="{}"/>
 
     <ng-directive name="gridOptions" location="org.ofbiz.angularjs.directive.GridOptionsDirective"
-        priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>
+        priority="0" replace="false" transclude="false" restrict="A" scope="{afterDataLoad: '&amp;'}"/>
 
     <ng-directive name="uiMapOptions" location="org.ofbiz.angularjs.directive.UiMapOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{}"/>

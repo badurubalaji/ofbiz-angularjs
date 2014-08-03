@@ -103,6 +103,8 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             if (!$scope.$$phase) {
                 $scope.$apply();
             }
+
+            $scope.afterDataLoad();
         };
 
         /**
