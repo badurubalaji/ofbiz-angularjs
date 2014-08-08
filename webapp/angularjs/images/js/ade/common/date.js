@@ -6,13 +6,13 @@
  * ========================================================= */
 
 /**
- * Version: 1.0 Alpha-1 
+ * Version: 1.0 Alpha-1
  * Build Date: 13-Nov-2007
  * Copyright (c) 2006-2007, Coolite Inc. (http://www.coolite.com/). All rights reserved.
- * License: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/. 
+ * License: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/.
  * Website: http://www.datejs.com/ or http://www.coolite.com/datejs/
  */
- 
+
 
 var DateJSLoadCultureInfo = function(language)
 {
@@ -42,13 +42,13 @@ var DateJSLoadCultureInfo = function(language)
             twoDigitYearMax: 2029,
 
             /**
-             * The dateElementOrder is based on the order of the 
-             * format specifiers in the formatPatterns.DatePattern. 
+             * The dateElementOrder is based on the order of the
+             * format specifiers in the formatPatterns.DatePattern.
              *
              * Example:
              <pre>
              shortDatePattern    dateElementOrder
-             ------------------  ---------------- 
+             ------------------  ----------------
              "M/d/yyyy"          "mdy"
              "dd/MM/yyyy"        "dmy"
              "yyyy-MM-dd"        "ymd"
@@ -101,13 +101,13 @@ var DateJSLoadCultureInfo = function(language)
             twoDigitYearMax: 2029,
 
             /**
-             * The dateElementOrder is based on the order of the 
-             * format specifiers in the formatPatterns.DatePattern. 
+             * The dateElementOrder is based on the order of the
+             * format specifiers in the formatPatterns.DatePattern.
              *
              * Example:
              <pre>
              shortDatePattern    dateElementOrder
-             ------------------  ---------------- 
+             ------------------  ----------------
              "M/d/yyyy"          "mdy"
              "dd/MM/yyyy"        "dmy"
              "yyyy-MM-dd"        "ymd"
@@ -139,30 +139,30 @@ DateJSLoadCultureInfo(window.navigator.userLanguage || window.navigator.language
 
 /**
      * NOTE: If a string format is not parsing correctly, but
-     * you would expect it parse, the problem likely lies below. 
-     * 
+     * you would expect it parse, the problem likely lies below.
+     *
      * The following regex patterns control most of the string matching
      * within the parser.
-     * 
+     *
      * The Month name and Day name patterns were automatically generated
-     * and in general should be (mostly) correct. 
+     * and in general should be (mostly) correct.
      *
      * Beyond the month and day name patterns are natural language strings.
      * Example: "next", "today", "months"
      *
-     * These natural language string may NOT be correct for this culture. 
+     * These natural language string may NOT be correct for this culture.
      * If they are not correct, please translate and edit this file
-     * providing the correct regular expression pattern. 
+     * providing the correct regular expression pattern.
      *
      * If you modify this file, please post your revised CultureInfo file
      * to the Datejs Forum located at http://www.datejs.com/forums/.
      *
      * Please mark the subject of the post with [CultureInfo]. Example:
      *    Subject: [CultureInfo] Translated "da-DK" Danish(Denmark)
-     * 
+     *
      * We will add the modified patterns to the master source files.
      *
-     * As well, please review the list of "Future Strings" section below. 
+     * As well, please review the list of "Future Strings" section below.
      */
 if (Date.CultureInfo)
 {
@@ -223,12 +223,12 @@ if (Date.CultureInfo)
 /********************
  ** Future Strings **
  ********************
- * 
- * The following list of strings may not be currently being used, but 
- * may be incorporated into the Datejs library later. 
+ *
+ * The following list of strings may not be currently being used, but
+ * may be incorporated into the Datejs library later.
  *
  * We would appreciate any help translating the strings below.
- * 
+ *
  * If you modify this file, please post your revised CultureInfo file
  * to the Datejs Forum located at http://www.datejs.com/forums/.
  *
@@ -287,7 +287,7 @@ if (Date.CultureInfo)
 * @author: Coolite Inc. http://www.coolite.com/
 * @date: 2008-04-13
 * @copyright: Copyright (c) 2006-2008, Coolite Inc. (http://www.coolite.com/). All rights reserved.
-* @license: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/. 
+* @license: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/.
 * @website: http://www.datejs.com/
 */
 
@@ -328,7 +328,7 @@ if (Date.CultureInfo)
         return this;
     };
 
-    /** 
+    /**
      * Gets a date that is set to the current date. The time is set to the start of the day (00:00 or 12:00 AM).
      * @return {Date}    The current date.
      */
@@ -337,7 +337,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Compares the first date to the second date and returns an number indication of their relative values.  
+     * Compares the first date to the second date and returns an number indication of their relative values.
      * @param {Date}     First Date object to compare [Required].
      * @param {Date}     Second Date object to compare to [Required].
      * @return {Number}  -1 = date1 is lessthan date2. 0 = values are equal. 1 = date1 is greaterthan date2.
@@ -353,7 +353,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Compares the first Date object to the second Date object and returns true if they are equal.  
+     * Compares the first Date object to the second Date object and returns true if they are equal.
      * @param {Date}     First Date object to compare [Required]
      * @param {Date}     Second Date object to compare to [Required]
      * @return {Boolean} true if dates are equal. false if they are not equal.
@@ -440,7 +440,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Compares this instance to a Date object and returns an number indication of their relative values.  
+     * Compares this instance to a Date object and returns an number indication of their relative values.
      * @param {Date}     Date object to compare [Required]
      * @return {Number}  -1 = this is lessthan date. 0 = values are equal. 1 = this is greaterthan date.
      */
@@ -449,7 +449,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Compares this instance to another Date object and returns true if they are equal.  
+     * Compares this instance to another Date object and returns true if they are equal.
      * @param {Date}     Date object to compare. If no date to compare, new Date() [now] is used.
      * @return {Boolean} true if dates are equal. false if they are not equal.
      */
@@ -491,8 +491,8 @@ if (Date.CultureInfo)
      */
 
     /**
-     * Determines if the current Date instance occurs on the same Date as the supplied 'date'. 
-     * If no 'date' to compare to is provided, the current Date instance is compared to 'today'. 
+     * Determines if the current Date instance occurs on the same Date as the supplied 'date'.
+     * If no 'date' to compare to is provided, the current Date instance is compared to 'today'.
      * @param {date}     Date object to compare. If no date to compare, the current Date ("now") is used.
      * @return {Boolean} true if this Date instance occurs on the same Day as the supplied 'date'.
      */
@@ -501,7 +501,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Adds the specified number of milliseconds to this instance. 
+     * Adds the specified number of milliseconds to this instance.
      * @param {Number}   The number of milliseconds to add. The number can be positive or negative [Required]
      * @return {Date}    this
      */
@@ -511,7 +511,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Adds the specified number of seconds to this instance. 
+     * Adds the specified number of seconds to this instance.
      * @param {Number}   The number of seconds to add. The number can be positive or negative [Required]
      * @return {Date}    this
      */
@@ -520,7 +520,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Adds the specified number of seconds to this instance. 
+     * Adds the specified number of seconds to this instance.
      * @param {Number}   The number of seconds to add. The number can be positive or negative [Required]
      * @return {Date}    this
      */
@@ -529,7 +529,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Adds the specified number of hours to this instance. 
+     * Adds the specified number of hours to this instance.
      * @param {Number}   The number of hours to add. The number can be positive or negative [Required]
      * @return {Date}    this
      */
@@ -538,7 +538,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Adds the specified number of days to this instance. 
+     * Adds the specified number of days to this instance.
      * @param {Number}   The number of days to add. The number can be positive or negative [Required]
      * @return {Date}    this
      */
@@ -548,7 +548,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Adds the specified number of weeks to this instance. 
+     * Adds the specified number of weeks to this instance.
      * @param {Number}   The number of weeks to add. The number can be positive or negative [Required]
      * @return {Date}    this
      */
@@ -557,7 +557,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Adds the specified number of months to this instance. 
+     * Adds the specified number of months to this instance.
      * @param {Number}   The number of months to add. The number can be positive or negative [Required]
      * @return {Date}    this
      */
@@ -570,7 +570,7 @@ if (Date.CultureInfo)
     };
 
     /**
-     * Adds the specified number of years to this instance. 
+     * Adds the specified number of years to this instance.
      * @param {Number}   The number of years to add. The number can be positive or negative [Required]
      * @return {Date}    this
      */
@@ -583,9 +583,9 @@ if (Date.CultureInfo)
      * Example
     <pre><code>
     Date.today().add( { days: 1, months: 1 } )
-     
+
     new Date().add( { years: -1 } )
-    </code></pre> 
+    </code></pre>
      * @param {Object}   Configuration object containing attributes (months, days, etc.)
      * @return {Date}    this
      */
@@ -628,7 +628,7 @@ if (Date.CultureInfo)
 
     /**
      * Get the week number. Week one (1) is the week which contains the first Thursday of the year. Monday is considered the first day of the week.
-     * This algorithm is a JavaScript port of the work presented by Claus Tøndering at http://www.tondering.dk/claus/cal/node8.html#SECTION00880000000000000000
+     * This algorithm is a JavaScript port of the work presented by Claus Tï¿½ndering at http://www.tondering.dk/claus/cal/node8.html#SECTION00880000000000000000
      * .getWeek() Algorithm Copyright (c) 2008 Claus Tondering.
      * The .getWeek() function does NOT convert the date to UTC. The local datetime is used. Please use .getISOWeek() to get the week of the UTC converted date.
      * @return {Number}  1 to 53
@@ -777,7 +777,7 @@ if (Date.CultureInfo)
 
     new Date().set( { millisecond: 0 } )
     </code></pre>
-     * 
+     *
      * @param {Object}   Configuration object containing attributes (month, day, etc.)
      * @return {Date}    this
      */
@@ -822,7 +822,7 @@ if (Date.CultureInfo)
         if (config.week && validate(config.week, 0, 53, "week")) {
             this.setWeek(config.week);
         }
-        
+
         cDate = new Date();
 
         if (config.year == undefined && (config.month < cDate.getMonth() || (config.month == cDate.getMonth() && config.day < cDate.getDate())))
@@ -945,7 +945,7 @@ if (Date.CultureInfo)
             return "+" + r.substr(1);
         }
     };
-    
+
     /**
      * Returns a unix timestamp
      * @return {int}    Number of seconds since epoch: January 01 1970
@@ -978,7 +978,7 @@ if (Date.CultureInfo)
          * @return {String}  ISO 8601 string of date
          */
         $P.toISOString = function () {
-            // From http://www.json.org/json.js. Public Domain. 
+            // From http://www.json.org/json.js. Public Domain.
             function f(n) {
                 return n < 10 ? '0' + n : n;
             }
@@ -1004,21 +1004,21 @@ if (Date.CultureInfo)
     ------  ---------------------------------------------------------------------------  -----------------------
      s      The seconds of the minute between 0-59.                                      "0" to "59"
      ss     The seconds of the minute with leading zero if required.                     "00" to "59"
-     
+
      m      The minute of the hour between 0-59.                                         "0"  or "59"
      mm     The minute of the hour with leading zero if required.                        "00" or "59"
-     
+
      h      The hour of the day between 1-12.                                            "1"  to "12"
      hh     The hour of the day with leading zero if required.                           "01" to "12"
-     
+
      H      The hour of the day between 0-23.                                            "0"  to "23"
      HH     The hour of the day with leading zero if required.                           "00" to "23"
-     
+
      d      The day of the month between 1 and 31.                                       "1"  to "31"
      dd     The day of the month with leading zero if required.                          "01" to "31"
-     ddd    Abbreviated day name. Date.CultureInfo.abbreviatedDayNames.                                "Mon" to "Sun" 
+     ddd    Abbreviated day name. Date.CultureInfo.abbreviatedDayNames.                                "Mon" to "Sun"
      dddd   The full day name. Date.CultureInfo.dayNames.                                              "Monday" to "Sunday"
-     
+
      M      The month of the year between 1-12.                                          "1" to "12"
      MM     The month of the year with leading zero if required.                         "01" to "12"
      MMM    Abbreviated month name. Date.CultureInfo.abbreviatedMonthNames.                            "Jan" to "Dec"
@@ -1026,12 +1026,12 @@ if (Date.CultureInfo)
 
      yy     The year as a two-digit number.                                              "99" or "08"
      yyyy   The full four digit year.                                                    "1999" or "2008"
-     
+
      t      Displays the first character of the A.M./P.M. designator.                    "A" or "P"
             Date.CultureInfo.amDesignator or Date.CultureInfo.pmDesignator
      tt     Displays the A.M./P.M. designator.                                           "AM" or "PM"
             Date.CultureInfo.amDesignator or Date.CultureInfo.pmDesignator
-     
+
      S      The ordinal suffix ("st, "nd", "rd" or "th") of the current day.            "st, "nd", "rd" or "th"
 
 || *Format* || *Description* || *Example* ||
@@ -1045,7 +1045,7 @@ if (Date.CultureInfo)
 || T      || The CultureInfo longTime Format Pattern                                      || "h:mm:ss tt" ||
 || u      || The CultureInfo universalSortableDateTime Format Pattern                     || "yyyy-MM-dd HH:mm:ssZ" ||
 || y      || The CultureInfo yearMonth Format Pattern                                     || "MMMM, yyyy" ||
-     
+
 
     STANDARD DATE AND TIME FORMAT STRINGS
     Format  Description                                                                  Example ("en-US")
@@ -1068,7 +1068,7 @@ if (Date.CultureInfo)
         var x = this;
 
         // Standard Date and Time Format Strings. Formats pulled from CultureInfo file and
-        // may vary by culture. 
+        // may vary by culture.
         if (format && format.length == 1) {
             var c = Date.CultureInfo.formatPatterns;
             x.t = x.toString;
@@ -1175,7 +1175,7 @@ if (Date.CultureInfo)
  * @author: Coolite Inc. http://www.coolite.com/
  * @date: 2008-04-13
  * @copyright: Copyright (c) 2006-2008, Coolite Inc. (http://www.coolite.com/). All rights reserved.
- * @license: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/. 
+ * @license: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/.
  * @website: http://www.datejs.com/
  */
 
@@ -1206,7 +1206,7 @@ if (Date.CultureInfo)
     // private
     $N._dateElement = "day";
 
-    /** 
+    /**
      * Moves the date to the next instance of a date as specified by the subsequent date element function (eg. .day(), .month()), month name function (eg. .january(), .jan()) or day name function (eg. .friday(), fri()).
      * Example
     <pre><code>
@@ -1216,7 +1216,7 @@ if (Date.CultureInfo)
     Date.today().next().mar();
     Date.today().next().week();
     </code></pre>
-     * 
+     *
      * @return {Date}    date
      */
     $P.next = function () {
@@ -1224,7 +1224,7 @@ if (Date.CultureInfo)
         return this;
     };
 
-    /** 
+    /**
      * Creates a new Date (Date.today()) and moves the date to the next instance of the date as specified by the subsequent date element function (eg. .day(), .month()), month name function (eg. .january(), .jan()) or day name function (eg. .friday(), fri()).
      * Example
     <pre><code>
@@ -1234,14 +1234,14 @@ if (Date.CultureInfo)
     Date.next().mar();
     Date.next().week();
     </code></pre>
-     * 
+     *
      * @return {Date}    date
      */
     $D.next = function () {
         return $D.today().next();
     };
 
-    /** 
+    /**
      * Moves the date to the previous instance of a date as specified by the subsequent date element function (eg. .day(), .month()), month name function (eg. .january(), .jan()) or day name function (eg. .friday(), fri()).
      * Example
     <pre><code>
@@ -1251,7 +1251,7 @@ if (Date.CultureInfo)
     Date.today().last().mar();
     Date.today().last().week();
     </code></pre>
-     *  
+     *
      * @return {Date}    date
      */
     $P.last = $P.prev = $P.previous = function () {
@@ -1259,7 +1259,7 @@ if (Date.CultureInfo)
         return this;
     };
 
-    /** 
+    /**
      * Creates a new Date (Date.today()) and moves the date to the previous instance of the date as specified by the subsequent date element function (eg. .day(), .month()), month name function (eg. .january(), .jan()) or day name function (eg. .friday(), fri()).
      * Example
     <pre><code>
@@ -1269,14 +1269,14 @@ if (Date.CultureInfo)
     Date.prev().mar();
     Date.last().week();
     </code></pre>
-     *  
+     *
      * @return {Date}    date
      */
     $D.last = $D.prev = $D.previous = function () {
         return $D.today().last();
     };
 
-    /** 
+    /**
      * Performs a equality check when followed by either a month name, day name or .weekday() function.
      * Example
     <pre><code>
@@ -1285,7 +1285,7 @@ if (Date.CultureInfo)
     Date.today().is().march();
     Date.today().is().mar();
     </code></pre>
-     *  
+     *
      * @return {Boolean}    true|false
      */
     $P.is = function () {
@@ -1293,11 +1293,11 @@ if (Date.CultureInfo)
         return this;
     };
 
-    /** 
+    /**
      * Determines if two date objects occur on/in exactly the same instance of the subsequent date part function.
      * The function .same() must be followed by a date part function (example: .day(), .month(), .year(), etc).
      *
-     * An optional Date can be passed in the date part function. If now date is passed as a parameter, 'Now' is used. 
+     * An optional Date can be passed in the date part function. If now date is passed as a parameter, 'Now' is used.
      *
      * The following example demonstrates how to determine if two dates fall on the exact same day.
      *
@@ -1308,24 +1308,24 @@ if (Date.CultureInfo)
 
     // Do they occur on the same day?
     d1.same().day(d2); // true
-    
+
      // Do they occur on the same hour?
     d1.same().hour(d2); // false, unless d2 hour is '00' (midnight).
-    
+
     // What if it's the same day, but one year apart?
     var nextYear = Date.today().add(1).year();
 
-    d1.same().day(nextYear); // false, because the dates must occur on the exact same day. 
+    d1.same().day(nextYear); // false, because the dates must occur on the exact same day.
     </code></pre>
      *
-     * Scenario: Determine if a given date occurs during some week period 2 months from now. 
+     * Scenario: Determine if a given date occurs during some week period 2 months from now.
      *
      * Example
     <pre><code>
     var future = Date.today().add(2).months();
     return someDate.same().week(future); // true|false;
     </code></pre>
-     *  
+     *
      * @return {Boolean}    true|false
      */
     $P.same = function () {
@@ -1334,7 +1334,7 @@ if (Date.CultureInfo)
         return this;
     };
 
-    /** 
+    /**
      * Determines if the current date/time occurs during Today. Must be preceded by the .is() function.
      * Example
     <pre><code>
@@ -1343,20 +1343,20 @@ if (Date.CultureInfo)
     Date.today().is().today();// true
     Date.today().add(-1).day().is().today(); // false
     </code></pre>
-     *  
+     *
      * @return {Boolean}    true|false
      */
     $P.today = function () {
         return this.same().day();
     };
 
-    /** 
+    /**
      * Determines if the current date is a weekday. This function must be preceded by the .is() function.
      * Example
     <pre><code>
     Date.today().is().weekday(); // true|false
     </code></pre>
-     *  
+     *
      * @return {Boolean}    true|false
      */
     $P.weekday = function () {
@@ -1367,7 +1367,7 @@ if (Date.CultureInfo)
         return false;
     };
 
-    /** 
+    /**
      * Sets the Time of the current Date instance. A string "6:15 pm" or config object {hour:18, minute:15} are accepted.
      * Example
     <pre><code>
@@ -1377,14 +1377,14 @@ if (Date.CultureInfo)
     // Set time to 6:15pm with a config object
     Date.today().at({hour:18, minute:15});
     </code></pre>
-     *  
+     *
      * @return {Date}    date
      */
     $P.at = function (time) {
         return (typeof time === "string") ? $D.parse(this.toString("d") + " " + time) : this.set(time);
     };
 
-    /** 
+    /**
      * Creates a new Date() and adds this (Number) to the date based on the preceding date element function (eg. second|minute|hour|day|month|year).
      * Example
     <pre><code>
@@ -1392,11 +1392,11 @@ if (Date.CultureInfo)
     (3).days().fromNow();
     (6).months().fromNow();
 
-    // Declared Number variables do not require parentheses. 
+    // Declared Number variables do not require parentheses.
     var n = 6;
     n.months().fromNow();
     </code></pre>
-     *  
+     *
      * @return {Date}    A new Date instance
      */
     $N.fromNow = $N.after = function (date) {
@@ -1405,7 +1405,7 @@ if (Date.CultureInfo)
         return ((!date) ? new Date() : date.clone()).add(c);
     };
 
-    /** 
+    /**
      * Creates a new Date() and subtract this (Number) from the date based on the preceding date element function (eg. second|minute|hour|day|month|year).
      * Example
     <pre><code>
@@ -1413,11 +1413,11 @@ if (Date.CultureInfo)
     (3).days().ago();
     (6).months().ago();
 
-    // Declared Number variables do not require parentheses. 
+    // Declared Number variables do not require parentheses.
     var n = 6;
     n.months().ago();
     </code></pre>
-     *  
+     *
      * @return {Date}    A new Date instance
      */
     $N.ago = $N.before = function (date) {
@@ -1435,20 +1435,20 @@ if (Date.CultureInfo)
 		nth = ("final first second third fourth fifth").split(/\s/),
         de;
 
-    /** 
+    /**
       * Returns an object literal of all the date parts.
       * Example
      <pre><code>
      var o = new Date().toObject();
-     
+
      // { year: 2008, month: 4, week: 20, day: 13, hour: 18, minute: 9, second: 32, millisecond: 812 }
-     
+
      // The object properties can be referenced directly from the object.
-     
+
      alert(o.day);  // alerts "13"
      alert(o.year); // alerts "2008"
      </code></pre>
-      *  
+      *
       * @return {Date}    An object literal representing the original date object.
       */
     $P.toObject = function () {
@@ -1459,18 +1459,18 @@ if (Date.CultureInfo)
         return o;
     };
 
-    /** 
-      * Returns a date created from an object literal. Ignores the .week property if set in the config. 
+    /**
+      * Returns a date created from an object literal. Ignores the .week property if set in the config.
       * Example
      <pre><code>
      var o = new Date().toObject();
-     
-     return Date.fromObject(o); // will return the same date. 
- 
+
+     return Date.fromObject(o); // will return the same date.
+
      var o2 = {month: 1, day: 20, hour: 18}; // birthday party!
      Date.fromObject(o2);
      </code></pre>
-      *  
+      *
       * @return {Date}    An object literal representing the original date object.
       */
     $D.fromObject = function (config) {
@@ -1486,18 +1486,18 @@ if (Date.CultureInfo)
                 return this.getDay() == n;
             }
             if (this._nth !== null) {
-                // If the .second() function was called earlier, remove the _orient 
+                // If the .second() function was called earlier, remove the _orient
                 // from the date, and then continue.
                 // This is required because 'second' can be used in two different context.
-                // 
+                //
                 // Example
                 //
                 //   Date.today().add(1).second();
                 //   Date.march().second().monday();
-                // 
+                //
                 // Things get crazy with the following...
                 //   Date.march().add(1).second().second().monday(); // but it works!!
-                //  
+                //
                 if (this._isSecond) {
                     this.addSeconds(this._orient * -1);
                 }
@@ -1569,7 +1569,7 @@ if (Date.CultureInfo)
     // Create date element functions and plural date element functions used with Date (eg. day(), days(), months()).
     var ef = function (j) {
         return function () {
-            // if the .second() function was called earlier, the _orient 
+            // if the .second() function was called earlier, the _orient
             // has alread been added. Just return this and reset _isSecond.
             if (this._isSecond) {
                 this._isSecond = false;
@@ -1651,7 +1651,7 @@ if (Date.CultureInfo)
  * @author: Coolite Inc. http://www.coolite.com/
  * @date: 2008-04-13
  * @copyright: Copyright (c) 2006-2008, Coolite Inc. (http://www.coolite.com/). All rights reserved.
- * @license: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/. 
+ * @license: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/.
  * @website: http://www.datejs.com/
  */
 
@@ -1690,7 +1690,7 @@ if (Date.CultureInfo)
 
         //
         // Atomic Operators
-        // 
+        //
 
         until: function (p) {
             return function (s) {
@@ -1915,7 +1915,7 @@ if (Date.CultureInfo)
                     // thing to do is to add r[0] to matched elements
                     rx = [[r[0]], r[1]];
 
-                    // if we matched and there is still input to parse and 
+                    // if we matched and there is still input to parse and
                     // we don't already know this is the last element,
                     // we're going to next check for the delimiter ...
                     // if there's none, or if there's no input left to parse
@@ -2049,7 +2049,7 @@ if (Date.CultureInfo)
     // Generator Operators And Vector Operators
 
     // Generators are operators that have a signature of F(R) => R,
-    // taking a given rule and returning another rule, such as 
+    // taking a given rule and returning another rule, such as
     // ignore, which parses a given rule and throws away the result.
 
     // Vector operators are those that have a signature of F(R1,R2,...) => R,
@@ -2286,7 +2286,7 @@ if (Date.CultureInfo)
 
             var gap, mod, orient;
             orient = ((this.orient == "past" || this.operator == "subtract") ? -1 : 1);
-            
+
             // Last day of month
             if (this.orient == "lastDayOf") {
                 var lastDayOfDate = new Date(this.year || today.getFullYear(), this.month + 1, 0);
@@ -2402,7 +2402,7 @@ if (Date.CultureInfo)
             if ((this.month || this.month === 0) && !this.day) {
                 this.day = 1;
             }
-            
+
             if (!this.orient && !this.operator && this.unit == "week" && this.value && !this.day && !this.month) {
                 if (this.value)
                 {
@@ -2411,11 +2411,11 @@ if (Date.CultureInfo)
                 }
                 //  return Date.today().setWeek(this.value);
             }
-            
+
             /*
                 Added Cases:
             */
-            
+
             if ( this.month != undefined && this.unit == "week")
             {
                 this.value = (this.month + 1);
@@ -2566,7 +2566,7 @@ if (Date.CultureInfo)
         return ((g[Date.CultureInfo.dateElementOrder] || g.mdy).call(this, s));
     };
 
-    // parsing date format specifiers - ex: "h:m:s tt" 
+    // parsing date format specifiers - ex: "h:m:s tt"
     // this little guy will generate a custom parser based
     // on the format string, ex: g.format("h:m:s tt")
     g.format = _.process(_.many(
@@ -2584,7 +2584,7 @@ if (Date.CultureInfo)
     ),
     // translate separator tokens into token rules
     _.process(
-    _.rtoken(/^[^dMyhHmstz]+/), // all legal separators 
+    _.rtoken(/^[^dMyhHmstz]+/), // all legal separators
         function (s) {
             return _.ignore(_.stoken(s));
         }
@@ -2597,9 +2597,9 @@ if (Date.CultureInfo)
     );
 
     var _F = {
-        //"M/d/yyyy": function (s) { 
+        //"M/d/yyyy": function (s) {
         //	var m = s.match(/^([0-2]\d|3[0-1]|\d)\/(1[0-2]|0\d|\d)\/(\d\d\d\d)/);
-        //	if (m!=null) { 
+        //	if (m!=null) {
         //		var r =  [ t.month.call(this,m[1]), t.day.call(this,m[2]), t.year.call(this,m[3]) ];
         //		r = t.finishExact.call(this,r);
         //		return [ r, "" ];
@@ -2652,7 +2652,7 @@ if (Date.CultureInfo)
     g._start = _.process(_.set([g.date, g.time, g.expression],
         g.generalDelimiter, g.whiteSpace), t.finish);
 
-    // real starting rule: tries selected formats first, 
+    // real starting rule: tries selected formats first,
     // then general purpose rule
     g.start = function (s) {
         try {
@@ -2668,7 +2668,7 @@ if (Date.CultureInfo)
 
     /**
      * Converts the specified string value into its JavaScript Date equivalent using CultureInfo specific format information.
-     * 
+     *
      * Example
     <pre><code>
     ///////////
@@ -2746,7 +2746,7 @@ if (Date.CultureInfo)
     var d1 = Date.parse("today - 1 year");
 
     // Today - 1 year
-    var d1 = Date.parse("t-1y"); 
+    var d1 = Date.parse("t-1y");
 
 
     /////////////////////////////
@@ -2798,7 +2798,7 @@ if (Date.CultureInfo)
     /**
      * Converts the specified string value into its JavaScript Date equivalent using the specified format {String} or formats {Array} and the CultureInfo specific format information.
      * The format of the string value must match one of the supplied formats exactly.
-     * 
+     *
      * Example
     <pre><code>
     // 15-Oct-2004
@@ -2823,12 +2823,292 @@ if (Date.CultureInfo)
     };
 }());
 
-var parseDateString = function(s, debug)
+/**
+Toodledo
+    if gmt is true, the string will be interpreted in GMT time instead of local time
+*/
+var parseDateString = function(s, debug, gmt)
 {
     var date = Date.parse(s);
     if (date != null)
     {
-        return debug ? date.toString() : date.toUnixTimestamp();
+        var time = date.toUnixTimestamp();
+        if(gmt) {
+            time -= date.getTimezoneOffset()*60;
+        }
+        return debug ? date.toString() : time;
     }
     return null;
+};
+
+
+
+/**
+ * @version: 1.0 Alpha-1
+ * @author: Coolite Inc. http://www.coolite.com/
+ * @date: 2008-04-13
+ * @copyright: Copyright (c) 2006-2008, Coolite Inc. (http://www.coolite.com/). All rights reserved.
+ * @license: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/.
+ * @website: http://www.datejs.com/
+ */
+
+/*
+ * TimeSpan(milliseconds);
+ * TimeSpan(days, hours, minutes, seconds);
+ * TimeSpan(days, hours, minutes, seconds, milliseconds);
+ */
+var TimeSpan = function (days, hours, minutes, seconds, milliseconds) {
+  var attrs = "days hours minutes seconds milliseconds".split(/\s+/);
+
+  var gFn = function (attr) {
+    return function () {
+      return this[attr];
+    };
+  };
+
+  var sFn = function (attr) {
+    return function (val) {
+      this[attr] = val;
+      return this;
+    };
+  };
+
+  for (var i = 0; i < attrs.length ; i++) {
+    var $a = attrs[i], $b = $a.slice(0, 1).toUpperCase() + $a.slice(1);
+    TimeSpan.prototype[$a] = 0;
+    TimeSpan.prototype["get" + $b] = gFn($a);
+    TimeSpan.prototype["set" + $b] = sFn($a);
+  }
+
+  if (arguments.length == 4) {
+    this.setDays(days);
+    this.setHours(hours);
+    this.setMinutes(minutes);
+    this.setSeconds(seconds);
+  } else if (arguments.length == 5) {
+    this.setDays(days);
+    this.setHours(hours);
+    this.setMinutes(minutes);
+    this.setSeconds(seconds);
+    this.setMilliseconds(milliseconds);
+  } else if (arguments.length == 1 && typeof days == "number") {
+    var orient = (days < 0) ? -1 : +1;
+    this.setMilliseconds(Math.abs(days));
+
+    this.setDays(Math.floor(this.getMilliseconds() / 86400000) * orient);
+    this.setMilliseconds(this.getMilliseconds() % 86400000);
+
+    this.setHours(Math.floor(this.getMilliseconds() / 3600000) * orient);
+    this.setMilliseconds(this.getMilliseconds() % 3600000);
+
+    this.setMinutes(Math.floor(this.getMilliseconds() / 60000) * orient);
+    this.setMilliseconds(this.getMilliseconds() % 60000);
+
+    this.setSeconds(Math.floor(this.getMilliseconds() / 1000) * orient);
+    this.setMilliseconds(this.getMilliseconds() % 1000);
+
+    this.setMilliseconds(this.getMilliseconds() * orient);
+  }
+
+  this.getTotalMilliseconds = function () {
+    return (this.getDays() * 86400000) + (this.getHours() * 3600000) + (this.getMinutes() * 60000) + (this.getSeconds() * 1000);
+  };
+
+  this.compareTo = function (time) {
+    var t1 = new Date(1970, 1, 1, this.getHours(), this.getMinutes(), this.getSeconds()), t2;
+    if (time === null) {
+      t2 = new Date(1970, 1, 1, 0, 0, 0);
+    }
+    else {
+      t2 = new Date(1970, 1, 1, time.getHours(), time.getMinutes(), time.getSeconds());
+    }
+    return (t1 < t2) ? -1 : (t1 > t2) ? 1 : 0;
+  };
+
+  this.equals = function (time) {
+    return (this.compareTo(time) === 0);
+  };
+
+  this.add = function (time) {
+    return (time === null) ? this : this.addSeconds(time.getTotalMilliseconds() / 1000);
+  };
+
+  this.subtract = function (time) {
+    return (time === null) ? this : this.addSeconds(-time.getTotalMilliseconds() / 1000);
+  };
+
+  this.addDays = function (n) {
+    return new TimeSpan(this.getTotalMilliseconds() + (n * 86400000));
+  };
+
+  this.addHours = function (n) {
+    return new TimeSpan(this.getTotalMilliseconds() + (n * 3600000));
+  };
+
+  this.addMinutes = function (n) {
+    return new TimeSpan(this.getTotalMilliseconds() + (n * 60000));
+  };
+
+  this.addSeconds = function (n) {
+    return new TimeSpan(this.getTotalMilliseconds() + (n * 1000));
+  };
+
+  this.addMilliseconds = function (n) {
+    return new TimeSpan(this.getTotalMilliseconds() + n);
+  };
+
+  this.get12HourHour = function () {
+    return (this.getHours() > 12) ? this.getHours() - 12 : (this.getHours() === 0) ? 12 : this.getHours();
+  };
+
+  this.getDesignator = function () {
+    return (this.getHours() < 12) ? Date.CultureInfo.amDesignator : Date.CultureInfo.pmDesignator;
+  };
+
+  this.toString = function (format) {
+    this._toString = function () {
+      if (this.getDays() !== null && this.getDays() > 0) {
+        return this.getDays() + "." + this.getHours() + ":" + this.p(this.getMinutes()) + ":" + this.p(this.getSeconds());
+      }
+      else {
+        return this.getHours() + ":" + this.p(this.getMinutes()) + ":" + this.p(this.getSeconds());
+      }
+    };
+
+    this.p = function (s) {
+      return (s.toString().length < 2) ? "0" + s : s;
+    };
+
+    var me = this;
+
+    return format ? format.replace(/dd?|HH?|hh?|mm?|ss?|tt?/g,
+      function (format) {
+        switch (format) {
+          case "d":
+            return me.getDays();
+          case "dd":
+            return me.p(me.getDays());
+          case "H":
+            return me.getHours();
+          case "HH":
+            return me.p(me.getHours());
+          case "h":
+            return me.get12HourHour();
+          case "hh":
+            return me.p(me.get12HourHour());
+          case "m":
+            return me.getMinutes();
+          case "mm":
+            return me.p(me.getMinutes());
+          case "s":
+            return me.getSeconds();
+          case "ss":
+            return me.p(me.getSeconds());
+          case "t":
+            return ((me.getHours() < 12) ? Date.CultureInfo.amDesignator : Date.CultureInfo.pmDesignator).substring(0, 1);
+          case "tt":
+            return (me.getHours() < 12) ? Date.CultureInfo.amDesignator : Date.CultureInfo.pmDesignator;
+        }
+      }
+    ) : this._toString();
+  };
+  return this;
+};
+
+/**
+ * Gets the time of day for this date instances.
+ * @return {TimeSpan} TimeSpan
+ */
+Date.prototype.getTimeOfDay = function () {
+  return new TimeSpan(0, this.getHours(), this.getMinutes(), this.getSeconds(), this.getMilliseconds());
+};
+
+/*
+ * TimePeriod(startDate, endDate);
+ * TimePeriod(years, months, days, hours, minutes, seconds, milliseconds);
+ */
+var TimePeriod = function (years, months, days, hours, minutes, seconds, milliseconds) {
+  var attrs = "years months days hours minutes seconds milliseconds".split(/\s+/);
+
+  var gFn = function (attr) {
+    return function () {
+      return this[attr];
+    };
+  };
+
+  var sFn = function (attr) {
+    return function (val) {
+      this[attr] = val;
+      return this;
+    };
+  };
+
+  for (var i = 0; i < attrs.length ; i++) {
+    var $a = attrs[i], $b = $a.slice(0, 1).toUpperCase() + $a.slice(1);
+    TimePeriod.prototype[$a] = 0;
+    TimePeriod.prototype["get" + $b] = gFn($a);
+    TimePeriod.prototype["set" + $b] = sFn($a);
+  }
+
+  if (arguments.length == 7) {
+    this.years = years;
+    this.months = months;
+    this.setDays(days);
+    this.setHours(hours);
+    this.setMinutes(minutes);
+    this.setSeconds(seconds);
+    this.setMilliseconds(milliseconds);
+  } else if (arguments.length == 2 && arguments[0] instanceof Date && arguments[1] instanceof Date) {
+    // startDate and endDate as arguments
+
+    var d1 = years.clone();
+    var d2 = months.clone();
+
+    var temp = d1.clone();
+    var orient = (d1 > d2) ? -1 : +1;
+
+    this.years = d2.getFullYear() - d1.getFullYear();
+    temp.addYears(this.years);
+
+    if (orient == +1) {
+      if (temp > d2) {
+        if (this.years !== 0) {
+          this.years--;
+        }
+      }
+    } else {
+      if (temp < d2) {
+        if (this.years !== 0) {
+          this.years++;
+        }
+      }
+    }
+
+    d1.addYears(this.years);
+
+    if (orient == +1) {
+      while (d1 < d2 && d1.clone().addDays(Date.getDaysInMonth(d1.getYear(), d1.getMonth()) ) < d2) {
+        d1.addMonths(1);
+        this.months++;
+      }
+    }
+    else {
+      while (d1 > d2 && d1.clone().addDays(-d1.getDaysInMonth()) > d2) {
+        d1.addMonths(-1);
+        this.months--;
+      }
+    }
+
+    var diff = d2 - d1;
+
+    if (diff !== 0) {
+      var ts = new TimeSpan(diff);
+      this.setDays(ts.getDays());
+      this.setHours(ts.getHours());
+      this.setMinutes(ts.getMinutes());
+      this.setSeconds(ts.getSeconds());
+      this.setMilliseconds(ts.getMilliseconds());
+    }
+  }
+  return this;
 };
