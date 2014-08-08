@@ -89,6 +89,7 @@
 		this.startViewMode = this.viewMode;
 		this.weekStart = options.weekStart || this.element.data('date-weekstart') || 0;
 		this.weekEnd = this.weekStart === 0 ? 6 : this.weekStart - 1;
+		this.onRender = options.onRender;
 		this.fillDow();
 		this.fillMonths();
 		this.update();
@@ -137,9 +138,17 @@
 
 		//value is set by clicking, on hide, or external setting
 		set: function() {
+			// var returnObj = [];
+			// if (this.date) {
+			//  	returnObj = [this.date.getTime(), this.date.getTime()-this.date.getTimezoneOffset()*60000, this.date.getTimezoneOffset()];
+			// } else {
+			//   	returnObj = null;
+			// }
+
 			this.element.trigger({
 				type: 'changeDate',
 				date: this.date ? this.date.getTime() : null
+				//date: returnObj
 			});
 			return;
 		},
@@ -178,10 +187,12 @@
 
 			if (pickerHeight - scroll > windowH) {
 				this.picker.css({
-					top: offset.top - this.picker[0].offsetHeight,
+					top: offset.top - this.picker[0].offsetHeight - 5,
 					left: offset.left
-				});
-			}
+				}).addClass("flipped");
+			} else {
+       	 	this.picker.removeClass("flipped");
+      	}
 		},
 
 		//each time a keystroke is fired on the input
@@ -224,9 +235,9 @@
 			var d = new Date(this.viewDate);
 			var year = d.getFullYear();
 			var month = d.getMonth();
-      var today = new Date();
-      var todayDay = today.getDate();
-      var todayMonth = today.getMonth();
+			var today = new Date();
+			var todayDay = today.getDate();
+			var todayMonth = today.getMonth();
 
 			//set currentDate to timestamp of date without time component
 			var currentDate = null;
@@ -245,23 +256,27 @@
 			nextMonth.setDate(nextMonth.getDate() + 42); //42 is the number of cells displayed on the calendar
 			nextMonth = nextMonth.valueOf(); //sets to unix timestamp to the last visible day in the calendar
 			var html = [];
-			var clsName;
+			var clsName,
+				prevY,
+				prevM;
 			while (prevMonth.valueOf() < nextMonth) { //loop through first day to last day of visible days
 				if (prevMonth.getDay() === this.weekStart) {
 					html.push('<tr>');
 				}
-				clsName = '';
-				if (prevMonth.getMonth() < month) {
+				clsName = this.onRender(prevMonth);
+				prevY = prevMonth.getFullYear();
+				prevM = prevMonth.getMonth();
+				if ((prevM < month &&  prevY === year) ||  prevY < year) {
 					clsName += ' old';
-				} else if (prevMonth.getMonth() > month) {
+				} else if ((prevM > month && prevY === year) || prevY > year) {
 					clsName += ' new';
 				}
 				if (prevMonth.valueOf() === currentDate) {
 					clsName += ' active';
 				}
-        if (prevMonth.getMonth() === todayMonth && prevMonth.getDate() === todayDay) {
-          clsName += ' today';
-        }
+				if (prevMonth.getMonth() === todayMonth && prevMonth.getDate() === todayDay) {
+					clsName += ' today';
+				}
 				html.push('<td class="day' + clsName + '">' + prevMonth.getDate() + '</td>');
 				if (prevMonth.getDay() === this.weekEnd) {
 					html.push('</tr>');
@@ -357,11 +372,12 @@
 							this.viewDate = new Date(year, month, Math.min(28, day), 0, 0, 0, 0);
 							this.fill();
 							this.set();
-							this.element.trigger({
-								type: 'changeDate',
-								date: this.date,
-								viewMode: DPGlobal.modes[this.viewMode].clsName
-							});
+					 		// ADE: Dont need this hear because it happens in set() one line up
+							//this.element.trigger({
+							//	type: 'changeDate',
+							//	date: this.date,
+							//	viewMode: DPGlobal.modes[this.viewMode].clsName
+							//});
 						}
 						break;
 				}
@@ -394,6 +410,9 @@
 	};
 
 	$.fn.datepicker.defaults = {
+		onRender: function(date) {
+			return '';
+		}
 	};
 	$.fn.datepicker.Constructor = Datepicker;
 
@@ -426,6 +445,15 @@
 		},
 		getDaysInMonth: function(year, month) {
 			return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+		},
+
+		parseFormat: function(format){
+			var separator = format.match(/[.\/\-\s].*?/),
+				parts = format.split(/\W+/);
+			if (!separator || !parts || parts.length === 0){
+				throw new Error("Invalid date format.");
+			}
+			return {separator: separator, parts: parts};
 		},
 
 		//attemps to parse the incoming date into day, month and year.
