@@ -30,7 +30,6 @@
     </ng-module>
     <ng-module name="ADE" location="/angularjs/images/js/ade/common/ade.js">
         <javaScript path="/angularjs/images/js/ade/vendor/jquery.json-2.3.min.js"/>
-        <javaScript path="/angularjs/images/js/ade/common/date.js"/>
         <javaScript path="/angularjs/images/js/ade/date/bootstrap-datepicker.js"/>
         <javaScript path="/angularjs/images/js/ade/date/date_filters.js"/>
         <javaScript path="/angularjs/images/js/ade/date/date_directives.js"/>

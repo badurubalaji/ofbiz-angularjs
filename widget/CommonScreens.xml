@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
-        
+
     <screen name="GlobalActions">
         <section>
             <actions>
                 <property-map resource="AngularJsUiLabels" map-name="uiLabelMap" global="true"/>
                 <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true"/>
-                
+
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/control/main.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/initialStrap.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/initialGoogleChart.js" global="true"/>
+
+                <!-- ADE -->
+                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/ade/common/custom_date.js" global="true"/>
+                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/ade/common/date.js" global="true"/>
+
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/fastclick.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/calendar/gcal.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/calendar/fullcalendar.min.js" global="true"/>
@@ -24,11 +29,11 @@
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/angular.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/file-upload/angular-file-upload-shim.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.11.0.min.js" global="true"/>
-                
+
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/jit/jit.js" global="true"/>
-                
+
                 <set field="layoutSettings.styleSheets[+0]" value="/angularjs/images/css/style.css" global="true"/>
-                
+
                 <script location="component://angularjs/webapp/angularjs/WEB-INF/actions/SetupModuleResources.groovy"/>
             </actions>
             <widgets/>

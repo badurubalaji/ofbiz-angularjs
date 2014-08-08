@@ -5,5 +5,5 @@ package org.ofbiz.angularjs.demo.controller;
  * @param $scope
  */
 function DateTimeDemoController($scope) {
-    $scope.date = "Jul 16, 2014 12:00:00 AM";
+    $scope.date = [1357027200, 1357027200, 420];
 }
