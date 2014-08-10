@@ -109,6 +109,15 @@ function JitTreeDirective($compile) {
                 if (!_.isEmpty(nodeTemplateUrl)) {
                     var parameters = _.clone(node.data);
                     parameters.id = node.id;
+
+                    // copy node parameters
+                    if ($scope.nodeParameters != null && _.isObject($scope.nodeParameters)) {
+                        var keys = _.keys($scope.nodeParameters);
+                        _.each(keys, function(key) {
+                            parameters[key] = $scope.nodeParameters[key];
+                        });
+                    }
+
                     HttpService.post(nodeTemplateUrl, parameters)
                         .success(function(data) {
                             var element = angular.element(label);
