@@ -7,4 +7,5 @@
     <ng-service name="HttpService" location="org.ofbiz.angularjs.common.service.HttpService"/>
     <ng-service name="SocketService" location="org.ofbiz.angularjs.common.service.SocketService"/>
     <ng-service name="ScopeUtil" location="org.ofbiz.angularjs.common.util.ScopeUtil"/>
+    <ng-service name="DateTimeUtil" location="org.ofbiz.angularjs.common.util.DateTimeUtil"/>
 </ng-services>
