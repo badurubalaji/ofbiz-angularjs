@@ -41,9 +41,9 @@ import bsh.EvalError;
 import bsh.Interpreter;
 
 public class AngularJsScreenWidget {
-    
+
     public final static String module = AngularJsScreenWidget.class.getName();
-    
+
     private static Interpreter getBshInterpreter(Map<String, Object> context)
             throws EvalError {
         Interpreter bsh = (Interpreter) context.get("bshInterpreter");
@@ -53,14 +53,14 @@ public class AngularJsScreenWidget {
         }
         return bsh;
     }
-    
+
     @SuppressWarnings("serial")
     public static class Accordion extends ModelScreenWidget {
         public static final String TAG_NAME = "accordion";
-        
+
         protected FlexibleStringExpander closeOthersExdr;
         protected List<? extends Element> accordionGroupElementList;
-        
+
         public Accordion(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.closeOthersExdr = FlexibleStringExpander
@@ -68,7 +68,7 @@ public class AngularJsScreenWidget {
             accordionGroupElementList = UtilXml.childElementList(widgetElement,
                     "accordion-group");
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -101,22 +101,22 @@ public class AngularJsScreenWidget {
             }
             writer.append("</accordion>");
         }
-        
+
         @Override
         public String rawString() {
             return "<accordion/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class ActionPanel extends ModelScreenWidget {
-        
+
         public static final String TAG_NAME = "action-panel";
-        
+
         protected FlexibleStringExpander useWhenExdr;
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public ActionPanel(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.useWhenExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -127,13 +127,13 @@ public class AngularJsScreenWidget {
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            
+
             boolean usewhen = true;
             String useWhenStr = useWhenExdr.expandString(context);
             if (UtilValidate.isEmpty(useWhenStr)) {
@@ -157,7 +157,7 @@ public class AngularJsScreenWidget {
                                         + retVal + "] on the field "
                                         + this.name);
                     }
-                    
+
                     usewhen = condTrue;
                 } catch (EvalError e) {
                     String errMsg = "Error evaluating BeanShell use-when condition ["
@@ -172,7 +172,7 @@ public class AngularJsScreenWidget {
                     throw new IllegalArgumentException(errMsg);
                 }
             }
-            
+
             if (usewhen) {
                 writer.append(this.rawString());
                 renderSubWidgetsString(this.subWidgets, writer, context,
@@ -180,22 +180,22 @@ public class AngularJsScreenWidget {
                 writer.append("</div>");
             }
         }
-        
+
         @Override
         public String rawString() {
             return "<div class=\"form-actions\">";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Alert extends ModelScreenWidget {
         public static final String TAG_NAME = "alert";
-        
+
         protected FlexibleStringExpander repeatExdr;
         protected FlexibleStringExpander typeExdr;
         protected FlexibleStringExpander closeExdr;
         protected FlexibleStringExpander textExdr;
-        
+
         public Alert(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.repeatExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -207,7 +207,7 @@ public class AngularJsScreenWidget {
             this.textExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("text"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -220,20 +220,20 @@ public class AngularJsScreenWidget {
             writer.append(textExdr.expandString(context));
             writer.append("</alert>");
         }
-        
+
         @Override
         public String rawString() {
             return "<alert/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Application extends ModelScreenWidget {
         public static final String TAG_NAME = "application";
-        
+
         protected FlexibleStringExpander nameExdr;
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public Application(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -244,7 +244,7 @@ public class AngularJsScreenWidget {
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -256,22 +256,22 @@ public class AngularJsScreenWidget {
                     screenStringRenderer);
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div ng-app/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class Button extends ModelScreenWidget {
         public static final String TAG_NAME = "button";
-        
+
         protected FlexibleStringExpander textExdr;
         protected FlexibleStringExpander onClickExdr;
         protected FlexibleStringExpander styleExdr;
-        
+
         public Button(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.textExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -281,43 +281,43 @@ public class AngularJsScreenWidget {
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("style"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            
+
             String classAttributeName = "class";
             String style = styleExdr.expandString(context);
-            
+
             if (UtilValidate.isNotEmpty(style) && !style.startsWith("btn ")
                     && !style.endsWith(")")) {
                 style = "btn " + style;
             } else {
                 classAttributeName = "ng-" + classAttributeName;
             }
-            
+
             writer.append("<button " + classAttributeName + "=\"" + style
                     + "\" ng-click=\"" + this.onClickExdr.expandString(context)
                     + "\">" + this.textExdr.expandString(context) + "</button>");
         }
-        
+
         @Override
         public String rawString() {
             return "<button/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class Calendar extends ModelScreenWidget {
         public static final String TAG_NAME = "calendar";
-        
+
         protected FlexibleStringExpander nameExdr;
         protected FlexibleStringExpander optionsExdr;
         protected FlexibleStringExpander modelExdr;
-        
+
         public Calendar(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -327,7 +327,7 @@ public class AngularJsScreenWidget {
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("model"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -346,22 +346,22 @@ public class AngularJsScreenWidget {
             writer.append(">");
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div ui-calendar/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class Checkbox extends ModelScreenWidget {
         public static final String TAG_NAME = "checkbox";
-        
+
         protected FlexibleStringExpander textExdr;
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander styleExdr;
-        
+
         public Checkbox(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.textExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -371,7 +371,7 @@ public class AngularJsScreenWidget {
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("style"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -388,21 +388,21 @@ public class AngularJsScreenWidget {
             writer.append(this.textExdr.expandString(context));
             writer.append("</label>");
         }
-        
+
         @Override
         public String rawString() {
             return "<input checkbox/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class Collapse extends ModelScreenWidget {
         public static final String TAG_NAME = "collapse";
-        
+
         protected FlexibleStringExpander collapseExdr;
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public Collapse(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.collapseExdr = FlexibleStringExpander
@@ -413,7 +413,7 @@ public class AngularJsScreenWidget {
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -425,20 +425,20 @@ public class AngularJsScreenWidget {
                     screenStringRenderer);
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div collapse/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class CommentsPanel extends ModelScreenWidget {
         public static final String TAG_NAME = "comments-panel";
-        
+
         protected FlexibleStringExpander contentIdExdr;
         protected FlexibleStringExpander onCreateSuccessExdr;
-        
+
         public CommentsPanel(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.contentIdExdr = FlexibleStringExpander
@@ -447,7 +447,7 @@ public class AngularJsScreenWidget {
                     .getInstance(widgetElement
                             .getAttribute("on-create-success"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -460,20 +460,20 @@ public class AngularJsScreenWidget {
                     + onCreateSuccessExdr.expandString(context) + "\"");
             writer.append("/>");
         }
-        
+
         @Override
         public String rawString() {
             return "<comments-panel/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class ContainerFluid extends ModelScreenWidget {
         public static final String TAG_NAME = "container-fluid";
-        
+
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public ContainerFluid(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             // read sub-widgets
@@ -482,7 +482,7 @@ public class AngularJsScreenWidget {
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -493,24 +493,24 @@ public class AngularJsScreenWidget {
                     screenStringRenderer);
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div class=\"container-fluid\">";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Context extends ModelScreenWidget {
-        
+
         public static final String TAG_NAME = "context";
-        
+
         protected FlexibleStringExpander targetExdr = null;
         protected FlexibleStringExpander parametersExdr = null;
         protected FlexibleStringExpander modelExdr = null;
         protected FlexibleStringExpander fieldExdr = null;
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public Context(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.targetExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -527,7 +527,7 @@ public class AngularJsScreenWidget {
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -542,27 +542,27 @@ public class AngularJsScreenWidget {
                     screenStringRenderer);
             writer.append("</context>");
         }
-        
+
         @Override
         public String rawString() {
             return "<context/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class ControlGroup extends ModelScreenWidget {
         public static final String TAG_NAME = "control-group";
-        
+
         protected FlexibleStringExpander rowExdr = null;
         protected Element widgetElement = null;
-        
+
         public ControlGroup(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.widgetElement = widgetElement;
             this.rowExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("row"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -597,20 +597,20 @@ public class AngularJsScreenWidget {
             }
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div class=\"control-group\">";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Controller extends ModelScreenWidget {
         public static final String TAG_NAME = "controller";
-        
+
         protected FlexibleStringExpander nameExdr;
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public Controller(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -621,7 +621,7 @@ public class AngularJsScreenWidget {
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -633,22 +633,22 @@ public class AngularJsScreenWidget {
                     screenStringRenderer);
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div ng-controller/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class CurrentTime extends ModelScreenWidget {
         public static final String TAG_NAME = "current-time";
-        
+
         public CurrentTime(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -656,25 +656,25 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             writer.append(this.rawString());
         }
-        
+
         @Override
         public String rawString() {
             return "<span current-time=\"\"></span>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class DatePicker extends ModelScreenWidget {
         public static final String TAG_NAME = "date-picker";
-        
+
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander showWeeksExdr;
         protected FlexibleStringExpander startingDayExdr;
         protected FlexibleStringExpander dateDisabledExdr;
         protected FlexibleStringExpander minExdr;
         protected FlexibleStringExpander maxExdr;
-        
+
         public DatePicker(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -690,7 +690,7 @@ public class AngularJsScreenWidget {
             this.maxExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("max"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -707,21 +707,21 @@ public class AngularJsScreenWidget {
                     + maxExdr.expandString(context) + "\">");
             writer.append("</datepicker>");
         }
-        
+
         @Override
         public String rawString() {
             return "<datepicker/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class DateTime extends ModelScreenWidget {
         public static final String TAG_NAME = "date-time";
-        
+
         protected FlexibleStringExpander formatExdr = null;
         protected FlexibleStringExpander modelExdr = null;
         protected FlexibleStringExpander styleExdr = null;
-        
+
         public DateTime(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.formatExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -731,43 +731,45 @@ public class AngularJsScreenWidget {
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("style"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            
+
             String format = null;
             String style = null;
-            
+
             if (UtilValidate.isEmpty(this.formatExdr.getOriginal())) {
-                format = "\"format\":\"MMM d, yyyy h:mm:ss a\"";
+                format = "MMM d, yyyy h:mm:ss a";
             } else {
                 format = this.formatExdr.expandString(context);
             }
-            
+
             if (UtilValidate.isEmpty(this.styleExdr.getOriginal())) {
                 style = "input-large";
             } else {
                 style = this.styleExdr.expandString(context);
             }
-            
-            writer.append("<input ade-calpop='{" + format + "}' ng-model=\""
+
+            writer.append("<div class=\"ade-editable\" ade-date='{\"className\": \"" + style + "\", \"format\": \"" + format + "\", \"absolute\": true}' ng-model=\""
                     + modelExdr.expandString(context)
-                    + "\" type=\"text\" class=\"" + style + "\" />");
+                    + "\">");
+            writer.append("{{" + modelExdr.expandString(context) + " | validDate:['" + format + "']}}");
+            writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
-            return "<input ade-calpop/>";
+            return "<input ade-editable/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Dropdown extends ModelScreenWidget {
         public static final String TAG_NAME = "dropdown";
-        
+
         protected FlexibleStringExpander nameExdr = null;
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander targetExdr;
@@ -776,7 +778,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander fieldNameExdr = null;
         protected FlexibleStringExpander descriptionFieldNameExdr = null;
         protected FlexibleStringExpander defaultValueExdr = null;
-        
+
         public Dropdown(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             nameExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -797,7 +799,7 @@ public class AngularJsScreenWidget {
             this.defaultValueExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("default-value"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -831,20 +833,20 @@ public class AngularJsScreenWidget {
             }
             writer.append("</data>");
         }
-        
+
         @Override
         public String rawString() {
             return "<data/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class DropdownToggle extends ModelScreenWidget {
         public static final String TAG_NAME = "dropdown-toggle";
-        
+
         protected FlexibleStringExpander textExdr;
         protected List<? extends Element> optionElementList;
-        
+
         public DropdownToggle(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.textExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -852,7 +854,7 @@ public class AngularJsScreenWidget {
             optionElementList = UtilXml.childElementList(widgetElement,
                     "option");
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -879,28 +881,28 @@ public class AngularJsScreenWidget {
             writer.append("</ul>");
             writer.append("</li>");
         }
-        
+
         @Override
         public String rawString() {
             return "<li class=\"dropdown\">";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class EmphasizedText extends ModelScreenWidget {
         public static final String TAG_NAME = "emphasized-text";
-        
+
         protected FlexibleStringExpander textContentExpr = null;
         protected List<? extends Element> subElementList = null;
-        
+
         public EmphasizedText(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             textContentExpr = FlexibleStringExpander.getInstance(widgetElement
                     .getTextContent());
             subElementList = UtilXml.childElementList(widgetElement);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -915,31 +917,31 @@ public class AngularJsScreenWidget {
                     screenStringRenderer);
             writer.append("</em>");
         }
-        
+
         @Override
         public String rawString() {
             return "<em>";
         }
     }
-    
+
     /**
      * Service http://twilson63.github.io/ngUpload/
-     * 
+     *
      * @author chatree
-     * 
+     *
      */
     @SuppressWarnings("serial")
     public static class File extends ModelScreenWidget {
         public static final String TAG_NAME = "file";
-        
+
         protected FlexibleStringExpander modelExdr;
-        
+
         public File(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("model"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -951,22 +953,22 @@ public class AngularJsScreenWidget {
                     + "\"");
             writer.append("/>");
         }
-        
+
         @Override
         public String rawString() {
             return "<input type=\"file\"/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Field extends ModelScreenWidget {
         public static final String TAG_NAME = "field";
-        
+
         protected FlexibleStringExpander titleExdr;
         protected FlexibleStringExpander useWhenExdr;
         protected FlexibleStringExpander helpTextExdr;
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public Field(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             // read sub-widgets
@@ -981,13 +983,13 @@ public class AngularJsScreenWidget {
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            
+
             boolean usewhen = true;
             String useWhenStr = useWhenExdr.expandString(context);
             if (UtilValidate.isEmpty(useWhenStr)) {
@@ -1011,7 +1013,7 @@ public class AngularJsScreenWidget {
                                         + retVal + "] on the field "
                                         + this.name);
                     }
-                    
+
                     usewhen = condTrue;
                 } catch (EvalError e) {
                     String errMsg = "Error evaluating BeanShell use-when condition ["
@@ -1026,7 +1028,7 @@ public class AngularJsScreenWidget {
                     throw new IllegalArgumentException(errMsg);
                 }
             }
-            
+
             if (usewhen) {
                 writer.append(rawString());
                 if (UtilValidate.isNotEmpty(titleExdr.getOriginal())) {
@@ -1045,25 +1047,25 @@ public class AngularJsScreenWidget {
                 writer.append("</div>");
             }
         }
-        
+
         @Override
         public String rawString() {
             return "<div class=\"control-group\">";
         }
-        
+
     }
-    
+
     /**
      * http://getbootstrap.com/css/#forms
      * http://www.w3resource.com/twitter-bootstrap/forms-tutorial.php
-     * 
+     *
      * @author chatree
-     * 
+     *
      */
     @SuppressWarnings("serial")
     public static class Form extends ModelScreenWidget {
         public static final String TAG_NAME = "form";
-        
+
         protected FlexibleStringExpander nameExdr;
         protected FlexibleStringExpander typeExdr;
         protected FlexibleStringExpander legendExdr;
@@ -1071,7 +1073,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander styleExdr;
         protected FlexibleStringExpander onSubmitExdr = null;
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public Form(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -1086,38 +1088,38 @@ public class AngularJsScreenWidget {
                     .getAttribute("style"));
             this.onSubmitExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("on-submit"));
-            
+
             // read sub-widgets
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            
+
             String formStyle = "form-" + typeExdr.expandString(context);
             boolean validated = Boolean.valueOf(validatedExdr
                     .expandString(context));
-            
+
             writer.append("<form name=\"" + name + "\" role=\"form\" class=\""
                     + formStyle + " ");
             if (UtilValidate.isNotEmpty(styleExdr.getOriginal())) {
                 writer.append(styleExdr.expandString(context));
             }
             writer.append("\"");
-            
+
             if (!validated) {
                 writer.append("novalidate ");
             }
-            
+
             writer.append("ng-submit=\"" + onSubmitExdr.expandString(context)
                     + "\" ");
-            
+
             writer.append(" form-options=\"\" ng-transclude>");
             writer.append("<fieldset>");
             if (UtilValidate.isNotEmpty(legendExdr.getOriginal())) {
@@ -1129,17 +1131,17 @@ public class AngularJsScreenWidget {
             writer.append("</fieldset>");
             writer.append("</form>");
         }
-        
+
         @Override
         public String rawString() {
             return "<form/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class GoogleChart extends ModelScreenWidget {
         public static final String TAG_NAME = "google-chart";
-        
+
         protected FlexibleStringExpander styleExdr = null;
         protected FlexibleStringExpander typeExdr = null;
         protected FlexibleStringExpander displayedExdr = null;
@@ -1152,7 +1154,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander vGridLinesCountExdr = null;
         protected FlexibleStringExpander targetExdr = null;
         protected FlexibleStringExpander modelExdr = null;
-        
+
         public GoogleChart(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -1181,7 +1183,7 @@ public class AngularJsScreenWidget {
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("model"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1189,16 +1191,16 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             int fill = 20;
             int vGridLinesCount = 18;
-            
+
             if (UtilValidate.isNotEmpty(fillExdr.getOriginal())) {
                 fill = Integer.valueOf(fillExdr.expandString(context));
             }
-            
+
             if (UtilValidate.isNotEmpty(vGridLinesCountExdr.getOriginal())) {
                 vGridLinesCount = Integer.valueOf(vGridLinesCountExdr
                         .expandString(context));
             }
-            
+
             writer.append("<div google-chart chart=\""
                     + modelExdr.expandString(context) + "\" style=\""
                     + styleExdr.expandString(context) + "\" type=\""
@@ -1214,17 +1216,17 @@ public class AngularJsScreenWidget {
                     + " target=\"" + targetExdr.expandString(context)
                     + "\" google-chart-options=\"\"/>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div google-chart/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Grid extends ModelScreenWidget {
         public static final String TAG_NAME = "grid";
-        
+
         protected FlexibleStringExpander selectTargetExdr;
         protected FlexibleStringExpander selectParametersExdr;
         protected FlexibleStringExpander selectedItemsExdr;
@@ -1238,7 +1240,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander onRowDoubleClickedExdr = null;
         protected FlexibleStringExpander afterDataLoadExdr = null;
         protected List<? extends Element> fieldElements;
-        
+
         public Grid(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.selectTargetExdr = FlexibleStringExpander
@@ -1273,7 +1275,7 @@ public class AngularJsScreenWidget {
             this.fieldElements = UtilXml.childElementList(widgetElement,
                     "field");
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1281,17 +1283,17 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             int defaultRowHeight = 40;
             int rowHeight = 20;
-            
+
             try {
                 rowHeight = Integer.parseInt(rowHeightExdr
                         .expandString(context));
             } catch (Exception e) {
             }
-            
+
             if (UtilValidate.isEmpty(rowHeightExdr.getOriginal())) {
                 rowHeight = defaultRowHeight;
             }
-            
+
             StringBuilder sortInfoBuilder = new StringBuilder();
             List<Map<String, String>> sortDirections = new LinkedList<Map<String, String>>();
             StringBuilder columnDefsBuilder = new StringBuilder();
@@ -1316,7 +1318,7 @@ public class AngularJsScreenWidget {
                             fieldElement, "editable-cell-template-uri", null);
                     String sortDirection = UtilXml.elementAttribute(
                             fieldElement, "sort-direction", null);
-                    
+
                     fieldsBuilder.append("name:'" + name + "'");
                     if (UtilValidate.isNotEmpty(fieldName)) {
                         fieldsBuilder.append(",field:'" + fieldName + "'");
@@ -1341,9 +1343,9 @@ public class AngularJsScreenWidget {
                         fieldsBuilder.append(",editableCellTemplate:'"
                                 + editableCellTemplateUri + "'");
                     }
-                    
+
                     fieldsBuilder.append("},");
-                    
+
                     if (UtilValidate.isNotEmpty(sortDirection)) {
                         Map<String, String> sortDirectionMap = new HashMap<String, String>();
                         sortDirectionMap.put("sortField", name);
@@ -1351,13 +1353,13 @@ public class AngularJsScreenWidget {
                         sortDirections.add(sortDirectionMap);
                     }
                 }
-                
+
                 String fieldString = fieldsBuilder.toString();
                 if (fieldString.endsWith(",")) {
                     fieldString = fieldString.substring(0,
                             fieldsBuilder.length() - 1);
                 }
-                
+
                 if (UtilValidate.isNotEmpty(sortDirections)) {
                     List<String> sortFields = new LinkedList<String>();
                     List<String> directions = new LinkedList<String>();
@@ -1368,7 +1370,7 @@ public class AngularJsScreenWidget {
                         sortFields.add(sortField);
                         directions.add(sortDirection);
                     }
-                    
+
                     if (UtilValidate.isNotEmpty(sortFields)) {
                         sortInfoBuilder.append("{");
                         sortInfoBuilder.append("fields: ["
@@ -1378,7 +1380,7 @@ public class AngularJsScreenWidget {
                         sortInfoBuilder.append("}");
                     }
                 }
-                
+
                 columnDefsBuilder.append(fieldString);
             }
             columnDefsBuilder.append("]");
@@ -1413,20 +1415,20 @@ public class AngularJsScreenWidget {
                             + sortInfoBuilder.toString() + "\""
                             : "") + "></div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div ng-grid/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Hidden extends ModelScreenWidget {
         public static final String TAG_NAME = "hidden";
-        
+
         protected FlexibleStringExpander nameExdr;
         protected FlexibleStringExpander valueExdr;
-        
+
         public Hidden(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -1434,7 +1436,7 @@ public class AngularJsScreenWidget {
             this.valueExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("value"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1444,26 +1446,26 @@ public class AngularJsScreenWidget {
                     + nameExdr.expandString(context) + "\" value=\""
                     + valueExdr.expandString(context) + "\"/>");
         }
-        
+
         @Override
         public String rawString() {
             return "<input type=\"hidden\"/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class Html extends ModelScreenWidget {
         public static final String TAG_NAME = "html";
-        
+
         private FlexibleStringExpander modelExdr;
-        
+
         public Html(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("model"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1472,17 +1474,17 @@ public class AngularJsScreenWidget {
             writer.append("<div html ng-model=\""
                     + modelExdr.expandString(context) + "\"></div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div html/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class JitTree extends ModelScreenWidget {
         public static final String TAG_NAME = "jit-tree";
-        
+
         protected FlexibleStringExpander typeExdr = null;
         protected FlexibleStringExpander modelExdr = null;
         protected FlexibleStringExpander nodeTemplateUrlExdr = null;
@@ -1491,7 +1493,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander nodeWidthExdr = null;
         protected FlexibleStringExpander nodeClickExdr = null;
         protected FlexibleStringExpander nodeParametersExdr = null;
-        
+
         public JitTree(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.typeExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -1512,7 +1514,7 @@ public class AngularJsScreenWidget {
             this.nodeParametersExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("node-parameters"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1533,22 +1535,22 @@ public class AngularJsScreenWidget {
                     + nodeParametersExdr.expandString(context) + "\">");
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div jit-tree/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class HorizontalRule extends ModelScreenWidget {
         public static final String TAG_NAME = "horizontal-rule";
-        
+
         public HorizontalRule(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1556,21 +1558,21 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             writer.append(this.rawString());
         }
-        
+
         @Override
         public String rawString() {
             return "<hr/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class LineBreak extends ModelScreenWidget {
         public static final String TAG_NAME = "line-break";
-        
+
         public LineBreak(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1578,23 +1580,23 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             writer.append(this.rawString());
         }
-        
+
         @Override
         public String rawString() {
             return "<br/>";
         }
     }
-    
+
     /**
      * http://ivaynberg.github.io/select2/ see "Loading Remote Data"
-     * 
+     *
      * @author chatree
-     * 
+     *
      */
     @SuppressWarnings("serial")
     public static class Lookup extends ModelScreenWidget {
         public static final String TAG_NAME = "lookup";
-        
+
         protected FlexibleStringExpander targetExdr = null;
         protected FlexibleStringExpander modelExdr = null;
         protected FlexibleStringExpander fieldNameExdr = null;
@@ -1602,7 +1604,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander parametersExdr;
         protected FlexibleStringExpander placeholderExdr;
         protected FlexibleStringExpander defaultValueExdr;
-        
+
         public Lookup(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.targetExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -1621,7 +1623,7 @@ public class AngularJsScreenWidget {
             this.defaultValueExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("default-value"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1652,29 +1654,29 @@ public class AngularJsScreenWidget {
             }
             writer.append("</data>");
         }
-        
+
         @Override
         public String rawString() {
             return "<data/>";
         }
     }
-    
+
     /**
      * http://mgcrea.github.io/angular-strap/
      * https://github.com/angular-ui/ui-router
-     * 
+     *
      * @author chatree
-     * 
+     *
      */
     @SuppressWarnings("serial")
     public static class MenuBar extends ModelScreenWidget {
         public static final String TAG_NAME = "menu-bar";
-        
+
         protected FlexibleStringExpander titleExdr = null;
         protected FlexibleStringExpander targetExdr = null;
         protected FlexibleStringExpander styleExdr = null;
         protected List<? extends Element> itemElementList = null;
-        
+
         public MenuBar(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             titleExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -1686,7 +1688,7 @@ public class AngularJsScreenWidget {
             itemElementList = UtilXml.childElementList(widgetElement,
                     "menu-item");
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1700,7 +1702,7 @@ public class AngularJsScreenWidget {
                     + targetExdr.expandString(context) + "\">"
                     + titleExdr.expandString(context) + "</a>");
             writer.append("<ul class=\"nav\">");
-            
+
             for (Element itemElement : itemElementList) {
                 String target = UtilXml.elementAttribute(itemElement, "target",
                         null);
@@ -1708,11 +1710,11 @@ public class AngularJsScreenWidget {
                         null);
                 String activeState = UtilXml.elementAttribute(itemElement,
                         "active-state", null);
-                
+
                 if (UtilValidate.isEmpty(activeState)) {
                     activeState = target;
                 }
-                
+
                 writer.append("<li ng-class=\"{ active: $state.includes('"
                         + activeState + "') }\"><a ui-sref=\"" + target + "\">"
                         + text + "</a></li>");
@@ -1722,24 +1724,24 @@ public class AngularJsScreenWidget {
             writer.append("</div>");
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div navbar/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Modal extends ModelScreenWidget {
         public static final String TAG_NAME = "modal";
-        
+
         protected FlexibleStringExpander shouldBeOpenExdr;
         protected FlexibleStringExpander closeExdr;
         protected FlexibleStringExpander optionsExdr;
         protected Element modalHeaderElement;
         protected Element modalBodyElement;
         protected Element modalFooterElement;
-        
+
         public Modal(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.shouldBeOpenExdr = FlexibleStringExpander
@@ -1755,7 +1757,7 @@ public class AngularJsScreenWidget {
             this.modalFooterElement = UtilXml.firstChildElement(widgetElement,
                     "modal-footer");
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1800,25 +1802,25 @@ public class AngularJsScreenWidget {
             }
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div modal/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class NgList extends ModelScreenWidget {
         public static final String TAG_NAME = "list";
-        
+
         protected List<? extends Element> listItemElementList;
-        
+
         public NgList(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             listItemElementList = UtilXml.childElementList(widgetElement,
                     "list-item");
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1849,23 +1851,23 @@ public class AngularJsScreenWidget {
             }
             writer.append("</ul>");
         }
-        
+
         @Override
         public String rawString() {
             return "<ul>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Number extends ModelScreenWidget {
         public static final String TAG_NAME = "number";
-        
+
         protected FlexibleStringExpander nameExdr = null;
         protected FlexibleStringExpander typeExdr = null;
         protected FlexibleStringExpander modelExdr = null;
         protected FlexibleStringExpander minExdr = null;
         protected FlexibleStringExpander maxExdr = null;
-        
+
         public Number(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -1879,7 +1881,7 @@ public class AngularJsScreenWidget {
             this.maxExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("max"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1892,22 +1894,22 @@ public class AngularJsScreenWidget {
                     + maxExdr.expandString(context) + "\" "
                     + typeExdr.expandString(context) + "/>");
         }
-        
+
         @Override
         public String rawString() {
             return "<input type=\"number\"/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Panel extends ModelScreenWidget {
         public static final String TAG_NAME = "panel";
-        
+
         protected FlexibleStringExpander styleExdr;
         protected FlexibleStringExpander headerTextExdr;
         protected FlexibleStringExpander hideExdr;
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public Panel(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -1916,14 +1918,14 @@ public class AngularJsScreenWidget {
                     .getAttribute("hide"));
             this.headerTextExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("header-text"));
-            
+
             // read sub-widgets
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1931,7 +1933,7 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             writer.append("<div class=\"panel "
                     + styleExdr.expandString(context) + "\"");
-            
+
             if (UtilValidate.isNotEmpty(hideExdr.getOriginal())) {
                 writer.append(" ng-hide=\"" + hideExdr.expandString(context)
                         + "\"");
@@ -1948,27 +1950,27 @@ public class AngularJsScreenWidget {
             writer.append("</div>");
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div class=\"panel\"/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class PreformattedText extends ModelScreenWidget {
         public static final String TAG_NAME = "preformatted-text";
-        
+
         protected List<? extends Element> subElementList = null;
         protected FlexibleStringExpander textContentExdr = null;
-        
+
         public PreformattedText(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             textContentExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getTextContent());
             subElementList = UtilXml.childElementList(widgetElement);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -1976,7 +1978,7 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             writer.append(this.rawString());
             writer.append(this.textContentExdr.expandString(context));
-            
+
             // TODO reader text and element by order
             /*
              * for (Element subElement : subElementList) { short nodeType =
@@ -1988,25 +1990,25 @@ public class AngularJsScreenWidget {
              * renderSubWidgetsString(subWidgets, writer, context,
              * screenStringRenderer); } }
              */
-            
+
             writer.append("</pre>");
         }
-        
+
         @Override
         public String rawString() {
             return "<pre>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Radio extends ModelScreenWidget {
         public static final String TAG_NAME = "radio";
-        
+
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander textExdr;
         protected FlexibleStringExpander valueExdr;
         protected FlexibleStringExpander styleExdr;
-        
+
         public Radio(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -2018,7 +2020,7 @@ public class AngularJsScreenWidget {
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("style"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2032,23 +2034,23 @@ public class AngularJsScreenWidget {
             writer.append(this.textExdr.expandString(context));
             writer.append("</label>");
         }
-        
+
         @Override
         public String rawString() {
             return "<label/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Report extends ModelScreenWidget {
         public static final String TAG_NAME = "report";
-        
+
         protected FlexibleStringExpander locationExdr;
         protected FlexibleStringExpander formatExdr;
         protected FlexibleStringExpander widthExdr;
         protected FlexibleStringExpander heightExdr;
         protected FlexibleStringExpander parametersExdr;
-        
+
         public Report(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.locationExdr = FlexibleStringExpander
@@ -2062,7 +2064,7 @@ public class AngularJsScreenWidget {
             this.parametersExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("parameters"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2075,19 +2077,19 @@ public class AngularJsScreenWidget {
                     + heightExdr.expandString(context) + "\" parameters=\""
                     + parametersExdr.expandString(context) + "\"></div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<report>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Row extends ModelScreenWidget {
         public static final String TAG_NAME = "row";
-        
+
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public Row(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             // read sub-widgets
@@ -2096,7 +2098,7 @@ public class AngularJsScreenWidget {
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2107,19 +2109,19 @@ public class AngularJsScreenWidget {
                     screenStringRenderer);
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div class=\"row\">";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class RowFluid extends ModelScreenWidget {
         public static final String TAG_NAME = "row-fluid";
-        
+
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public RowFluid(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             // read sub-widgets
@@ -2128,7 +2130,7 @@ public class AngularJsScreenWidget {
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2139,20 +2141,20 @@ public class AngularJsScreenWidget {
                     screenStringRenderer);
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div class=\"row-fluid\">";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Screenlet extends ModelScreenWidget {
         public static final String TAG_NAME = "screenlet";
-        
+
         protected FlexibleStringExpander titleExdr = null;
         protected List<ModelScreenWidget> subWidgets = null;
-        
+
         public Screenlet(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.titleExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -2162,7 +2164,7 @@ public class AngularJsScreenWidget {
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2180,20 +2182,20 @@ public class AngularJsScreenWidget {
             writer.append("</div>");
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div screenlet/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class Submit extends ModelScreenWidget {
         public static final String TAG_NAME = "submit";
-        
+
         protected FlexibleStringExpander textExdr;
         protected FlexibleStringExpander styleExdr;
-        
+
         public Submit(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.textExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -2201,7 +2203,7 @@ public class AngularJsScreenWidget {
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("style"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2212,20 +2214,20 @@ public class AngularJsScreenWidget {
                     + textExdr.expandString(context) + "\"");
             writer.append("/>");
         }
-        
+
         @Override
         public String rawString() {
             return "<input type=\"submit\"/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class TabBar extends ModelScreenWidget {
         public static final String TAG_NAME = "tab-bar";
-        
+
         protected List<? extends Element> tabItemElements;
         protected Element tabContentElement;
-        
+
         public TabBar(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.tabItemElements = UtilXml.childElementList(widgetElement,
@@ -2233,7 +2235,7 @@ public class AngularJsScreenWidget {
             this.tabContentElement = UtilXml.firstChildElement(widgetElement,
                     "tab-content");
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2258,11 +2260,11 @@ public class AngularJsScreenWidget {
                     String onSelect = FlexibleStringExpander.getInstance(
                             tabItemElement.getAttribute("on-select"))
                             .expandString(context);
-                    
+
                     if (UtilValidate.isEmpty(activeState)) {
                         activeState = target;
                     }
-                    
+
                     writer.append("<li class=\"" + style + "\" ");
                     if (UtilValidate.isNotEmpty(target)) {
                         writer.append("ng-class=\"{active: $state.includes('"
@@ -2283,7 +2285,7 @@ public class AngularJsScreenWidget {
                 }
             }
             writer.append("</div>");
-            
+
             if (UtilValidate.isNotEmpty(tabContentElement)) {
                 String viewName = FlexibleStringExpander.getInstance(
                         tabContentElement.getAttribute("view-name"))
@@ -2293,29 +2295,29 @@ public class AngularJsScreenWidget {
             }
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div class=\"tabbable\">";
         }
-        
+
     }
-    
+
     /**
      * http://plnkr.co/edit/g8nIqe37HEjvNOQz5z0p?p=preview
-     * 
+     *
      * @author chatree
-     * 
+     *
      */
     @SuppressWarnings("serial")
     public static class Tabs extends ModelScreenWidget {
         public static final String TAG_NAME = "tabs";
-        
+
         protected List<? extends Element> tabElements;
         protected FlexibleStringExpander verticalExdr;
         protected FlexibleStringExpander typeExdr;
         protected FlexibleStringExpander directionExdr;
-        
+
         public Tabs(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.tabElements = UtilXml.childElementList(widgetElement, "tab");
@@ -2326,7 +2328,7 @@ public class AngularJsScreenWidget {
             this.directionExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("direction"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2408,7 +2410,7 @@ public class AngularJsScreenWidget {
                     }
                     tabWriter.append("tab-options=\"\" ");
                     tabWriter.append(">");
-                    
+
                     // tab heading
                     Element tabHeadingElement = UtilXml.firstChildElement(
                             tabElement, "tab-heading");
@@ -2424,7 +2426,7 @@ public class AngularJsScreenWidget {
                                 context, screenStringRenderer);
                         tabWriter.append("</tab-heading>");
                     }
-                    
+
                     // read tab sub widgets
                     List<? extends Element> tabSubWidgetElements = UtilXml
                             .childElementList(tabElement);
@@ -2437,30 +2439,30 @@ public class AngularJsScreenWidget {
                                     tabSubWidgetElements);
                     renderSubWidgetsString(tabSubWidgets, tabWriter, context,
                             screenStringRenderer);
-                    
+
                     tabWriter.append("</tab>");
                     writer.append(tabWriter.toString());
                 }
             }
             writer.append("</tabset>");
         }
-        
+
         @Override
         public String rawString() {
             return "<tabset/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class Text extends ModelScreenWidget {
         public static final String TAG_NAME = "text";
-        
+
         protected FlexibleStringExpander typeExdr;
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander styleExdr;
         protected FlexibleStringExpander placeholderExdr;
-        
+
         public Text(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.typeExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -2472,7 +2474,7 @@ public class AngularJsScreenWidget {
             this.placeholderExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("placeholder"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2485,7 +2487,7 @@ public class AngularJsScreenWidget {
             if (UtilValidate.isEmpty(type)) {
                 type = "text";
             }
-            
+
             writer.append("<input type=\"" + type + "\" class=\"form-control "
                     + style + "\"");
             if (UtilValidate.isNotEmpty(placeholder)) {
@@ -2496,24 +2498,24 @@ public class AngularJsScreenWidget {
             }
             writer.append("/>");
         }
-        
+
         @Override
         public String rawString() {
             return "<input/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class TextArea extends ModelScreenWidget {
         public static final String TAG_NAME = "textarea";
-        
+
         protected FlexibleStringExpander nameExdr;
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander styleExdr;
         protected FlexibleStringExpander placeholderExdr;
         protected FlexibleStringExpander visualEditorEnableExdr;
-        
+
         public TextArea(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -2528,7 +2530,7 @@ public class AngularJsScreenWidget {
                     .getInstance(widgetElement
                             .getAttribute("visual-editor-enable"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2550,23 +2552,23 @@ public class AngularJsScreenWidget {
             }
             writer.append("></textarea>");
         }
-        
+
         @Override
         public String rawString() {
             return "<textarea/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class Tree extends ModelScreenWidget {
         public static final String TAG_NAME = "tree";
-        
+
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander nodeChildrenFieldNameExdr;
         protected FlexibleStringExpander nodeIdFieldNameExdr;
         protected FlexibleStringExpander nodeLabelFieldNameExdr;
-        
+
         public Tree(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -2581,7 +2583,7 @@ public class AngularJsScreenWidget {
                     .getInstance(widgetElement
                             .getAttribute("node-label-field-name"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2600,29 +2602,29 @@ public class AngularJsScreenWidget {
             writer.append(" tree-options=\"\"");
             writer.append("></div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div data-angular-treeview/>";
         }
-        
+
     }
-    
+
     /**
-     * 
+     *
      * @author chatree
-     * 
+     *
      */
     @SuppressWarnings("serial")
     public static class UiMap extends ModelScreenWidget {
         public static final String TAG_NAME = "map";
-        
+
         protected FlexibleStringExpander nameExdr;
         protected FlexibleStringExpander styleExdr;
         protected FlexibleStringExpander heightExdr;
         protected FlexibleStringExpander eventExdr;
         protected FlexibleStringExpander optionsExdr;
-        
+
         public UiMap(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -2636,7 +2638,7 @@ public class AngularJsScreenWidget {
             this.optionsExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("options"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2650,20 +2652,20 @@ public class AngularJsScreenWidget {
                     + "\">");
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div ui-map/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class UiMapInfoWindow extends ModelScreenWidget {
         public static final String TAG_NAME = "map-info-window";
-        
+
         protected FlexibleStringExpander nameExdr;
         protected List<ModelScreenWidget> subWidgets;
-        
+
         public UiMapInfoWindow(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -2674,7 +2676,7 @@ public class AngularJsScreenWidget {
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2686,21 +2688,21 @@ public class AngularJsScreenWidget {
                     screenStringRenderer);
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div ui-map-info-window/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class UiMapMarker extends ModelScreenWidget {
         public static final String TAG_NAME = "map-marker";
-        
+
         protected FlexibleStringExpander repeatExdr;
         protected FlexibleStringExpander valueExdr;
         protected FlexibleStringExpander eventExdr;
-        
+
         public UiMapMarker(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.repeatExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -2710,7 +2712,7 @@ public class AngularJsScreenWidget {
             this.eventExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("event"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2722,22 +2724,22 @@ public class AngularJsScreenWidget {
                     + eventExdr.expandString(context) + "\">");
             writer.append("</div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div ng-repeat/>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class TimePicker extends ModelScreenWidget {
         public static final String TAG_NAME = "time-picker";
-        
+
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander hourStepExdr;
         protected FlexibleStringExpander minuteStepExdr;
         protected FlexibleStringExpander showMeridianExdr;
-        
+
         public TimePicker(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
@@ -2749,7 +2751,7 @@ public class AngularJsScreenWidget {
             this.showMeridianExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("show-meridian"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2774,22 +2776,22 @@ public class AngularJsScreenWidget {
             }
             writer.append("></timepicker>");
         }
-        
+
         @Override
         public String rawString() {
             return "<timepicker/>";
         }
-        
+
     }
-    
+
     @SuppressWarnings("serial")
     public static class Upload extends ModelScreenWidget {
         public static final String TAG_NAME = "upload";
-        
+
         public Upload(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2797,25 +2799,25 @@ public class AngularJsScreenWidget {
                 throws GeneralException, IOException {
             writer.append(this.rawString());
         }
-        
+
         @Override
         public String rawString() {
             return "<div ng-upload=\"\"></div>";
         }
     }
-    
+
     @SuppressWarnings("serial")
     public static class View extends ModelScreenWidget {
         public static final String TAG_NAME = "view";
-        
+
         protected FlexibleStringExpander nameExdr = null;
-        
+
         public View(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
             this.nameExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("name"));
         }
-        
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
@@ -2824,7 +2826,7 @@ public class AngularJsScreenWidget {
             writer.append("<div ui-view=\"" + nameExdr.expandString(context)
                     + "\"></div>");
         }
-        
+
         @Override
         public String rawString() {
             return "<div ui-view/>";

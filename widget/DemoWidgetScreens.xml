@@ -106,7 +106,6 @@
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.DateTimeDemoController">
                     <date-time model="date"/>
-                    <label text="Selected date: {{date}}"/>
                 </controller>
             </widgets>
         </section>
