@@ -106,6 +106,7 @@
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.DateTimeDemoController">
                     <date-time model="date"/>
+                    <label text="Timestamp: {{timestamp}}"/>
                 </controller>
             </widgets>
         </section>
