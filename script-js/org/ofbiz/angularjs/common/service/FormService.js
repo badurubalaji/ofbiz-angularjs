@@ -92,7 +92,10 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
           })
           .success(function(data, status, headers, config) {
               // file is uploaded successfully
-              appBusy.set(false);
+
+              // not hide right away
+              //appBusy.set(false);
+
               if (successFn != null) {
                   successFn(data);
               }
