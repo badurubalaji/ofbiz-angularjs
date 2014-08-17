@@ -1482,6 +1482,49 @@ public class AngularJsScreenWidget {
     }
 
     @SuppressWarnings("serial")
+    public static class Image extends ModelScreenWidget.Image {
+
+        public Image(ModelScreen modelScreen, Element imageElement) {
+            super(modelScreen, imageElement);
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer) {
+            try {
+                if (UtilValidate.isNotEmpty(srcExdr.getOriginal())) {
+                    writer.append("<img");
+                    if (UtilValidate.isNotEmpty(idExdr.getOriginal())) {
+                        writer.append(" id=\"" + idExdr.expandString(context) + "\"");
+                    }
+                    if (UtilValidate.isNotEmpty(styleExdr.getOriginal())) {
+                    writer.append(" class=\"" + styleExdr.expandString(context) + "\"");
+                    }
+                    if (UtilValidate.isNotEmpty(widthExdr.getOriginal())) {
+                    writer.append(" width=\"" + widthExdr.expandString(context) + "\"");
+                    }
+                    if (UtilValidate.isNotEmpty(heightExdr.getOriginal())) {
+                    writer.append(" height=\"" + heightExdr.expandString(context) + "\"");
+                    }
+                    if (UtilValidate.isNotEmpty(borderExdr.getOriginal())) {
+                    writer.append(" border=\"" + borderExdr.expandString(context) + "\"");
+                    }
+                    if (UtilValidate.isNotEmpty(alt.getOriginal())) {
+                    writer.append(" alt=\"" + alt.expandString(context) + "\"");
+                    }
+                    if (UtilValidate.isNotEmpty(srcExdr.getOriginal())) {
+                    writer.append(" ng-src=\"" + srcExdr.expandString(context) + "\"");
+                    }
+                    writer.append("/>");
+                }
+            } catch (IOException e) {
+                Debug.logError(e, module);
+            }
+        }
+    }
+
+    @SuppressWarnings("serial")
     public static class JitTree extends ModelScreenWidget {
         public static final String TAG_NAME = "jit-tree";
 
