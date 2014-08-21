@@ -127,6 +127,11 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
             return promise;
         }
 
+        promise.error = function(fn) {
+            errorFn = fn;
+            return promise;
+        }
+
         var rowItemsQueryString = "&";
         var rowItemIndex = 0;
         _.each(rowItems, function(rowItem) {
@@ -143,6 +148,6 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
 
             rowItemIndex ++;
         });
-        this.post(target, data + rowItemsQueryString).success(successFn).error(errorFn);
+        return this.post(target, data + rowItemsQueryString).success(successFn).error(errorFn);
     }
 }
