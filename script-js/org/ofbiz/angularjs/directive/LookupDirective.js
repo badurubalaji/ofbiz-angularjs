@@ -24,7 +24,8 @@ function LookupDirective(HttpService, FormService, ScopeUtil) {
 
         $scope.$watch("parameters", function(newVal) {
             if (newVal != null) {
-                loadOptions(newVal, null);
+                parameters = newVal;
+                loadOptions(parameters, null);
             }
         });
 
