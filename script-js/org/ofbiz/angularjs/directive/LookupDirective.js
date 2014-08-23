@@ -7,7 +7,7 @@ package org.ofbiz.angularjs.directive;
  * JSONP: http://docs.angularjs.org/api/ng.$http#methods_jsonp
  */
 function LookupDirective(HttpService, FormService, ScopeUtil) {
-    
+
     /**
      * Controller
      */
@@ -17,11 +17,45 @@ function LookupDirective(HttpService, FormService, ScopeUtil) {
         var fieldName = $attrs.fieldName;
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
-        
+
         if (_.isEmpty(parameters)) {
             parameters = {};
         }
-        
+
+        $scope.$watch("parameters", function(newVal) {
+            if (newVal != null) {
+                loadOptions(newVal, null);
+            }
+        });
+
+        function loadOptions(httpParams, defaultValue) {
+            HttpService.post(target, httpParams).success(function (response) {
+                var defaultOption = null;
+                var options = response.options;
+                if (options) {
+                    var data = [];
+                    for (var i = 0; i < options.length; i ++) {
+                        var option = options[i];
+                        var dataObj = {};
+                        dataObj[fieldName] = option[fieldName];
+                        dataObj[descriptionFieldName] = option[descriptionFieldName];
+                        data.push(dataObj);
+
+                        if (option[fieldName] == defaultValue) {
+                            defaultOption = option;
+                        }
+                    }
+
+                    $scope.select2Options.data = data;
+                    var select2 = $($element).select2($scope.select2Options);
+                    select2.select2("val", null);
+                    if (defaultOption != null) {
+                        select2.select2("val", defaultOption);
+                    }
+                }
+            });
+        }
+
         $scope.select2Options = {
             placeholder: placeholder,
             allowClear: true,
@@ -31,9 +65,10 @@ function LookupDirective(HttpService, FormService, ScopeUtil) {
                 dataType: "json",
                 type: "POST",
                 data: function(term, page) {
-                    parameters.term = term;
-                    parameters.viewSize = 10;
-                    return parameters;
+                    var data = _.clone(parameters);
+                    data.term = term;
+                    data.viewSize = 10;
+                    return data;
                 },
                 results: function(data, page) {
                     var options = null;
@@ -64,44 +99,21 @@ function LookupDirective(HttpService, FormService, ScopeUtil) {
                 }
             }
         };
-        
+
         if (fieldName == null) {
             fieldName = "id";
         }
         if (descriptionFieldName == null) {
             descriptionFieldName = "text";
         }
-        
+
         // set default value
         $scope.$watch("defaultValue", function(defaultValue) {
             if(!_.isEmpty(defaultValue)) {
-                parameters.term = defaultValue;
-                parameters.viewSize = 10;
-                HttpService.post(target, parameters).success(function (response) {
-                    var defaultOption = null;
-                    var options = response.options;
-                    if (options) {
-                        var data = [];
-                        for (var i = 0; i < options.length; i ++) {
-                            var option = options[i];
-                            var dataObj = {};
-                            dataObj[fieldName] = option[fieldName];
-                            dataObj[descriptionFieldName] = option[descriptionFieldName];
-                            data.push(dataObj);
-
-                            if (option[fieldName] == defaultValue) {
-                                defaultOption = option;
-                            }
-                        }
-                        
-                        $scope.select2Options.data = data;
-                        var select2 = $($element).select2($scope.select2Options);
-                        select2.select2("val", null);
-                        if (defaultOption != null) {
-                            select2.select2("val", defaultOption);
-                        }
-                    }
-                });
+                var httpParams = _.clone(parameters);
+                httpParams.term = defaultValue;
+                httpParams.viewSize = 10;
+                loadOptions(httpParams, defaultValue);
             }
         });
 
@@ -117,10 +129,10 @@ function LookupDirective(HttpService, FormService, ScopeUtil) {
     this.compile = function() {
         return {
             pre: function() {
-            
+
             },
             post: function($scope, $element, $attrs, controller) {
-                
+
             }
         };
     };
