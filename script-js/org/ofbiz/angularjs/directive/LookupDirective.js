@@ -6,7 +6,7 @@ package org.ofbiz.angularjs.directive;
  * Fetch data from sercer: http://plnkr.co/edit/t1neIS?p=preview
  * JSONP: http://docs.angularjs.org/api/ng.$http#methods_jsonp
  */
-function LookupDirective(HttpService, FormService, ScopeUtil) {
+function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
 
     /**
      * Controller
@@ -30,31 +30,33 @@ function LookupDirective(HttpService, FormService, ScopeUtil) {
         });
 
         function loadOptions(httpParams, defaultValue) {
-            HttpService.post(target, httpParams).success(function (response) {
-                var defaultOption = null;
-                var options = response.options;
-                if (options) {
-                    var data = [];
-                    for (var i = 0; i < options.length; i ++) {
-                        var option = options[i];
-                        var dataObj = {};
-                        dataObj[fieldName] = option[fieldName];
-                        dataObj[descriptionFieldName] = option[descriptionFieldName];
-                        data.push(dataObj);
+            if (!_.isEmpty(httpParams.term)) {
+                HttpService.post(target, httpParams).success(function (response) {
+                    var defaultOption = null;
+                    var options = response.options;
+                    if (options) {
+                        var data = [];
+                        for (var i = 0; i < options.length; i ++) {
+                            var option = options[i];
+                            var dataObj = {};
+                            dataObj[fieldName] = option[fieldName];
+                            dataObj[descriptionFieldName] = option[descriptionFieldName];
+                            data.push(dataObj);
 
-                        if (option[fieldName] == defaultValue) {
-                            defaultOption = option;
+                            if (option[fieldName] == defaultValue) {
+                                defaultOption = option;
+                            }
+                        }
+
+                        $scope.select2Options.data = data;
+                        var select2 = $($element).select2($scope.select2Options);
+                        select2.select2("val", null);
+                        if (defaultOption != null) {
+                            select2.select2("val", defaultOption);
                         }
                     }
-
-                    $scope.select2Options.data = data;
-                    var select2 = $($element).select2($scope.select2Options);
-                    select2.select2("val", null);
-                    if (defaultOption != null) {
-                        select2.select2("val", defaultOption);
-                    }
-                }
-            });
+                });
+            }
         }
 
         $scope.select2Options = {
@@ -97,6 +99,7 @@ function LookupDirective(HttpService, FormService, ScopeUtil) {
                 if (!_.isEmpty(value)) {
                     callback(option);
                     $scope.ngModel = option;
+                    ScopeUtil.setTopScopeProperty($scope, $attrs.ngModel, option);
                 }
             }
         };
