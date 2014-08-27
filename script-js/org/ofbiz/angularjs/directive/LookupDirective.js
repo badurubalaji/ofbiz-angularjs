@@ -106,7 +106,7 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
                 if (!_.isEmpty(value)) {
                     callback(option);
                     $scope.ngModel = option;
-                    ScopeUtil.setTopScopeProperty($scope, $attrs.ngModel, option);
+                    ScopeUtil.setClosestScopeProperty($scope, $attrs.ngModel, option);
                 }
             }
         };
@@ -130,7 +130,7 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
 
         $($element).on("change", function(e) {
             //$scope.ngModel = e.val;
-            ScopeUtil.setTopScopeProperty($scope, $attrs.ngModel, e.val);
+            ScopeUtil.setClosestScopeProperty($scope, $attrs.ngModel, e.val);
         });
     }
 
