@@ -18,6 +18,13 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
 
+        $scope.$watch("ngModel", function(newVal, oldVal) {
+            if (newVal != oldVal && newVal == null) {
+                var select2 = $($element).select2($scope.select2Options);
+                select2.select2("val", null);
+            }
+        })
+
         if (_.isEmpty(parameters)) {
             parameters = {};
         }
