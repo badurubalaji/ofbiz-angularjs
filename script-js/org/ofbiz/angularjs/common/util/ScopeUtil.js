@@ -35,6 +35,7 @@ function ScopeUtil($rootScope) {
             var keys = _.keys(tempParentScope);
             if (_.contains(keys, propertyName)) {
                 tempParentScope[propertyName] = propertyValue;
+                break;
             }
             tempParentScope = tempParentScope.$parent;
         }

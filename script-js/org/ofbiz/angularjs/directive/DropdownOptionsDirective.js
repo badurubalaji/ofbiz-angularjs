@@ -1,7 +1,7 @@
 package org.ofbiz.angularjs.directive;
 
 function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
-    
+
     /**
      * Controller
      */
@@ -12,7 +12,7 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
         var defaultValue = null;
-        
+
         if (!_.isEmpty($attrs.defaultValue)) { // There is default value;
             $scope.$watch("defaultValue", function(newValue) {
                 if (newValue != null) {
@@ -23,15 +23,15 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
         } else { // There is not default value.
             setup();
         }
-        
+
         // set top scope property when every the value is changed
         $scope.$watch($attrs.ngModel, function(newValue, oldValue) {
             if (newValue != oldValue) {
-                ScopeUtil.setTopScopeProperty($scope, $attrs.ngModel, newValue);
+                ScopeUtil.setClosestScopeProperty($scope, $attrs.ngModel, newValue);
                 $scope.ngModel = newValue;
             }
         });
-        
+
         $scope.select2Options = {
             placeholder: placeholder,
             allowClear: true,
@@ -61,7 +61,7 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
                 }
             }
         };
-        
+
         function setup() {
             if (fieldName == null) {
                 fieldName = "id";
@@ -69,7 +69,7 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
             if (descriptionFieldName == null) {
                 descriptionFieldName = "text";
             }
-            
+
             HttpService.post(target, parameters).success(function (response) {
                 var defaultOption = null;
                 var options = response.options;
@@ -86,7 +86,7 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
                             defaultOption = option;
                         }
                     }
-                    
+
                     $scope.select2Options.data = data;
                     var select2 = $($element).select2($scope.select2Options);
                     select2.select2("val", null);

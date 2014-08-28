@@ -12,7 +12,7 @@ function FileOptionsDirective(HttpService, $parse, ScopeUtil) {
 
         $scope.onFileSelect = function($files) {
             $scope.ngModel = $files;
-            ScopeUtil.setTopScopeProperty($scope, $attrs.ngModel, $files);
+            ScopeUtil.setClosestScopeProperty($scope, $attrs.ngModel, $files);
         }
     }
 
