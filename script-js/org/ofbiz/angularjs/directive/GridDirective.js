@@ -1,15 +1,14 @@
 package org.ofbiz.angularjs.directive;
 
 /**
- * Grid Options Directive
+ * Grid Directive
+ *
  */
-function GridOptionsDirective(HttpService, $timeout, $parse) {
+function GridDirective(HttpService, $timeout, $parse, $compile) {
 
-    /**
-     * Controller
-     */
-    this.controller = function($scope, $element, $attrs, $transclude) {
+    this.link = function($scope, $element, $attrs, controller) {
         var selectedItemsSetter = $parse($attrs.selectedItems).assign;
+        var style = $attrs.style;
         var rowHeight = $attrs.rowHeight;
         var selectTarget = $attrs.selectTarget;
         var listName = $attrs.listName;
@@ -101,7 +100,8 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             };
             */
             if (!$scope.$$phase) {
-                $scope.$apply();
+                // This causes an error
+                //$scope.$apply();
             }
 
             $scope.afterDataLoad();
@@ -370,20 +370,9 @@ function GridOptionsDirective(HttpService, $timeout, $parse) {
             $scope.grid.sortInfo = sortInfo;
         }
 
-        angular.element($element).css("height", (rowSize * rowHeight) + "px");
+        var divElement = angular.element("<div class='" + style + "' ng-grid='grid'></div>");
+        angular.element(divElement).css("height", (rowSize * rowHeight) + "px");
+        $element.html(divElement);
+        $compile($element.contents())($scope);
     }
-
-    /**
-     * Compile
-     */
-    this.compile = function() {
-        return {
-            pre: function() {
-
-            },
-            post: function($scope, $element, $attrs, controller) {
-
-            }
-        };
-    };
 }

@@ -1384,9 +1384,10 @@ public class AngularJsScreenWidget {
                 columnDefsBuilder.append(fieldString);
             }
             columnDefsBuilder.append("]");
-            writer.append("<div class=\""
+
+            writer.append("<grid style=\""
                     + styleExdr.expandString(context)
-                    + "\" ng-grid=\"grid\" grid-options=\"\" row-height=\""
+                    + "\" row-height=\""
                     + rowHeight
                     + "\" select-target=\""
                     + selectTargetExdr.expandString(context)
@@ -1413,7 +1414,7 @@ public class AngularJsScreenWidget {
                     + "\" "
                     + (UtilValidate.isNotEmpty(sortInfoBuilder.toString()) ? "sort-info=\""
                             + sortInfoBuilder.toString() + "\""
-                            : "") + "></div>");
+                            : "") + "></grid>");
         }
 
         @Override

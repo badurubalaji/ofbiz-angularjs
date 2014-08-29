@@ -26,7 +26,7 @@
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/tinymce/tinymce.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/underscore-min-1.5.2.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/require-2.1.8.js" global="true"/>
-                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/angular.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/angular-1.2.23.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/file-upload/angular-file-upload-shim.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.11.0.min.js" global="true"/>
 
