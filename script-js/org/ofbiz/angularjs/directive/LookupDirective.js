@@ -129,8 +129,9 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
         });
 
         $($element).on("change", function(e) {
-            //$scope.ngModel = e.val;
+            $scope.ngModel = e.val;
             ScopeUtil.setClosestScopeProperty($scope, $attrs.ngModel, e.val);
+            $scope.$apply();
         });
     }
 

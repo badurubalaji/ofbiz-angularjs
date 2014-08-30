@@ -1670,7 +1670,7 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<data ui-select2=\"select2Options\" target=\""
+            writer.append("<lookup target=\""
                     + targetExdr.expandString(context) + "\" ng-model=\""
                     + modelExdr.expandString(context)
                     + "\" description-field-name=\""
@@ -1685,15 +1685,8 @@ public class AngularJsScreenWidget {
                 writer.append(" default-value=\""
                         + defaultValueExdr.expandString(context) + "\"");
             }
-            writer.append(" lookup");
-            if (UtilValidate.isNotEmpty(placeholderExdr.getOriginal())) {
-                writer.append(" placeholder=\""
-                        + placeholderExdr.expandString(context) + "\">");
-                writer.append("<option></option>");
-            } else {
-                writer.append(">");
-            }
-            writer.append("</data>");
+            writer.append(">");
+            writer.append("</lookup>");
         }
 
         @Override
