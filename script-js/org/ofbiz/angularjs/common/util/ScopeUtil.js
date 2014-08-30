@@ -27,6 +27,21 @@ function ScopeUtil($rootScope) {
     };
 
     /**
+     * Get closest scope property
+     */
+    this.getClosestScopeProperty = function($currentScope, propertyName) {
+        var tempParentScope = $currentScope.$parent;
+        while (tempParentScope != null) {
+            var keys = _.keys(tempParentScope);
+            if (_.contains(keys, propertyName)) {
+                return tempParentScope[propertyName];
+            }
+            tempParentScope = tempParentScope.$parent;
+        }
+        return null;
+    };
+
+    /**
      * Set closest scope property
      */
     this.setClosestScopeProperty = function($currentScope, propertyName, propertyValue) {
