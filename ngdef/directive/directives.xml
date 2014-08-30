@@ -38,8 +38,8 @@
     <ng-directive name="compile" location="org.ofbiz.angularjs.directive.CompileDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>
 
-    <ng-directive name="dropdownOptions" location="org.ofbiz.angularjs.directive.DropdownOptionsDirective"
-        priority="0" replace="false" transclude="false" restrict="A" require="?ngModel" scope="{parameters:'=', defaultValue:'=', ngModel:'='}"/>
+    <ng-directive name="dropdown" location="org.ofbiz.angularjs.directive.DropdownDirective"
+        priority="0" replace="false" transclude="false" restrict="E" scope="{parameters:'=', defaultValue:'=', model:'='}"/>
 
     <ng-directive name="fileOptions" location="org.ofbiz.angularjs.directive.FileOptionsDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>

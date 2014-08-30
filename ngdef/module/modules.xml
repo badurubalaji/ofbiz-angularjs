@@ -62,8 +62,8 @@
         <styleSheet path="/angularjs/images/css/angular.treeview.css"/>
     </ng-module>
     <ng-module name="ui.select2" location="/angularjs/images/js/select2/ui-select2.js">
-        <javaScript path="/angularjs/images/js/select2/select2.min.js"/>
-        <styleSheet path="/angularjs/images/js/select2/select2.css"/>
+        <javaScript path="/angularjs/images/js/select2/select2-3.4.5.min.js"/>
+        <styleSheet path="/angularjs/images/js/select2/select2-3.4.5.css"/>
         <styleSheet path="/angularjs/images/js/select2/select2-bootstrap.css"/>
     </ng-module>
     <!--

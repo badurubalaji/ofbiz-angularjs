@@ -1,11 +1,22 @@
 package org.ofbiz.angularjs.directive;
 
-function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
+/**
+ * Dropdown Directive
+ *
+ * http://plnkr.co/edit/5Zaln7QT2gETVcGiMdoW?p=preview
+ *
+ * @param $compile
+ * @param HttpService
+ * @param $rootScope
+ * @param $http
+ * @param ScopeUtil
+ */
+function DropdownDirective($compile, HttpService, $rootScope, $http, ScopeUtil) {
 
     /**
-     * Controller
+     * Link
      */
-    this.controller = function($scope, $element, $attrs, $transclude) {
+    this.link = function($scope, $element, $attrs) {
         var target = $attrs.target;
         var parameters = $scope.parameters;
         var fieldName = $attrs.fieldName;
@@ -23,14 +34,6 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
         } else { // There is not default value.
             setup();
         }
-
-        // set top scope property when every the value is changed
-        $scope.$watch($attrs.ngModel, function(newValue, oldValue) {
-            if (newValue != oldValue) {
-                ScopeUtil.setClosestScopeProperty($scope, $attrs.ngModel, newValue);
-                $scope.ngModel = newValue;
-            }
-        });
 
         $scope.select2Options = {
             placeholder: placeholder,
@@ -57,7 +60,7 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
                             console.warn(e);
                         }
                     }
-                    $scope.ngModel = option;
+                    $scope.model = option;
                 }
             }
         };
@@ -89,6 +92,13 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
 
                     $scope.select2Options.data = data;
                     var select2 = $($element).select2($scope.select2Options);
+
+                    select2.on("change", function(e) {
+                        $scope.model = e.val;
+                        ScopeUtil.setClosestScopeProperty($scope, $attrs.model, e.val);
+                        $scope.$apply();
+                    });
+
                     select2.select2("val", null);
                     if (defaultOption != null) {
                         select2.select2("val", defaultOption);
@@ -97,16 +107,4 @@ function DropdownOptionsDirective(HttpService, $rootScope, $http, ScopeUtil) {
             });
         }
     }
-
-    /**
-     * Link
-     */
-    this.link = function($scope, $element, $attrs, ngModel) {
-        ngModel.$render = function() {
-            var viewValue = ngModel.$viewValue;
-            if (!_.isEmpty(viewValue)) {
-                //console.log("render: " + JSON.stringify(viewValue));
-            }
-        }
-    };
 }

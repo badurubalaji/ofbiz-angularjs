@@ -805,9 +805,9 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<data ui-select2=\"select2Options\" dropdown-options");
+            writer.append("<dropdown");
             if (UtilValidate.isNotEmpty(modelExdr.getOriginal())) {
-                writer.append(" ng-model=\"" + modelExdr.expandString(context)
+                writer.append(" model=\"" + modelExdr.expandString(context)
                         + "\"");
             }
             if (UtilValidate.isNotEmpty(targetExdr.getOriginal())) {
@@ -828,10 +828,7 @@ public class AngularJsScreenWidget {
                     + placeholderExdr.expandString(context)
                     + "\" class=\"form-control\"");
             writer.append(">");
-            if (UtilValidate.isNotEmpty(placeholderExdr.getOriginal())) {
-                writer.append("<option></option>");
-            }
-            writer.append("</data>");
+            writer.append("</dropdown>");
         }
 
         @Override
