@@ -43,7 +43,6 @@ function GridDirective(HttpService, $timeout, $parse, $compile) {
 
         var onBeforeSelectionChanged = $scope[$attrs.onBeforeSelectionChanged]; // function (rowItem, event) {}
         var onAfterSelectionChanged = $scope[$attrs.onAfterSelectionChanged]; // function (rowItem, event) { return true; }
-        var onRowDoubleClicked = $scope[$attrs.onRowDoubleClicked]; // function (rowItem, event) {}
 
         $scope.filterOptions = {
             filterText: "",
@@ -268,7 +267,7 @@ function GridDirective(HttpService, $timeout, $parse, $compile) {
                         var selectedItem = self.$scope.selectedItems[0];
                         var extendedSelectedItem = {};
                         _.extend(extendedSelectedItem, selectedItem) ;
-                        onRowDoubleClicked(extendedSelectedItem);
+                        onRowDoubleClicked(event, extendedSelectedItem);
                     }, 100)
                 }
             };
@@ -362,7 +361,9 @@ function GridDirective(HttpService, $timeout, $parse, $compile) {
                 }
             }
             , beforeSelectionChange: onBeforeSelectionChanged
-            , onRowDoubleClicked: onRowDoubleClicked
+            , onRowDoubleClicked: function(event, rowItem) {
+                $scope.onRowDoubleClicked({"rowItem": rowItem});
+            }
             , plugins: [ngGridDoubleClick]
         };
 
