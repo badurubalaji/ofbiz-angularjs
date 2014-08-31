@@ -70,6 +70,7 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
             placeholder: placeholder,
             allowClear: true,
             minimumInputLength: 1,
+            dropdownAutoWidth: true,
             ajax: {
                 url: target,
                 dataType: "json",
@@ -119,7 +120,9 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
         }
 
         // set default value
-        $scope.$watch("defaultValue", function(defaultValue) {
+        $scope.$watchCollection("[defaultValue, parameters]", function(newValues, oldValues) {
+            var defaultValue = newValues[0];
+            var parameters = newValues[1];
             if(!_.isEmpty(defaultValue)) {
                 var httpParams = _.clone(parameters);
                 httpParams.term = defaultValue;
@@ -127,6 +130,11 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
                 loadOptions(httpParams, defaultValue);
             }
         });
+
+        // just setup lookup widget if default value is empty
+        if ($scope.defaultValue == null) {
+            $($element).select2($scope.select2Options);
+        }
 
         $($element).on("change", function(e) {
             $scope.ngModel = e.val;

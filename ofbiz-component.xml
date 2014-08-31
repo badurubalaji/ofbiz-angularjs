@@ -37,6 +37,13 @@
         location="webapp/angularjs"
         base-permission="OFBTOOLS"
         mount-point="/angularjs"/>
-        
+
+
+    <webapp name="testade"
+        title="testade"
+        server="default-server"
+        location="webapp/testade"
+        mount-point="/testade"/>
+
     <container name="angularjs-container" class="org.ofbiz.angularjs.container.AngularJsContainer"/>
 </ofbiz-component>
