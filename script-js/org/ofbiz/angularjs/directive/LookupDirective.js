@@ -14,9 +14,14 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
     this.controller = function($scope, $element, $attrs, $transclude) {
         var target = $attrs.target;
         var parameters = $scope.parameters;
+        var dependentParameterNames = null;
         var fieldName = $attrs.fieldName;
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
+
+        if (!_.isEmpty($attrs.dependentParameterNames)) {
+            dependentParameterNames = $attrs.dependentParameterNames.split(",");
+        }
 
         $scope.$watch("ngModel", function(newVal, oldVal) {
             if (newVal != oldVal && newVal == null) {
@@ -36,33 +41,50 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
             }
         });
 
-        function loadOptions(httpParams, defaultValue) {
-            if (!_.isEmpty(httpParams.term)) {
-                HttpService.post(target, httpParams).success(function (response) {
-                    var defaultOption = null;
-                    var options = response.options;
-                    if (options) {
-                        var data = [];
-                        for (var i = 0; i < options.length; i ++) {
-                            var option = options[i];
-                            var dataObj = {};
-                            dataObj[fieldName] = option[fieldName];
-                            dataObj[descriptionFieldName] = option[descriptionFieldName];
-                            data.push(dataObj);
-
-                            if (option[fieldName] == defaultValue) {
-                                defaultOption = option;
-                            }
-                        }
-
-                        $scope.select2Options.data = data;
-                        var select2 = $($element).select2($scope.select2Options);
-                        select2.select2("val", null);
-                        if (defaultOption != null) {
-                            select2.select2("val", defaultOption);
+        function isValidDependency(validateParameters) {
+            if (validateParameters != null) {
+                var parameterNames = _.keys(validateParameters);
+                if (dependentParameterNames != null) {
+                    for (var i = 0; i < dependentParameterNames.length; i ++) {
+                        var dependentParameterName = dependentParameterNames[i];
+                        if (!_.contains(parameterNames, dependentParameterName)) {
+                            return false;
                         }
                     }
-                });
+                }
+            }
+            return true;
+        }
+
+        function loadOptions(httpParams, defaultValue) {
+            if (!_.isEmpty(httpParams.term)) {
+                if (isValidDependency(httpParams)) {
+                    HttpService.post(target, httpParams).success(function (response) {
+                        var defaultOption = null;
+                        var options = response.options;
+                        if (options) {
+                            var data = [];
+                            for (var i = 0; i < options.length; i ++) {
+                                var option = options[i];
+                                var dataObj = {};
+                                dataObj[fieldName] = option[fieldName];
+                                dataObj[descriptionFieldName] = option[descriptionFieldName];
+                                data.push(dataObj);
+
+                                if (option[fieldName] == defaultValue) {
+                                    defaultOption = option;
+                                }
+                            }
+
+                            $scope.select2Options.data = data;
+                            var select2 = $($element).select2($scope.select2Options);
+                            select2.select2("val", null);
+                            if (defaultOption != null) {
+                                select2.select2("val", defaultOption);
+                            }
+                        }
+                    });
+                }
             }
         }
 
@@ -128,13 +150,11 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
                 httpParams.term = defaultValue;
                 httpParams.viewSize = 10;
                 loadOptions(httpParams, defaultValue);
+            } else {
+                // just setup lookup widget if default value is empty
+                $($element).select2($scope.select2Options);
             }
         });
-
-        // just setup lookup widget if default value is empty
-        if ($scope.defaultValue == null) {
-            $($element).select2($scope.select2Options);
-        }
 
         $($element).on("change", function(e) {
             $scope.ngModel = e.val;

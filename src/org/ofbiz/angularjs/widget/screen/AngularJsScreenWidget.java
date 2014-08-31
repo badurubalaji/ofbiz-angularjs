@@ -774,6 +774,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander targetExdr;
         protected FlexibleStringExpander parametersExdr;
+        protected FlexibleStringExpander dependentParameterNamesExdr;
         protected FlexibleStringExpander placeholderExdr;
         protected FlexibleStringExpander fieldNameExdr = null;
         protected FlexibleStringExpander descriptionFieldNameExdr = null;
@@ -789,6 +790,8 @@ public class AngularJsScreenWidget {
                     .getAttribute("target"));
             this.parametersExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("parameters"));
+            this.dependentParameterNamesExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("dependent-parameter-names"));
             this.placeholderExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("placeholder"));
             this.fieldNameExdr = FlexibleStringExpander
@@ -817,6 +820,10 @@ public class AngularJsScreenWidget {
             if (UtilValidate.isNotEmpty(parametersExdr.getOriginal())) {
                 writer.append(" parameters=\""
                         + parametersExdr.expandString(context) + "\"");
+            }
+            if (UtilValidate.isNotEmpty(dependentParameterNamesExdr.getOriginal())) {
+                writer.append(" dependent-parameter-names=\""
+                        + dependentParameterNamesExdr.expandString(context) + "\"");
             }
             writer.append(" description-field-name=\""
                     + descriptionFieldNameExdr.expandString(context)
@@ -1642,6 +1649,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander fieldNameExdr = null;
         protected FlexibleStringExpander descriptionFieldNameExdr = null;
         protected FlexibleStringExpander parametersExdr;
+        protected FlexibleStringExpander dependentParameterNamesExdr;
         protected FlexibleStringExpander placeholderExdr;
         protected FlexibleStringExpander defaultValueExdr;
 
@@ -1651,6 +1659,8 @@ public class AngularJsScreenWidget {
                     .getAttribute("target"));
             this.parametersExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("parameters"));
+            this.dependentParameterNamesExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("dependent-parameter-names"));
             this.modelExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("model"));
             this.fieldNameExdr = FlexibleStringExpander
@@ -1679,6 +1689,10 @@ public class AngularJsScreenWidget {
             if (UtilValidate.isNotEmpty(parametersExdr.getOriginal())) {
                 writer.append(" parameters=\""
                         + parametersExdr.expandString(context) + "\"");
+            }
+            if (UtilValidate.isNotEmpty(dependentParameterNamesExdr.getOriginal())) {
+                writer.append(" dependent-parameter-names=\""
+                        + dependentParameterNamesExdr.expandString(context) + "\"");
             }
             if (UtilValidate.isNotEmpty(defaultValueExdr.getOriginal())) {
                 writer.append(" default-value=\""
