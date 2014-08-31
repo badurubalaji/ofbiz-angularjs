@@ -41,8 +41,8 @@
     <ng-directive name="dropdown" location="org.ofbiz.angularjs.directive.DropdownDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="{parameters:'=', defaultValue:'=', model:'='}"/>
 
-    <ng-directive name="fileOptions" location="org.ofbiz.angularjs.directive.FileOptionsDirective"
-        priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>
+    <ng-directive name="fileWrapper" location="org.ofbiz.angularjs.directive.FileWrapperDirective"
+        priority="0" replace="false" transclude="false" restrict="E" scope="{ngModel:'='}"/>
 
     <ng-directive name="html" location="org.ofbiz.angularjs.directive.HtmlDirective"
         priority="0" replace="false" transclude="false" restrict="A" scope="{ngModel:'='}"/>

@@ -944,11 +944,10 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<input type=\"file\" file-options=\"\"");
-            writer.append(" ng-file-select=\"onFileSelect($files)\"");
-            writer.append(" ng-model=\"" + modelExdr.expandString(context)
-                    + "\"");
-            writer.append("/>");
+            writer.append("<file-wrapper");
+            writer.append(" ng-model=\"" + modelExdr.expandString(context));
+            writer.append("\">");
+            writer.append("</file-wrapper>");
         }
 
         @Override
