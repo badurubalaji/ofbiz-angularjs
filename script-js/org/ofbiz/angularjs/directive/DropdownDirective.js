@@ -26,7 +26,7 @@ function DropdownDirective($compile, HttpService, $rootScope, $http, ScopeUtil) 
         var defaultValue = null;
 
         if (!_.isEmpty($attrs.dependentParameterNames)) {
-            dependentParameterNames = $attrs.dependentParameterNames.split(",");
+            dependentParameterNames = $attrs.dependentParameterNames.replace(" ", "").split(",");
         }
 
         if (!_.isEmpty($attrs.defaultValue)) { // There is default value;

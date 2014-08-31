@@ -20,7 +20,7 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
         var placeholder = $attrs.placeholder;
 
         if (!_.isEmpty($attrs.dependentParameterNames)) {
-            dependentParameterNames = $attrs.dependentParameterNames.split(",");
+            dependentParameterNames = $attrs.dependentParameterNames.replace(" ", "").split(",");
         }
 
         $scope.$watch("ngModel", function(newVal, oldVal) {
