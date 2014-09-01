@@ -20,11 +20,7 @@ function FormDemoController($scope) {
 
     $scope.reset();
 
-    $scope.onSubmitSuccess = function(event, data, status, headers, config) {
+    $scope.onSubmit = function(event, data, status, headers, config) {
         $scope.user = {};
-    }
-
-    $scope.onSubmitError = function(event, data, status, headers, config) {
-        console.log("error: " + angular.toJson(data));
     }
 }

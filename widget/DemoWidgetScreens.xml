@@ -138,7 +138,7 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.FormDemoController">
-                    <form name="form" target="createExample.json" on-submit-success="onSubmitSuccess" on-submit-error="onSubmitError">
+                    <form type="horizontal" on-submit="onSubmit()">
                         <label text="Name: "/><text name="name" model="user.name"/>
                         <line-break/>
                         <label text="Email: "/><text type="email" name="email" model="user.email"/>
