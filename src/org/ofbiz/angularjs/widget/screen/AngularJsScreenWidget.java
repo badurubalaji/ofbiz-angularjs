@@ -1686,6 +1686,10 @@ public class AngularJsScreenWidget {
                     + descriptionFieldNameExdr.expandString(context)
                     + "\" field-name=\"" + fieldNameExdr.expandString(context)
                     + "\"");
+            if (UtilValidate.isNotEmpty(placeholderExdr.getOriginal())) {
+                writer.append(" placeholder=\""
+                        + placeholderExdr.expandString(context) + "\"");
+            }
             if (UtilValidate.isNotEmpty(parametersExdr.getOriginal())) {
                 writer.append(" parameters=\""
                         + parametersExdr.expandString(context) + "\"");
