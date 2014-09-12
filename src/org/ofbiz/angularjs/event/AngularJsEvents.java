@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
@@ -62,10 +63,10 @@ import org.ofbiz.base.util.UtilGenerics;
 import org.ofbiz.base.util.UtilValidate;
 
 public class AngularJsEvents {
-    
+
     public final static String module = AngularJsEvents.class.getName();
     public final static String NG_APPS_INIT_PATH = "/WEB-INF/ng-apps.xml";
-    
+
     private static String checkPath(String path, boolean fullPath,
             HttpServletRequest request) {
         String checkedPath = null;
@@ -80,11 +81,11 @@ public class AngularJsEvents {
         }
         return checkedPath;
     }
-    
+
     private static void buildJsClasses(List<File> files, StringBuilder builder)
             throws IOException {
         JavaScriptFactory.clear();
-        
+
         Context context = Context.enter();
         for (File file : files) {
             String packageName = null;
@@ -95,7 +96,7 @@ public class AngularJsEvents {
                     BufferedReader reader = new BufferedReader(new FileReader(
                             file));
                     String packageLine = reader.readLine();
-                    
+
                     // find package name
                     Pattern packagePattern = Pattern
                             .compile(".*?package.*?(.*?);");
@@ -104,7 +105,7 @@ public class AngularJsEvents {
                     while (packageMatcher.find()) {
                         packageName = packageMatcher.group(1).trim();
                     }
-                    
+
                     context.evaluateReader(scope, reader, null, 2, null);
                     className = file.getName().replace(".js", "").trim();
                     Function classFunction = (Function) scope.get(className,
@@ -118,26 +119,26 @@ public class AngularJsEvents {
             }
         }
         Context.exit();
-        
+
         JavaScriptRenderer renderer = new JavaScriptRenderer(builder);
         renderer.render(JavaScriptFactory.getRootJavaScriptPackages());
     }
-    
+
     private static void buildCombindAllModule(StringBuilder builder) {
         builder.append("\nangular.module('combine.all', [");
-        
+
         // modules
         List<String> moduleNames = new LinkedList<String>();
         for (ModelNgModule modelModule : NgModelDispatcherContext
                 .getAllModelNgModules()) {
             moduleNames.add("'" + modelModule.name + "'");
         }
-        
+
         if (UtilValidate.isNotEmpty(moduleNames)) {
             builder.append(StringUtil.join(moduleNames, ","));
         }
         builder.append("])\n");
-        
+
         // directives
         String emptyJsFunction = "function() {}";
         for (ModelNgDirective modelNgDirective : NgModelDispatcherContext
@@ -149,21 +150,21 @@ public class AngularJsEvents {
             builder.append(".directive('" + modelNgDirective.name + "', "
                     + directiveJsFunction + ")\n");
         }
-        
+
         // filters
         for (ModelNgFilter modelNgFilter : NgModelDispatcherContext
                 .getAllModelNgFilters()) {
             builder.append(".filter('" + modelNgFilter.name + "', "
                     + modelNgFilter.location + ")\n");
         }
-        
+
         // services
         for (ModelNgService modelNgService : NgModelDispatcherContext
                 .getAllModelNgServices()) {
             builder.append(".service('" + modelNgService.name + "', "
                     + modelNgService.location + ")\n");
         }
-        
+
         // providers
         for (ModelNgProvider modelNgProvider : NgModelDispatcherContext
                 .getAllModelNgProviders()) {
@@ -171,47 +172,47 @@ public class AngularJsEvents {
                     + modelNgProvider.location + "." + modelNgProvider.invoke
                     + ")\n");
         }
-        
+
         // factories
         for (ModelNgFactory modelNgFactory : NgModelDispatcherContext
                 .getAllModelNgFactories()) {
             builder.append(".factory('" + modelNgFactory.name + "', "
                     + modelNgFactory.location + ")\n");
         }
-        
+
         builder.append(";");
     }
-    
+
     private static void buildAppJsFunction(String name, String defaultState,
             boolean disableAutoScrolling,
             List<? extends ModelNgState> modelNgStates, StringBuilder builder) {
         builder.append("\nangular.module('" + name + "', ['combine.all'])");
-        
+
         builder.append(".config(function($stateProvider, $urlRouterProvider, $anchorScrollProvider) {\n");
-        
+
         String defaultUrl = "";
         List<String> defaultStateTokens = StringUtil.split(defaultState, ".");
-        
+
         // states
         StringBuilder stateBuilder = new StringBuilder();
         if (UtilValidate.isNotEmpty(modelNgStates)) {
             stateBuilder.append("\n$stateProvider");
             for (ModelNgState modelNgState : modelNgStates) {
-                
+
                 // append default URL
                 String defaultStateTokenTail = "";
                 for (String defaultStateToken : defaultStateTokens) {
                     defaultStateTokenTail += defaultStateToken;
-                    
+
                     if (UtilValidate.isNotEmpty(defaultStateTokenTail)
                             && defaultStateTokenTail.equals(modelNgState.name)) {
                         defaultUrl += modelNgState.url;
                         break;
                     }
-                    
+
                     defaultStateTokenTail += ".";
                 }
-                
+
                 stateBuilder.append("\n//- State[" + modelNgState.name
                         + "] is abstract[" + modelNgState.isAbstract
                         + "] with URL[" + modelNgState.url + "]\n");
@@ -220,7 +221,7 @@ public class AngularJsEvents {
                         + ",");
                 stateBuilder.append("url: \"" + modelNgState.url + "\",");
                 stateBuilder.append("views: {");
-                
+
                 List<String> viewDefs = new LinkedList<String>();
                 for (ModelNgView modelNgView : modelNgState.getModelNgViews()) {
                     stateBuilder.append("\n//-- View[" + modelNgView.name
@@ -232,11 +233,11 @@ public class AngularJsEvents {
                             + "\", controller: " + modelNgView.controller + "}");
                 }
                 stateBuilder.append(StringUtil.join(viewDefs, ","));
-                
+
                 stateBuilder.append("}})");
             }
         }
-        
+
         // default path (One page can have only one default path)
         if (UtilValidate.isNotEmpty(defaultUrl)) {
             builder.append("//- Default URL[" + defaultUrl + "] of state["
@@ -244,26 +245,26 @@ public class AngularJsEvents {
             builder.append("\n$urlRouterProvider.otherwise(\"" + defaultUrl
                     + "\");");
         }
-        
+
         builder.append(stateBuilder);
         builder.append(";");
-        
+
         builder.append("})\n");
-        
+
         // disable auto scrolling
         if (disableAutoScrolling) {
             builder.append(".value('$anchorScroll', angular.noop)");
         }
-        
+
         // run
         builder.append("\n.run(function($rootScope, $state, $stateParams) {");
         builder.append("$rootScope.$state = $state;");
         builder.append("$rootScope.$stateParams = $stateParams;");
         builder.append("})");
-        
+
         builder.append(";");
     }
-    
+
     private static String createDirectiveJsFunction(
             ModelNgDirective modelNgDirective) {
         JavaScriptClass javaScriptClass = JavaScriptFactory
@@ -298,7 +299,7 @@ public class AngularJsEvents {
                 objectBuilder.append(modelNgDirective.name + ".restrict = \""
                         + modelNgDirective.restrict + "\";");
             }
-            
+
             StringBuilder builder = new StringBuilder();
             builder.append("function("
                     + javaScriptClass.getConstructorArgument() + ") {");
@@ -310,12 +311,12 @@ public class AngularJsEvents {
             return "";
         }
     }
-    
+
     public static String buildMainJs(HttpServletRequest request,
             HttpServletResponse response) {
-        
+
         StringBuilder builder = new StringBuilder();
-        
+
         try {
             synchronized (AngularJsEvents.class) {
                 // classes
@@ -334,20 +335,20 @@ public class AngularJsEvents {
                 }
                 buildJsClasses(classFiles, builder);
             }
-            
+
             // require
             builder.append("require.config({");
             builder.append("\nbaseUrl: \"/angularjs/control\",");
             builder.append("\nwaitSeconds: 15,");
             builder.append("\n});");
             builder.append("\nrequire([\n");
-            
+
             // modules
             List<ModelNgModule> ngModules = NgModelDispatcherContext
                     .getAllModelNgModules();
             List<String> moduleJsPaths = new LinkedList<String>();
             List<String> javaScriptPaths = new LinkedList<String>();
-            
+
             for (ModelNgModule ngModule : ngModules) {
                 String modulePath = checkPath(ngModule.location, false, request);
                 for (ModelJavaScript modelJavaScript : ngModule.modelJavaScripts) {
@@ -357,25 +358,25 @@ public class AngularJsEvents {
                 }
                 moduleJsPaths.add("\n'" + modulePath + "'");
             }
-            
+
             String moduleJsList = StringUtil.join(moduleJsPaths, ",");
             String javaScriptJsList = StringUtil.join(javaScriptPaths, ",");
-            
+
             builder.append(moduleJsList);
             builder.append("], function() {");
-            
+
             builder.append("\nrequire([\n");
             builder.append(javaScriptJsList);
             builder.append("\n], function() {");
-            
+
             buildCombindAllModule(builder);
-            
+
             builder.append("/*\n");
             builder.append("*\n");
             builder.append("* ============== Applications =================");
             builder.append("*\n");
             builder.append("*/\n");
-            
+
             // apps
             for (ModelNgApplication modelNgApplication : NgModelDispatcherContext
                     .getAllModelNgApplications()) {
@@ -389,7 +390,7 @@ public class AngularJsEvents {
                         modelNgApplication.disableAutoScrolling,
                         modelNgApplication.getModelNgStates(), builder);
             }
-            
+
             // bootstrap
             for (ModelNgApplication modelNgApplication : NgModelDispatcherContext
                     .getAllModelNgApplications()) {
@@ -402,17 +403,17 @@ public class AngularJsEvents {
                         + modelNgApplication.name + "']);");
                 builder.append("\n}");
             }
-            
+
             builder.append("\n});");
-            
+
             builder.append("\n});");
-            
+
             // return the JavaScript String
             String javaScriptString = builder.toString();
             response.setContentType("application/x-javascript; charset=UTF-8");
-            
+
             response.setContentLength(javaScriptString.getBytes("UTF8").length);
-            
+
             Writer out;
             try {
                 out = response.getWriter();
@@ -426,10 +427,10 @@ public class AngularJsEvents {
         } catch (IOException e) {
             Debug.logError(e, "Problems with IO.", module);
         }
-        
+
         return "success";
     }
-    
+
     public static String error(HttpServletRequest request,
             HttpServletResponse response) {
         List<String> responseMessageList = new LinkedList<String>();
@@ -438,18 +439,18 @@ public class AngularJsEvents {
         List<String> errorMessageList = UtilGenerics.cast(request
                 .getAttribute("_ERROR_MESSAGE_LIST_"));
         if (UtilValidate.isNotEmpty(errorMessage)) {
-            responseMessageList.add(errorMessage);
+            responseMessageList.add(StringEscapeUtils.unescapeHtml(errorMessage));
         }
         if (UtilValidate.isNotEmpty(errorMessageList)) {
             responseMessageList.addAll(errorMessageList);
         }
-        
+
         Map<String, Object> results = new HashMap<String, Object>();
         results.put("_ERROR_MESSAGE_LIST_", responseMessageList);
-        
+
         JSONObject jsonObject = JSONObject.fromObject(results);
         String jsonStr = jsonObject.toString();
-        
+
         // set the X-JSON content type
         response.setContentType("application/x-json");
         // jsonStr.length is not reliable for unicode characters
@@ -458,7 +459,7 @@ public class AngularJsEvents {
         } catch (UnsupportedEncodingException e) {
             Debug.logError("Problems with Json encoding: " + e, module);
         }
-        
+
         // return the JSON String
         Writer out;
         try {
@@ -468,7 +469,7 @@ public class AngularJsEvents {
         } catch (IOException e) {
             Debug.logError(e, module);
         }
-        
+
         return "success";
     }
 }

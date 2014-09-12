@@ -1,0 +1,31 @@
+Index: framework/webapp/src/org/ofbiz/webapp/control/ControlServlet.java
+===================================================================
+--- framework/webapp/src/org/ofbiz/webapp/control/ControlServlet.java	(revision 1624055)
++++ framework/webapp/src/org/ofbiz/webapp/control/ControlServlet.java	(working copy)
+@@ -185,7 +185,7 @@
+         request.setAttribute("security", security);
+ 
+         request.setAttribute("_REQUEST_HANDLER_", requestHandler);
+-        
++
+         // setup some things that should always be there
+         UtilHttp.setInitialRequestInfo(request);
+         VisitHandler.getVisitor(request, response);
+@@ -238,7 +238,7 @@
+         if (errorPage != null) {
+             Debug.logError("An error occurred, going to the errorPage: " + errorPage, module);
+ 
+-            RequestDispatcher rd = request.getRequestDispatcher(errorPage);
++            RequestDispatcher rd = request.getRequestDispatcher("error");
+ 
+             // use this request parameter to avoid infinite looping on errors in the error page...
+             if (request.getAttribute("_ERROR_OCCURRED_") == null && rd != null) {
+@@ -247,7 +247,7 @@
+ 
+                 // NOTE DEJ20070727 after having trouble with all of these, try to get the page out and as a last resort just send something back
+                 try {
+-                    rd.include(request, response);
++                    rd.forward(request, response);
+                 } catch (Throwable t) {
+                     Debug.logWarning("Error while trying to send error page using rd.include (will try response.getOutputStream or response.getWriter): " + t.toString(), module);
+ 

@@ -11,7 +11,7 @@ package org.ofbiz.angularjs.directive;
  * @param $http
  * @param ScopeUtil
  */
-function DropdownDirective($compile, HttpService, $rootScope, $http, ScopeUtil) {
+function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) {
 
     /**
      * Link
@@ -94,7 +94,8 @@ function DropdownDirective($compile, HttpService, $rootScope, $http, ScopeUtil) 
             }
 
             if (isValidDependency(parameters)) {
-                HttpService.post(target, parameters).success(function (response) {
+                FormService.post(target, parameters).success(function (response) {
+                    console.log("success");
                     var defaultOption = null;
                     var options = response.options;
                     if (options) {
@@ -125,6 +126,8 @@ function DropdownDirective($compile, HttpService, $rootScope, $http, ScopeUtil) 
                             select2.select2("val", defaultOption);
                         }
                     }
+                }).error(function() {
+                    var select2 = $($element).select2($scope.select2Options);
                 });
             }
         }
