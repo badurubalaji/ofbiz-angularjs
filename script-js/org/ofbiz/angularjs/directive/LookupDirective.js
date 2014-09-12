@@ -145,6 +145,10 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
         $scope.$watchCollection("[defaultValue, parameters]", function(newValues, oldValues) {
             var defaultValue = newValues[0];
             var parameters = newValues[1];
+
+            if (parameters == null) {
+                parameters = {};
+            }
             if(!_.isEmpty(defaultValue)) {
                 var httpParams = _.clone(parameters);
                 httpParams.term = defaultValue;

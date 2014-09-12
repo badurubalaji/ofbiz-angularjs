@@ -1,7 +1,7 @@
 package org.ofbiz.angularjs.directive;
 /**
  * Tree Options Directive
- * 
+ *
  */
 function TreeOptionsDirective() {
 
@@ -10,26 +10,29 @@ function TreeOptionsDirective() {
         $attrs.treeId = id;
         var currentNodeKey = id + ".currentNode";
         $scope.$watch(currentNodeKey, function(newObj, oldObj) {
-            var currentNode = $scope[id]["currentNode"];
-            if( $scope[id] && angular.isObject(currentNode) ) {
-                // TODO fire event
-                console.log( currentNode );
+            var tree = $scope[id]
+            if (tree != null) {
+                var currentNode = tree["currentNode"];
+                if(angular.isObject(currentNode)) {
+                    // TODO fire event
+                    console.log( currentNode );
+                }
             }
         }, false);
     };
-    
+
     this.compile = function() {
         return {
             pre: function() {
-            
+
             },
             post: function() {
-            
+
             }
         };
     };
-    
+
     this.link = function() {
-    
+
     };
 }
