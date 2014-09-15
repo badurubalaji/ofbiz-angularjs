@@ -69,45 +69,50 @@ function FormService($q, $http, HttpService, $upload, appBusy) {
 
         appBusy.set();
 
-        //$files: an array of files selected, each file has name, size, and type.
-        for (var i = 0; i < files.length; i++) {
-          var file = files[i];
-          $upload.upload({
-            url: target, //upload.php script, node.js route, or servlet url
-            // method: POST or PUT,
-            // headers: {'headerKey': 'headerValue'},
-            // withCredentials: true,
-            data: parameters,
-            file: file,
-            // file: $files, //upload multiple files, this feature only works in HTML5 FromData browsers
-            /* set file formData name for 'Content-Desposition' header. Default: 'file' */
-            //fileFormDataName: myFile, //OR for HTML5 multiple upload only a list: ['name1', 'name2', ...]
-            /* customize how data is added to formData. See #40#issuecomment-28612000 for example */
-            //formDataAppender: function(formData, key, val){} //#40#issuecomment-28612000
-          }).progress(function(evt) {
-            if (progressFn != null) {
-                var percent = parseInt(100.0 * evt.loaded / evt.total);
-                progressFn(percent)
+        if (files != null) {
+            //$files: an array of files selected, each file has name, size, and type.
+            for (var i = 0; i < files.length; i++) {
+              var file = files[i];
+              $upload.upload({
+                url: target, //upload.php script, node.js route, or servlet url
+                // method: POST or PUT,
+                // headers: {'headerKey': 'headerValue'},
+                // withCredentials: true,
+                data: parameters,
+                file: file,
+                // file: $files, //upload multiple files, this feature only works in HTML5 FromData browsers
+                /* set file formData name for 'Content-Desposition' header. Default: 'file' */
+                //fileFormDataName: myFile, //OR for HTML5 multiple upload only a list: ['name1', 'name2', ...]
+                /* customize how data is added to formData. See #40#issuecomment-28612000 for example */
+                //formDataAppender: function(formData, key, val){} //#40#issuecomment-28612000
+              }).progress(function(evt) {
+                if (progressFn != null) {
+                    var percent = parseInt(100.0 * evt.loaded / evt.total);
+                    progressFn(percent)
+                }
+              })
+              .success(function(data, status, headers, config) {
+                  // file is uploaded successfully
+
+                  // not hide right away
+                  //appBusy.set(false);
+
+                  if (successFn != null) {
+                      successFn(data);
+                  }
+              })
+              .error(function(data, status, headers, config) {
+                  // file is uploaded fail
+                  appBusy.set(false);
+                  if (errorFn != null) {
+                      errorFn(data);
+                  }
+              });
+              //.then(success, error, progress);
             }
-          })
-          .success(function(data, status, headers, config) {
-              // file is uploaded successfully
-
-              // not hide right away
-              //appBusy.set(false);
-
-              if (successFn != null) {
-                  successFn(data);
-              }
-          })
-          .error(function(data, status, headers, config) {
-              // file is uploaded fail
-              appBusy.set(false);
-              if (errorFn != null) {
-                  errorFn(data);
-              }
-          });
-          //.then(success, error, progress);
+        } else {
+            console.warn("Could not found files to upload.");
+            appBusy.set(false);
         }
 
         return promise;
