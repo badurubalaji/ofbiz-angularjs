@@ -5,11 +5,5 @@ package org.ofbiz.angularjs.demo.controller;
  * @param $scope
  */
 function DateTimeDemoController($scope, DateTimeUtil) {
-    $scope.date = DateTimeUtil.getTime("2014-04-14 22:52:37.787");
-
-    $scope.$watch("date", function(newVal) {
-        if (newVal != null) {
-            $scope.timestamp = DateTimeUtil.toTimestamp(newVal);
-        }
-    });
+    $scope.date = "2014-04-14 22:52:37.787";
 }

@@ -753,16 +753,12 @@ public class AngularJsScreenWidget {
                 style = this.styleExdr.expandString(context);
             }
 
-            writer.append("<div class=\"ade-editable\" ade-date='{\"className\": \"" + style + "\", \"format\": \"" + format + "\", \"absolute\": true}' ng-model=\""
-                    + modelExdr.expandString(context)
-                    + "\">");
-            writer.append("{{" + modelExdr.expandString(context) + " | validDate:['" + format + "']}}");
-            writer.append("</div>");
+            writer.append("<date-time ng-model=\"" + modelExdr.expandString(context) + "\" style=\"" + style + "\" format=\"" + format + "\"/>");
         }
 
         @Override
         public String rawString() {
-            return "<input ade-editable/>";
+            return "<date-time/>";
         }
     }
 

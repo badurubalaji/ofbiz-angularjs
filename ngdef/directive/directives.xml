@@ -5,6 +5,9 @@
     <ng-directive name="currentTime" location="org.ofbiz.angularjs.directive.CurrentTimeDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="{}"/>
 
+    <ng-directive name="dateTime" location="org.ofbiz.angularjs.directive.DateTimeDirective"
+        priority="0" replace="false" transclude="false" restrict="E" scope="{ngModel:'='}"/>
+
     <ng-directive name="grid" location="org.ofbiz.angularjs.directive.GridDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="{selectParameters: '=', afterDataLoad: '&amp;', onRowDoubleClicked: '&amp;'}"/>
 
