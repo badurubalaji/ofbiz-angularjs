@@ -23,7 +23,19 @@ function DateTimeDirective($rootScope, $compile, DateTimeUtil) {
 
         $scope.$watch("seconds", function(newVal) {
             $scope.isCallback = true;
-            $scope.ngModel = DateTimeUtil.toTimestamp(newVal);
+            var dateSeconds = newVal;
+
+            // try to get current time
+            /*
+            var currentDate = new Date();
+            var seconds = currentDate.getSeconds();
+            var minutes = currentDate.getMinutes();
+            var hour = currentDate.getHours();
+            var timeSeconds = ((hour * 60 * 60) + (minutes * 60) + seconds);
+            */
+
+            var totalSeconds = dateSeconds;
+            $scope.ngModel = DateTimeUtil.toTimestamp(totalSeconds);
             if(!$scope.$$phase) {
                 try {
                     $scope.$apply();

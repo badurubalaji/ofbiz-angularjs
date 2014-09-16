@@ -19,6 +19,6 @@ function DateTimeUtil($rootScope, $filter) {
         } else {
             milliseconds = seconds * 1000;
         }
-        return $filter("date")(milliseconds, "yyyy-MM-dd HH:mm:ss");
+        return $filter("date")(milliseconds, "yyyy-MM-dd HH:mm:ss.sss");
     };
 }
