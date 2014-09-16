@@ -27,6 +27,12 @@
     </postprocessor>
     -->
 
+    <request-map uri="json">
+        <security direct-request="false"/>
+        <event type="java" path="org.ofbiz.angularjs.common.CommonEvents" invoke="jsonResponseFromRequestAttributes"/>
+        <response name="success" type="none"/>
+    </request-map>
+
     <!-- Login Request Mappings -->
     <request-map uri="login">
         <security https="true" auth="false"/>
