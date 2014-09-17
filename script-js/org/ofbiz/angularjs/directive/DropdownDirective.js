@@ -95,7 +95,6 @@ function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) 
 
             if (isValidDependency(parameters)) {
                 FormService.post(target, parameters).success(function (response) {
-                    console.log("success");
                     var defaultOption = null;
                     var options = response.options;
                     if (options) {
