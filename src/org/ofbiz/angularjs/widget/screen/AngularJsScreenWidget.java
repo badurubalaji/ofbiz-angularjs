@@ -1308,7 +1308,7 @@ public class AngularJsScreenWidget {
                     String title = UtilXml.elementAttribute(fieldElement,
                             "title", null);
                     String editable = UtilXml.elementAttribute(fieldElement,
-                            "editable", null);
+                            "editable", "false");
                     String headerCellTemplateUri = UtilXml.elementAttribute(
                             fieldElement, "header-cell-template-uri", null);
                     String cellTemplateUri = UtilXml.elementAttribute(
