@@ -1,0 +1,17 @@
+Index: webapp/angularjs/images/js/ade/date/date_directives.js
+===================================================================
+--- webapp/angularjs/images/js/ade/date/date_directives.js	(revision 328)
++++ webapp/angularjs/images/js/ade/date/date_directives.js	(working copy)
+@@ -35,7 +35,11 @@
+ 				element.context.value = dateStr;
+ 				if (controller !== undefined && controller !== null) controller.$setViewValue(dateStr);
+ 
+-				if (!scope.$$phase) scope.$digest();
++				if (!scope.$$phase) {
++					setTimeout(function() {
++						scope.$digest();
++					});
++				}
+ 			};
+ 
+ 			// called at the begining if there is pre-filled data that needs to be preset in the popup

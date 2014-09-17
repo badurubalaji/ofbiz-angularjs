@@ -1,6 +1,6 @@
 package org.ofbiz.angularjs.directive;
 
-function DateTimeDirective($rootScope, $compile, DateTimeUtil) {
+function DateTimeDirective($rootScope, $timeout, $compile, DateTimeUtil) {
 
     this.link = function($scope, $element, $attrs, controller) {
 
@@ -38,7 +38,9 @@ function DateTimeDirective($rootScope, $compile, DateTimeUtil) {
             $scope.ngModel = DateTimeUtil.toTimestamp(totalSeconds);
             if(!$scope.$$phase) {
                 try {
-                    $scope.$apply();
+                    $timeout(function() {
+                        $scope.$apply();
+                    });
                 } catch (e) {
                     // ignore Error: [$rootScope:inprog]
                 }

@@ -125,6 +125,8 @@ function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) 
                         if (defaultOption != null) {
                             select2.select2("val", defaultOption);
                         }
+                    } else {
+                        var select2 = $($element).select2($scope.select2Options);
                     }
                 }).error(function() {
                     var select2 = $($element).select2($scope.select2Options);
