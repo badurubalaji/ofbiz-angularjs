@@ -323,6 +323,7 @@ function GridDirective(HttpService, $timeout, $parse, $compile) {
             , showSelectionCheckbox: showSelectionCheckbox
             , checkboxHeaderTemplate: checkboxHeaderTemplate
             //, selectWithCheckboxOnly: true
+            , enableHighlighting: true
             , enableCellSelection: false
             , enableRowSelection: true
             , enableCellEditOnFocus: true
