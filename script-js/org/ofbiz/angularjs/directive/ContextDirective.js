@@ -8,7 +8,7 @@ function ContextDirective(HttpService) {
     /**
      * Controller
      */
-    this.controller = function($scope, $element, $attrs, $transclude) {
+    this.controller = function($scope, $element, $attrs, $transclude, $timeout) {
 
         function sendRequest() {
             if (!_.isEmpty(target)) {
@@ -18,6 +18,10 @@ function ContextDirective(HttpService) {
                     } else {
                         $scope.ngModel = response;
                     }
+
+                    $timeout(function() {
+                        $scope.$apply();
+                    });
                 });
             }
         }
@@ -32,6 +36,10 @@ function ContextDirective(HttpService) {
 
         $scope.$watch("ngModel", function(newValue) {
             $scope[$attrs.ngModel] = newValue;
+
+            $timeout(function() {
+                $scope.$apply();
+            });
         });
 
         $scope.$watch("parameters", function(newValue) {

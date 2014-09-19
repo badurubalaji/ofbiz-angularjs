@@ -2583,8 +2583,8 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<textarea name=\"" + this.name
-                    + "\" class=\"form-control "
+            writer.append("<textarea-wrapper name=\"" + this.name
+                    + "\" style=\""
                     + this.styleExdr.expandString(context) + "\"");
             if (UtilValidate.isNotEmpty(placeholderExdr.getOriginal())) {
                 writer.append(" placeholder=\""
@@ -2595,9 +2595,9 @@ public class AngularJsScreenWidget {
                         + this.modelExdr.expandString(context) + "\"");
             }
             if (Boolean.valueOf(visualEditorEnableExdr.expandString(context))) {
-                writer.append(" ui-tinymce");
+                writer.append(" visual-editor-enable=\"" + this.visualEditorEnableExdr.expandString(context) + "\"");
             }
-            writer.append("></textarea>");
+            writer.append("></textarea-wrapper>");
         }
 
         @Override

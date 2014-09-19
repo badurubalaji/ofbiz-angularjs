@@ -55,4 +55,7 @@
 
     <ng-directive name="commentsPanel" location="org.ofbiz.angularjs.directive.CommentsPanelDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="{contentId:'=', onCreateSuccess:'&amp;'}"/>
+
+    <ng-directive name="textareaWrapper" location="org.ofbiz.angularjs.directive.TextareaWrapperDirective"
+        priority="0" replace="false" transclude="false" restrict="E" scope="{ngModel:'='}"/>
 </ng-directives>
