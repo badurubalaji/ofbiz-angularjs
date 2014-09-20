@@ -1,5 +1,12 @@
 package org.ofbiz.angularjs.directive;
 
+/**
+ * http://stackoverflow.com/questions/20212813/ui-bootstrap-datepicker-is-open-not-working-in-modal
+ * @param $rootScope
+ * @param $timeout
+ * @param $compile
+ * @param DateTimeUtil
+ */
 function DateTimeDirective($rootScope, $timeout, $compile, DateTimeUtil) {
 
     this.link = function($scope, $element, $attrs, controller) {

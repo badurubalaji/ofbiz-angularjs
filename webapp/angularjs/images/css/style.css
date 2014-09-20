@@ -182,4 +182,4 @@ img {
   border-color: #bce8f1;
 }
 
-.ade-editable{margin:20px 0px 20px 0px; background-color: #eee; width:200px; height:20px; padding:3px; cursor:pointer; overflow:hidden; text-overflow:ellipsis;}
+.ade-editable{margin:0px 0px 0px 0px; background-color: #eee; width:200px; height:20px; padding:3px; cursor:pointer; overflow:hidden; text-overflow:ellipsis;}

@@ -35,7 +35,11 @@ angular.module('ADE').directive('adeCalpop', ['$filter', function($filter) {
 				element.context.value = dateStr;
 				if (controller !== undefined && controller !== null) controller.$setViewValue(dateStr);
 
-				if (!scope.$$phase) scope.$digest();
+				if (!scope.$$phase) {
+					setTimeout(function() {
+						scope.$digest();
+					});
+				}
 			};
 
 			// called at the begining if there is pre-filled data that needs to be preset in the popup
