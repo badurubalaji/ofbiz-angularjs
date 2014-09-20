@@ -58,4 +58,7 @@
 
     <ng-directive name="textareaWrapper" location="org.ofbiz.angularjs.directive.TextareaWrapperDirective"
         priority="0" replace="false" transclude="false" restrict="E" scope="{ngModel:'='}"/>
+
+    <ng-directive name="clickConfirmMessage" location="org.ofbiz.angularjs.directive.ClickConfirmMessageDirective"
+        priority="1" replace="false" transclude="false" restrict="A" scope="false"/>
 </ng-directives>

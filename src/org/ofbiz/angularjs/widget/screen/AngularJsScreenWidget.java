@@ -271,6 +271,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander textExdr;
         protected FlexibleStringExpander onClickExdr;
         protected FlexibleStringExpander styleExdr;
+        protected FlexibleStringExpander clickConfirmMessageExdr;
 
         public Button(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
@@ -280,6 +281,8 @@ public class AngularJsScreenWidget {
                     .getAttribute("on-click"));
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("style"));
+            this.clickConfirmMessageExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("click-confirm-message"));
         }
 
         @Override
@@ -299,8 +302,13 @@ public class AngularJsScreenWidget {
             }
 
             writer.append("<button " + classAttributeName + "=\"" + style
-                    + "\" ng-click=\"" + this.onClickExdr.expandString(context)
-                    + "\">" + this.textExdr.expandString(context) + "</button>");
+                    + "\" ng-click=\"" + this.onClickExdr.expandString(context) + "\"");
+
+            if (UtilValidate.isNotEmpty(clickConfirmMessageExdr.getOriginal())) {
+                writer.append(" click-confirm-message=\"" + clickConfirmMessageExdr.expandString(context) + "\"");
+            }
+
+            writer.append(">" + this.textExdr.expandString(context) + "</button>");
         }
 
         @Override
