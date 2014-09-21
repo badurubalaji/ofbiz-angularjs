@@ -1,0 +1,24 @@
+Index: webapp/angularjs/images/js/ade/date/bootstrap-datepicker.js
+===================================================================
+--- webapp/angularjs/images/js/ade/date/bootstrap-datepicker.js	(revision 335)
++++ webapp/angularjs/images/js/ade/date/bootstrap-datepicker.js	(working copy)
+@@ -177,7 +177,8 @@
+ 			var offset = this.component ? this.component.offset() : this.element.offset();
+ 			this.picker.css({
+ 				top: offset.top + this.height,
+-				left: offset.left
++				left: offset.left,
++				zIndex: 99999
+ 			});
+ 
+ 			//flip up top if off bottom of page
+@@ -188,7 +189,8 @@
+ 			if (pickerHeight - scroll > windowH) {
+ 				this.picker.css({
+ 					top: offset.top - this.picker[0].offsetHeight - 5,
+-					left: offset.left
++					left: offset.left,
++					zIndex: 99999
+ 				}).addClass("flipped");
+ 			} else {
+        	 	this.picker.removeClass("flipped");
