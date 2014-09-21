@@ -13,17 +13,28 @@ function DateTimeDirective($rootScope, $timeout, $compile, DateTimeUtil) {
 
         var style = $attrs.style;
         var format = $attrs.format;
+        var readOnly = $attrs.readOnly == "true";
 
         $scope.seconds = null;
 
-        var divElement = angular.element("<div class=\"ade-editable\" ade-date='{\"className\": \"" + style
-                + "\", \"format\": \"" + format + "\", \"absolute\": true}' ng-model=\"seconds\">{{seconds | validDate:['" + format + "']}}</div>");
+        var divElement = null;
+
+        if (readOnly) {
+            divElement = angular.element("<span>{{seconds | validDate:['" + format + "']}}</span>");
+        } else {
+          divElement = angular.element("<div class=\"ade-editable\" ade-date='{\"className\": \"" + style
+              + "\", \"format\": \"" + format + "\", \"absolute\": true}' ng-model=\"seconds\">{{seconds | validDate:['" + format + "']}}</div>");
+        }
+
         $element.html(divElement);
 
         $scope.$watch("ngModel", function(newVal) {
             if (newVal != null) {
                 if (!$scope.isCallback) {
                     $scope.seconds = DateTimeUtil.getTime(newVal);
+                    $timeout(function() {
+                        $scope.$apply();
+                    });
                 } else {
                     $scope.isCallback = false;
                 }

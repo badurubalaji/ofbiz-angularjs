@@ -729,6 +729,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander formatExdr = null;
         protected FlexibleStringExpander modelExdr = null;
         protected FlexibleStringExpander styleExdr = null;
+        protected FlexibleStringExpander readOnlyExdr = null;
 
         public DateTime(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
@@ -738,6 +739,8 @@ public class AngularJsScreenWidget {
                     .getAttribute("model"));
             this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("style"));
+            this.readOnlyExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("read-only"));
         }
 
         @Override
@@ -761,7 +764,7 @@ public class AngularJsScreenWidget {
                 style = this.styleExdr.expandString(context);
             }
 
-            writer.append("<date-time ng-model=\"" + modelExdr.expandString(context) + "\" style=\"" + style + "\" format=\"" + format + "\"/>");
+            writer.append("<date-time ng-model=\"" + modelExdr.expandString(context) + "\" style=\"" + style + "\" format=\"" + format + "\" read-only=\"" + readOnlyExdr.expandString(context) + "\"/>");
         }
 
         @Override
