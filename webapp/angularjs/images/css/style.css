@@ -21,6 +21,10 @@ body {
 /*padding-top: 60px;*/ /* 60px to make the container go all the way to the bottom of the topbar */
 }
 
+fieldset {
+    width: 100%;
+}
+
 h1, .h1 {
 font-size: 1.6em;
 font-weight: bold;
