@@ -1328,6 +1328,12 @@ public class AngularJsScreenWidget {
                             fieldElement, "editable-cell-template-uri", null);
                     String sortDirection = UtilXml.elementAttribute(
                             fieldElement, "sort-direction", null);
+                    String sortable = UtilXml.elementAttribute(
+                            fieldElement, "sortable", null);
+
+                    if (UtilValidate.isEmpty(sortable)) {
+                        sortable = "false";
+                    }
 
                     fieldsBuilder.append("name:'" + name + "'");
                     if (UtilValidate.isNotEmpty(fieldName)) {
@@ -1353,6 +1359,7 @@ public class AngularJsScreenWidget {
                         fieldsBuilder.append(",editableCellTemplate:'"
                                 + editableCellTemplateUri + "'");
                     }
+                    fieldsBuilder.append(",sortable:" + sortable + "");
 
                     fieldsBuilder.append("},");
 
