@@ -158,7 +158,7 @@ function JitTreeDirective($compile) {
                         node.eachSubnode(function(n) { count++; });
                         //assign a node color based on
                         //how many children it has
-                        node.data.$color = ['#aaa', '#baa', '#caa', '#daa', '#eaa', '#faa'][count];
+                        node.data.$color = ['#aaa', '#C00000', '#C00000', '#C00000', '#C00000', '#C00000', '#C00000', '#C00000', '#C00000', '#C00000', '#C00000'][count];
                     }
                 }
             },
