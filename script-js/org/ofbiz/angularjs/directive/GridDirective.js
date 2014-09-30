@@ -327,7 +327,7 @@ function GridDirective(HttpService, $timeout, $parse, $compile) {
             , enableCellSelection: false
             , enableRowSelection: true
             , enableCellEditOnFocus: true
-            , enablePinning: true
+            , enablePinning: false
             , useExternalSorting: true
             , columnDefs: adjustColumnDefs(columnDefs)
             , init:function(grid,$scope) {
