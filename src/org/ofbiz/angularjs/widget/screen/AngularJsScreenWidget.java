@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.ofbiz.base.util.BshUtil;
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.GeneralException;
@@ -1335,6 +1336,22 @@ public class AngularJsScreenWidget {
                         sortable = "false";
                     }
 
+                    String cellTemplate = null;
+
+                    // read field sub-widgets
+                    Appendable fieldWidgetWriter = new StringWriter();
+                    List<? extends Element> subElementList = UtilXml
+                            .childElementList(fieldElement);
+                    if (UtilValidate.isNotEmpty(subElementList)) {
+                        List<ModelScreenWidget> subWidgets = ModelScreenWidget
+                                .readSubWidgets(this.modelScreen, subElementList);
+                        renderSubWidgetsString(subWidgets, fieldWidgetWriter, context,
+                                screenStringRenderer);
+                        cellTemplate = StringEscapeUtils.escapeHtml(fieldWidgetWriter.toString());
+                    } else if (UtilValidate.isNotEmpty(cellTemplateUri)) {
+                        cellTemplate = cellTemplateUri;
+                    }
+
                     fieldsBuilder.append("name:'" + name + "'");
                     if (UtilValidate.isNotEmpty(fieldName)) {
                         fieldsBuilder.append(",field:'" + fieldName + "'");
@@ -1351,9 +1368,10 @@ public class AngularJsScreenWidget {
                         fieldsBuilder.append(",headerCellTemplate:'"
                                 + headerCellTemplateUri + "'");
                     }
-                    if (UtilValidate.isNotEmpty(cellTemplateUri)) {
+
+                    if (UtilValidate.isNotEmpty(cellTemplate)) {
                         fieldsBuilder.append(",cellTemplate:'"
-                                + cellTemplateUri + "'");
+                                + cellTemplate + "'");
                     }
                     if (UtilValidate.isNotEmpty(editableCellTemplateUri)) {
                         fieldsBuilder.append(",editableCellTemplate:'"
