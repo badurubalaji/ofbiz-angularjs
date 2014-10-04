@@ -20,6 +20,17 @@ function GridDirective(HttpService, $timeout, $parse, $compile) {
         var checkboxHeaderTemplate = null;
         var sortInfo = null;
 
+        _.each(columnDefs, function(columnDef) {
+            if (!_.isEmpty(columnDef.controller)) {
+                // add ng-controller to the field template
+                var ngControllerElement = angular.element("<div></div>");
+                ngControllerElement.attr("ng-controller", columnDef.controller);
+                var cellTemplateElement = angular.element(columnDef.cellTemplate);
+                ngControllerElement.append(cellTemplateElement);
+                columnDef.cellTemplate = ngControllerElement[0].outerHTML;
+            }
+        });
+
         $scope.$watch("selectParameters", function (newVal, oldVal) {
             onParametersChanged({parameters: newVal});
         });

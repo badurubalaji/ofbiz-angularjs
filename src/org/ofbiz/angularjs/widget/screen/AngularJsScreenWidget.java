@@ -1331,6 +1331,8 @@ public class AngularJsScreenWidget {
                             fieldElement, "sort-direction", null);
                     String sortable = UtilXml.elementAttribute(
                             fieldElement, "sortable", null);
+                    String controller = UtilXml.elementAttribute(
+                            fieldElement, "controller", null);
 
                     if (UtilValidate.isEmpty(sortable)) {
                         sortable = "false";
@@ -1378,6 +1380,9 @@ public class AngularJsScreenWidget {
                                 + editableCellTemplateUri + "'");
                     }
                     fieldsBuilder.append(",sortable:" + sortable + "");
+                    if (UtilValidate.isNotEmpty(controller)) {
+                        fieldsBuilder.append(",controller:'" + controller + "'");
+                    }
 
                     fieldsBuilder.append("},");
 
