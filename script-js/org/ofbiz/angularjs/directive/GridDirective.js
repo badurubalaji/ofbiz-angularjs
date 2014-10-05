@@ -31,7 +31,7 @@ function GridDirective(HttpService, $timeout, $parse, $compile, $state) {
                     var viewNames = _.keys($state.current.views);
 
                     //TODO find out view index (it cannot alway be 0)
-                    controller = $state.current.views[viewNames[0]].controller;
+                    controller = $state.current.views[viewNames[0]].controllerClassName;
                 }
 
                 // add ng-controller to the field template
