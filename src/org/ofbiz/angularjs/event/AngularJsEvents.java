@@ -230,7 +230,8 @@ public class AngularJsEvents {
                             + "]\n");
                     viewDefs.add("\"" + modelNgView.name
                             + "\": { templateUrl: \"" + modelNgView.target
-                            + "\", controller: " + modelNgView.controller + "}");
+                            + "\", controller: \"" + modelNgView.controller
+                            + "\"}");
                 }
                 stateBuilder.append(StringUtil.join(viewDefs, ","));
 

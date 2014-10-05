@@ -4,7 +4,7 @@ package org.ofbiz.angularjs.directive;
  * Grid Directive
  *
  */
-function GridDirective(HttpService, $timeout, $parse, $compile) {
+function GridDirective(HttpService, $timeout, $parse, $compile, $state) {
 
     this.link = function($scope, $element, $attrs, controller) {
         var selectedItemsSetter = $parse($attrs.selectedItems).assign;
@@ -21,10 +21,22 @@ function GridDirective(HttpService, $timeout, $parse, $compile) {
         var sortInfo = null;
 
         _.each(columnDefs, function(columnDef) {
-            if (!_.isEmpty(columnDef.controller)) {
+
+            if (!_.isEmpty(columnDef.cellTemplate)) {
+                var controller = null;
+
+                if (!_.isEmpty(columnDef.controller)) {
+                    controller = columnDef.controller;
+                } else {
+                    var viewNames = _.keys($state.current.views);
+
+                    //TODO find out view index (it cannot alway be 0)
+                    controller = $state.current.views[viewNames[0]].controller;
+                }
+
                 // add ng-controller to the field template
                 var ngControllerElement = angular.element("<div></div>");
-                ngControllerElement.attr("ng-controller", columnDef.controller);
+                ngControllerElement.attr("ng-controller", controller);
                 var cellTemplateElement = angular.element(columnDef.cellTemplate);
                 ngControllerElement.append(cellTemplateElement);
                 columnDef.cellTemplate = ngControllerElement[0].outerHTML;
