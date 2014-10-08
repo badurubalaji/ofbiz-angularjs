@@ -19,12 +19,16 @@ function DateTimeDirective($rootScope, $timeout, $compile, DateTimeUtil) {
 
         var divElement = null;
 
+        var adeReadonly = 0;
+        var adeEditableStyle = "";
+
         if (readOnly) {
-            divElement = angular.element("<span>{{seconds | validDate:['" + format + "']}}</span>");
+            adeReadonly = 1;
         } else {
-          divElement = angular.element("<div class=\"ade-editable\" ade-date='{\"className\": \"" + style
-              + "\", \"format\": \"" + format + "\", \"absolute\": true}' ng-model=\"seconds\">{{seconds | validDate:['" + format + "']}}</div>");
+        	adeEditableStyle = "ade-editable"
         }
+
+        divElement = angular.element("<div class=\"" + adeEditableStyle + " " + style + "\" ade-date=\"" + format + "\" ade-class=\"input-large\" ng-model=\"seconds\" ade-readonly=\"" + adeReadonly + "\"></div>");
 
         $element.html(divElement);
 

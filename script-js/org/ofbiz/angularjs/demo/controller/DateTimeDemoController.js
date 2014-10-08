@@ -6,4 +6,5 @@ package org.ofbiz.angularjs.demo.controller;
  */
 function DateTimeDemoController($scope, DateTimeUtil) {
     $scope.date = "2014-04-14 22:52:37.787";
+    $scope.getExampleParameters = {exampleId: "EX01"};
 }
