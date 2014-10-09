@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.ofbiz.base.util.BshUtil;
 import org.ofbiz.base.util.Debug;
@@ -978,7 +979,6 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander titleExdr;
         protected FlexibleStringExpander useWhenExdr;
         protected FlexibleStringExpander helpTextExdr;
-        protected FlexibleStringExpander nameExdr;
         protected FlexibleStringExpander requiredFieldExdr;
         protected List<ModelScreenWidget> subWidgets;
 
@@ -993,8 +993,6 @@ public class AngularJsScreenWidget {
                     .getAttribute("use-when"));
             this.helpTextExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("help-text"));
-            this.nameExdr = FlexibleStringExpander
-                    .getInstance(widgetElement.getAttribute("name"));
             this.requiredFieldExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("required-field"));
             this.subWidgets = ModelScreenWidget.readSubWidgets(
@@ -1015,8 +1013,11 @@ public class AngularJsScreenWidget {
         }
 
         public static boolean getIsRequired(Map<String, Object> context) {
-            boolean isFieldRequired = (Boolean)context.get("_IS_FIELD_REQUIRED_");
-            return isFieldRequired;
+            Object isFieldRequired = context.get("_IS_FIELD_REQUIRED_");
+            if (UtilValidate.isNotEmpty(isFieldRequired)) {
+                return (Boolean) isFieldRequired;
+            }
+            return false;
         }
 
         public static void setIsRequired(boolean isRequired, Map<String, Object> context) {
@@ -1074,9 +1075,9 @@ public class AngularJsScreenWidget {
 
             if (usewhen) {
 
-                if (UtilValidate.isNotEmpty(nameExdr.getOriginal())) {
-                    Field.setFieldName(nameExdr.expandString(context), context);
-                }
+                String name = "Field_" + System.currentTimeMillis() + "_" + RandomStringUtils.randomAlphabetic(10);
+
+                Field.setFieldName(name, context);
 
                 if (UtilValidate.isNotEmpty(requiredFieldExdr.getOriginal())) {
                     boolean requiredField = Boolean.valueOf(requiredFieldExdr.expandString(context));
@@ -1175,7 +1176,7 @@ public class AngularJsScreenWidget {
             if (UtilValidate.isNotEmpty(nameExdr.getOriginal())) {
                 name = nameExdr.expandString(context);
             } else {
-                name = "Form_" + System.currentTimeMillis();
+                name = "Form_" + System.currentTimeMillis() + "_" + RandomStringUtils.randomAlphabetic(10);
             }
 
             AngularJsScreenWidget.Form.setFormName(name, context);
@@ -3008,8 +3009,8 @@ public class AngularJsScreenWidget {
                 String formName = AngularJsScreenWidget.Form.getFormName(context);
                 String fieldName = Field.getFieldName(context);
 
-                writer.append("<div class=\"error-container\"");
-                writer.append(" ng-show=\"" + formName + "." + fieldName + ".$dirty && " + formName + "." + fieldName + ".$invalid && " + formName + ".submitted\">");
+                writer.append("<div class=\"validate-error-container\"");
+                writer.append(" ng-show=\"" + formName + "." + fieldName + ".$invalid && " + formName + ".submitted\">");
 
                 for (Element errorElement : errorElements) {
                     String type = UtilXml.elementAttribute(errorElement, "type", "");
@@ -3023,10 +3024,6 @@ public class AngularJsScreenWidget {
 
                 writer.append("</div>");
             }
-
-            AngularJsScreenWidget.Form.clearFormName(context);
-            Field.clearFieldName(context);
-            Field.clearIsRequired(context);
         }
 
         @Override

@@ -187,3 +187,7 @@ img {
 }
 
 .ade-editable{margin:0px 0px 0px 0px; background-color: #eee; width:200px; height:20px; padding:3px; cursor:pointer; overflow:hidden; text-overflow:ellipsis;}
+
+.validate-error-container {
+    color: #bb1f34;
+}

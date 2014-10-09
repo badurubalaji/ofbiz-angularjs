@@ -139,12 +139,20 @@
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.FormDemoController">
                     <form type="horizontal" on-submit="onSubmit()">
-                        <field name="name" title="Name: " required-field="true">
-                            <text minlength="3" maxlength="20"/>
+                        <field title="First Name: " required-field="true">
+                            <text model="firstName" minlength="3" maxlength="20"/>
                             <validate>
-                                <error type="required" message="Your name is required."/>
-                                <error type="minlength" message="Your name is required to be at least 3 characters."/>
-                                <error type="maxlength" message="Your name cannot be longer than 20 characters"/>
+                                <error type="required" message="Your first name is required."/>
+                                <error type="minlength" message="Your first name is required to be at least 3 characters."/>
+                                <error type="maxlength" message="Your first name cannot be longer than 20 characters"/>
+                            </validate>
+                        </field>
+                        <field title="Last Name: " required-field="true">
+                            <text model="lastName" minlength="3" maxlength="20"/>
+                            <validate>
+                                <error type="required" message="Your last name is required."/>
+                                <error type="minlength" message="Your last name is required to be at least 3 characters."/>
+                                <error type="maxlength" message="Your last name cannot be longer than 20 characters"/>
                             </validate>
                         </field>
                         <field>
