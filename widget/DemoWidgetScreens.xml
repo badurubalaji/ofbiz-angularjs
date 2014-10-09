@@ -139,30 +139,16 @@
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.FormDemoController">
                     <form type="horizontal" on-submit="onSubmit()">
-                        <label text="Name: "/><text name="name" model="user.name"/>
-                        <line-break/>
-                        <label text="Email: "/><text type="email" name="email" model="user.email"/>
-                        <line-break/>
-                        <label text="Gender: "/>
-                        <radio model="user.gender" value="mail" text="mail"/>
-                        <radio model="user.gender" value="femail" text="femail"/>
-                        <line-break/>
-                        <button text="Reset" on-click="reset()"/>
-                        <button text="Save" on-click="update(user)"/>
-                        <submit text="Submit"/>
-                    </form>
-                    <line-break/>
-                    <preformatted-text>form = {{user | json}}"</preformatted-text>
-                    <preformatted-text>master = {{master | json}}"</preformatted-text>
-                    <form type="horizontal" legend="This is a form">
-                        <field title="Title 1" help-text="Please input title 1.">
-                            <text/>
+                        <field name="name" title="Name: " required-field="true">
+                            <text minlength="3" maxlength="20"/>
+                            <validate>
+                                <error type="required" message="Your name is required."/>
+                                <error type="minlength" message="Your name is required to be at least 3 characters."/>
+                                <error type="maxlength" message="Your name cannot be longer than 20 characters"/>
+                            </validate>
                         </field>
-                        <field title="Title 2">
-                            <dropdown model="country" target="LookupGeo" parameters="lookupGeoParameters" field-name="geoId" description-field-name="geoName" default-value="ABW" placeholder="Choose Country"/>
-                        </field>
-                        <field title="Text area">
-                            <textarea/>
+                        <field>
+                            <submit text="Submit"/>
                         </field>
                     </form>
                 </controller>

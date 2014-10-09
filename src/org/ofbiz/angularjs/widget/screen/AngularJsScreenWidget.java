@@ -978,6 +978,8 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander titleExdr;
         protected FlexibleStringExpander useWhenExdr;
         protected FlexibleStringExpander helpTextExdr;
+        protected FlexibleStringExpander nameExdr;
+        protected FlexibleStringExpander requiredFieldExdr;
         protected List<ModelScreenWidget> subWidgets;
 
         public Field(ModelScreen modelScreen, Element widgetElement) {
@@ -991,8 +993,38 @@ public class AngularJsScreenWidget {
                     .getAttribute("use-when"));
             this.helpTextExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("help-text"));
+            this.nameExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("name"));
+            this.requiredFieldExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("required-field"));
             this.subWidgets = ModelScreenWidget.readSubWidgets(
                     this.modelScreen, subElementList);
+        }
+
+        public static String getFieldName(Map<String, Object> context) {
+            String fieldName = (String) context.get("_FIELD_NAME_");
+            return fieldName;
+        }
+
+        public static void setFieldName(String fieldName, Map<String, Object> context) {
+            context.put("_FIELD_NAME_", fieldName);
+        }
+
+        public static void clearFieldName(Map<String, Object> context) {
+            context.remove("_FIELD_NAME_");
+        }
+
+        public static boolean getIsRequired(Map<String, Object> context) {
+            boolean isFieldRequired = (Boolean)context.get("_IS_FIELD_REQUIRED_");
+            return isFieldRequired;
+        }
+
+        public static void setIsRequired(boolean isRequired, Map<String, Object> context) {
+            context.put("_IS_FIELD_REQUIRED_", isRequired);
+        }
+
+        public static void clearIsRequired(Map<String, Object> context) {
+            context.remove("_IS_FIELD_REQUIRED_");
         }
 
         @Override
@@ -1041,6 +1073,16 @@ public class AngularJsScreenWidget {
             }
 
             if (usewhen) {
+
+                if (UtilValidate.isNotEmpty(nameExdr.getOriginal())) {
+                    Field.setFieldName(nameExdr.expandString(context), context);
+                }
+
+                if (UtilValidate.isNotEmpty(requiredFieldExdr.getOriginal())) {
+                    boolean requiredField = Boolean.valueOf(requiredFieldExdr.expandString(context));
+                    Field.setIsRequired(requiredField, context);
+                }
+
                 writer.append(rawString());
                 if (UtilValidate.isNotEmpty(titleExdr.getOriginal())) {
                     writer.append("<label class=\"control-label\">"
@@ -1069,6 +1111,9 @@ public class AngularJsScreenWidget {
     /**
      * http://getbootstrap.com/css/#forms
      * http://www.w3resource.com/twitter-bootstrap/forms-tutorial.php
+     *
+     * validate
+     * http://www.ng-newsletter.com/posts/validations.html
      *
      * @author chatree
      *
@@ -1107,11 +1152,33 @@ public class AngularJsScreenWidget {
                     this.modelScreen, subElementList);
         }
 
+        public static String getFormName(Map<String, Object> context) {
+            String formName = (String) context.get("_FORM_NAME_");
+            return formName;
+        }
+
+        public static void setFormName(String formName, Map<String, Object> context) {
+            context.put("_FORM_NAME_", formName);
+        }
+
+        public static void clearFormName(Map<String, Object> context) {
+            context.remove("_FORM_NAME_");
+        }
+
         @Override
         public void renderWidgetString(Appendable writer,
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
+
+            String name = null;
+            if (UtilValidate.isNotEmpty(nameExdr.getOriginal())) {
+                name = nameExdr.expandString(context);
+            } else {
+                name = "Form_" + System.currentTimeMillis();
+            }
+
+            AngularJsScreenWidget.Form.setFormName(name, context);
 
             String formStyle = "form-" + typeExdr.expandString(context);
             boolean validated = Boolean.valueOf(validatedExdr
@@ -2550,6 +2617,10 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander modelExdr;
         protected FlexibleStringExpander styleExdr;
         protected FlexibleStringExpander placeholderExdr;
+        protected FlexibleStringExpander requiredFieldExdr;
+        protected FlexibleStringExpander requiredFieldStyleExdr;
+        protected FlexibleStringExpander maxlengthExdr;
+        protected FlexibleStringExpander minlengthExdr;
 
         public Text(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
@@ -2561,6 +2632,10 @@ public class AngularJsScreenWidget {
                     .getAttribute("style"));
             this.placeholderExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("placeholder"));
+            this.maxlengthExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("maxlength"));
+            this.minlengthExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("minlength"));
         }
 
         @Override
@@ -2572,9 +2647,14 @@ public class AngularJsScreenWidget {
             String model = modelExdr.expandString(context);
             String style = styleExdr.expandString(context);
             String placeholder = placeholderExdr.expandString(context);
+            String maxlength = maxlengthExdr.expandString(context);
+            String minlength = minlengthExdr.expandString(context);
+
             if (UtilValidate.isEmpty(type)) {
                 type = "text";
             }
+            String fieldName = Field.getFieldName(context);
+            boolean isRequire = Field.getIsRequired(context);
 
             writer.append("<input type=\"" + type + "\" class=\"form-control "
                     + style + "\"");
@@ -2583,6 +2663,18 @@ public class AngularJsScreenWidget {
             }
             if (UtilValidate.isNotEmpty(model)) {
                 writer.append(" ng-model=\"" + model + "\"");
+            }
+            if (UtilValidate.isNotEmpty(fieldName)) {
+                writer.append(" name=\"" + fieldName + "\"");
+            }
+            if (UtilValidate.isNotEmpty(maxlength)) {
+                writer.append(" ng-maxlength=" + maxlength);
+            }
+            if (UtilValidate.isNotEmpty(minlength)) {
+                writer.append(" ng-minlength=" + minlength);
+            }
+            if (isRequire) {
+                writer.append(" required");
             }
             writer.append("/>");
         }
@@ -2891,6 +2983,55 @@ public class AngularJsScreenWidget {
         @Override
         public String rawString() {
             return "<div ng-upload=\"\"></div>";
+        }
+    }
+
+    @SuppressWarnings("serial")
+    public static class Validate extends ModelScreenWidget {
+        public static final String TAG_NAME = "validate";
+
+        private List<? extends Element> errorElements = null;
+
+        public Validate(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+
+            errorElements = UtilXml.childElementList(widgetElement,
+                    "error");
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            if (UtilValidate.isNotEmpty(errorElements)) {
+                String formName = AngularJsScreenWidget.Form.getFormName(context);
+                String fieldName = Field.getFieldName(context);
+
+                writer.append("<div class=\"error-container\"");
+                writer.append(" ng-show=\"" + formName + "." + fieldName + ".$dirty && " + formName + "." + fieldName + ".$invalid && " + formName + ".submitted\">");
+
+                for (Element errorElement : errorElements) {
+                    String type = UtilXml.elementAttribute(errorElement, "type", "");
+                    String message = UtilXml.elementAttribute(errorElement, "message", "");
+
+                    writer.append("<small class=\"error\" ");
+                    writer.append("ng-show=\"" + formName + "." + fieldName + ".$error." + type + "\">");
+                    writer.append(message);
+                    writer.append("</small>");
+                }
+
+                writer.append("</div>");
+            }
+
+            AngularJsScreenWidget.Form.clearFormName(context);
+            Field.clearFieldName(context);
+            Field.clearIsRequired(context);
+        }
+
+        @Override
+        public String rawString() {
+            return "<validate/>";
         }
     }
 
