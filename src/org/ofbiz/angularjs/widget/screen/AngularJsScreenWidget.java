@@ -1196,7 +1196,7 @@ public class AngularJsScreenWidget {
                 writer.append("novalidate ");
             }
 
-            writer.append("ng-submit=\"" + onSubmitExdr.expandString(context)
+            writer.append("on-submit=\"" + onSubmitExdr.expandString(context)
                     + "\" ");
 
             writer.append(" form-options=\"\" ng-transclude>");
@@ -3024,6 +3024,9 @@ public class AngularJsScreenWidget {
 
                 writer.append("</div>");
             }
+
+            Field.clearFieldName(context);
+            Field.clearIsRequired(context);
         }
 
         @Override
