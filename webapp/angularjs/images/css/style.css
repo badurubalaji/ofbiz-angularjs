@@ -40,6 +40,10 @@ font-size: 1.1em;
 font-weight: bold;
 }
 
+label {
+    margin-bottom: 0px !important;
+}
+
 [class^="icon-"],
 [class*=" icon-"] {
   display: inline-block;
@@ -190,4 +194,8 @@ img {
 
 .validate-error-container {
     color: #bb1f34;
+}
+
+.form-horizontal .control-label {
+    padding-top: 0px !important;
 }
