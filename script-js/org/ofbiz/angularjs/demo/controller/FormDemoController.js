@@ -22,5 +22,6 @@ function FormDemoController($scope) {
 
     $scope.onSubmit = function(event, data, status, headers, config) {
         $scope.user = {};
+        alert("submitted!");
     }
 }

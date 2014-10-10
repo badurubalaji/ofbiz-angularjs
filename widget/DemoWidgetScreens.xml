@@ -155,6 +155,27 @@
                                 <error type="maxlength" message="Your last name cannot be longer than 20 characters"/>
                             </validate>
                         </field>
+                        <field title="Email: " required-field="true">
+                            <text model="email" type="email"/>
+                            <validate>
+                                <error type="required" message="Email is required."/>
+                                <error type="email" message="Invalid email address."/>
+                            </validate>
+                        </field>
+                        <field title="Number: " required-field="true">
+                            <text model="number" type="number"/>
+                            <validate>
+                                <error type="required" message="Number is required."/>
+                                <error type="number" message="Invalid number."/>
+                            </validate>
+                        </field>
+                        <field title="URL: " required-field="true">
+                            <text model="url" type="url"/>
+                            <validate>
+                                <error type="required" message="URL is required."/>
+                                <error type="url" message="Invalid URL."/>
+                            </validate>
+                        </field>
                         <field>
                             <submit text="Submit"/>
                         </field>
