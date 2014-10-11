@@ -52,7 +52,7 @@ function DateTimeDirective($rootScope, $timeout, $compile, DateTimeUtil) {
                     $scope.isCallback = false;
                 }
 
-                if ($scope.seconds.toString() != "0,0,0") {
+                if ($scope.seconds != null && $scope.seconds.toString() != "0,0,0") {
                     ngModel.$setValidity("required", true);
                 } else {
                     $scope.seconds = null;
