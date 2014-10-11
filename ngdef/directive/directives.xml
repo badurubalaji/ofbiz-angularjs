@@ -26,7 +26,7 @@
     <ng-directive name="context" location="org.ofbiz.angularjs.directive.ContextDirective"
         priority="0" replace="false" transclude="true" restrict="E" scope="{parameters:'=', ngModel:'='}"/>
 
-    <ng-directive name="lookup" location="org.ofbiz.angularjs.directive.LookupDirective"
+    <ng-directive name="lookup" location="org.ofbiz.angularjs.directive.LookupDirective" require="ngModel"
         priority="0" replace="false" transclude="false" restrict="E" scope="{parameters:'=', defaultValue:'=', ngModel:'='}"/>
 
     <ng-directive name="treeOptions" location="org.ofbiz.angularjs.directive.TreeOptionsDirective"

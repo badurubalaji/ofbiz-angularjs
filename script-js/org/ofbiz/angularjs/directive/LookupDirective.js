@@ -8,10 +8,21 @@ package org.ofbiz.angularjs.directive;
  */
 function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
 
+    this.link = function($scope, $element, $attrs, ngModel) {
+
+        $scope.$watch($attrs.ngModel, function(newVal, oldVal) {
+            if (newVal == null) {
+                ngModel.$setValidity("required", false);
+            } else {
+                ngModel.$setValidity("required", true);
+            }
+        })
+    };
+
     /**
      * Controller
      */
-    this.controller = function($scope, $element, $attrs, $transclude) {
+    this.controller = function($scope, $element, $attrs) {
         var target = $attrs.target;
         var parameters = $scope.parameters;
         var dependentParameterNames = null;
@@ -64,31 +75,31 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
             if (!_.isEmpty(httpParams.term)) {
                 if (isValidDependency(httpParams)) {
                     if (!_.isEmpty(target)) {
-	                    HttpService.post(target, httpParams).success(function (response) {
-	                        var defaultOption = null;
-	                        var options = response.options;
-	                        if (options) {
-	                            var data = [];
-	                            for (var i = 0; i < options.length; i ++) {
-	                                var option = options[i];
-	                                var dataObj = {};
-	                                dataObj[fieldName] = option[fieldName];
-	                                dataObj[descriptionFieldName] = option[descriptionFieldName];
-	                                data.push(dataObj);
+                        HttpService.post(target, httpParams).success(function (response) {
+                            var defaultOption = null;
+                            var options = response.options;
+                            if (options) {
+                                var data = [];
+                                for (var i = 0; i < options.length; i ++) {
+                                    var option = options[i];
+                                    var dataObj = {};
+                                    dataObj[fieldName] = option[fieldName];
+                                    dataObj[descriptionFieldName] = option[descriptionFieldName];
+                                    data.push(dataObj);
 
-	                                if (option[fieldName] == defaultValue) {
-	                                    defaultOption = option;
-	                                }
-	                            }
+                                    if (option[fieldName] == defaultValue) {
+                                        defaultOption = option;
+                                    }
+                                }
 
-	                            $scope.select2Options.data = data;
-	                            var select2 = $($element).select2($scope.select2Options);
-	                            select2.select2("val", null);
-	                            if (defaultOption != null) {
-	                                select2.select2("val", defaultOption);
-	                            }
-	                        }
-	                    });
+                                $scope.select2Options.data = data;
+                                var select2 = $($element).select2($scope.select2Options);
+                                select2.select2("val", null);
+                                if (defaultOption != null) {
+                                    select2.select2("val", defaultOption);
+                                }
+                            }
+                        });
                     }
                 }
             }

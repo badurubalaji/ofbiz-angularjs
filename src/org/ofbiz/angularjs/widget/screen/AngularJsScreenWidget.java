@@ -1796,6 +1796,10 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
+
+            String fieldName = Field.getFieldName(context);
+            boolean isRequire = Field.getIsRequired(context);
+
             writer.append("<lookup target=\""
                     + targetExdr.expandString(context) + "\" ng-model=\""
                     + modelExdr.expandString(context)
@@ -1803,6 +1807,9 @@ public class AngularJsScreenWidget {
                     + descriptionFieldNameExdr.expandString(context)
                     + "\" field-name=\"" + fieldNameExdr.expandString(context)
                     + "\"");
+            if (UtilValidate.isNotEmpty(fieldName)) {
+                writer.append(" name=\"" + fieldName + "\"");
+            }
             if (UtilValidate.isNotEmpty(placeholderExdr.getOriginal())) {
                 writer.append(" placeholder=\""
                         + placeholderExdr.expandString(context) + "\"");
@@ -1819,6 +1826,11 @@ public class AngularJsScreenWidget {
                 writer.append(" default-value=\""
                         + defaultValueExdr.expandString(context) + "\"");
             }
+
+            if (isRequire) {
+                writer.append(" required");
+            }
+
             writer.append(">");
             writer.append("</lookup>");
         }

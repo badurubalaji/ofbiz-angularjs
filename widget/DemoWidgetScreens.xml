@@ -182,6 +182,12 @@
                                 <error type="required" message="Country is required."/>
                             </validate>
                         </field>
+                        <field title="Example: " required-field="true">
+                            <lookup target="LookupExample" field-name="exampleId" description-field-name="exampleName" model="lookupExample" placeholder="Lookup Example"/>
+                            <validate>
+                                <error type="required" message="Example is required."/>
+                            </validate>
+                        </field>
                         <field>
                             <submit text="Submit"/>
                         </field>

@@ -16,7 +16,7 @@ function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) 
     /**
      * Link
      */
-    this.link = function($scope, $element, $attrs, $controller) {
+    this.link = function($scope, $element, $attrs, ngModel) {
         var target = $attrs.target;
         var parameters = $scope.parameters;
         var dependentParameterNames = null;
@@ -27,9 +27,9 @@ function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) 
 
         $scope.$watch($attrs.ngModel, function(newVal, oldVal) {
             if (newVal == null) {
-                $controller.$setValidity("required", false);
+                ngModel.$setValidity("required", false);
             } else {
-                $controller.$setValidity("required", true);
+                ngModel.$setValidity("required", true);
             }
         })
 
