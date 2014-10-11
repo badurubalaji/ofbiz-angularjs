@@ -176,6 +176,12 @@
                                 <error type="url" message="Invalid URL."/>
                             </validate>
                         </field>
+                        <field title="Country: " required-field="true">
+                            <dropdown model="country" target="LookupGeo" parameters="lookupGeoParameters" field-name="geoId" description-field-name="geoName" default-value="ABW" placeholder="Choose Country"/>
+                            <validate>
+                                <error type="required" message="Country is required."/>
+                            </validate>
+                        </field>
                         <field>
                             <submit text="Submit"/>
                         </field>

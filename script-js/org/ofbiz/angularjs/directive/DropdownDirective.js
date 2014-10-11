@@ -16,7 +16,7 @@ function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) 
     /**
      * Link
      */
-    this.link = function($scope, $element, $attrs) {
+    this.link = function($scope, $element, $attrs, $controller) {
         var target = $attrs.target;
         var parameters = $scope.parameters;
         var dependentParameterNames = null;
@@ -24,6 +24,14 @@ function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) 
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
         var defaultValue = null;
+
+        $scope.$watch($attrs.ngModel, function(newVal, oldVal) {
+            if (newVal == null) {
+                $controller.$setValidity("required", false);
+            } else {
+                $controller.$setValidity("required", true);
+            }
+        })
 
         if (!_.isEmpty($attrs.dependentParameterNames)) {
             dependentParameterNames = $attrs.dependentParameterNames.replace(" ", "").split(",");
@@ -65,7 +73,7 @@ function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) 
                             console.warn(e);
                         }
                     }
-                    $scope.model = option;
+                    $scope.ngModel = option;
                 }
             }
         };
@@ -115,8 +123,8 @@ function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) 
                         var select2 = $($element).select2($scope.select2Options);
 
                         select2.on("change", function(e) {
-                            $scope.model = e.val;
-                            ScopeUtil.setClosestScopeProperty($scope, $attrs.model, e.val);
+                            $scope.ngModel = e.val;
+                            ScopeUtil.setClosestScopeProperty($scope, $attrs.ngModel, e.val);
                             $scope.$apply();
                         });
 

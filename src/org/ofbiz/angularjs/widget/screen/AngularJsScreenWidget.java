@@ -817,10 +817,17 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
+
+            String fieldName = Field.getFieldName(context);
+            boolean isRequire = Field.getIsRequired(context);
+
             writer.append("<dropdown");
             if (UtilValidate.isNotEmpty(modelExdr.getOriginal())) {
-                writer.append(" model=\"" + modelExdr.expandString(context)
+                writer.append(" ng-model=\"" + modelExdr.expandString(context)
                         + "\"");
+            }
+            if (UtilValidate.isNotEmpty(fieldName)) {
+                writer.append(" name=\"" + fieldName + "\"");
             }
             if (UtilValidate.isNotEmpty(targetExdr.getOriginal())) {
                 writer.append(" target=\"" + targetExdr.expandString(context)
@@ -843,6 +850,11 @@ public class AngularJsScreenWidget {
             writer.append(" placeholder=\""
                     + placeholderExdr.expandString(context)
                     + "\" class=\"form-control\"");
+
+            if (isRequire) {
+                writer.append(" required");
+            }
+
             writer.append(">");
             writer.append("</dropdown>");
         }
