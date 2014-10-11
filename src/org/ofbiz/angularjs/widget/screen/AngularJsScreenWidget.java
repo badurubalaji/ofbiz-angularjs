@@ -751,6 +751,9 @@ public class AngularJsScreenWidget {
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
 
+            String fieldName = Field.getFieldName(context);
+            boolean isRequire = Field.getIsRequired(context);
+
             String format = null;
             String style = null;
 
@@ -766,7 +769,17 @@ public class AngularJsScreenWidget {
                 style = this.styleExdr.expandString(context);
             }
 
-            writer.append("<date-time ng-model=\"" + modelExdr.expandString(context) + "\" style=\"" + style + "\" format=\"" + format + "\" read-only=\"" + readOnlyExdr.expandString(context) + "\"/>");
+            writer.append("<date-time ng-model=\"" + modelExdr.expandString(context) + "\" style=\"" + style + "\" format=\"" + format + "\" read-only=\"" + readOnlyExdr.expandString(context) + "\"");
+
+            if (UtilValidate.isNotEmpty(fieldName)) {
+                writer.append(" name=\"" + fieldName + "\"");
+            }
+
+            if (isRequire) {
+                writer.append(" required");
+            }
+
+            writer.append("/>");
         }
 
         @Override

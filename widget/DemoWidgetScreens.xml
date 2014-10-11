@@ -188,6 +188,12 @@
                                 <error type="required" message="Example is required."/>
                             </validate>
                         </field>
+                        <field title="Date: " required-field="true">
+                            <date-time model="date"/>
+                            <validate>
+                                <error type="required" message="Date is required."/>
+                            </validate>
+                        </field>
                         <field>
                             <submit text="Submit"/>
                         </field>

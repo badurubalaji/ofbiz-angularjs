@@ -9,7 +9,7 @@ package org.ofbiz.angularjs.directive;
  */
 function DateTimeDirective($rootScope, $timeout, $compile, DateTimeUtil) {
 
-    this.link = function($scope, $element, $attrs, controller) {
+    this.link = function($scope, $element, $attrs, ngModel) {
 
         var style = $attrs.style;
         var format = $attrs.format;
@@ -28,7 +28,16 @@ function DateTimeDirective($rootScope, $timeout, $compile, DateTimeUtil) {
         	adeEditableStyle = "ade-editable"
         }
 
-        divElement = angular.element("<div class=\"" + adeEditableStyle + " " + style + "\" ade-date=\"" + format + "\" ade-class=\"input-large\" ng-model=\"seconds\" ade-readonly=\"" + adeReadonly + "\"></div>");
+        var required = $element.attr("required");
+
+        divElement = angular.element("<div name=\"" + $attrs.name + "\" class=\"" + adeEditableStyle + " " + style + "\" ade-date=\"" + format + "\" ade-class=\"input-large\" ng-model=\"seconds\" ade-readonly=\"" + adeReadonly + "\"></div>");
+
+        if (required != null) {
+            divElement.attr("required", required);
+        }
+
+        $element.removeAttr("name");
+        $element.removeAttr("required");
 
         $element.html(divElement);
 
@@ -42,6 +51,14 @@ function DateTimeDirective($rootScope, $timeout, $compile, DateTimeUtil) {
                 } else {
                     $scope.isCallback = false;
                 }
+
+                if ($scope.seconds.toString() != "0,0,0") {
+                    ngModel.$setValidity("required", true);
+                } else {
+                    ngModel.$setValidity("required", false);
+                }
+            } else {
+                ngModel.$setValidity("required", false);
             }
         });
 
