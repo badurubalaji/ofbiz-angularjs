@@ -769,7 +769,12 @@ public class AngularJsScreenWidget {
                 style = this.styleExdr.expandString(context);
             }
 
-            writer.append("<date-time ng-model=\"" + modelExdr.expandString(context) + "\" style=\"" + style + "\" format=\"" + format + "\" read-only=\"" + readOnlyExdr.expandString(context) + "\"");
+            writer.append("<span>");
+            writer.append("<date-time ng-model=\"" + modelExdr.expandString(context) + "\" style=\"" + style + "\" format=\"" + format + "\"");
+
+            if (UtilValidate.isNotEmpty(readOnlyExdr.getOriginal())) {
+                writer.append(" read-only=\"" + readOnlyExdr.expandString(context) + "\"");
+            }
 
             if (UtilValidate.isNotEmpty(fieldName)) {
                 writer.append(" name=\"" + fieldName + "\"");
@@ -780,6 +785,7 @@ public class AngularJsScreenWidget {
             }
 
             writer.append("/>");
+            writer.append("</span>");
         }
 
         @Override

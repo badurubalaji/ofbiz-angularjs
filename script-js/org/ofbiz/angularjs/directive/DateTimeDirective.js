@@ -55,6 +55,7 @@ function DateTimeDirective($rootScope, $timeout, $compile, DateTimeUtil) {
                 if ($scope.seconds.toString() != "0,0,0") {
                     ngModel.$setValidity("required", true);
                 } else {
+                    $scope.seconds = null;
                     ngModel.$setValidity("required", false);
                 }
             } else {
@@ -63,7 +64,16 @@ function DateTimeDirective($rootScope, $timeout, $compile, DateTimeUtil) {
         });
 
         $scope.$watch("seconds", function(newVal) {
+
             if (newVal != null) {
+
+                if ($scope.seconds.toString() != "0,0,0") {
+                    ngModel.$setValidity("required", true);
+                } else {
+                    $scope.seconds = null;
+                    ngModel.$setValidity("required", false);
+                }
+
                 $scope.isCallback = true;
                 var dateSeconds = newVal;
 
