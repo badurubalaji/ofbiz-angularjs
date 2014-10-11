@@ -207,6 +207,12 @@
                                 <error type="required" message="Text Area is required."/>
                             </validate>
                         </field>
+                        <field title="Rich Text Area: " required-field="true">
+                            <textarea model="richTextArea" placeholder="Enter description." visual-editor-enable="true"/>
+                            <validate>
+                                <error type="required" message="Rich Text Area is required."/>
+                            </validate>
+                        </field>
                         <field>
                             <submit text="Submit"/>
                         </field>
