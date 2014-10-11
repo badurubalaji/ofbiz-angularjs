@@ -2767,6 +2767,10 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
+
+            String fieldName = Field.getFieldName(context);
+            boolean isRequire = Field.getIsRequired(context);
+
             writer.append("<textarea-wrapper name=\"" + this.name
                     + "\" style=\""
                     + this.styleExdr.expandString(context) + "\"");
@@ -2780,6 +2784,13 @@ public class AngularJsScreenWidget {
             }
             if (Boolean.valueOf(visualEditorEnableExdr.expandString(context))) {
                 writer.append(" visual-editor-enable=\"" + this.visualEditorEnableExdr.expandString(context) + "\"");
+            }
+
+            if (UtilValidate.isNotEmpty(fieldName)) {
+                writer.append(" temp-name=\"" + fieldName + "\"");
+            }
+            if (isRequire) {
+                writer.append(" required");
             }
             writer.append("></textarea-wrapper>");
         }

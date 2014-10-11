@@ -201,6 +201,12 @@
                                 <error type="required" message="Date is required."/>
                             </validate>
                         </field>
+                        <field title="Text Area: " required-field="true">
+                            <textarea model="textArea"/>
+                            <validate>
+                                <error type="required" message="Text Area is required."/>
+                            </validate>
+                        </field>
                         <field>
                             <submit text="Submit"/>
                         </field>

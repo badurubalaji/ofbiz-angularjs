@@ -6,12 +6,20 @@ package org.ofbiz.angularjs.directive;
  */
 function TextareaWrapperDirective($compile, $timeout) {
 
-    this.link = function($scope, $element, $attrs) {
+    this.link = function($scope, $element, $attrs, ngModel) {
         var style = $attrs.style;
         var placeholder = $attrs.placeholder;
         var visualEditorEnable = $attrs.visualEditorEnable == "true";
 
+        var required = $element.attr("required");
+
         var textareaElement = angular.element("<textarea class='form-control" + style + "' ng-model='textareaModel'></textarea>");
+        textareaElement.attr("name", $attrs.tempName);
+
+        if (required != null) {
+            textareaElement.attr("required", required);
+        }
+        $element.removeAttr("required");
 
         var tinyInstance = null;
 
