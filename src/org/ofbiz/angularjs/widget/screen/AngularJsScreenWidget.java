@@ -2659,6 +2659,7 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander requiredFieldStyleExdr;
         protected FlexibleStringExpander maxlengthExdr;
         protected FlexibleStringExpander minlengthExdr;
+        protected FlexibleStringExpander patternExdr;
 
         public Text(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
@@ -2674,6 +2675,8 @@ public class AngularJsScreenWidget {
                     .getInstance(widgetElement.getAttribute("maxlength"));
             this.minlengthExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("minlength"));
+            this.patternExdr = FlexibleStringExpander
+                    .getInstance(widgetElement.getAttribute("pattern"));
         }
 
         @Override
@@ -2687,6 +2690,7 @@ public class AngularJsScreenWidget {
             String placeholder = placeholderExdr.expandString(context);
             String maxlength = maxlengthExdr.expandString(context);
             String minlength = minlengthExdr.expandString(context);
+            String pattern = patternExdr.expandString(context);
 
             if (UtilValidate.isEmpty(type)) {
                 type = "text";
@@ -2710,6 +2714,9 @@ public class AngularJsScreenWidget {
             }
             if (UtilValidate.isNotEmpty(minlength)) {
                 writer.append(" ng-minlength=" + minlength);
+            }
+            if (UtilValidate.isNotEmpty(pattern)) {
+                writer.append(" ng-pattern=\"" + pattern + "\"");
             }
             if (isRequire) {
                 writer.append(" required");
