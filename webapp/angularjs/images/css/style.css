@@ -199,3 +199,7 @@ img {
 .form-horizontal .control-label {
     padding-top: 0px !important;
 }
+
+.datepicker {
+    z-index: 10000 !important;
+}
