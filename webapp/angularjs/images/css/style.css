@@ -200,6 +200,11 @@ img {
     padding-top: 0px !important;
 }
 
+.form-horizontal .control-label.required:after{
+    content:"*";
+    color:red;
+}
+
 .datepicker {
     z-index: 10000 !important;
 }

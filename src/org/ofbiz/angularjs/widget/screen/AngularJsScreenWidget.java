@@ -1110,14 +1110,19 @@ public class AngularJsScreenWidget {
 
                 Field.setFieldName(name, context);
 
+                boolean requiredField = false;
                 if (UtilValidate.isNotEmpty(requiredFieldExdr.getOriginal())) {
-                    boolean requiredField = Boolean.valueOf(requiredFieldExdr.expandString(context));
+                    requiredField = Boolean.valueOf(requiredFieldExdr.expandString(context));
                     Field.setIsRequired(requiredField, context);
                 }
 
                 writer.append(rawString());
                 if (UtilValidate.isNotEmpty(titleExdr.getOriginal())) {
-                    writer.append("<label class=\"control-label\">"
+                    writer.append("<label class=\"control-label");
+                    if (requiredField) {
+                        writer.append(" required");
+                    }
+                    writer.append("\">"
                             + titleExdr.expandString(context) + "</label>");
                 }
                 writer.append("<div class=\"controls\">");
