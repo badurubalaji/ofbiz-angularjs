@@ -991,9 +991,22 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
+
+            String fieldName = Field.getFieldName(context);
+            boolean isRequire = Field.getIsRequired(context);
+
             writer.append("<file-wrapper");
-            writer.append(" ng-model=\"" + modelExdr.expandString(context));
-            writer.append("\">");
+            writer.append(" ng-model=\"" + modelExdr.expandString(context) + "\"");
+
+            if (UtilValidate.isNotEmpty(fieldName)) {
+                writer.append(" name=\"" + fieldName + "\"");
+            }
+
+            if (isRequire) {
+                writer.append(" required");
+            }
+
+            writer.append(">");
             writer.append("</file-wrapper>");
         }
 

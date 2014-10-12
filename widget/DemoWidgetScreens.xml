@@ -213,6 +213,12 @@
                                 <error type="required" text="Rich Text Area is required."/>
                             </validate-label>
                         </field>
+                        <field title="File: " required-field="true">
+                            <file model="file"/>
+                            <validate-label>
+                                <error type="required" text="File is required."/>
+                            </validate-label>
+                        </field>
                         <field>
                             <submit text="Submit"/>
                         </field>
