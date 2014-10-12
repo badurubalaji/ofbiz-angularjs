@@ -22,12 +22,11 @@ function FileWrapperDirective(HttpService, $parse, $compile, ScopeUtil) {
 
         if (required != null) {
             inputElement.attr("required", required);
+            ngModel.$setValidity("required", false);
         }
         $element.removeAttr("required");
 
         $element.html(inputElement);
         $compile($element.contents())($scope);
-
-        ngModel.$setValidity("required", false);
     }
 }
