@@ -3054,12 +3054,12 @@ public class AngularJsScreenWidget {
     }
 
     @SuppressWarnings("serial")
-    public static class Validate extends ModelScreenWidget {
-        public static final String TAG_NAME = "validate";
+    public static class ValidateLabel extends ModelScreenWidget {
+        public static final String TAG_NAME = "validate-label";
 
         private List<? extends Element> errorElements = null;
 
-        public Validate(ModelScreen modelScreen, Element widgetElement) {
+        public ValidateLabel(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
 
             errorElements = UtilXml.childElementList(widgetElement,
@@ -3080,11 +3080,11 @@ public class AngularJsScreenWidget {
 
                 for (Element errorElement : errorElements) {
                     String type = UtilXml.elementAttribute(errorElement, "type", "");
-                    String message = UtilXml.elementAttribute(errorElement, "message", "");
+                    FlexibleStringExpander textExpr = FlexibleStringExpander.getInstance(UtilXml.elementAttribute(errorElement, "text", ""));
 
                     writer.append("<small class=\"error\" ");
                     writer.append("ng-show=\"" + formName + "." + fieldName + ".$error." + type + "\">");
-                    writer.append(message);
+                    writer.append(textExpr.expandString(context));
                     writer.append("</small>");
                 }
 
