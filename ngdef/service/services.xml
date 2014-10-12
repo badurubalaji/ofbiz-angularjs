@@ -6,6 +6,7 @@
     <ng-service name="FormService" location="org.ofbiz.angularjs.common.service.FormService"/>
     <ng-service name="HttpService" location="org.ofbiz.angularjs.common.service.HttpService"/>
     <ng-service name="SocketService" location="org.ofbiz.angularjs.common.service.SocketService"/>
+    <ng-service name="NotificationService" location="org.ofbiz.angularjs.common.service.NotificationService"/>
     <ng-service name="ScopeUtil" location="org.ofbiz.angularjs.common.util.ScopeUtil"/>
     <ng-service name="DateTimeUtil" location="org.ofbiz.angularjs.common.util.DateTimeUtil"/>
 </ng-services>

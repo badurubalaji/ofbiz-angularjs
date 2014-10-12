@@ -4,7 +4,7 @@ package org.ofbiz.angularjs.directive;
  * Form Options Directive
  *
  */
-function FormOptionsDirective($http, appBusy, $parse, FormService) {
+function FormOptionsDirective($http, appBusy, $parse, FormService, NotificationService) {
 
     /**
      * Link
@@ -19,6 +19,7 @@ function FormOptionsDirective($http, appBusy, $parse, FormService) {
             } else {
                 form.submitted = true;
                 $scope.$apply();
+                NotificationService.showToast("Please verify the form.");
             }
         });
     }
