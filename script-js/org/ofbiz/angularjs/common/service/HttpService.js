@@ -1,25 +1,25 @@
 package org.ofbiz.angularjs.common.service;
 
-function HttpService($rootScope, $q, $http, appBusy) {
-    
+function HttpService($rootScope, $q, $http, appBusy, $templateFactory, $templateCache) {
+
     /**
      * Post
      */
     this.post = function(target, parameters) {
         return this.post(target, parameters, {"Content-Type": "application/x-www-form-urlencoded"});
     }
-    
+
     this.post = function(target, parameters, headers) {
         var deferred = $q.defer();
         var promise = deferred.promise;
         var successFn = null;
         var errorFn = null;
-        
+
         promise.success = function(fn) {
             successFn = fn;
             return promise;
         }
-        
+
         promise.error = function(fn) {
             errorFn = fn;
             return promise;
@@ -39,10 +39,11 @@ function HttpService($rootScope, $q, $http, appBusy) {
         } else {
             queryString = parameters;
         }
-        
+
         if (headers == null) {
             headers = {"Content-Type": "application/x-www-form-urlencoded"};
         }
+        headers["X-Requested-With"] = "XMLHttpRequest";
 
         $rootScope.$emit("ON_HTTP_REQUEST_WILL_SEND", {});
         $http({method: "POST", url: target, data: queryString, headers: headers})
@@ -53,7 +54,7 @@ function HttpService($rootScope, $q, $http, appBusy) {
                 _.each(data._ERROR_MESSAGE_LIST_, function(errorMessage) {
                     responseMessages.push({ type: "error", msg: errorMessage });
                 });
-                
+
                 if (typeof(errorFn) == "function") {
                     errorFn(data);
                 }

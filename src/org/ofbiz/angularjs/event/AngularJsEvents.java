@@ -259,9 +259,23 @@ public class AngularJsEvents {
         }
 
         // run
-        builder.append("\n.run(function($rootScope, $state, $stateParams) {");
+        builder.append("\n.run(function($rootScope, $state, $stateParams, $templateFactory, $templateCache, $http) {");
         builder.append("$rootScope.$state = $state;");
         builder.append("$rootScope.$stateParams = $stateParams;");
+
+        // override $templateFactory.fromUrl() function and add X-Requested-With header
+        builder.append("$templateFactory.fromUrl = function (url, params) {");
+        builder.append("    if (angular.isFunction(url)) url = url(params);");
+        builder.append("    if (url == null) return null;");
+        builder.append("    else{");
+        builder.append("        return $http");
+        builder.append("            .get(url, { cache: $templateCache, headers: { Accept: 'text/html', 'X-Requested-With': 'XMLHttpRequest' }})");
+        builder.append("            .then(function(response) {");
+        builder.append("                return response.data;");
+        builder.append("            });");
+        builder.append("   }");
+        builder.append("};");
+
         builder.append("})");
 
         builder.append(";");
