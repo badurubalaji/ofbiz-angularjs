@@ -11,8 +11,10 @@ function ClickConfirmMessageDirective() {
 
     this.compile = function compile(tElement, tAttrs, transclude) {
         confirmMessage = tAttrs.clickConfirmMessage || "Are you sure?";
-        clickAction = tAttrs.ngClick;
-        tAttrs.$set("ngClick", "");
+        if (!_.isEmpty(tAttrs.ngClick)) {
+            clickAction = tAttrs.ngClick;
+            tAttrs.$set("ngClick", "");
+        }
 
         return {
             pre: function preLink(scope, iElement, iAttrs, controller) {
