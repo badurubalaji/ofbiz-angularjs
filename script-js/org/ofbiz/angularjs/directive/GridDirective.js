@@ -20,9 +20,20 @@ function GridDirective(HttpService, $timeout, $parse, $compile, $state) {
         var checkboxHeaderTemplate = null;
         var sortInfo = null;
 
+        // find cell template elements
+        var cellTemplateElementMap = {};
+        var cellTemplateElements = $element.find("cell-template");
+        for (var i = 0; i < cellTemplateElements.length; i ++) {
+            var cellTemplateElement = angular.element(cellTemplateElements[i]);
+            var name = cellTemplateElement.attr("name");
+            cellTemplateElementMap[name] = cellTemplateElement.contents();
+            cellTemplateElement.remove();
+        }
         _.each(columnDefs, function(columnDef) {
 
-            if (!_.isEmpty(columnDef.cellTemplate)) {
+            var cellTemplateElement = cellTemplateElementMap[columnDef.name];
+
+            if (cellTemplateElement != null) {
                 var controller = null;
 
                 if (!_.isEmpty(columnDef.controller)) {
@@ -37,7 +48,6 @@ function GridDirective(HttpService, $timeout, $parse, $compile, $state) {
                 // add ng-controller to the field template
                 var ngControllerElement = angular.element("<div></div>");
                 ngControllerElement.attr("ng-controller", controller);
-                var cellTemplateElement = angular.element(columnDef.cellTemplate);
                 ngControllerElement.append(cellTemplateElement);
                 columnDef.cellTemplate = ngControllerElement[0].outerHTML;
             }

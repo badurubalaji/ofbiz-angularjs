@@ -1422,6 +1422,8 @@ public class AngularJsScreenWidget {
                 rowHeight = defaultRowHeight;
             }
 
+            Map<String, String> cellTemplateElements = new HashMap<String, String>();
+
             StringBuilder sortInfoBuilder = new StringBuilder();
             List<Map<String, String>> sortDirections = new LinkedList<Map<String, String>>();
             StringBuilder columnDefsBuilder = new StringBuilder();
@@ -1466,7 +1468,7 @@ public class AngularJsScreenWidget {
                                 .readSubWidgets(this.modelScreen, subElementList);
                         renderSubWidgetsString(subWidgets, fieldWidgetWriter, context,
                                 screenStringRenderer);
-                        cellTemplate = StringEscapeUtils.escapeHtml(fieldWidgetWriter.toString());
+                        cellTemplateElements.put(name, fieldWidgetWriter.toString());
                     } else if (UtilValidate.isNotEmpty(cellTemplateUri)) {
                         cellTemplate = cellTemplateUri;
                     }
@@ -1571,7 +1573,18 @@ public class AngularJsScreenWidget {
                     + "\" "
                     + (UtilValidate.isNotEmpty(sortInfoBuilder.toString()) ? "sort-info=\""
                             + sortInfoBuilder.toString() + "\""
-                            : "") + "></grid>");
+                            : "") + ">");
+
+            if (UtilValidate.isNotEmpty(cellTemplateElements)) {
+                for (String cellTemplateName : cellTemplateElements.keySet()) {
+                    String cellTemplateElement = cellTemplateElements.get(cellTemplateName);
+                    writer.append("<cell-template name=\"" + cellTemplateName + "\">");
+                    writer.append(cellTemplateElement);
+                    writer.append("</cell-template>");
+                }
+            }
+
+            writer.append("</grid>");
         }
 
         @Override
