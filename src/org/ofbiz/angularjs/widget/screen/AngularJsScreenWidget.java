@@ -3080,12 +3080,12 @@ public class AngularJsScreenWidget {
     }
 
     @SuppressWarnings("serial")
-    public static class ValidateLabel extends ModelScreenWidget {
-        public static final String TAG_NAME = "validate-label";
+    public static class ValidatorLabel extends ModelScreenWidget {
+        public static final String TAG_NAME = "validator-label";
 
         private List<? extends Element> errorElements = null;
 
-        public ValidateLabel(ModelScreen modelScreen, Element widgetElement) {
+        public ValidatorLabel(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
 
             errorElements = UtilXml.childElementList(widgetElement,

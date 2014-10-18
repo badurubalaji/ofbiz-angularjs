@@ -141,83 +141,83 @@
                     <form type="horizontal" on-submit="onSubmit()">
                         <field title="First Name: " required-field="true">
                             <text model="firstName" minlength="3" maxlength="20"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="Your first name is required."/>
                                 <error type="minlength" text="Your first name is required to be at least 3 characters."/>
                                 <error type="maxlength" text="Your first name cannot be longer than 20 characters"/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field title="Last Name: " required-field="true">
                             <text model="lastName" minlength="3" maxlength="20"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="Your last name is required."/>
                                 <error type="minlength" text="Your last name is required to be at least 3 characters."/>
                                 <error type="maxlength" text="Your last name cannot be longer than 20 characters"/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field title="Email: " required-field="true">
                             <text model="email" type="email"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="Email is required."/>
                                 <error type="email" text="Invalid email address."/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field title="Number: " required-field="true">
                             <text model="number" type="number"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="Number is required."/>
                                 <error type="number" text="Invalid number."/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field title="URL: " required-field="true">
                             <text model="url" type="url"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="URL is required."/>
                                 <error type="url" text="Invalid URL."/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field title="Pattern: " required-field="true">
                             <text model="pattern" type="text" pattern="/[a-zA-Z]/" placeholder="Pattern [a-zA-Z]"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="Pattern is required."/>
                                 <error type="pattern" text="Invalid pattern."/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field title="Country: " required-field="true">
                             <dropdown model="country" target="LookupGeo" parameters="lookupGeoParameters" field-name="geoId" description-field-name="geoName" default-value="ABW" placeholder="Choose Country"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="Country is required."/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field title="Example: " required-field="true">
                             <lookup target="LookupExample" field-name="exampleId" description-field-name="exampleName" model="lookupExample" placeholder="Lookup Example"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="Example is required."/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field title="Date: " required-field="true">
                             <date-time model="date"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="Date is required."/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field title="Text Area: " required-field="true">
                             <textarea model="textArea"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="Text Area is required."/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field title="Rich Text Area: " required-field="true">
                             <textarea model="richTextArea" placeholder="Enter description." visual-editor-enable="true"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="Rich Text Area is required."/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field title="File: " required-field="true">
                             <file model="file"/>
-                            <validate-label>
+                            <validator-label>
                                 <error type="required" text="File is required."/>
-                            </validate-label>
+                            </validator-label>
                         </field>
                         <field>
                             <submit text="Submit"/>
