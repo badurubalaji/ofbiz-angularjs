@@ -157,7 +157,7 @@ public class AngularJsScreenWidget {
                                         + (retVal != null ? retVal.getClass()
                                                 .getName() : "null") + " ["
                                         + retVal + "] on the field "
-                                        + this.name);
+                                        + getName());
                     }
 
                     usewhen = condTrue;
@@ -165,7 +165,7 @@ public class AngularJsScreenWidget {
                     String errMsg = "Error evaluating BeanShell use-when condition ["
                             + useWhenStr
                             + "] on the field "
-                            + this.name
+                            + getName()
                             + ": "
                             + e.toString();
                     Debug.logError(e, errMsg, module);
@@ -1099,7 +1099,7 @@ public class AngularJsScreenWidget {
                                         + (retVal != null ? retVal.getClass()
                                                 .getName() : "null") + " ["
                                         + retVal + "] on the field "
-                                        + this.name);
+                                        + getName());
                     }
 
                     usewhen = condTrue;
@@ -1107,7 +1107,7 @@ public class AngularJsScreenWidget {
                     String errMsg = "Error evaluating BeanShell use-when condition ["
                             + useWhenStr
                             + "] on the field "
-                            + this.name
+                            + getName()
                             + ": "
                             + e.toString();
                     Debug.logError(e, errMsg, module);
@@ -2802,7 +2802,7 @@ public class AngularJsScreenWidget {
             String fieldName = Field.getFieldName(context);
             boolean isRequire = Field.getIsRequired(context);
 
-            writer.append("<textarea-wrapper name=\"" + this.name
+            writer.append("<textarea-wrapper name=\"" + getName()
                     + "\" style=\""
                     + this.styleExdr.expandString(context) + "\"");
             if (UtilValidate.isNotEmpty(placeholderExdr.getOriginal())) {
@@ -2917,7 +2917,7 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<div ui-map-options=\"\" ui-map=\"" + name
+            writer.append("<div ui-map-options=\"\" ui-map=\"" + getName()
                     + "\" height=\"" + heightExdr.expandString(context)
                     + "\" class=\"" + styleExdr.expandString(context)
                     + "\" ui-event=\"" + eventExdr.expandString(context)
