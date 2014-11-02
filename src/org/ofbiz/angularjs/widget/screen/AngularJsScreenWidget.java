@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.ofbiz.base.util.BshUtil;
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.GeneralException;
@@ -34,6 +33,7 @@ import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
 import org.ofbiz.base.util.string.FlexibleStringExpander;
+import org.ofbiz.widget.ModelWidgetVisitor;
 import org.ofbiz.widget.screen.ModelScreen;
 import org.ofbiz.widget.screen.ModelScreenWidget;
 import org.ofbiz.widget.screen.ScreenStringRenderer;
@@ -96,7 +96,7 @@ public class AngularJsScreenWidget {
                 List<? extends Element> subElementList = UtilXml
                         .childElementList(accordionGroupElement);
                 List<ModelScreenWidget> subWidgets = ModelScreenWidget
-                        .readSubWidgets(this.modelScreen, subElementList);
+                        .readSubWidgets(this.getModelScreen(), subElementList);
                 renderSubWidgetsString(subWidgets, writer, context,
                         screenStringRenderer);
                 writer.append("</accordion-group>");
@@ -105,8 +105,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<accordion/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -127,7 +128,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         @Override
@@ -176,7 +177,7 @@ public class AngularJsScreenWidget {
             }
 
             if (usewhen) {
-                writer.append(this.rawString());
+                writer.append("<div class=\"form-actions\">");
                 renderSubWidgetsString(this.subWidgets, writer, context,
                         screenStringRenderer);
                 writer.append("</div>");
@@ -184,8 +185,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div class=\"form-actions\">";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -224,8 +226,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<alert/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -244,7 +247,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         @Override
@@ -260,8 +263,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div ng-app/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -314,8 +318,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<button/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -358,8 +363,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div ui-calendar/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -400,8 +406,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<input checkbox/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -421,7 +428,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         @Override
@@ -437,8 +444,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div collapse/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -472,8 +480,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<comments-panel/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -490,7 +499,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         @Override
@@ -498,15 +507,16 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<div class=\"container-fluid\">");
             renderSubWidgetsString(this.subWidgets, writer, context,
                     screenStringRenderer);
             writer.append("</div>");
         }
 
         @Override
-        public String rawString() {
-            return "<div class=\"container-fluid\">";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -535,7 +545,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         @Override
@@ -554,8 +564,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<context/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -578,7 +589,7 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<div class=\"control-group\">");
             List<? extends Element> subElements = UtilXml
                     .childElementList(this.widgetElement);
             for (Element subElement : subElements) {
@@ -599,7 +610,7 @@ public class AngularJsScreenWidget {
                         List<Element> cElementList = new LinkedList<Element>();
                         cElementList.add(controlElement);
                         List<ModelScreenWidget> controlWidgets = ModelScreenWidget
-                                .readSubWidgets(this.modelScreen, cElementList);
+                                .readSubWidgets(this.getModelScreen(), cElementList);
                         renderSubWidgetsString(controlWidgets, writer, context,
                                 screenStringRenderer);
                     }
@@ -609,8 +620,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div class=\"control-group\">";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -629,7 +641,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         @Override
@@ -645,8 +657,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div ng-controller/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -664,12 +677,13 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<span current-time=\"\"></span>");
         }
 
         @Override
-        public String rawString() {
-            return "<span current-time=\"\"></span>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -719,8 +733,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<datepicker/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -789,8 +804,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<date-time/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -879,8 +895,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<data/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -904,7 +921,7 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<li class=\"dropdown\">");
             writer.append("<a class=\"dropdown-toggle\">"
                     + textExdr.expandString(context) + "</a>");
             writer.append("<ul class=\"dropdown-menu\">");
@@ -927,8 +944,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<li class=\"dropdown\">";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -952,19 +970,20 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<em>");
             writer.append(textContentExpr.expandString(context));
             // read sub-widgets
             List<ModelScreenWidget> subWidgets = ModelScreenWidget
-                    .readSubWidgets(this.modelScreen, subElementList);
+                    .readSubWidgets(this.getModelScreen(), subElementList);
             renderSubWidgetsString(subWidgets, writer, context,
                     screenStringRenderer);
             writer.append("</em>");
         }
 
         @Override
-        public String rawString() {
-            return "<em>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -1011,8 +1030,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<input type=\"file\"/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -1046,8 +1066,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<img src=\"\"/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -1075,7 +1096,7 @@ public class AngularJsScreenWidget {
             this.requiredFieldExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("required-field"));
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         public static String getFieldName(Map<String, Object> context) {
@@ -1164,7 +1185,7 @@ public class AngularJsScreenWidget {
                     Field.setIsRequired(requiredField, context);
                 }
 
-                writer.append(rawString());
+                writer.append("<div class=\"control-group\">");
                 if (UtilValidate.isNotEmpty(titleExdr.getOriginal())) {
                     writer.append("<label class=\"control-label");
                     if (requiredField) {
@@ -1187,8 +1208,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div class=\"control-group\">";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -1234,7 +1256,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         public static String getFormName(Map<String, Object> context) {
@@ -1296,8 +1318,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<form/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -1381,8 +1404,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div google-chart/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -1500,7 +1524,7 @@ public class AngularJsScreenWidget {
                             .childElementList(fieldElement);
                     if (UtilValidate.isNotEmpty(subElementList)) {
                         List<ModelScreenWidget> subWidgets = ModelScreenWidget
-                                .readSubWidgets(this.modelScreen, subElementList);
+                                .readSubWidgets(this.getModelScreen(), subElementList);
                         renderSubWidgetsString(subWidgets, fieldWidgetWriter, context,
                                 screenStringRenderer);
                         cellTemplateElements.put(name, fieldWidgetWriter.toString());
@@ -1623,8 +1647,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div ng-grid/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -1654,8 +1679,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<input type=\"hidden\"/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -1682,11 +1708,13 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div html/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
+    /*
     @SuppressWarnings("serial")
     public static class Image extends ModelScreenWidget.Image {
 
@@ -1729,6 +1757,7 @@ public class AngularJsScreenWidget {
             }
         }
     }
+    */
 
     @SuppressWarnings("serial")
     public static class JitTree extends ModelScreenWidget {
@@ -1786,8 +1815,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div jit-tree/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -1805,12 +1835,13 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<hr/>");
         }
 
         @Override
-        public String rawString() {
-            return "<hr/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -1827,12 +1858,13 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<br/>");
         }
 
         @Override
-        public String rawString() {
-            return "<br/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -1921,8 +1953,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<data/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -1991,8 +2024,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div navbar/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2038,7 +2072,7 @@ public class AngularJsScreenWidget {
                 List<? extends Element> subElementList = UtilXml
                         .childElementList(modalHeaderElement);
                 List<ModelScreenWidget> subWidgets = ModelScreenWidget
-                        .readSubWidgets(this.modelScreen, subElementList);
+                        .readSubWidgets(this.getModelScreen(), subElementList);
                 renderSubWidgetsString(subWidgets, writer, context,
                         screenStringRenderer);
                 writer.append("</div>");
@@ -2049,7 +2083,7 @@ public class AngularJsScreenWidget {
                 List<? extends Element> subElementList = UtilXml
                         .childElementList(modalBodyElement);
                 List<ModelScreenWidget> subWidgets = ModelScreenWidget
-                        .readSubWidgets(this.modelScreen, subElementList);
+                        .readSubWidgets(this.getModelScreen(), subElementList);
                 renderSubWidgetsString(subWidgets, writer, context,
                         screenStringRenderer);
                 writer.append("</div>");
@@ -2060,7 +2094,7 @@ public class AngularJsScreenWidget {
                 List<? extends Element> subElementList = UtilXml
                         .childElementList(modalFooterElement);
                 List<ModelScreenWidget> subWidgets = ModelScreenWidget
-                        .readSubWidgets(this.modelScreen, subElementList);
+                        .readSubWidgets(this.getModelScreen(), subElementList);
                 renderSubWidgetsString(subWidgets, writer, context,
                         screenStringRenderer);
                 writer.append("</div>");
@@ -2069,8 +2103,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div modal/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2091,7 +2126,7 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<ul>");
             for (Element listItemElement : listItemElementList) {
                 writer.append("<li");
                 FlexibleStringExpander styleExdr = FlexibleStringExpander
@@ -2109,7 +2144,7 @@ public class AngularJsScreenWidget {
                 List<? extends Element> subElementList = UtilXml
                         .childElementList(listItemElement);
                 List<ModelScreenWidget> subWidgets = ModelScreenWidget
-                        .readSubWidgets(this.modelScreen, subElementList);
+                        .readSubWidgets(this.getModelScreen(), subElementList);
                 renderSubWidgetsString(subWidgets, writer, context,
                         screenStringRenderer);
                 writer.append("</li>");
@@ -2118,8 +2153,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<ul>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2161,8 +2197,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<input type=\"number\"/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2188,7 +2225,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         @Override
@@ -2217,8 +2254,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div class=\"panel\"/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2241,7 +2279,7 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<pre>");
             writer.append(this.textContentExdr.expandString(context));
 
             // TODO reader text and element by order
@@ -2260,8 +2298,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<pre>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2301,8 +2340,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<label/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2344,8 +2384,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<report>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2361,7 +2402,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         @Override
@@ -2369,15 +2410,16 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<div class=\"row\">");
             renderSubWidgetsString(this.subWidgets, writer, context,
                     screenStringRenderer);
             writer.append("</div>");
         }
 
         @Override
-        public String rawString() {
-            return "<div class=\"row\">";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2393,7 +2435,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         @Override
@@ -2401,15 +2443,16 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<div class=\"row-fluid\">");
             renderSubWidgetsString(this.subWidgets, writer, context,
                     screenStringRenderer);
             writer.append("</div>");
         }
 
         @Override
-        public String rawString() {
-            return "<div class=\"row-fluid\">";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2427,7 +2470,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         @Override
@@ -2449,8 +2492,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div screenlet/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2481,8 +2525,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<input type=\"submit\"/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2506,7 +2551,7 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<div class=\"tabbable\">");
             writer.append("<ul class=\"nav nav-tabs\">");
             if (UtilValidate.isNotEmpty(tabItemElements)) {
                 for (Element tabItemElement : tabItemElements) {
@@ -2562,8 +2607,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div class=\"tabbable\">";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -2685,7 +2731,7 @@ public class AngularJsScreenWidget {
                         List<? extends Element> tabHeadingSubWidgetElements = UtilXml
                                 .childElementList(tabHeadingElement);
                         List<ModelScreenWidget> tabHeadingSubWidgets = ModelScreenWidget
-                                .readSubWidgets(this.modelScreen,
+                                .readSubWidgets(this.getModelScreen(),
                                         tabHeadingSubWidgetElements);
                         renderSubWidgetsString(tabHeadingSubWidgets, tabWriter,
                                 context, screenStringRenderer);
@@ -2700,7 +2746,7 @@ public class AngularJsScreenWidget {
                         tabSubWidgetElements.remove(0);
                     }
                     List<ModelScreenWidget> tabSubWidgets = ModelScreenWidget
-                            .readSubWidgets(this.modelScreen,
+                            .readSubWidgets(this.getModelScreen(),
                                     tabSubWidgetElements);
                     renderSubWidgetsString(tabSubWidgets, tabWriter, context,
                             screenStringRenderer);
@@ -2713,8 +2759,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<tabset/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -2797,8 +2844,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<input/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -2862,8 +2910,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<textarea/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -2912,8 +2961,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div data-angular-treeview/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -2962,8 +3012,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div ui-map/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -2982,7 +3033,7 @@ public class AngularJsScreenWidget {
             List<? extends Element> subElementList = UtilXml
                     .childElementList(widgetElement);
             this.subWidgets = ModelScreenWidget.readSubWidgets(
-                    this.modelScreen, subElementList);
+                    this.getModelScreen(), subElementList);
         }
 
         @Override
@@ -2998,8 +3049,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div ui-map-info-window/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -3034,8 +3086,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div ng-repeat/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -3086,8 +3139,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<timepicker/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
 
     }
@@ -3105,12 +3159,13 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append(this.rawString());
+            writer.append("<div ng-upload=\"\"></div>");
         }
 
         @Override
-        public String rawString() {
-            return "<div ng-upload=\"\"></div>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -3157,8 +3212,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<validate/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 
@@ -3184,8 +3240,9 @@ public class AngularJsScreenWidget {
         }
 
         @Override
-        public String rawString() {
-            return "<div ui-view/>";
+        public void accept(ModelWidgetVisitor visitor) {
+            // TODO Auto-generated method stub
+
         }
     }
 }

@@ -144,11 +144,11 @@ public class DataEvents {
                         FileItem fileItem = (FileItem) fieldValue;
                         String fileName = fileItem.getName();
                         InputStream inputStream = fileItem.getInputStream();
+                        String mimeType = DataResourceWorker
+                                .getMimeTypeFromImageFileName(fileName);
 
                         byte[] fileBytes = fileItem.get();
                         if (fileBytes != null && fileBytes.length > 0) {
-                            String mimeType = DataResourceWorker
-                                    .getMimeTypeFromImageFileName(fileName);
                             if (UtilValidate.isNotEmpty(mimeType)) {
 
                                 sb.append(", \"file\":{");
@@ -237,6 +237,8 @@ public class DataEvents {
                                     updateContentAndUploadedFileInMap.put(
                                             "dataResourceId", dataResourceId);
                                     updateContentAndUploadedFileInMap.put(
+                                            "mimeTypeId", mimeType);
+                                    updateContentAndUploadedFileInMap.put(
                                             "uploadedFile", uploadedFile);
                                     updateContentAndUploadedFileInMap.put(
                                             "_uploadedFile_fileName", fileName);
@@ -307,7 +309,9 @@ public class DataEvents {
 
             if (UtilValidate.isNotEmpty(mimeTypeId)) {
                 String thumbnailImageDataResourceId = null;
-                if (mimeTypeId.startsWith("image/")) {
+                if (mimeTypeId.startsWith("image/png")
+                        || mimeTypeId.startsWith("image/jpeg")
+                        || mimeTypeId.startsWith("image/gif")) {
                     thumbnailImageDataResourceId = dataResourceId;
                 } else if ("application/pdf".equals(mimeTypeId)) {
                     thumbnailImageDataResourceId = "PDF_ICON";
