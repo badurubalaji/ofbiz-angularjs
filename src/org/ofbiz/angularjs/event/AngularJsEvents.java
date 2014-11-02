@@ -61,6 +61,7 @@ import org.ofbiz.base.util.FileUtil;
 import org.ofbiz.base.util.StringUtil;
 import org.ofbiz.base.util.UtilGenerics;
 import org.ofbiz.base.util.UtilValidate;
+import org.ofbiz.webapp.control.LoginWorker;
 
 public class AngularJsEvents {
 
@@ -486,6 +487,17 @@ public class AngularJsEvents {
             Debug.logError(e, module);
         }
 
+        return "success";
+    }
+
+    public static String ajaxCheckLogin(HttpServletRequest request, HttpServletResponse response) {
+        //TODO show AJAX login popup
+        String result = LoginWorker.checkLogin(request, response);
+        if ("error".equals(result)) {
+            request.setAttribute("MESSAGE", "Please Login");
+        } else {
+            request.setAttribute("SUCCESS", "Please Login");
+        }
         return "success";
     }
 }

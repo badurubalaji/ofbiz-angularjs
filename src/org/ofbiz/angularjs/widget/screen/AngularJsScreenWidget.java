@@ -1017,6 +1017,41 @@ public class AngularJsScreenWidget {
     }
 
     @SuppressWarnings("serial")
+    public static class FileThumbnailImage extends ModelScreenWidget {
+
+        public static final String TAG_NAME = "file-thumbnail-image";
+
+        protected FlexibleStringExpander dataResourceIdExdr;
+        protected FlexibleStringExpander widthExdr;
+        protected FlexibleStringExpander heightExdr;
+
+        public FileThumbnailImage(ModelScreen modelScreen, Element widgetElement) {
+            super(modelScreen, widgetElement);
+            this.dataResourceIdExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("data-resource-id"));
+            this.widthExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("width"));
+            this.heightExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("height"));
+        }
+
+        @Override
+        public void renderWidgetString(Appendable writer,
+                Map<String, Object> context,
+                ScreenStringRenderer screenStringRenderer)
+                throws GeneralException, IOException {
+            writer.append("<file-thumbnail-image data-data-resource-id=\"" + dataResourceIdExdr.expandString(context) + "\""
+                    + " height=\"" + heightExdr.expandString(context) + "\" width=\"" + widthExdr.expandString(context) + "\"/>");
+
+        }
+
+        @Override
+        public String rawString() {
+            return "<img src=\"\"/>";
+        }
+    }
+
+    @SuppressWarnings("serial")
     public static class Field extends ModelScreenWidget {
         public static final String TAG_NAME = "field";
 

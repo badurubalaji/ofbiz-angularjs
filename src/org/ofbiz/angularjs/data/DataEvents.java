@@ -28,13 +28,14 @@ import org.ofbiz.base.util.UtilProperties;
 import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.content.data.DataResourceWorker;
 import org.ofbiz.entity.Delegator;
+import org.ofbiz.entity.GenericEntityException;
 import org.ofbiz.entity.GenericValue;
 import org.ofbiz.service.LocalDispatcher;
 
 public class DataEvents {
-    
+
     public final static String module = DataEvents.class.getName();
-    
+
     private static int size(InputStream stream) {
         int length = 0;
         try {
@@ -50,9 +51,9 @@ public class DataEvents {
             throw new RuntimeException(e);
         }
         return length;
-        
+
     }
-    
+
     private static String read(InputStream stream) {
         StringBuilder sb = new StringBuilder();
         BufferedReader reader = new BufferedReader(
@@ -71,21 +72,21 @@ public class DataEvents {
             }
         }
         return sb.toString();
-        
+
     }
-    
+
     public static String upload(HttpServletRequest request,
             HttpServletResponse response) {
         HttpSession session = request.getSession();
         LocalDispatcher dispatcher = (LocalDispatcher) request
                 .getAttribute("dispatcher");
         Delegator delegator = (Delegator) request.getAttribute("delegator");
-        
+
         GenericValue userLogin = (GenericValue) session
                 .getAttribute("userLogin");
-        
+
         Map<String, Object> fieldMap = new HashMap<String, Object>();
-        
+
         try {
             StringBuilder sb = new StringBuilder("{\"fields\": [");
             if (request.getHeader("Content-Type") != null
@@ -96,7 +97,7 @@ public class DataEvents {
                                 FileUtil.getFile("runtime/tmp")));
                 List<FileItem> fileItems = null;
                 Locale locale = UtilHttp.getLocale(request);
-                
+
                 try {
                     fileItems = UtilGenerics.checkList(upload
                             .parseRequest(request));
@@ -104,7 +105,7 @@ public class DataEvents {
                     request.setAttribute("_ERROR_MESSAGE_", e.toString());
                     return "error";
                 }
-                
+
                 if (fileItems.size() == 0) {
                     String errMsg = UtilProperties.getMessage(
                             DataResourceWorker.err_resource,
@@ -115,12 +116,12 @@ public class DataEvents {
                             module);
                     return "error";
                 }
-                
+
                 for (FileItem item : fileItems) {
                     String fieldName = item.getFieldName();
                     String fileName = item.getName();
                     InputStream inputStream = item.getInputStream();
-                    
+
                     if (UtilValidate.isNotEmpty(fileName)) {
                         fieldMap.put(fieldName, item);
                     } else {
@@ -128,41 +129,41 @@ public class DataEvents {
                         fieldMap.put(fieldName, value);
                     }
                 }
-                
+
                 int fieldCount = fieldMap.size();
                 int fieldIndex = 0;
                 for (String fieldName : fieldMap.keySet()) {
                     Object fieldValue = fieldMap.get(fieldName);
-                    
+
                     sb.append("{");
                     sb.append("\"fieldName\":\"").append(fieldName)
                             .append("\",");
                     sb.append(" \"value\":\"").append(fieldValue).append("\"");
-                    
+
                     if (fieldValue instanceof FileItem) {
                         FileItem fileItem = (FileItem) fieldValue;
                         String fileName = fileItem.getName();
                         InputStream inputStream = fileItem.getInputStream();
-                        
+
                         byte[] fileBytes = fileItem.get();
                         if (fileBytes != null && fileBytes.length > 0) {
                             String mimeType = DataResourceWorker
                                     .getMimeTypeFromImageFileName(fileName);
                             if (UtilValidate.isNotEmpty(mimeType)) {
-                                
+
                                 sb.append(", \"file\":{");
-                                
+
                                 sb.append("\"size\":\"")
                                         .append(size(inputStream)).append("\"");
-                                
+
                                 // IMAGE_OBJECT type would cause this error:
                                 // java.lang.ClassCastException:
                                 // java.nio.HeapByteBuffer cannot be cast to
                                 // java.sql.Blob
-                                
+
                                 ByteBuffer uploadedFile = ByteBuffer
                                         .wrap(fileBytes);
-                                
+
                                 String dataResourceId = (String) fieldMap
                                         .get("dataResourceId");
                                 String contentName = (String) fieldMap
@@ -173,14 +174,14 @@ public class DataEvents {
                                         .get("contentTypeId");
                                 String contentPurposeTypeId = (String) fieldMap
                                         .get("contentPurposeTypeId");
-                                
+
                                 GenericValue dataResource = delegator.findOne(
                                         "DataResource", UtilMisc.toMap(
                                                 "dataResourceId",
                                                 dataResourceId), false);
-                                
+
                                 if (UtilValidate.isEmpty(dataResource)) {
-                                    
+
                                     Map<String, Object> createContentFromUploadedFileInMap = new HashMap<String, Object>();
                                     createContentFromUploadedFileInMap.put(
                                             "userLogin", userLogin);
@@ -209,7 +210,7 @@ public class DataEvents {
                                             .get("contentId");
                                     dataResourceId = (String) createContentFromUploadedFileResults
                                             .get("dataResourceId");
-                                    
+
                                     sb.append(",\"contentId\":\"")
                                             .append(contentId).append("\"");
                                     sb.append(",\"dataResourceId\":\"")
@@ -218,7 +219,7 @@ public class DataEvents {
                                 } else {
                                     String contentId = (String) fieldMap
                                             .get("contentId");
-                                    
+
                                     Map<String, Object> updateContentAndUploadedFileInMap = new HashMap<String, Object>();
                                     updateContentAndUploadedFileInMap.put(
                                             "userLogin", userLogin);
@@ -242,12 +243,12 @@ public class DataEvents {
                                     dispatcher.runSync(
                                             "updateContentAndUploadedFile",
                                             updateContentAndUploadedFileInMap);
-                                    
+
                                     sb.append(", \"dataResourceId\":\"")
                                             .append(dataResourceId)
                                             .append("\"");
                                 }
-                                
+
                                 sb.append("}");
                             } else {
                                 request.setAttribute("_ERROR_MESSAGE_",
@@ -256,22 +257,22 @@ public class DataEvents {
                             }
                         }
                     }
-                    
+
                     sb.append("}");
                     if (fieldIndex < fieldCount - 1) {
                         sb.append(",");
                     }
                     fieldIndex++;
                 }
-                
+
             } else {
                 sb.append("{\"size\":\"" + size(request.getInputStream())
                         + "\"}");
             }
-            
+
             sb.append("]");
             sb.append(", \"requestHeaders\": {");
-            
+
             Enumeration<String> headerNames = request.getHeaderNames();
             while (headerNames.hasMoreElements()) {
                 String header = headerNames.nextElement();
@@ -282,13 +283,46 @@ public class DataEvents {
                 }
             }
             sb.append("}}");
-            
+
             response.getWriter().write(sb.toString());
         } catch (Exception ex) {
             String errMsg = "Could not upload file: " + ex.getMessage();
             Debug.logError(errMsg, module);
             return "error";
         }
+        return "success";
+    }
+
+    public static String serveFileThumbnailImage(HttpServletRequest request,
+            HttpServletResponse response) {
+
+        Delegator delegator = (Delegator) request.getAttribute("delegator");
+        Map<String, Object> parameters = UtilHttp.getParameterMap(request);
+
+        String dataResourceId = (String) parameters.get("dataResourceId");
+        try {
+            GenericValue dataResource = delegator.findOne("DataResource",
+                    UtilMisc.toMap("dataResourceId", dataResourceId), false);
+            String mimeTypeId = dataResource.getString("mimeTypeId");
+
+            if (UtilValidate.isNotEmpty(mimeTypeId)) {
+                String thumbnailImageDataResourceId = null;
+                if (mimeTypeId.startsWith("image/")) {
+                    thumbnailImageDataResourceId = dataResourceId;
+                } else if ("application/pdf".equals(mimeTypeId)) {
+                    thumbnailImageDataResourceId = "PDF_ICON";
+                } else {
+                    thumbnailImageDataResourceId = "FILE_ICON";
+                }
+                response.sendRedirect("/content/control/img?imgId="
+                        + thumbnailImageDataResourceId);
+            }
+        } catch (GenericEntityException e) {
+            Debug.logError(e, module);
+        } catch (IOException e) {
+            Debug.logError(e, module);
+        }
+
         return "success";
     }
 }
