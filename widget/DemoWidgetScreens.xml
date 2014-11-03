@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+        xsi:noNamespaceSchemaLocation="http://code.google.com/p/ofbiz-angularjs/dtds/ng-screens.xsd">
     <screen name="Accordion">
         <section>
             <widgets>
@@ -390,6 +390,7 @@
             </widgets>
         </section>
     </screen>
+    <!--
     <screen name="Tabs">
         <section>
             <widgets>
@@ -434,6 +435,7 @@
             </widgets>
         </section>
     </screen>
+    -->
     <screen name="Text">
         <section>
             <widgets>
@@ -507,15 +509,19 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.UploadDemoController">
-                    <form>
-                        <label text="Fullname: "/>
-                        <text name="fullname" model="fullname"/>
-                        <line-break/>
-                        <label text="Your picture: "/>
-                        <file name="file" model="files"/>
-                        <line-break/>
-                        <image src="/content/control/img?imgId={{dataResourceId}}"/>
-                        <button text="Upload" on-click="upload()"/>
+                    <form type="horizontal">
+                        <field title="Fullname: ">
+                            <text model="fullname"/>
+                        </field>
+                        <field title="Your picture: ">
+                            <file model="files"/>
+                        </field>
+                        <field>
+                            <image src="/content/control/img?imgId={{dataResourceId}}"/>
+                        </field>
+                        <field>
+                            <button text="Upload" on-click="upload()"/>
+                        </field>
                     </form>
                 </controller>
             </widgets>

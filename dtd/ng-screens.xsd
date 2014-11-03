@@ -1191,9 +1191,9 @@
     <xs:element name="swing">
         <xs:complexType/>
     </xs:element>
-    
+
     <!-- ============== AngularJs Widgets =============== -->
-    <xs:element name="accordion">
+    <xs:element name="accordion" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:sequence>
                 <xs:element minOccurs="0" maxOccurs="unbounded" ref="accordion-group" />
@@ -1201,69 +1201,85 @@
             <xs:attribute type="xs:string" name="close-others" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="accordion-group">
+    <xs:element name="accordion-group" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets" />
+            </xs:sequence>
             <xs:attribute type="xs:string" name="heading" />
+            <xs:attribute type="xs:string" name="repeat" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="alert">
+    <xs:element name="alert" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="repeat" />
             <xs:attribute type="xs:string" name="type" />
             <xs:attribute type="xs:string" name="close" />
+            <xs:attribute type="xs:string" name="text" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="button">
+    <xs:element name="button" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="text" />
             <xs:attribute type="xs:string" name="on-click" />
             <xs:attribute type="xs:string" name="style" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="calendar">
+    <xs:element name="calendar" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="name" />
             <xs:attribute type="xs:string" name="options" />
             <xs:attribute type="xs:string" name="model" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="checkbox">
+    <xs:element name="checkbox" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
             <xs:attribute type="xs:string" name="text" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="collapse">
+    <xs:element name="collapse" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
-            <xs:attribute type="xs:boolean" name="collapse" />
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets" />
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="collapse" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="container">
+    <!--
+    <xs:element name="container" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="style" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="container-fluid">
+    -->
+    <xs:element name="container-fluid" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:sequence>
                 <xs:element minOccurs="0" maxOccurs="unbounded" ref="row-fluid" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="context">
+    <xs:element name="context" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets" />
+            </xs:sequence>
             <xs:attribute type="xs:string" name="target" />
             <xs:attribute type="xs:string" name="parameters" />
             <xs:attribute type="xs:string" name="model" />
             <xs:attribute type="xs:string" name="field" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="controller">
+    <xs:element name="controller" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets" />
+            </xs:sequence>
             <xs:attribute type="xs:string" name="name" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="date-picker">
+    <xs:element name="date-picker" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
             <xs:attribute type="xs:string" name="show-weeks" />
@@ -1273,24 +1289,25 @@
             <xs:attribute type="xs:string" name="max" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="date-time">
+    <xs:element name="date-time" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="date-time">
-        <xs:complexType mixed="true">
-            <xs:attribute type="xs:string" name="model" />
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="dropdown">
+    <xs:element name="dropdown" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
             <xs:attribute type="xs:string" name="options" />
             <xs:attribute type="xs:string" name="default-text" />
+            <xs:attribute type="xs:string" name="target" />
+            <xs:attribute type="xs:string" name="parameters" />
+            <xs:attribute type="xs:string" name="field-name" />
+            <xs:attribute type="xs:string" name="description-field-name" />
+            <xs:attribute type="xs:string" name="default-value" />
+            <xs:attribute type="xs:string" name="placeholder" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="dropdown-toggle">
+    <xs:element name="dropdown-toggle" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:sequence>
                 <xs:element minOccurs="0" maxOccurs="unbounded" ref="option" />
@@ -1298,31 +1315,50 @@
             <xs:attribute type="xs:string" name="text" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="emphasized-text"/>
-    <xs:element name="form">
+    <xs:element name="error"/>
+    <xs:element name="emphasized-text" substitutionGroup="AllWidgets"/>
+    <xs:element name="field">
         <xs:complexType mixed="true">
-            <xs:attribute type="xs:string" name="name" />
-            <xs:attribute type="xs:string" name="target" />
-            <xs:attribute type="xs:string" name="on-submit-success" />
-            <xs:attribute type="xs:string" name="on-submit-error" />
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets" />
+                <xs:element minOccurs="0" maxOccurs="1" ref="validator-label" />
+                <xs:element minOccurs="0" maxOccurs="1" ref="submit" />
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="title" />
+            <xs:attribute type="xs:boolean" name="required-field" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="google-chart">
+    <xs:element name="file" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="form" substitutionGroup="AllWidgets">
+        <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="field" />
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="type" />
+            <xs:attribute type="xs:string" name="on-submit" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="google-chart" substitutionGroup="AllWidgets">
+        <xs:complexType mixed="true">
+            <xs:attribute type="xs:string" name="model" />
+            <xs:attribute type="xs:string" name="target" />
             <xs:attribute type="xs:string" name="style" />
             <xs:attribute type="xs:string" name="type" />
             <xs:attribute type="xs:boolean" name="displayed" />
             <xs:attribute type="xs:string" name="title" />
             <xs:attribute type="xs:boolean" name="is-stacked" />
             <xs:attribute type="xs:string" name="fill" />
-            <xs:attribute type="xs:string" name="type" />
             <xs:attribute type="xs:boolean" name="diplay-exact-values" />
             <xs:attribute type="xs:string" name="v-title" />
             <xs:attribute type="xs:string" name="h-title" />
+            <xs:attribute type="xs:int" name="v-grid-lines-count" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="grid">
+    <xs:element name="grid" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:sequence>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="field">
@@ -1339,13 +1375,21 @@
             <xs:attribute type="xs:string" name="list-name" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="label">
+    <xs:element name="jit-tree" substitutionGroup="AllWidgets">
+        <xs:complexType mixed="true">
+            <xs:attribute type="xs:string" name="type" />
+            <xs:attribute type="xs:string" name="model" />
+        </xs:complexType>
+    </xs:element>
+    <!--
+    <xs:element name="label" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="text" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="line-break"/>
-    <xs:element name="list">
+    -->
+    <xs:element name="line-break" substitutionGroup="AllWidgets"/>
+    <xs:element name="list" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:sequence>
                 <xs:element minOccurs="0" maxOccurs="unbounded" ref="list-item" />
@@ -1353,19 +1397,26 @@
             <xs:attribute type="xs:string" name="text" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="list-item">
+    <xs:element name="list-item" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets" />
+            </xs:sequence>
             <xs:attribute type="xs:string" name="repeat" />
             <xs:attribute type="xs:string" name="text" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="modal">
+    <xs:element name="lookup" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
-            <xs:attribute type="xs:string" name="should-be-open" />
-            <xs:attribute type="xs:string" name="options" />
+            <xs:attribute type="xs:string" name="target" />
+            <xs:attribute type="xs:string" name="field-name" />
+            <xs:attribute type="xs:string" name="description-field-name" />
+            <xs:attribute type="xs:string" name="model" />
+            <xs:attribute type="xs:string" name="placeholder" />
+            <xs:attribute type="xs:string" name="default-value" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="map">
+    <xs:element name="map" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="name" />
             <xs:attribute type="xs:string" name="style" />
@@ -1373,7 +1424,7 @@
             <xs:attribute type="xs:string" name="options" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="map-marker">
+    <xs:element name="map-marker" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="repeat" />
             <xs:attribute type="xs:string" name="value" />
@@ -1381,12 +1432,15 @@
             <xs:attribute type="xs:string" name="height" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="map-info-window">
+    <xs:element name="map-info-window" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets"/>
+            </xs:sequence>
             <xs:attribute type="xs:string" name="name" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="menu-bar">
+    <xs:element name="menu-bar" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:sequence>
                 <xs:element minOccurs="0" maxOccurs="unbounded" ref="menu-item" />
@@ -1402,7 +1456,7 @@
             <xs:attribute type="xs:string" name="target" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="modal">
+    <xs:element name="modal" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:sequence>
                 <xs:element minOccurs="0" maxOccurs="unbounded" ref="modal-header" />
@@ -1416,7 +1470,7 @@
     <xs:element name="modal-body"/>
     <xs:element name="modal-footer"/>
     <xs:element name="modal-header"/>
-    <xs:element name="number">
+    <xs:element name="number" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="name" />
             <xs:attribute type="xs:string" name="model" />
@@ -1431,31 +1485,32 @@
             <xs:attribute type="xs:string" name="repeat" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="preformatted-text"/>
-    <xs:element name="radio">
+    <xs:element name="preformatted-text" substitutionGroup="AllWidgets"/>
+    <xs:element name="radio" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
             <xs:attribute type="xs:string" name="value" />
             <xs:attribute type="xs:string" name="text" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="row-fluid"/>
+    <xs:element name="row-fluid" substitutionGroup="AllWidgets"/>
     <xs:element name="submit">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="text" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="tabs">
+    <xs:element name="tabs" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:sequence>
-                <xs:element minOccurs="0" maxOccurs="unbounded" ref="modal-header" />
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="tab" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="tab">
         <xs:complexType mixed="true">
             <xs:sequence>
-                <xs:element minOccurs="0" maxOccurs="unbounded" ref="tab-heading" />
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets"/>
+                <xs:element minOccurs="0" maxOccurs="1" ref="tab-heading"/>
             </xs:sequence>
             <xs:attribute type="xs:string" name="heading" />
             <xs:attribute type="xs:string" name="repeat" />
@@ -1465,19 +1520,24 @@
         </xs:complexType>
     </xs:element>
     <xs:element name="tab-heading"/>
-    <xs:element name="text">
+    <xs:element name="text" substitutionGroup="AllWidgets">
+        <xs:complexType mixed="true">
+            <xs:attribute type="xs:string" name="model" />
+            <xs:attribute type="xs:string" name="type" />
+            <xs:attribute type="xs:string" name="placeholder" />
+            <xs:attribute type="xs:int" name="minlength" />
+            <xs:attribute type="xs:int" name="maxlength" />
+            <xs:attribute type="xs:string" name="pattern" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="textarea" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
             <xs:attribute type="xs:string" name="placeholder" />
+            <xs:attribute type="xs:boolean" name="visual-editor-enable" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="textarea">
-        <xs:complexType mixed="true">
-            <xs:attribute type="xs:string" name="model" />
-            <xs:attribute type="xs:string" name="placeholder" />
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="time-picker">
+    <xs:element name="time-picker" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
             <xs:attribute type="xs:string" name="hour-step" />
@@ -1485,16 +1545,21 @@
             <xs:attribute type="xs:string" name="show-meridian" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="tree">
+    <xs:element name="tree" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="type" />
             <xs:attribute type="xs:string" name="id" />
             <xs:attribute type="xs:string" name="model" />
+            <xs:attribute type="xs:string" name="node-children-field-name" />
+            <xs:attribute type="xs:string" name="node-id-field-name" />
+            <xs:attribute type="xs:string" name="node-label-field-name" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="file">
+    <xs:element name="validator-label">
         <xs:complexType mixed="true">
-            <xs:attribute type="xs:string" name="name" />
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="error"/>
+            </xs:sequence>
         </xs:complexType>
     </xs:element>
 </xs:schema>
