@@ -1135,6 +1135,7 @@
     </xs:element>
     <!-- ============== HTML Specific Elements =============== -->
     <xs:element name="HtmlWidgets" abstract="true"/>
+    <!--
     <xs:element name="html">
         <xs:complexType>
             <xs:sequence>
@@ -1142,6 +1143,7 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    -->
     <xs:element name="xsl-fo">
         <xs:complexType>
             <xs:sequence>
@@ -1223,6 +1225,7 @@
             <xs:attribute type="xs:string" name="text" />
             <xs:attribute type="xs:string" name="on-click" />
             <xs:attribute type="xs:string" name="style" />
+            <xs:attribute type="xs:string" name="click-confirm-message" />
         </xs:complexType>
     </xs:element>
     <xs:element name="calendar" substitutionGroup="AllWidgets">
@@ -1326,6 +1329,7 @@
             </xs:sequence>
             <xs:attribute type="xs:string" name="title" />
             <xs:attribute type="xs:boolean" name="required-field" />
+            <xs:attribute type="xs:string" name="use-when" />
         </xs:complexType>
     </xs:element>
     <xs:element name="file" substitutionGroup="AllWidgets">
@@ -1333,10 +1337,17 @@
             <xs:attribute type="xs:string" name="model" />
         </xs:complexType>
     </xs:element>
+    <xs:element name="file-thumbnail-image" substitutionGroup="AllWidgets">
+        <xs:complexType mixed="true">
+            <xs:attribute type="xs:string" name="data-resource-id" />
+        </xs:complexType>
+    </xs:element>
     <xs:element name="form" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:sequence>
                 <xs:element minOccurs="0" maxOccurs="unbounded" ref="field" />
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="action-panel">
+                </xs:element>
             </xs:sequence>
             <xs:attribute type="xs:string" name="type" />
             <xs:attribute type="xs:string" name="on-submit" />
@@ -1363,21 +1374,36 @@
             <xs:sequence>
                 <xs:element minOccurs="0" maxOccurs="unbounded" name="field">
                     <xs:complexType mixed="true">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets" />
+                        </xs:sequence>
                         <xs:attribute type="xs:string" name="name" />
                         <xs:attribute type="xs:string" name="title" />
                         <xs:attribute type="xs:boolean" name="editable" />
+                        <xs:attribute type="xs:string" name="field-name" />
+                        <xs:attribute type="xs:string" name="controller" />
+                        <xs:attribute type="xs:string" name="sort-direction" />
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
             <xs:attribute type="xs:string" name="style" />
             <xs:attribute type="xs:short" name="row-height" />
-            <xs:attribute type="xs:string" name="select-target" />
             <xs:attribute type="xs:string" name="list-name" />
+            <xs:attribute type="xs:string" name="select-target" />
+            <xs:attribute type="xs:string" name="select-parameters" />
+            <xs:attribute type="xs:string" name="on-before-selection-changed" />
+            <xs:attribute type="xs:string" name="on-after-selection-changed" />
+            <xs:attribute type="xs:string" name="on-row-double-clicked" />
         </xs:complexType>
     </xs:element>
     <xs:element name="jit-tree" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="type" />
+            <xs:attribute type="xs:string" name="model" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="html" substitutionGroup="AllWidgets">
+        <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
         </xs:complexType>
     </xs:element>
@@ -1485,6 +1511,14 @@
             <xs:attribute type="xs:string" name="repeat" />
         </xs:complexType>
     </xs:element>
+    <xs:element name="panel" substitutionGroup="AllWidgets">
+        <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets"/>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="header-text" />
+        </xs:complexType>
+    </xs:element>
     <xs:element name="preformatted-text" substitutionGroup="AllWidgets"/>
     <xs:element name="radio" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
@@ -1497,29 +1531,28 @@
     <xs:element name="submit">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="text" />
+            <xs:attribute type="xs:string" name="style" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="tabs" substitutionGroup="AllWidgets">
+    <xs:element name="tab-bar" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:sequence>
-                <xs:element minOccurs="0" maxOccurs="unbounded" ref="tab" />
+                <xs:element minOccurs="1" maxOccurs="unbounded" ref="tab-item"/>
+                <xs:element minOccurs="1" maxOccurs="1" ref="tab-content"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="tab">
+    <xs:element name="tab-item">
         <xs:complexType mixed="true">
-            <xs:sequence>
-                <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets"/>
-                <xs:element minOccurs="0" maxOccurs="1" ref="tab-heading"/>
-            </xs:sequence>
-            <xs:attribute type="xs:string" name="heading" />
-            <xs:attribute type="xs:string" name="repeat" />
-            <xs:attribute type="xs:string" name="active" />
-            <xs:attribute type="xs:string" name="disabled" />
-            <xs:attribute type="xs:string" name="on-select" />
+            <xs:attribute type="xs:string" name="text" />
+            <xs:attribute type="xs:string" name="target" />
         </xs:complexType>
     </xs:element>
-    <xs:element name="tab-heading"/>
+    <xs:element name="tab-content">
+        <xs:complexType mixed="true">
+            <xs:attribute type="xs:string" name="view-name" />
+        </xs:complexType>
+    </xs:element>
     <xs:element name="text" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
@@ -1560,6 +1593,11 @@
             <xs:sequence>
                 <xs:element minOccurs="0" maxOccurs="unbounded" ref="error"/>
             </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="view" substitutionGroup="AllWidgets">
+        <xs:complexType mixed="true">
+            <xs:attribute type="xs:string" name="name" />
         </xs:complexType>
     </xs:element>
 </xs:schema>
