@@ -1126,7 +1126,8 @@
     <xs:element name="platform-specific" substitutionGroup="AllWidgets">
         <xs:complexType>
             <xs:sequence>
-                <xs:element minOccurs="0" ref="html"/>
+                <xs:element minOccurs="0" name="html">
+                </xs:element>
                 <xs:element minOccurs="0" ref="swing"/>
                 <xs:element minOccurs="0" ref="xsl-fo"/>
                 <xs:element minOccurs="0" ref="xml"/>
@@ -1256,6 +1257,11 @@
         </xs:complexType>
     </xs:element>
     -->
+    <xs:element name="comments-panel" substitutionGroup="AllWidgets">
+        <xs:complexType mixed="true">
+            <xs:attribute type="xs:string" name="content-id" />
+        </xs:complexType>
+    </xs:element>
     <xs:element name="container-fluid" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:sequence>
@@ -1295,6 +1301,8 @@
     <xs:element name="date-time" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
+            <xs:attribute type="xs:boolean" name="read-only" />
+            <xs:attribute type="xs:string" name="format" />
         </xs:complexType>
     </xs:element>
     <xs:element name="dropdown" substitutionGroup="AllWidgets">
@@ -1383,6 +1391,8 @@
                         <xs:attribute type="xs:string" name="field-name" />
                         <xs:attribute type="xs:string" name="controller" />
                         <xs:attribute type="xs:string" name="sort-direction" />
+                        <xs:attribute type="xs:string" name="cell-template-uri" />
+                        <xs:attribute type="xs:boolean" name="sortable" />
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
@@ -1391,20 +1401,30 @@
             <xs:attribute type="xs:string" name="list-name" />
             <xs:attribute type="xs:string" name="select-target" />
             <xs:attribute type="xs:string" name="select-parameters" />
+            <xs:attribute type="xs:string" name="selected-items" />
             <xs:attribute type="xs:string" name="on-before-selection-changed" />
             <xs:attribute type="xs:string" name="on-after-selection-changed" />
             <xs:attribute type="xs:string" name="on-row-double-clicked" />
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="jit-tree" substitutionGroup="AllWidgets">
-        <xs:complexType mixed="true">
-            <xs:attribute type="xs:string" name="type" />
-            <xs:attribute type="xs:string" name="model" />
+            <xs:attribute type="xs:string" name="show-selection-checkbox" />
+            <xs:attribute type="xs:string" name="multi-select" />
         </xs:complexType>
     </xs:element>
     <xs:element name="html" substitutionGroup="AllWidgets">
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="model" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="horizontal-rule" substitutionGroup="AllWidgets"/>
+    <xs:element name="jit-tree" substitutionGroup="AllWidgets">
+        <xs:complexType mixed="true">
+            <xs:attribute type="xs:string" name="type" />
+            <xs:attribute type="xs:string" name="model" />
+            <xs:attribute type="xs:string" name="node-template-url" />
+            <xs:attribute type="xs:string" name="node-parameters" />
+            <xs:attribute type="xs:int" name="level-distance" />
+            <xs:attribute type="xs:int" name="node-height" />
+            <xs:attribute type="xs:int" name="node-width" />
+            <xs:attribute type="xs:string" name="node-click" />
         </xs:complexType>
     </xs:element>
     <!--
@@ -1440,6 +1460,8 @@
             <xs:attribute type="xs:string" name="model" />
             <xs:attribute type="xs:string" name="placeholder" />
             <xs:attribute type="xs:string" name="default-value" />
+            <xs:attribute type="xs:string" name="parameters" />
+            <xs:attribute type="xs:string" name="dependent-parameter-names" />
         </xs:complexType>
     </xs:element>
     <xs:element name="map" substitutionGroup="AllWidgets">
@@ -1480,6 +1502,7 @@
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="text" />
             <xs:attribute type="xs:string" name="target" />
+            <xs:attribute type="xs:string" name="active-state" />
         </xs:complexType>
     </xs:element>
     <xs:element name="modal" substitutionGroup="AllWidgets">
@@ -1517,6 +1540,7 @@
                 <xs:element minOccurs="0" maxOccurs="unbounded" ref="AllWidgets"/>
             </xs:sequence>
             <xs:attribute type="xs:string" name="header-text" />
+            <xs:attribute type="xs:string" name="style" />
         </xs:complexType>
     </xs:element>
     <xs:element name="preformatted-text" substitutionGroup="AllWidgets"/>
@@ -1525,6 +1549,15 @@
             <xs:attribute type="xs:string" name="model" />
             <xs:attribute type="xs:string" name="value" />
             <xs:attribute type="xs:string" name="text" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="report" substitutionGroup="AllWidgets">
+        <xs:complexType mixed="true">
+            <xs:attribute type="xs:string" name="location" />
+            <xs:attribute type="xs:string" name="parameters" />
+            <xs:attribute type="xs:string" name="format" />
+            <xs:attribute type="xs:string" name="width" />
+            <xs:attribute type="xs:string" name="height" />
         </xs:complexType>
     </xs:element>
     <xs:element name="row-fluid" substitutionGroup="AllWidgets"/>
@@ -1546,6 +1579,7 @@
         <xs:complexType mixed="true">
             <xs:attribute type="xs:string" name="text" />
             <xs:attribute type="xs:string" name="target" />
+            <xs:attribute type="xs:string" name="active-state" />
         </xs:complexType>
     </xs:element>
     <xs:element name="tab-content">
@@ -1561,6 +1595,7 @@
             <xs:attribute type="xs:int" name="minlength" />
             <xs:attribute type="xs:int" name="maxlength" />
             <xs:attribute type="xs:string" name="pattern" />
+            <xs:attribute type="xs:boolean" name="visual-editor-enable" />
         </xs:complexType>
     </xs:element>
     <xs:element name="textarea" substitutionGroup="AllWidgets">
