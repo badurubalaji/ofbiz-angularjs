@@ -16,19 +16,13 @@ function ModalDirective(HttpService, $compile, $modal, $templateCache, $log) {
         $scope.$watch("shouldBeOpen", function(newVal) {
             if (newVal == true) {
                 var modalInstance = $modal.open({
+                      scope: $scope.$parent,
                       template: templateContents,
                       controller: function ($scope, $modalInstance, items) {
-                          $scope.$parent.$watch("shouldBeOpen", function(shouldBeOpen, oldShouldBeOpen) {
-
-                                  if (shouldBeOpen == false) {
+                          $scope.$watch("shouldBeOpen", function(shouldBeOpen, oldShouldBeOpen) {
+                              if (shouldBeOpen == false) {
                                     $modalInstance.close();
-                                  }
-
-                                  $scope.close = function () {
-                                      $modalInstance.close();
-                                      $scope.$parent.shouldBeOpen = false;
-                                      $scope.$parent.$apply();
-                                  };
+                              }
                           });
                       },
                         /*
@@ -41,13 +35,11 @@ function ModalDirective(HttpService, $compile, $modal, $templateCache, $log) {
                       }
                     });
 
-                    modalInstance.result.then(function (selectedItem) {
-                      $scope.selected = selectedItem;
-                    }, function () {
-                      $log.info('Modal dismissed at: ' + new Date());
-                    });
-            } else {
-                $scope.shouldBeOpen = false;
+                modalInstance.result.then(function (selectedItem) {
+                    $scope.selected = selectedItem;
+                }, function () {
+                    $scope.shouldBeOpen = false;
+                });
             }
         });
     }
