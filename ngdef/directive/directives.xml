@@ -64,4 +64,7 @@
 
     <ng-directive name="clickConfirmMessage" location="org.ofbiz.angularjs.directive.ClickConfirmMessageDirective"
         priority="1" replace="false" transclude="false" restrict="A" scope="false"/>
+
+    <ng-directive name="modal" location="org.ofbiz.angularjs.directive.ModalDirective"
+        priority="0" replace="false" transclude="false" restrict="E" scope="{shouldBeOpen:'='}"/>
 </ng-directives>
