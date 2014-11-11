@@ -5,37 +5,67 @@
     <ng-application name="angularjs">
     </ng-application>
     <ng-application name="example" default-state="example" disable-auto-scrolling="true">
-        <state name="example" url="/example">
-            <view name="main" target="example" controller="org.ofbiz.angularjs.example.controller.ExampleController"/>
-        </state>
-        <state name="feature" url="/ExampleFeature" abstract="true">
-            <view name="main" target="ExampleFeature" controller="org.ofbiz.angularjs.example.controller.ExampleFeatureController"/>
-        </state>
-        <state name="widget" url="/widget">
-            <view name="main" target="widget" controller="org.ofbiz.angularjs.example.controller.WidgetController"/>
-        </state>
-        <state name="html" url="/html">
-            <view name="main" target="html"/>
-        </state>
-        <state name="socket" url="/socket">
-            <view name="main" target="socket" controller="org.ofbiz.angularjs.example.controller.SocketController"/>
-        </state>
-        
-        <!-- 
-        http://stackoverflow.com/questions/16822559/three-level-nested-routes-in-angular-ui-router
-         -->
-        <state name="feature.list" url="/FindExampleFeature">
-            <view name="feature.main" target="FindExampleFeature" controller="org.ofbiz.angularjs.example.controller.FindExampleFeatureController"/>
-        </state>
-        <state name="feature.decorator" url="/CommonExampleFeatureView/:exampleFeatureId" abstract="true">
-            <view name="feature.main" target="CommonExampleFeatureView" controller="org.ofbiz.angularjs.example.controller.CommonExampleFeatureViewController"/>
-        </state>
-        <state name="feature.decorator.view" url="/view">
-            <view name="feature.decorator" target="ViewExampleFeature" controller="org.ofbiz.angularjs.example.controller.ViewExampleFeatureController"/>
-        </state>
-        <state name="feature.decorator.edit" url="/edit">
-            <view name="feature.decorator" target="EditExampleFeature" controller="org.ofbiz.angularjs.example.controller.EditExampleFeatureController"/>
-        </state>
+        <controllers>
+            <controller path="org.ofbiz.angularjs.example.controller.ExampleCommonDecoratorController"/>
+            <controller path="org.ofbiz.angularjs.example.controller.ExampleController"/>
+
+            <controller path="org.ofbiz.angularjs.demo.controller.AccordionDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.AlertDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.CalendarDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.CollapseDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.ContextDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.DatePickerDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.DateTimeDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.DropdownDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.DropdownToggleDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.FormDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.GoogleChartDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.GridDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.JitTreeDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.LookupDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.MapDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.MenuBarDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.ModalDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.NumberDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.TextDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.TextAreaDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.TimePickerDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.TreeDemoController"/>
+            <controller path="org.ofbiz.angularjs.demo.controller.UploadDemoController"/>
+        </controllers>
+        <states>
+            <state name="example" url="/example">
+                <view name="main" target="example" controller="org.ofbiz.angularjs.example.controller.ExampleController"/>
+            </state>
+            <state name="feature" url="/ExampleFeature" abstract="true">
+                <view name="main" target="ExampleFeature" controller="org.ofbiz.angularjs.example.controller.ExampleFeatureController"/>
+            </state>
+            <state name="widget" url="/widget">
+                <view name="main" target="widget" controller="org.ofbiz.angularjs.example.controller.WidgetController"/>
+            </state>
+            <state name="html" url="/html">
+                <view name="main" target="html"/>
+            </state>
+            <state name="socket" url="/socket">
+                <view name="main" target="socket" controller="org.ofbiz.angularjs.example.controller.SocketController"/>
+            </state>
+
+            <!--
+            http://stackoverflow.com/questions/16822559/three-level-nested-routes-in-angular-ui-router
+             -->
+            <state name="feature.list" url="/FindExampleFeature">
+                <view name="feature.main" target="FindExampleFeature" controller="org.ofbiz.angularjs.example.controller.FindExampleFeatureController"/>
+            </state>
+            <state name="feature.decorator" url="/CommonExampleFeatureView/:exampleFeatureId" abstract="true">
+                <view name="feature.main" target="CommonExampleFeatureView" controller="org.ofbiz.angularjs.example.controller.CommonExampleFeatureViewController"/>
+            </state>
+            <state name="feature.decorator.view" url="/view">
+                <view name="feature.decorator" target="ViewExampleFeature" controller="org.ofbiz.angularjs.example.controller.ViewExampleFeatureController"/>
+            </state>
+            <state name="feature.decorator.edit" url="/edit">
+                <view name="feature.decorator" target="EditExampleFeature" controller="org.ofbiz.angularjs.example.controller.EditExampleFeatureController"/>
+            </state>
+        </states>
     </ng-application>
     <!--
     <ng-app name="phonecat" default-path="/phones">

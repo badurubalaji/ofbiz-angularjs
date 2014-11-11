@@ -25,6 +25,7 @@ import org.ofbiz.angularjs.model.AbstractModelNg;
 import org.ofbiz.angularjs.model.AbstractModelNgReader;
 import org.ofbiz.base.config.ResourceHandler;
 import org.ofbiz.base.util.UtilGenerics;
+import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.base.util.UtilXml;
 import org.w3c.dom.Element;
 
@@ -34,7 +35,7 @@ public class ModelNgApplicationReader extends AbstractModelNgReader {
     protected ModelNgApplicationReader(ResourceHandler handler) {
         super("ng-application", handler);
     }
-    
+
     public static Map<String , ModelNgApplication> getModelNgApplicationMap(ResourceHandler handler) {
         ModelNgApplicationReader reader = new ModelNgApplicationReader(handler);
         return UtilGenerics.cast(reader.getModelNgs());
@@ -47,32 +48,56 @@ public class ModelNgApplicationReader extends AbstractModelNgReader {
         ngApplication.name = UtilXml.checkEmpty(element.getAttribute("name")).intern();
         ngApplication.defaultState = UtilXml.checkEmpty(element.getAttribute("default-state")).intern();
         ngApplication.disableAutoScrolling = Boolean.valueOf(UtilXml.checkEmpty(element.getAttribute("disable-auto-scrolling")).intern());
-        List<? extends Element> stateElements = UtilXml.childElementList(element, "state");
-        for (Element stateElement : stateElements) {
-            String stateName = UtilXml.elementAttribute(stateElement, "name", null);
-            String url = UtilXml.elementAttribute(stateElement, "url", null);
-            boolean isAbstract = Boolean.valueOf(UtilXml.elementAttribute(stateElement, "abstract", null)).booleanValue();
-            
-            ModelNgState modelNgState = new ModelNgState();
-            modelNgState.name = stateName;
-            modelNgState.url = url;
-            modelNgState.isAbstract = isAbstract;
 
-            List<? extends Element> viewElements = UtilXml.childElementList(stateElement, "view");
-            for (Element viewElement : viewElements) {
-                String viewName = UtilXml.elementAttribute(viewElement, "name", null);
-                String target = UtilXml.elementAttribute(viewElement, "target", null);
-                String controller = UtilXml.elementAttribute(viewElement, "controller", null);
-                
-                ModelNgView modelNgView = new ModelNgView();
-                modelNgView.name  = viewName;
-                modelNgView.target = target;
-                modelNgView.controller = controller;
-                
-                modelNgState.addView(modelNgView);
+        // get controllers
+        Element controllersElement = UtilXml.firstChildElement(element, "controllers");
+        if (UtilValidate.isNotEmpty(controllersElement)) {
+            List<? extends Element> controllerElements = UtilXml.childElementList(controllersElement);
+            if (UtilValidate.isNotEmpty(controllerElements)) {
+                for (Element controllerElement : controllerElements) {
+                    String controllerName = UtilXml.elementAttribute(controllerElement, "name", null);
+                    String controllerPath = UtilXml.elementAttribute(controllerElement, "path", null);
+
+                    ModelNgController modelNgController = new ModelNgController();
+                    modelNgController.name = controllerName;
+                    modelNgController.path = controllerPath;
+                    ngApplication.addController(modelNgController);
+                }
             }
-            
-            ngApplication.addState(modelNgState);
+        }
+
+        // get states
+        Element statesElement = UtilXml.firstChildElement(element, "states");
+        if (UtilValidate.isNotEmpty(statesElement)) {
+            List<? extends Element> stateElements = UtilXml.childElementList(statesElement);
+            if (UtilValidate.isNotEmpty(stateElements)) {
+                for (Element stateElement : stateElements) {
+                    String stateName = UtilXml.elementAttribute(stateElement, "name", null);
+                    String url = UtilXml.elementAttribute(stateElement, "url", null);
+                    boolean isAbstract = Boolean.valueOf(UtilXml.elementAttribute(stateElement, "abstract", null)).booleanValue();
+
+                    ModelNgState modelNgState = new ModelNgState();
+                    modelNgState.name = stateName;
+                    modelNgState.url = url;
+                    modelNgState.isAbstract = isAbstract;
+
+                    List<? extends Element> viewElements = UtilXml.childElementList(stateElement, "view");
+                    for (Element viewElement : viewElements) {
+                        String viewName = UtilXml.elementAttribute(viewElement, "name", null);
+                        String target = UtilXml.elementAttribute(viewElement, "target", null);
+                        String controller = UtilXml.elementAttribute(viewElement, "controller", null);
+
+                        ModelNgView modelNgView = new ModelNgView();
+                        modelNgView.name  = viewName;
+                        modelNgView.target = target;
+                        modelNgView.controller = controller;
+
+                        modelNgState.addView(modelNgView);
+                    }
+
+                    ngApplication.addState(modelNgState);
+                }
+            }
         }
         return ngApplication;
     }

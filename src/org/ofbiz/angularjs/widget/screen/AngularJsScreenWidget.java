@@ -300,6 +300,10 @@ public class AngularJsScreenWidget {
             String classAttributeName = "class";
             String style = styleExdr.expandString(context);
 
+            if (UtilValidate.isEmpty(style)) {
+                style = "btn-default";
+            }
+
             if (UtilValidate.isNotEmpty(style) && !style.startsWith("btn ")
                     && !style.endsWith(")")) {
                 style = "btn " + style;
@@ -1992,14 +1996,14 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<div class=\"navbar\" "
+            writer.append("<div class=\"navbar navbar-default navbar-fixed-top\" "
                     + styleExdr.expandString(context) + ">");
             writer.append("<div class=\"navbar-inner\">");
-            writer.append("<div class=\"container\">");
-            writer.append("<a class=\"brand\" ui-sref=\""
+            writer.append("<div class=\"container-fluid\">");
+            writer.append("<a class=\"navbar-brand\" ui-sref=\""
                     + targetExdr.expandString(context) + "\">"
                     + titleExdr.expandString(context) + "</a>");
-            writer.append("<ul class=\"nav\">");
+            writer.append("<ul class=\"nav navbar-nav\">");
 
             for (Element itemElement : itemElementList) {
                 String target = UtilXml.elementAttribute(itemElement, "target",
@@ -2031,83 +2035,89 @@ public class AngularJsScreenWidget {
     }
 
     @SuppressWarnings("serial")
-    public static class Modal extends ModelScreenWidget {
-        public static final String TAG_NAME = "modal";
+	public static class Modal extends ModelScreenWidget {
+		public static final String TAG_NAME = "modal";
 
-        protected FlexibleStringExpander shouldBeOpenExdr;
-        protected FlexibleStringExpander closeExdr;
-        protected FlexibleStringExpander optionsExdr;
-        protected Element modalHeaderElement;
-        protected Element modalBodyElement;
-        protected Element modalFooterElement;
+		protected FlexibleStringExpander shouldBeOpenExdr;
+		protected FlexibleStringExpander closeExdr;
+		protected FlexibleStringExpander optionsExdr;
+		protected Element modalHeaderElement;
+		protected Element modalBodyElement;
+		protected Element modalFooterElement;
 
-        public Modal(ModelScreen modelScreen, Element widgetElement) {
-            super(modelScreen, widgetElement);
-            this.shouldBeOpenExdr = FlexibleStringExpander
-                    .getInstance(widgetElement.getAttribute("should-be-open"));
-            this.closeExdr = FlexibleStringExpander.getInstance(widgetElement
-                    .getAttribute("close"));
-            this.optionsExdr = FlexibleStringExpander.getInstance(widgetElement
-                    .getAttribute("options"));
-            this.modalHeaderElement = UtilXml.firstChildElement(widgetElement,
-                    "modal-header");
-            this.modalBodyElement = UtilXml.firstChildElement(widgetElement,
-                    "modal-body");
-            this.modalFooterElement = UtilXml.firstChildElement(widgetElement,
-                    "modal-footer");
-        }
+		public Modal(ModelScreen modelScreen, Element widgetElement) {
+			super(modelScreen, widgetElement);
+			this.shouldBeOpenExdr = FlexibleStringExpander
+					.getInstance(widgetElement.getAttribute("should-be-open"));
+			this.closeExdr = FlexibleStringExpander.getInstance(widgetElement
+					.getAttribute("close"));
+			this.optionsExdr = FlexibleStringExpander.getInstance(widgetElement
+					.getAttribute("options"));
+			this.modalHeaderElement = UtilXml.firstChildElement(widgetElement,
+					"modal-header");
+			this.modalBodyElement = UtilXml.firstChildElement(widgetElement,
+					"modal-body");
+			this.modalFooterElement = UtilXml.firstChildElement(widgetElement,
+					"modal-footer");
+		}
 
-        @Override
-        public void renderWidgetString(Appendable writer,
-                Map<String, Object> context,
-                ScreenStringRenderer screenStringRenderer)
-                throws GeneralException, IOException {
-            writer.append("<div modal=\""
-                    + shouldBeOpenExdr.expandString(context) + "\" close=\""
-                    + closeExdr.expandString(context) + "\" options=\""
-                    + optionsExdr.expandString(context) + "\">");
-            if (UtilValidate.isNotEmpty(modalHeaderElement)) {
-                writer.append("<div class=\"modal-header\">");
-                // read header sub-widgets
-                List<? extends Element> subElementList = UtilXml
-                        .childElementList(modalHeaderElement);
-                List<ModelScreenWidget> subWidgets = ModelScreenWidget
-                        .readSubWidgets(this.getModelScreen(), subElementList);
-                renderSubWidgetsString(subWidgets, writer, context,
-                        screenStringRenderer);
-                writer.append("</div>");
-            }
-            if (UtilValidate.isNotEmpty(modalBodyElement)) {
-                writer.append("<div class=\"modal-body\">");
-                // read body sub-widgets
-                List<? extends Element> subElementList = UtilXml
-                        .childElementList(modalBodyElement);
-                List<ModelScreenWidget> subWidgets = ModelScreenWidget
-                        .readSubWidgets(this.getModelScreen(), subElementList);
-                renderSubWidgetsString(subWidgets, writer, context,
-                        screenStringRenderer);
-                writer.append("</div>");
-            }
-            if (UtilValidate.isNotEmpty(modalFooterElement)) {
-                writer.append("<div class=\"modal-footer\">");
-                // read footer sub-widgets
-                List<? extends Element> subElementList = UtilXml
-                        .childElementList(modalFooterElement);
-                List<ModelScreenWidget> subWidgets = ModelScreenWidget
-                        .readSubWidgets(this.getModelScreen(), subElementList);
-                renderSubWidgetsString(subWidgets, writer, context,
-                        screenStringRenderer);
-                writer.append("</div>");
-            }
-            writer.append("</div>");
-        }
+		@Override
+		public void renderWidgetString(Appendable writer,
+				Map<String, Object> context,
+				ScreenStringRenderer screenStringRenderer)
+				throws GeneralException, IOException {
 
-        @Override
-        public void accept(ModelWidgetVisitor visitor) {
-            // TODO Auto-generated method stub
+			writer.append("<modal should-be-open=\""
+					+ shouldBeOpenExdr.expandString(context) + "\" close=\""
+					+ closeExdr.expandString(context) + "\" options=\""
+					+ optionsExdr.expandString(context) + "\">");
 
-        }
-    }
+			writer.append("<script type=\"text/ng-template\">");
+
+			if (UtilValidate.isNotEmpty(modalHeaderElement)) {
+				writer.append("<div class=\"modal-header\">");
+				// read header sub-widgets
+				List<? extends Element> subElementList = UtilXml
+						.childElementList(modalHeaderElement);
+				List<ModelScreenWidget> subWidgets = ModelScreenWidget
+						.readSubWidgets(this.getModelScreen(), subElementList);
+				renderSubWidgetsString(subWidgets, writer, context,
+						screenStringRenderer);
+				writer.append("</div>");
+			}
+			if (UtilValidate.isNotEmpty(modalBodyElement)) {
+				writer.append("<div class=\"modal-body\">");
+				// read body sub-widgets
+				List<? extends Element> subElementList = UtilXml
+						.childElementList(modalBodyElement);
+				List<ModelScreenWidget> subWidgets = ModelScreenWidget
+						.readSubWidgets(this.getModelScreen(), subElementList);
+				renderSubWidgetsString(subWidgets, writer, context,
+						screenStringRenderer);
+				writer.append("</div>");
+			}
+			if (UtilValidate.isNotEmpty(modalFooterElement)) {
+				writer.append("<div class=\"modal-footer\">");
+				// read footer sub-widgets
+				List<? extends Element> subElementList = UtilXml
+						.childElementList(modalFooterElement);
+				List<ModelScreenWidget> subWidgets = ModelScreenWidget
+						.readSubWidgets(this.getModelScreen(), subElementList);
+				renderSubWidgetsString(subWidgets, writer, context,
+						screenStringRenderer);
+				writer.append("</div>");
+			}
+			writer.append("</script>");
+
+			writer.append("</modal>");
+		}
+
+		@Override
+		public void accept(ModelWidgetVisitor visitor) {
+			// TODO Auto-generated method stub
+
+		}
+	}
 
     @SuppressWarnings("serial")
     public static class NgList extends ModelScreenWidget {
@@ -2518,8 +2528,16 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
+
+            String style = "";
+            if (UtilValidate.isEmpty(styleExdr.getOriginal())) {
+                style = "btn-default";
+            } else {
+                style = styleExdr.expandString(context);
+            }
+
             writer.append("<input type=\"submit\" class=\"btn "
-                    + styleExdr.expandString(context) + "\" value=\""
+                    + style + "\" value=\""
                     + textExdr.expandString(context) + "\"");
             writer.append("/>");
         }
@@ -2645,7 +2663,7 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<tabset tab-set-options ");
+            writer.append("<tabset "); // TODO tab-set-options deleted
             writer.append("vertical=\""
                     + Boolean.valueOf(verticalExdr.expandString(context))
                     + "\"");

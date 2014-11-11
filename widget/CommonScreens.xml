@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+        xsi:noNamespaceSchemaLocation="http://code.google.com/p/ofbiz-angularjs/dtds/ng-screens.xsd">
 
     <screen name="GlobalActions">
         <section>
@@ -26,7 +26,7 @@
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/tinymce/tinymce.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/underscore-min-1.5.2.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/require-2.1.8.js" global="true"/>
-                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/angular-1.2.23.min.js" global="true"/>
+                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/angular-1.3.2.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/file-upload/angular-file-upload-shim.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.11.0.min.js" global="true"/>
 
@@ -78,9 +78,11 @@
                 <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
                         <section>
+                            <!--
                             <condition>
-                                <!--<if-has-permission permission="ANGULARJS" action="_VIEW"/>-->
+                                <if-has-permission permission="ANGULARJS" action="_VIEW"/>
                             </condition>
+                            -->
                             <widgets>
                                 <decorator-section-include name="body"/>
                             </widgets>

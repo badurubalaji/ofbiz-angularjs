@@ -11,47 +11,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSON;
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
-import net.sf.json.processors.JsonValueProcessor;
-
+import org.ofbiz.base.lang.JSON;
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.UtilHttp;
 
 public class CommonEvents {
-
-    private static class DateJsonValueProcessor implements JsonValueProcessor {
-
-        private String format;
-
-        public DateJsonValueProcessor(String format) {
-            this.format = format;
-        }
-
-        public Object processArrayValue(Object value, JsonConfig jsonConfig) {
-            return null;
-        }
-
-        public Object processObjectValue(String key, Object value,
-                JsonConfig jsonConfig) {
-            if (value == null) {
-                return "";
-            }
-            if (value instanceof java.sql.Timestamp) {
-                String str = new SimpleDateFormat(format)
-                        .format((java.sql.Timestamp) value);
-                return str;
-            }
-            if (value instanceof java.util.Date) {
-                String str = new SimpleDateFormat(format)
-                        .format((java.util.Date) value);
-                return str;
-            }
-
-            return value.toString();
-        }
-    }
 
     public static final String module = CommonEvents.class.getName();
 
@@ -61,15 +25,6 @@ public class CommonEvents {
             "javax.servlet.request.ssl_session_id", "multiPartMap",
             "javax.servlet.request.cipher_suite", "targetRequestUri",
             "_SERVER_ROOT_URL_", "_CONTROL_PATH_", "thisRequestUri" };
-
-    private static JsonConfig jsonConfig = new JsonConfig();
-
-    static {
-        jsonConfig.registerJsonValueProcessor(Timestamp.class,
-                new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss.SSS"));
-        jsonConfig.registerJsonValueProcessor(Date.class,
-                new DateJsonValueProcessor("yyyy-MM-dd"));
-    }
 
     public static String jsonResponseFromRequestAttributes(
             HttpServletRequest request, HttpServletResponse response) {
@@ -83,9 +38,15 @@ public class CommonEvents {
             }
         }
 
-        // create a JSON Object for return
-        JSONObject json = JSONObject.fromObject(attrMap, jsonConfig);
-        writeJSONtoResponse(json, request.getMethod(), response);
+        try {
+            // create a JSON Object for return
+            JSON json = JSON.from(attrMap);
+            writeJSONtoResponse(json, request.getMethod(), response);
+        } catch (IOException e) {
+            String errMsg = e.getMessage();
+            Debug.logError(errMsg, module);
+            return "error";
+        }
 
         return "success";
     }

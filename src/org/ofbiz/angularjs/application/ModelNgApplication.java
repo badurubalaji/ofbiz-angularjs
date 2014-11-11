@@ -27,16 +27,25 @@ import org.ofbiz.angularjs.model.AbstractModelNg;
 public class ModelNgApplication extends AbstractModelNg {
 
     public final static String module = ModelNgApplication.class.getName();
-    
+
     public String defaultState = null;
     public boolean disableAutoScrolling = false;
-    
+
+    protected List<ModelNgController> modelNgControllers = new LinkedList<ModelNgController>();
     protected List<ModelNgState> modelNgStates = new LinkedList<ModelNgState>();
+
+    public void addController(ModelNgController modelNgController) {
+        modelNgControllers.add(modelNgController);
+    }
+
+    public List<ModelNgController> getModelNgControllers() {
+    	return modelNgControllers;
+    }
 
     public void addState(ModelNgState modelNgState) {
         modelNgStates.add(modelNgState);
     }
-    
+
     public List<ModelNgState> getModelNgStates() {
         return modelNgStates;
     }

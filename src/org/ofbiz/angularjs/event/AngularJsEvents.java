@@ -34,13 +34,12 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 import org.ofbiz.angularjs.application.ModelNgApplication;
+import org.ofbiz.angularjs.application.ModelNgController;
 import org.ofbiz.angularjs.application.ModelNgState;
 import org.ofbiz.angularjs.application.ModelNgView;
 import org.ofbiz.angularjs.component.NgComponentConfig;
@@ -56,6 +55,7 @@ import org.ofbiz.angularjs.module.ModelNgModule;
 import org.ofbiz.angularjs.module.ModelNgModule.ModelJavaScript;
 import org.ofbiz.angularjs.provider.ModelNgProvider;
 import org.ofbiz.angularjs.service.ModelNgService;
+import org.ofbiz.base.lang.JSON;
 import org.ofbiz.base.util.Debug;
 import org.ofbiz.base.util.FileUtil;
 import org.ofbiz.base.util.StringUtil;
@@ -185,19 +185,35 @@ public class AngularJsEvents {
     }
 
     private static void buildAppJsFunction(String name, String defaultState,
-            boolean disableAutoScrolling,
+            boolean disableAutoScrolling, List<? extends ModelNgController> modelNgControllers,
             List<? extends ModelNgState> modelNgStates, StringBuilder builder) {
         builder.append("\nangular.module('" + name + "', ['combine.all'])");
 
-        builder.append(".config(function($stateProvider, $urlRouterProvider, $anchorScrollProvider) {\n");
+        // controllers
+        StringBuilder controllersBuilder = new StringBuilder();
+        if (UtilValidate.isNotEmpty(modelNgControllers)) {
+            for (ModelNgController modelNgController : modelNgControllers) {
+                String controllerName = modelNgController.name;
+                if (UtilValidate.isEmpty(controllerName)) {
+                    controllerName = modelNgController.path;
+                }
+
+                if (UtilValidate.isNotEmpty(controllerName)) {
+                    controllersBuilder.append("\n.controller(\"" + controllerName + "\", " + modelNgController.path + ")");
+                }
+            }
+        }
+        builder.append(controllersBuilder);
+
+        builder.append("\n.config(function($stateProvider, $urlRouterProvider, $anchorScrollProvider) {\n");
 
         String defaultUrl = "";
         List<String> defaultStateTokens = StringUtil.split(defaultState, ".");
 
         // states
-        StringBuilder stateBuilder = new StringBuilder();
+        StringBuilder statesBuilder = new StringBuilder();
         if (UtilValidate.isNotEmpty(modelNgStates)) {
-            stateBuilder.append("\n$stateProvider");
+            statesBuilder.append("\n$stateProvider");
             for (ModelNgState modelNgState : modelNgStates) {
 
                 // append default URL
@@ -214,18 +230,18 @@ public class AngularJsEvents {
                     defaultStateTokenTail += ".";
                 }
 
-                stateBuilder.append("\n//- State[" + modelNgState.name
+                statesBuilder.append("\n//- State[" + modelNgState.name
                         + "] is abstract[" + modelNgState.isAbstract
                         + "] with URL[" + modelNgState.url + "]\n");
-                stateBuilder.append(".state(\"" + modelNgState.name + "\", {");
-                stateBuilder.append("abstract: " + modelNgState.isAbstract
+                statesBuilder.append(".state(\"" + modelNgState.name + "\", {");
+                statesBuilder.append("abstract: " + modelNgState.isAbstract
                         + ",");
-                stateBuilder.append("url: \"" + modelNgState.url + "\",");
-                stateBuilder.append("views: {");
+                statesBuilder.append("url: \"" + modelNgState.url + "\",");
+                statesBuilder.append("views: {");
 
                 List<String> viewDefs = new LinkedList<String>();
                 for (ModelNgView modelNgView : modelNgState.getModelNgViews()) {
-                    stateBuilder.append("\n//-- View[" + modelNgView.name
+                    statesBuilder.append("\n//-- View[" + modelNgView.name
                             + "] with template URL[" + modelNgView.target
                             + "] and controller[" + modelNgView.controller
                             + "]\n");
@@ -235,9 +251,9 @@ public class AngularJsEvents {
                             + ", controllerClassName: \"" + modelNgView.controller
                             + "\"}");
                 }
-                stateBuilder.append(StringUtil.join(viewDefs, ","));
+                statesBuilder.append(StringUtil.join(viewDefs, ","));
 
-                stateBuilder.append("}})");
+                statesBuilder.append("}})");
             }
         }
 
@@ -249,7 +265,7 @@ public class AngularJsEvents {
                     + "\");");
         }
 
-        builder.append(stateBuilder);
+        builder.append(statesBuilder);
         builder.append(";");
 
         builder.append("})\n");
@@ -261,21 +277,21 @@ public class AngularJsEvents {
 
         // run
         builder.append("\n.run(function($rootScope, $state, $stateParams, $templateFactory, $templateCache, $http) {");
-        builder.append("$rootScope.$state = $state;");
-        builder.append("$rootScope.$stateParams = $stateParams;");
+        builder.append("\n$rootScope.$state = $state;");
+        builder.append("\n$rootScope.$stateParams = $stateParams;");
 
         // override $templateFactory.fromUrl() function and add X-Requested-With header
-        builder.append("$templateFactory.fromUrl = function (url, params) {");
-        builder.append("    if (angular.isFunction(url)) url = url(params);");
-        builder.append("    if (url == null) return null;");
-        builder.append("    else{");
-        builder.append("        return $http");
-        builder.append("            .get(url, { cache: $templateCache, headers: { Accept: 'text/html', 'X-Requested-With': 'XMLHttpRequest' }})");
-        builder.append("            .then(function(response) {");
-        builder.append("                return response.data;");
-        builder.append("            });");
-        builder.append("   }");
-        builder.append("};");
+        builder.append("\n$templateFactory.fromUrl = function (url, params) {");
+        builder.append("\n    if (angular.isFunction(url)) url = url(params);");
+        builder.append("\n    if (url == null) return null;");
+        builder.append("\n    else{");
+        builder.append("\n        return $http");
+        builder.append("\n            .get(url, { cache: $templateCache, headers: { Accept: 'text/html', 'X-Requested-With': 'XMLHttpRequest' }})");
+        builder.append("\n            .then(function(response) {");
+        builder.append("\n                return response.data;");
+        builder.append("\n            });");
+        builder.append("\n   }");
+        builder.append("\n};");
 
         builder.append("})");
 
@@ -405,6 +421,7 @@ public class AngularJsEvents {
                 buildAppJsFunction(modelNgApplication.name,
                         modelNgApplication.defaultState,
                         modelNgApplication.disableAutoScrolling,
+                        modelNgApplication.getModelNgControllers(),
                         modelNgApplication.getModelNgStates(), builder);
             }
 
@@ -465,24 +482,21 @@ public class AngularJsEvents {
         Map<String, Object> results = new HashMap<String, Object>();
         results.put("_ERROR_MESSAGE_LIST_", responseMessageList);
 
-        JSONObject jsonObject = JSONObject.fromObject(results);
-        String jsonStr = jsonObject.toString();
-
         // set the X-JSON content type
         response.setContentType("application/x-json");
-        // jsonStr.length is not reliable for unicode characters
         try {
+            JSON json = JSON.from(results);
+            String jsonStr = json.toString();
+            // jsonStr.length is not reliable for unicode characters
             response.setContentLength(jsonStr.getBytes("UTF8").length);
-        } catch (UnsupportedEncodingException e) {
-            Debug.logError("Problems with Json encoding: " + e, module);
-        }
 
-        // return the JSON String
-        Writer out;
-        try {
+            // return the JSON String
+            Writer out;
             out = response.getWriter();
             out.write(jsonStr);
             out.flush();
+        } catch (UnsupportedEncodingException e) {
+            Debug.logError("Problems with Json encoding: " + e, module);
         } catch (IOException e) {
             Debug.logError(e, module);
         }

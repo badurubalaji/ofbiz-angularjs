@@ -2,12 +2,10 @@
 <ng-modules
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://code.google.com/p/ofbiz-angularjs/dtds/ng-modules.xsd">
-    <ng-module name="ui.bootstrap" location="/angularjs/images/js/ui-bootstrap-0.4.0.min.js">
-        <javaScript path="/angularjs/images/js/bootstrap.min.js"/>
-        <javaScript path="/angularjs/images/js/ui-bootstrap-tpls-0.4.0.min.js"/>
-        <styleSheet path="/angularjs/images/css/bootstrap-theme.min.css"/>
-        <styleSheet path="/angularjs/images/css/bootstrap.min.css"/>
-        <styleSheet path="/angularjs/images/css/bootstrap-responsive.min.css"/>
+    <ng-module name="ui.bootstrap" location="/angularjs/images/js/ui-bootstrap-tpls-0.11.2.min.js">
+        <javaScript path="/angularjs/images/js/bootstrap-3.3.0.min.js"/>
+        <styleSheet path="/angularjs/images/css/bootstrap-theme-3.3.0.min.css"/>
+        <styleSheet path="/angularjs/images/css/bootstrap-3.3.0.min.css"/>
     </ng-module>
 
     <!--
@@ -50,13 +48,14 @@
     <!--
         http://mgcrea.github.io/angular-strap/
     -->
-    <ng-module name="$strap.directives" location="/angularjs/images/js/angular-strap.min.js">
+<!--     <ng-module name="$strap.directives" location="/angularjs/images/js/angular-strap.min.js"> -->
 
-    </ng-module>
+<!--     </ng-module> -->
 
     <ng-module name="angularTreeview" location="/angularjs/images/js/angular.treeview.min.js">
         <styleSheet path="/angularjs/images/css/angular.treeview.css"/>
     </ng-module>
+    <!-- TODO actually we don't need ui-select2.js -->
     <ng-module name="ui.select2" location="/angularjs/images/js/select2/ui-select2.js">
         <javaScript path="/angularjs/images/js/select2/select2-3.4.5.min.js"/>
         <styleSheet path="/angularjs/images/js/select2/select2-3.4.5.css"/>

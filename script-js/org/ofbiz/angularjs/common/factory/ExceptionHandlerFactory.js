@@ -6,7 +6,8 @@ function ExceptionHandlerFactory() {
             console.warn("Action already in progress.");
         } else {
             exception.message += ' (caused by "' + cause + '")';
-            throw exception;
+            //throw exception;
+            console.error(exception.message);
         }
       };
 }

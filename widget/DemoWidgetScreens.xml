@@ -28,8 +28,8 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.AlertDemoController">
-                    <alert repeat="alert in alerts" type="alert.type" close="closeAlert($index)" text="{{alert.msg}}"/>
-                    <button on-click="addAlert()" text="Add Alert"/>
+                    <alert repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" text="{{alert.msg}}"/>
+                    <button on-click="addAlert()" text="Add Alert" style="btn-default"/>
                 </controller>
             </widgets>
         </section>
@@ -47,7 +47,7 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.CollapseDemoController">
-                    <button style="btn" on-click="isCollapsed = !isCollapsed" text="Toggle collapse"/>
+                    <button style="btn-default" on-click="isCollapsed = !isCollapsed" text="Toggle collapse"/>
                     <collapse collapse="isCollapsed">
                         <container style="well well-large">
                             <label text="Some content"/>
@@ -67,7 +67,7 @@
                         <label text="Example Name: {{contextExample.exampleName}}"/>
                     </context>
                     <line-break/>
-                    <button style="btn" on-click="open()" text="Open me!"/>
+                    <button style="btn-default" on-click="open()" text="Open me!"/>
                     <modal should-be-open="shouldBeOpen" options="opts">
                         <modal-header>
                             <label style="h1" text="I'm a modal!"/>
@@ -93,10 +93,10 @@
                 <controller name="org.ofbiz.angularjs.demo.controller.DatePickerDemoController">
                     <date-picker model="dt" show-weeks="showWeeks" starting-day="1" date-disabled="disabled(date, mode)" min="minDate" max="'2015-06-22'"/>
                     <preformatted-text>Selected date is: <emphasized-text>{{dt | date:'fullDate' }}</emphasized-text></preformatted-text>
-                    <button style="btn-small btn-inverse" on-click="today()" text="Today"/>
+                    <button style="btn-small btn-default" on-click="today()" text="Today"/>
                     <button style="btn-small btn-success" on-click="toggleWeeks()" text="Toggle Weeks"/>
                     <button style="btn-small btn-danger" on-click="clear()" text="Clear"/>
-                    <button style="btn-small" on-click="toggleMin()" text="After today restriction"/>
+                    <button style="btn-small btn-default" on-click="toggleMin()" text="After today restriction"/>
                 </controller>
             </widgets>
         </section>
@@ -115,9 +115,9 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.DropdownDemoController">
-                    <label text="Color:"/>
+                    <label text="Country:"/>
                     <dropdown model="country" target="LookupGeo" parameters="lookupGeoParameters" field-name="geoId" description-field-name="geoName" default-value="ABW" placeholder="Choose Country"/>
-                    <label text="Currently selected: {{country.geoName}}"/>
+                    <label text="Selected country: {{country.geoName}}"/>
                 </controller>
             </widgets>
         </section>
@@ -348,7 +348,7 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.ModalDemoController">
-                    <button style="btn" on-click="open()" text="Open me!"/>
+                    <button style="btn-default" on-click="open()" text="Open me!"/>
                     <modal should-be-open="shouldBeOpen" options="opts">
                         <modal-header>
                             <label style="h1" text="I'm a modal!"/>
