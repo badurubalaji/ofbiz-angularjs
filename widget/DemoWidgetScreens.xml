@@ -14,7 +14,7 @@
                             <label text="{{group.content}}"/>
                         </accordion-group>
                         <accordion-group heading="Dynamic Body Content">
-                            <button text="Add Item" on-click="addItem()" style="btn-small"/>
+                            <button text="Add Item" on-click="addItem()" style="btn-default"/>
                             <list>
                                 <list-item repeat="item in items"><label text="{{item}}"/></list-item>
                             </list>
