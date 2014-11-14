@@ -700,8 +700,9 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander showWeeksExdr;
         protected FlexibleStringExpander startingDayExdr;
         protected FlexibleStringExpander dateDisabledExdr;
-        protected FlexibleStringExpander minExdr;
-        protected FlexibleStringExpander maxExdr;
+        protected FlexibleStringExpander minDateExdr;
+        protected FlexibleStringExpander maxDateExdr;
+        protected FlexibleStringExpander styleExdr;
 
         public DatePicker(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
@@ -713,10 +714,12 @@ public class AngularJsScreenWidget {
                     .getInstance(widgetElement.getAttribute("starting-day"));
             this.dateDisabledExdr = FlexibleStringExpander
                     .getInstance(widgetElement.getAttribute("date-disabled"));
-            this.minExdr = FlexibleStringExpander.getInstance(widgetElement
-                    .getAttribute("min"));
-            this.maxExdr = FlexibleStringExpander.getInstance(widgetElement
-                    .getAttribute("max"));
+            this.minDateExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("min-date"));
+            this.maxDateExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("max-date"));
+            this.styleExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("style"));
         }
 
         @Override
@@ -731,8 +734,9 @@ public class AngularJsScreenWidget {
                     + startingDayExdr.expandString(context)
                     + "\" date-disabled=\""
                     + dateDisabledExdr.expandString(context) + "\"" + " min=\""
-                    + minExdr.expandString(context) + "\" max=\""
-                    + maxExdr.expandString(context) + "\">");
+                    + minDateExdr.expandString(context) + "\" max=\""
+                    + maxDateExdr.expandString(context) + "\" style=\""
+                    + styleExdr.expandString(context) + "\">");
             writer.append("</datepicker>");
         }
 
@@ -788,23 +792,32 @@ public class AngularJsScreenWidget {
                 style = this.styleExdr.expandString(context);
             }
 
-            writer.append("<span>");
-            writer.append("<date-time ng-model=\"" + modelExdr.expandString(context) + "\" style=\"" + style + "\" format=\"" + format + "\"");
+//            writer.append("<span>");
+//            writer.append("<date-time ng-model=\"" + modelExdr.expandString(context) + "\" style=\"" + style + "\" format=\"" + format + "\"");
+//
+//            if (UtilValidate.isNotEmpty(readOnlyExdr.getOriginal())) {
+//                writer.append(" read-only=\"" + readOnlyExdr.expandString(context) + "\"");
+//            }
+//
+//            if (UtilValidate.isNotEmpty(fieldName)) {
+//                writer.append(" name=\"" + fieldName + "\"");
+//            }
+//
+//            if (isRequire) {
+//                writer.append(" required");
+//            }
+//
+//            writer.append("/>");
+//            writer.append("</span>");
 
-            if (UtilValidate.isNotEmpty(readOnlyExdr.getOriginal())) {
-                writer.append(" read-only=\"" + readOnlyExdr.expandString(context) + "\"");
-            }
-
-            if (UtilValidate.isNotEmpty(fieldName)) {
-                writer.append(" name=\"" + fieldName + "\"");
-            }
-
-            if (isRequire) {
-                writer.append(" required");
-            }
-
-            writer.append("/>");
+            writer.append("<p class=\"input-group\">");
+            writer.append("<input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"dt\"");
+            writer.append(" is-open=\"opened\" min-date=\"minDate\" max-date=\"'2015-06-22'\" datepicker-options=\"dateOptions\"");
+            writer.append(" date-disabled=\"disabled(date, mode)\" ng-required=\"true\" close-text=\"Close\" />");
+            writer.append("<span class=\"input-group-btn\">");
+            writer.append("<button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"glyphicon glyphicon-calendar\"></i></button>");
             writer.append("</span>");
+            writer.append("</p>");
         }
 
         @Override

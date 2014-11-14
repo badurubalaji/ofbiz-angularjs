@@ -12,10 +12,6 @@
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/initialStrap.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/initialGoogleChart.js" global="true"/>
 
-                <!-- ADE -->
-                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/ade/common/custom_date.js" global="true"/>
-                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/ade/common/date.js" global="true"/>
-
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/fastclick.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/calendar/gcal.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/calendar/fullcalendar.min.js" global="true"/>
