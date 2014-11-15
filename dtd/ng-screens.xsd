@@ -1294,8 +1294,9 @@
             <xs:attribute type="xs:string" name="show-weeks" />
             <xs:attribute type="xs:string" name="starting-day" />
             <xs:attribute type="xs:string" name="date-disabled" />
-            <xs:attribute type="xs:string" name="min" />
-            <xs:attribute type="xs:string" name="max" />
+            <xs:attribute type="xs:string" name="min-date" />
+            <xs:attribute type="xs:string" name="max-date" />
+            <xs:attribute type="xs:string" name="style" />
         </xs:complexType>
     </xs:element>
     <xs:element name="date-time" substitutionGroup="AllWidgets">
