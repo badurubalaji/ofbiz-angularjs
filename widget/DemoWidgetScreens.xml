@@ -106,7 +106,14 @@
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.DateTimeDemoController">
                     <label text="Selected date: {{date}}"/>
-                    <date-time model="date"/>
+                    <form>
+                        <field required-field="true" title="Editable">
+                            <date-time model="date"/>
+                        </field>
+                        <field required-field="true" title="Read Only">
+                            <date-time model="date" read-only="true"/>
+                        </field>
+                    </form>
                 </controller>
             </widgets>
         </section>

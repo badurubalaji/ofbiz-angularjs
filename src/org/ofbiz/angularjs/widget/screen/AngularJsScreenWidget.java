@@ -755,6 +755,10 @@ public class AngularJsScreenWidget {
         protected FlexibleStringExpander modelExdr = null;
         protected FlexibleStringExpander styleExdr = null;
         protected FlexibleStringExpander readOnlyExdr = null;
+        protected FlexibleStringExpander minDateExdr = null;
+        protected FlexibleStringExpander maxDateExdr = null;
+        protected FlexibleStringExpander dateDisabledExdr = null;
+        protected FlexibleStringExpander closeTextExdr = null;
 
         public DateTime(ModelScreen modelScreen, Element widgetElement) {
             super(modelScreen, widgetElement);
@@ -766,6 +770,14 @@ public class AngularJsScreenWidget {
                     .getAttribute("style"));
             this.readOnlyExdr = FlexibleStringExpander.getInstance(widgetElement
                     .getAttribute("read-only"));
+            this.minDateExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("min-date"));
+            this.maxDateExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("max-date"));
+            this.dateDisabledExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("date-disabled"));
+            this.closeTextExdr = FlexibleStringExpander.getInstance(widgetElement
+                    .getAttribute("close-text"));
         }
 
         @Override
@@ -779,6 +791,7 @@ public class AngularJsScreenWidget {
 
             String format = null;
             String style = null;
+            String closeText = null;
 
             if (UtilValidate.isEmpty(this.formatExdr.getOriginal())) {
                 format = "MMM d, yyyy h:mm:ss a";
@@ -792,32 +805,32 @@ public class AngularJsScreenWidget {
                 style = this.styleExdr.expandString(context);
             }
 
-//            writer.append("<span>");
-//            writer.append("<date-time ng-model=\"" + modelExdr.expandString(context) + "\" style=\"" + style + "\" format=\"" + format + "\"");
-//
-//            if (UtilValidate.isNotEmpty(readOnlyExdr.getOriginal())) {
-//                writer.append(" read-only=\"" + readOnlyExdr.expandString(context) + "\"");
-//            }
-//
-//            if (UtilValidate.isNotEmpty(fieldName)) {
-//                writer.append(" name=\"" + fieldName + "\"");
-//            }
-//
-//            if (isRequire) {
-//                writer.append(" required");
-//            }
-//
-//            writer.append("/>");
-//            writer.append("</span>");
+            if (UtilValidate.isEmpty(this.closeTextExdr.getOriginal())) {
+                closeText = "Close";
+            } else {
+                closeText = this.closeTextExdr.expandString(context);
+            }
 
-            writer.append("<p class=\"input-group\">");
-            writer.append("<input type=\"text\" class=\"form-control\" datepicker-popup=\"{{format}}\" ng-model=\"dt\"");
-            writer.append(" is-open=\"opened\" min-date=\"minDate\" max-date=\"'2015-06-22'\" datepicker-options=\"dateOptions\"");
-            writer.append(" date-disabled=\"disabled(date, mode)\" ng-required=\"true\" close-text=\"Close\" />");
-            writer.append("<span class=\"input-group-btn\">");
-            writer.append("<button type=\"button\" class=\"btn btn-default\" ng-click=\"open($event)\"><i class=\"glyphicon glyphicon-calendar\"></i></button>");
-            writer.append("</span>");
-            writer.append("</p>");
+            writer.append("<date-time ng-model=\"" + modelExdr.expandString(context) + "\" style=\"" + style + "\" format=\"" + format + "\"");
+
+            writer.append(" min-date=\"" + minDateExdr.expandString(context) + "\"");
+            writer.append(" max-date=\"" + maxDateExdr.expandString(context) + "\"");
+            writer.append(" date-disabled=\"" + dateDisabledExdr.expandString(context) + "\"");
+            writer.append(" close-text=\"" + closeText + "\"");
+
+            if (UtilValidate.isNotEmpty(readOnlyExdr.getOriginal())) {
+                writer.append(" read-only=\"" + readOnlyExdr.expandString(context) + "\"");
+            }
+
+            if (UtilValidate.isNotEmpty(fieldName)) {
+                writer.append(" name=\"" + fieldName + "\"");
+            }
+
+            if (isRequire) {
+                writer.append(" required");
+            }
+
+            writer.append("/>");
         }
 
         @Override
