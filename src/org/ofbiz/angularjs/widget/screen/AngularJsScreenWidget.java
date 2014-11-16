@@ -830,7 +830,7 @@ public class AngularJsScreenWidget {
                 writer.append(" required");
             }
 
-            writer.append("/>");
+            writer.append("></date-time>");
         }
 
         @Override
