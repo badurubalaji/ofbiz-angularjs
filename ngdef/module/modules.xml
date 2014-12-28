@@ -26,6 +26,9 @@
     <ng-module name="ngUpload" location="/angularjs/images/js/ng-upload.js">
 
     </ng-module>
+    <ng-module name="ngSanitize" location="/angularjs/images/js/angular-sanitize.min.js">
+
+    </ng-module>
     <ng-module name="ui.tinymce" location="/angularjs/images/js/tinymce.js">
 
     </ng-module>
@@ -50,10 +53,8 @@
         <styleSheet path="/angularjs/images/css/angular.treeview.css"/>
     </ng-module>
     <!-- TODO actually we don't need ui-select2.js -->
-    <ng-module name="ui.select2" location="/angularjs/images/js/select2/ui-select2.js">
-        <javaScript path="/angularjs/images/js/select2/select2-3.4.5.min.js"/>
-        <styleSheet path="/angularjs/images/js/select2/select2-3.4.5.css"/>
-        <styleSheet path="/angularjs/images/js/select2/select2-bootstrap.css"/>
+    <ng-module name="ui.select" location="/angularjs/images/js/select.min.js">
+        <styleSheet path="/angularjs/images/css/select.min.css"/>
     </ng-module>
     <!--
     http://angular-file-upload.appspot.com/

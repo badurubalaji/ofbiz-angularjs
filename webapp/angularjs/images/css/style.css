@@ -83,6 +83,10 @@ img {
   -ms-interpolation-mode: bicubic;
 }
 
+.header-placeholder {
+    height: 50px;
+}
+
 .appBusy {
     background: #FFF1A8 -webkit-gradient(linear,left top,left bottom,from(#FFE090),to(#FFF2B0));
     background-color: #FFF1A8;

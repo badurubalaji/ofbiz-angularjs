@@ -2,33 +2,19 @@ package org.ofbiz.angularjs.directive;
 
 /**
  * Lookup Directive
- * http://plnkr.co/edit/AT2RhpE4Qhj4iN5qMtdi?p=preview
- * Fetch data from sercer: http://plnkr.co/edit/t1neIS?p=preview
+ * https://github.com/angular-ui/ui-select
  * JSONP: http://docs.angularjs.org/api/ng.$http#methods_jsonp
  */
-function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
+function LookupDirective($timeout, $compile, HttpService, FormService, ScopeUtil, $http) {
 
     this.link = function($scope, $element, $attrs, ngModel) {
-
-        $scope.$watch($attrs.ngModel, function(newVal, oldVal) {
-            if (newVal == null) {
-                ngModel.$setValidity("required", false);
-            } else {
-                ngModel.$setValidity("required", true);
-            }
-        })
-    };
-
-    /**
-     * Controller
-     */
-    this.controller = function($scope, $element, $attrs) {
         var target = $attrs.target;
         var parameters = $scope.parameters;
         var dependentParameterNames = null;
         var fieldName = $attrs.fieldName;
         var descriptionFieldName = $attrs.descriptionFieldName;
         var placeholder = $attrs.placeholder;
+        var defaultValue = null;
 
         if (_.isEmpty(target)) {
             console.error("Target cannot be empty.");
@@ -38,21 +24,21 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
             dependentParameterNames = $attrs.dependentParameterNames.replace(" ", "").split(",");
         }
 
-        $scope.$watch("ngModel", function(newVal, oldVal) {
-            if (newVal != oldVal && newVal == null) {
-                var select2 = $($element).select2($scope.select2Options);
-                select2.select2("val", null);
-            }
-        })
-
         if (_.isEmpty(parameters)) {
             parameters = {};
+        }
+        
+        if (fieldName == null) {
+            fieldName = "id";
+        }
+        if (descriptionFieldName == null) {
+            descriptionFieldName = "text";
         }
 
         $scope.$watch("parameters", function(newVal) {
             if (newVal != null) {
                 parameters = newVal;
-                loadOptions(parameters, null);
+                $scope.refreshOptions(null);
             }
         });
 
@@ -71,12 +57,39 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
             return true;
         }
 
-        function loadOptions(httpParams, defaultValue) {
-            if (!_.isEmpty(httpParams.term)) {
-                if (isValidDependency(httpParams)) {
+        // create directive
+        var uiSelectElement = angular.element("<ui-select></ui-select>");
+        uiSelectElement.attr("ng-model", "option.selected");
+        uiSelectElement.attr("theme", "bootstrap");
+        uiSelectElement.attr("style", "width: 300px;");
+        uiSelectElement.attr("ng-disabled", "disabled");
+        uiSelectElement.attr("reset-search-input", "false");
+
+        var uiSelectMatch = angular.element("<ui-select-match></<ui-select-match>");
+        uiSelectMatch.attr("placeholder", placeholder);
+        uiSelectMatch.html("{{$select.selected." + descriptionFieldName + "}}");
+
+        // https://github.com/prajwalkman/angular-slider/pull/29
+
+        var uiSelectChoices = angular.element("<ui-select-choices></ui-select-choices>");
+        uiSelectChoices.attr("repeat", "option in options track by $index");
+        uiSelectChoices.attr("refresh", "refreshOptions($select.search)");
+        uiSelectChoices.attr("refresh-delay", "0");
+        uiSelectChoices.append("<div ng-bind-html=\"option." + descriptionFieldName + " | highlight: $select.search\"></div>");
+
+        uiSelectElement.append(uiSelectMatch);
+        uiSelectElement.append(uiSelectChoices);
+        $element.html(uiSelectElement);
+
+
+        $scope.option = {};
+        
+        $scope.refreshOptions = function(term) {
+            if (!_.isEmpty(term)) {
+                parameters.term = term;
+                if (isValidDependency(parameters)) {
                     if (!_.isEmpty(target)) {
-                        HttpService.post(target, httpParams).success(function (response) {
-                            var defaultOption = null;
+                        HttpService.post(target, parameters).success(function (response) {
                             var options = response.options;
                             if (options) {
                                 var data = [];
@@ -88,113 +101,44 @@ function LookupDirective($timeout, HttpService, FormService, ScopeUtil) {
                                     data.push(dataObj);
 
                                     if (option[fieldName] == defaultValue) {
-                                        defaultOption = option;
+                                        $scope.option.selected = option;
                                     }
                                 }
-
-                                $scope.select2Options.data = data;
-                                var select2 = $($element).select2($scope.select2Options);
-                                select2.select2("val", null);
-                                if (defaultOption != null) {
-                                    select2.select2("val", defaultOption);
-                                }
                             }
+                            $scope.options = options;
                         });
                     }
                 }
             }
-        }
-
-        $scope.select2Options = {
-            placeholder: placeholder,
-            allowClear: true,
-            minimumInputLength: 1,
-            dropdownAutoWidth: true,
-            ajax: {
-                url: target,
-                dataType: "json",
-                type: "POST",
-                data: function(term, page) {
-                    var data = _.clone(parameters);
-                    data.term = term;
-                    data.viewSize = 10;
-                    return data;
-                },
-                results: function(data, page) {
-                    var options = null;
-                    if (data.options != null) {
-                        options = data.options;
-                    } else {
-                        options = [];
-                    }
-                    return {results: options};
-                }
-            },
-            id: function(object) {
-                return object;
-            },
-            formatSelection: function(object, container) {
-                return object[descriptionFieldName];
-            },
-            formatResult: function(object, container, query) {
-                return object[descriptionFieldName];
-            },
-            initSelection: function(element, callback) {
-                // TODO http://ivaynberg.github.io/select2/
-                var option = element.val();
-                var value = option[fieldName];
-                if (!_.isEmpty(value)) {
-                    callback(option);
-                    $scope.ngModel = option;
-                    ScopeUtil.setClosestScopeProperty($scope, $attrs.ngModel, option);
-                }
-            }
         };
 
-        if (fieldName == null) {
-            fieldName = "id";
-        }
-        if (descriptionFieldName == null) {
-            descriptionFieldName = "text";
-        }
+        // watch selected option
+        $scope.$watch("option.selected", function(newVal) {
 
+           if (newVal == null) {
+               ngModel.$setValidity("required", false);
+           } else {
+               ngModel.$setValidity("required", true);
+           }
+
+           $scope.ngModel = newVal;
+        });
+        
         // set default value
         $scope.$watchCollection("[defaultValue, parameters]", function(newValues, oldValues) {
-            var defaultValue = newValues[0];
-            var parameters = newValues[1];
+            defaultValue = newValues[0];
+            var parametersParam = newValues[1];
 
-            if (parameters == null) {
-                parameters = {};
+            if (parametersParam == null) {
+                 parametersParam = {};
             }
             if(!_.isEmpty(defaultValue)) {
-                var httpParams = _.clone(parameters);
-                httpParams.term = defaultValue;
-                httpParams.viewSize = 10;
-                loadOptions(httpParams, defaultValue);
-            } else {
-                // just setup lookup widget if default value is empty
-                $($element).select2($scope.select2Options);
+                parameters = _.clone(parametersParam);
+                parameters.viewSize = 10;
+                $scope.refreshOptions(defaultValue);
             }
         });
 
-        $($element).on("change", function(e) {
-            $scope.ngModel = e.val;
-            ScopeUtil.setClosestScopeProperty($scope, $attrs.ngModel, e.val);
-            $scope.$apply();
-        });
-    }
-
-    /**
-     * Compile
-     */
-    this.compile = function() {
-        return {
-            pre: function() {
-
-            },
-            post: function($scope, $element, $attrs, controller) {
-
-            }
-        };
+        $compile($element.contents())($scope);
     };
 }

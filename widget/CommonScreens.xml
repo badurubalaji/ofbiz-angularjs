@@ -43,6 +43,7 @@
                 <section>
                     <widgets>
                         <platform-specific><html><html-template location="component://angularjs/templates/header.ftl"/></html></platform-specific>
+                        <container style="header-placeholder"/>
                         <container style="container" id="${activeApp}-app">
                             <decorator-section-include name="body"/>
                         </container>
