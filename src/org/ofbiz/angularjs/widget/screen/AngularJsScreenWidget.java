@@ -914,7 +914,7 @@ public class AngularJsScreenWidget {
                     + defaultValueExdr.expandString(context) + "\"");
             writer.append(" placeholder=\""
                     + placeholderExdr.expandString(context)
-                    + "\" class=\"form-control\"");
+                    + "\"");
 
             if (isRequire) {
                 writer.append(" required");

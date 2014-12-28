@@ -3,7 +3,7 @@ package org.ofbiz.angularjs.directive;
 /**
  * Dropdown Directive
  *
- * http://plnkr.co/edit/5Zaln7QT2gETVcGiMdoW?p=preview
+ * http://stackoverflow.com/questions/26389542/clear-selected-option-in-ui-select-angular
  *
  * @param $compile
  * @param HttpService
@@ -11,7 +11,7 @@ package org.ofbiz.angularjs.directive;
  * @param $http
  * @param ScopeUtil
  */
-function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) {
+function DropdownDirective($timeout, $compile, HttpService, FormService, ScopeUtil, $http) {
 
     /**
      * Link
@@ -25,58 +25,31 @@ function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) 
         var placeholder = $attrs.placeholder;
         var defaultValue = null;
 
-        $scope.$watch($attrs.ngModel, function(newVal, oldVal) {
-            if (newVal == null) {
-                ngModel.$setValidity("required", false);
-            } else {
-                ngModel.$setValidity("required", true);
-            }
-        })
+        if (_.isEmpty(target)) {
+            console.error("Target cannot be empty.");
+        }
 
         if (!_.isEmpty($attrs.dependentParameterNames)) {
             dependentParameterNames = $attrs.dependentParameterNames.replace(" ", "").split(",");
         }
 
-        if (!_.isEmpty($attrs.defaultValue)) { // There is default value;
-            $scope.$watch("defaultValue", function(newValue) {
-                if (newValue != null) {
-                    defaultValue = newValue;
-                }
-                setup();
-            });
-        } else { // There is not default value.
-            setup();
+        if (_.isEmpty(parameters)) {
+            parameters = {};
+        }
+        
+        if (fieldName == null) {
+            fieldName = "id";
+        }
+        if (descriptionFieldName == null) {
+            descriptionFieldName = "text";
         }
 
-        $scope.select2Options = {
-            placeholder: placeholder,
-            allowClear: true,
-            data:[],
-            id: function(object) {
-                return object;
-            },
-            formatSelection: function(object, container) {
-                return object[descriptionFieldName];
-            },
-            formatResult: function(object, container, query) {
-                return object[descriptionFieldName];
-            },
-            initSelection: function(element, callback) {
-                // See http://ivaynberg.github.io/select2/
-                var option = element.val();
-                var value = option[fieldName];
-                if (!_.isEmpty(value)) {
-                    if (callback != null) {
-                        try {
-                            callback(option);
-                        } catch (e) {
-                            console.warn(e);
-                        }
-                    }
-                    $scope.ngModel = option;
-                }
+        $scope.$watch("parameters", function(newVal) {
+            if (newVal != null) {
+                parameters = newVal;
+                $scope.refreshOptions(null);
             }
-        };
+        });
 
         function isValidDependency(validateParameters) {
             if (validateParameters != null) {
@@ -93,52 +66,90 @@ function DropdownDirective($compile, FormService, $rootScope, $http, ScopeUtil) 
             return true;
         }
 
-        function setup() {
-            if (fieldName == null) {
-                fieldName = "id";
-            }
-            if (descriptionFieldName == null) {
-                descriptionFieldName = "text";
-            }
+        // create directive
+        var uiSelectElement = angular.element("<ui-select></ui-select>");
+        uiSelectElement.attr("ng-model", "option.selected");
+        uiSelectElement.attr("theme", "bootstrap");
+        uiSelectElement.attr("style", "width: 300px;");
+        uiSelectElement.attr("ng-disabled", "disabled");
+        uiSelectElement.attr("reset-search-input", "false");
+        uiSelectElement.attr("search-enabled", "false");
 
+        var uiSelectMatch = angular.element("<ui-select-match></<ui-select-match>");
+        uiSelectMatch.attr("placeholder", placeholder);
+        uiSelectMatch.html("{{$select.selected." + descriptionFieldName + "}}");
+
+        // https://github.com/prajwalkman/angular-slider/pull/29
+
+        var uiSelectChoices = angular.element("<ui-select-choices></ui-select-choices>");
+        uiSelectChoices.attr("repeat", "option in options track by $index");
+        uiSelectChoices.append("<div ng-bind-html=\"option." + descriptionFieldName + " | highlight: $select.search\"></div>");
+
+        uiSelectElement.append(uiSelectMatch);
+        uiSelectElement.append(uiSelectChoices);
+        $element.html(uiSelectElement);
+
+
+        $scope.option = {};
+        
+        $scope.refreshOptions = function(term) {
+            if (!_.isEmpty(term)) {
+                parameters.term = term;
+            }
+            
             if (isValidDependency(parameters)) {
-                FormService.post(target, parameters).success(function (response) {
-                    var defaultOption = null;
-                    var options = response.options;
-                    if (options) {
-                        var data = [];
-                        for (var i = 0; i < options.length; i ++) {
-                            var option = options[i];
-                            var dataObj = {};
-                            dataObj[fieldName] = option[fieldName];
-                            dataObj[descriptionFieldName] = option[descriptionFieldName];
-                            data.push(dataObj);
+                if (!_.isEmpty(target)) {
+                    HttpService.post(target, parameters).success(function (response) {
+                        var options = response.options;
+                        if (options) {
+                            var data = [];
+                            for (var i = 0; i < options.length; i ++) {
+                                var option = options[i];
+                                var dataObj = {};
+                                dataObj[fieldName] = option[fieldName];
+                                dataObj[descriptionFieldName] = option[descriptionFieldName];
+                                data.push(dataObj);
 
-                            if (option[fieldName] == defaultValue) {
-                                defaultOption = option;
+                                if (option[fieldName] == defaultValue) {
+                                    $scope.option.selected = option;
+                                }
                             }
                         }
-
-                        $scope.select2Options.data = data;
-                        var select2 = $($element).select2($scope.select2Options);
-
-                        select2.on("change", function(e) {
-                            $scope.ngModel = e.val;
-                            ScopeUtil.setClosestScopeProperty($scope, $attrs.ngModel, e.val);
-                            $scope.$apply();
-                        });
-
-                        select2.select2("val", null);
-                        if (defaultOption != null) {
-                            select2.select2("val", defaultOption);
-                        }
-                    } else {
-                        var select2 = $($element).select2($scope.select2Options);
-                    }
-                }).error(function() {
-                    var select2 = $($element).select2($scope.select2Options);
-                });
+                        $scope.options = options;
+                    });
+                }
             }
-        }
+        };
+
+        // watch selected option
+        $scope.$watch("option.selected", function(newVal) {
+
+           if (newVal == null) {
+               ngModel.$setValidity("required", false);
+           } else {
+               ngModel.$setValidity("required", true);
+           }
+
+           $scope.ngModel = newVal;
+        });
+        
+        // set default value
+        $scope.$watchCollection("[defaultValue, parameters]", function(newValues, oldValues) {
+            defaultValue = newValues[0];
+            var parametersParam = newValues[1];
+
+            if (parametersParam == null) {
+                 parametersParam = {};
+            }
+            if(!_.isEmpty(defaultValue)) {
+                parameters = _.clone(parametersParam);
+                parameters.viewSize = 10;
+                $scope.refreshOptions(defaultValue);
+            } else {
+                $scope.refreshOptions(null);
+            }
+        });
+
+        $compile($element.contents())($scope);
     }
 }
