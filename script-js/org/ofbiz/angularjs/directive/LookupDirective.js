@@ -42,6 +42,9 @@ function LookupDirective($timeout, $compile, HttpService, FormService, ScopeUtil
             }
         });
 
+        /**
+         * Is Valid Dependency
+         */
         function isValidDependency(validateParameters) {
             if (validateParameters != null) {
                 var parameterNames = _.keys(validateParameters);
@@ -67,7 +70,8 @@ function LookupDirective($timeout, $compile, HttpService, FormService, ScopeUtil
 
         var uiSelectMatch = angular.element("<ui-select-match></<ui-select-match>");
         uiSelectMatch.attr("placeholder", placeholder);
-        uiSelectMatch.html("{{$select.selected." + descriptionFieldName + "}}");
+        uiSelectMatch.append("<span>{{$select.selected." + descriptionFieldName + "}}</span>");
+        uiSelectMatch.append("<button class=\"ui-select-match-close-button\" ng-click=\"clear($event)\">X</button>")
 
         // https://github.com/prajwalkman/angular-slider/pull/29
 
@@ -84,6 +88,9 @@ function LookupDirective($timeout, $compile, HttpService, FormService, ScopeUtil
 
         $scope.option = {};
         
+        /**
+         * Refersh Options
+         */
         $scope.refreshOptions = function(term) {
             if (!_.isEmpty(term)) {
                 parameters.term = term;
@@ -110,6 +117,14 @@ function LookupDirective($timeout, $compile, HttpService, FormService, ScopeUtil
                     }
                 }
             }
+        };
+        
+        /**
+         * Clear
+         */
+        $scope.clear = function($event) {
+            $event.stopPropagation(); 
+            $scope.option.selected = undefined;
         };
 
         // watch selected option

@@ -130,3 +130,16 @@ img {
 .datepicker {
     z-index: 10000 !important;
 }
+
+/*
+UI-Select
+*/
+.ui-select-match-close-button {
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:5px 10px;
+    position:absolute;
+    right:30px;
+    top:4px;
+}
