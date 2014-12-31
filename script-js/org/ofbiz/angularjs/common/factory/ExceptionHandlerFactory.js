@@ -7,7 +7,7 @@ function ExceptionHandlerFactory() {
         } else {
             exception.message += ' (caused by "' + cause + '")';
             //throw exception;
-            console.error(exception.message);
+            console.error(exception.stack);
         }
       };
 }

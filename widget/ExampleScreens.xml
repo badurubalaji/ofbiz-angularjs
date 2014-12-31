@@ -187,7 +187,7 @@
 
                 <!-- Calendar -->
                 <label text="Calendar" style="h1"/>
-                <!-- include-screen name="Calendar" location="component://angularjs/widget/DemoWidgetScreens.xml"/-->
+                <include-screen name="Calendar" location="component://angularjs/widget/DemoWidgetScreens.xml"/>
                 <horizontal-rule/>
 
                 <!-- Collapse -->

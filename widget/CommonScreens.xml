@@ -13,8 +13,6 @@
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/initialGoogleChart.js" global="true"/>
 
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/fastclick.js" global="true"/>
-                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/calendar/gcal.js" global="true"/>
-                <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/calendar/fullcalendar.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/prettify/prettify.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/angularjs/images/js/moment.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="http://www.google.com/jsapi" global="true"/>
