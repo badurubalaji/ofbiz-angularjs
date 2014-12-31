@@ -33,6 +33,7 @@
 
     </ng-module>
     <ng-module name="ui.calendar" location="/angularjs/images/js/calendar/calendar.js">
+        <javaScript path="/angularjs/images/js/calendar/moment.min.js"/>
         <javaScript path="/angularjs/images/js/calendar/fullcalendar.min.js"/>
 <!--         <javaScript path="/angularjs/images/js/calendar/gcal.js"/> -->
         <styleSheet path="/angularjs/images/css/calendar/fullcalendar.min.css"/>
