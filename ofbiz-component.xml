@@ -37,11 +37,6 @@
         location="webapp/angularjs"
         base-permission="OFBTOOLS"
         mount-point="/angularjs"/>
-    <webapp name="fullcalendar"
-        title="fullcalendar"
-        server="default-server"
-        location="webapp/fullcalendar"
-        mount-point="fullcalendar"/>
 
     <container name="angularjs-container" class="org.ofbiz.angularjs.container.AngularJsContainer"/>
 </ofbiz-component>
