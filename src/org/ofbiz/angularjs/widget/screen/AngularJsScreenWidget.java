@@ -352,7 +352,7 @@ public class AngularJsScreenWidget {
                 Map<String, Object> context,
                 ScreenStringRenderer screenStringRenderer)
                 throws GeneralException, IOException {
-            writer.append("<div ui-calendar=\""
+            writer.append("<div class=\"calendar\" ui-calendar=\""
                     + optionsExdr.expandString(context) + "\"");
             if (UtilValidate.isNotEmpty(nameExdr.getOriginal())) {
                 writer.append(" calendar=\""

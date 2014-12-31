@@ -36,7 +36,7 @@
         <javaScript path="/angularjs/images/js/calendar/fullcalendar.min.js"/>
 <!--         <javaScript path="/angularjs/images/js/calendar/gcal.js"/> -->
         <styleSheet path="/angularjs/images/css/calendar/fullcalendar.min.css"/>
-        <styleSheet path="/angularjs/images/css/calendar/fullcalendar.print.css"/>
+<!--         <styleSheet path="/angularjs/images/css/calendar/fullcalendar.print.css" media="print"/> -->
     </ng-module>
     <ng-module name="kalitte.services" location="/angularjs/images/js/appBusy.js">
 
