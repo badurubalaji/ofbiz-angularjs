@@ -38,7 +38,7 @@
         <section>
             <widgets>
                 <controller name="org.ofbiz.angularjs.demo.controller.CalendarDemoController">
-                    <calendar name="myCalendar" options="calendarOptions" model="eventSources"/>
+                    <calendar name="myCalendar" options="uiConfig.calendar" model="eventSources2"/>
                 </controller>
             </widgets>
         </section>
