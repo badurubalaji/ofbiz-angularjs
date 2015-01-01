@@ -104,9 +104,9 @@ function CalendarDemoController($scope,$compile,uiCalendarConfig) {
         height: 450,
         editable: true,
         header:{
-          left: 'title',
-          center: '',
-          right: 'today prev,next'
+          left: 'prev,next today',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay'
         },
         eventClick: $scope.alertOnEventClick,
         eventDrop: $scope.alertOnDrop,
