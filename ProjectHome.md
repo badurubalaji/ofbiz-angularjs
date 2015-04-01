@@ -1,0 +1,1 @@
+OFBiz-AngularJS is an OFBiz component integrating AngularJS framework.
